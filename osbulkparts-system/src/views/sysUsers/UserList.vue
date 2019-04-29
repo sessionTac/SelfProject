@@ -1,69 +1,69 @@
 <template>
     <div style="display: flex;flex-direction: column;height: 100%">
-        <!--<div class="el-header">-->
-            <!--<el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">-->
-                <!--<el-form-item label="用户名">-->
-                    <!--<el-input placeholder="用户名" v-model="search_keys.userName" class="search-form-item-input"></el-input>-->
-                <!--</el-form-item>-->
-                <!--<el-form-item label="姓名">-->
-                    <!--<el-input placeholder="姓名" v-model="search_keys.trueName" class="search-form-item-input"></el-input>-->
-                <!--</el-form-item>-->
+        <div class="el-header">
+            <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
+                <el-form-item label="用户名">
+                    <el-input placeholder="用户名" v-model="search_keys.userName" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="姓名">
+                    <el-input placeholder="姓名" v-model="search_keys.trueName" class="search-form-item-input"></el-input>
+                </el-form-item>
 
-                <!--<el-form-item style="float: right">-->
-                    <!--<el-button type="" @click="add" size="mini" >-->
-                        <!--<i class="fa fa-plus" aria-hidden="true"></i> 添加-->
-                    <!--</el-button>-->
-                <!--</el-form-item>-->
+                <el-form-item style="float: right">
+                    <el-button type="" @click="add" size="mini" >
+                        <i class="fa fa-plus" aria-hidden="true"></i> 添加
+                    </el-button>
+                </el-form-item>
 
-                <!--<el-form-item style="float: right">-->
-                    <!--<el-button type="primary" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >-->
-                        <!--<i class="fa fa-search" aria-hidden="true"></i> 查询-->
-                    <!--</el-button>-->
-                <!--</el-form-item>-->
-            <!--</el-form>-->
-        <!--</div>-->
-        <!--<EditUserDialog v-bind.sync="link_modal_state" @success="reSearch" v-if="link_modal_state.activated"></EditUserDialog>-->
+                <el-form-item style="float: right">
+                    <el-button type="primary" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
+                        <i class="fa fa-search" aria-hidden="true"></i> 查询
+                    </el-button>
+                </el-form-item>
+            </el-form>
+        </div>
+        <EditUserDialog v-bind.sync="link_modal_state" @success="reSearch" v-if="link_modal_state.activated"></EditUserDialog>
 
-        <!--<el-table size="mini"-->
-                  <!--style="flex: 1"-->
-                  <!--:height="750"-->
-                  <!--class="search-result-table"-->
-                  <!--:data="search_result.list" row-key="id"-->
-                  <!--:stripe="true"-->
-        <!--&gt;-->
-            <!--<el-table-column prop="userName" align="center" label="用户名"  />-->
-            <!--<el-table-column prop="trueName" align="center" label="姓名"  />-->
-            <!--<el-table-column prop="phone" align="center" label="手机号" />-->
-            <!--<el-table-column prop="email" align="center" label="邮箱"  />-->
+        <el-table size="mini"
+                  style="flex: 1"
+                  :height="600"
+                  class="search-result-table"
+                  :data="search_result.list" row-key="id"
+                  :stripe="true"
+        >
+            <el-table-column prop="userName" align="center" label="用户名"  />
+            <el-table-column prop="trueName" align="center" label="姓名"  />
+            <el-table-column prop="phone" align="center" label="手机号" />
+            <el-table-column prop="email" align="center" label="邮箱"  />
 
-            <!--<el-table-column label="操作" >-->
-                <!--<template slot-scope="scope" >-->
-                    <!--<el-button title="角色设置" type="primary" size="mini" class="btn-opt" @click="setRole(scope)">-->
-                        <!--角色设置</el-button>-->
-                    <!--<el-button title="查看" size="mini" class="btn-opt"  @click="viewRole(scope)">-->
-                        <!--角色查看</el-button>-->
-                    <!--<el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.uuid)">-->
-                        <!--<i class="el-icon-news"></i></el-button>-->
-                    <!--<el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.uuid)">-->
-                        <!--<i class="el-icon-delete"></i></el-button>-->
-                <!--</template>-->
-            <!--</el-table-column>-->
-        <!--</el-table>-->
+            <el-table-column label="操作" >
+                <template slot-scope="scope" >
+                    <el-button title="角色设置" type="primary" size="mini" class="btn-opt" @click="setRole(scope)">
+                        角色设置</el-button>
+                    <el-button title="查看" size="mini" class="btn-opt"  @click="viewRole(scope)">
+                        角色查看</el-button>
+                    <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.uuid)">
+                        <i class="el-icon-news"></i></el-button>
+                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.uuid)">
+                        <i class="el-icon-delete"></i></el-button>
+                </template>
+            </el-table-column>
+        </el-table>
 
-        <!--&lt;!&ndash;分页&ndash;&gt;-->
-        <!--<div style="text-align: center">-->
-            <!--<el-pagination @current-change="exec_search({pageNum:$event})"-->
-                           <!--@size-change="exec_search({search_keys,pageSize:$event})"-->
-                           <!--:total="search_result.total"-->
-                           <!--:current-page="search_result.pageNum"-->
-                           <!--:page-size="search_result.pageSize"-->
-                           <!--:disabled="!search_result.total"-->
-                           <!--:page-sizes="PAGE_SIZES"-->
-                           <!--layout="total, sizes, prev, pager, next, jumper"-->
-                           <!--background/>-->
-        <!--</div>-->
-        <div style="border: solid 1px red;flex: 1;height: 100%">1</div>
-        <div style="border: solid 1px green;flex: 1;height: 100%">2</div>
+        <!--分页-->
+        <div style="text-align: center">
+            <el-pagination @current-change="exec_search({pageNum:$event})"
+                           @size-change="exec_search({search_keys,pageSize:$event})"
+                           :total="search_result.total"
+                           :current-page="search_result.pageNum"
+                           :page-size="search_result.pageSize"
+                           :disabled="!search_result.total"
+                           :page-sizes="PAGE_SIZES"
+                           layout="total, sizes, prev, pager, next, jumper"
+                           background/>
+        </div>
+        <!--<div style="border: solid 1px red;flex: 1;height: 100%">1</div>-->
+        <!--<div style="border: solid 1px green;flex: 1;height: 100%">2</div>-->
     </div>
 </template>
 
