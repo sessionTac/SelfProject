@@ -1,0 +1,45 @@
+{
+  "name": "osbulkparts-system",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
+  },
+  "dependencies": {
+    "animate.css": "^3.7.0",
+    "axios": "^0.18.0",
+    "core-js": "^2.6.5",
+    "element-ui": "^2.4.5",
+    "js-cookie": "^2.2.0",
+    "normalize.css": "^8.0.1",
+    "path": "^0.12.7",
+    "path-to-regexp": "^3.0.0",
+    "screenfull": "^4.2.0",
+    "shiro-trie": "^0.4.8",
+    "vue": "^2.6.10",
+    "vue-i18n": "7.3.2",
+    "vue-router": "^3.0.3",
+    "vuex": "^3.0.1"
+  },
+  "devDependencies": {
+    "fibers": "^3.1.1",
+    "sass": "^1.19.0",
+    "sass-loader": "^7.1.0",
+    "@vue/cli-plugin-babel": "^3.6.0",
+    "@vue/cli-service": "^3.6.0",
+    "vue-cli-plugin-element": "^1.0.1",
+    "vue-template-compiler": "^2.5.21"
+  },
+  "postcss": {
+    "plugins": {
+      "autoprefixer": {}
+    }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ]
+}
