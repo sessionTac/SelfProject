@@ -33,15 +33,20 @@ export default {
     putRequest(`~/maintenance/basis/user/changePass`,{data}),
 
   /**查询角色*/
-  findRole:()=>
-     getRequest(`~/maintenance/basis/user/rolePage`),
+  findRole:(params)=>
+     // getRequest(`~/maintenance/basis/user/rolePage`),
+      getRequest(`./static/mock-api/users/roleList.json`, {params}),
 
   /**添加角色*/
   insertRole:(data)=>
     postRequest(`~/maintenance/basis/user/insertRole`, {data}),
 
+  /**查询角色*/
+  findFunctionTree:()=>
+      // getRequest(`~/maintenance/basis/user/rolePage`),
+      getRequest(`./static/mock-api/users/roleList.json`),
 
-  /**根据用户id查询用户所属角色*/
+    /**根据用户id查询用户所属角色*/
   findRoleById:(userId)=>
      getRequest(`~/maintenance/basis/user/findRole/`+userId),
   /**文件下载**/
