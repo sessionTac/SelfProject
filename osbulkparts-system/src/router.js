@@ -36,18 +36,23 @@ export const constantRoutes = [
         name:'users',
         component: Layout,
         redirect: {name: 'userInfo'},
+      meta: { title: 'userinfo',breadcrumb: true},
         children: [
             {
                 path: 'userInfo',
                 component: () => import('@/views/sysUsers/UserList.vue'),
                 name: 'userInfo',
-                meta: { title: 'userinfo',  icon: 'userinfo', noCache: true,breadcrumb: true,keepAlive: true }
+                meta: { title: 'userinfo',
+                  icon: 'userinfo',
+                  noCache: true,breadcrumb: true,
+                  keepAlive: true }
             },
             {
                 path: 'roleFunction',
                 component: () => import('@/views/sysUsers/UserRole.vue'),
                 name: 'roleFunction',
-                meta: { title: 'rolePermission',  icon: 'rolePermission', noCache: true,breadcrumb: true,keepAlive: true  }
+                meta: { title: 'rolePermission',
+                  icon: 'rolePermission', noCache: true,breadcrumb: true,keepAlive: true  }
             }
         ]
     },
