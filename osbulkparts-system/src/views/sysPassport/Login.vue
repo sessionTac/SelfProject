@@ -69,10 +69,11 @@
         methods: {
             async usersLogin() {
                 try {
-                    let loginRet = await passportService.login({username: this.username, password: this.password});
-
-                    let trueName      = loginRet.trueName;
-                    let tempToken     = loginRet.token;
+                    // let loginRet = await passportService.login({username: this.username, password: this.password});
+                    //
+                    // let trueName      = loginRet.trueName;
+                    // let tempToken     = loginRet.token;
+                    this.$router.push({name:'userInfo',params:{}})
                 } catch (err) {
                     console.error('登录操作异常', err);
                     Notification.error({title:"网络异常"})
