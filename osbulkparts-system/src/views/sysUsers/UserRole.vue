@@ -21,7 +21,7 @@
                 </el-form-item>
             </el-form>
         </div>
-        <!--<SetAuthority v-bind.sync="link_modal_state" @success="reSearch" v-if="link_modal_state.activated"></SetAuthority>-->
+        <SetAuthority v-bind.sync="link_modal_state"  v-if="link_modal_state.activated"></SetAuthority>
 
         <el-table size="mini"
                   style="flex: 1"
@@ -67,8 +67,10 @@
     // import SetAuthority from './SetAuthority'
     import activityService from '@/api/users/users.js'
     import ui_config from '@/config/ui_config'
+    import SetAuthority from '@/views/sysUsers/SetAuthority'
 
     export default {
+        components: { SetAuthority},
         data() {
             return {
                 PAGE_SIZES : ui_config.PAGE_SIZES,
@@ -94,7 +96,6 @@
 
             };
         },
-        components: {},
         mounted() {
             this.exec_search({search_keys:this.search_keys, pageNumber:1});
         },
