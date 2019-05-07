@@ -109,7 +109,6 @@
                             type: 'warning',
                             center: true
                         }).then(()=>{
-                                debugger
                                 let data=this.form
                                 service.addUser({...data}).then(resp=>{
                                     if (resp.data==0){

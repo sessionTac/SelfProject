@@ -1,12 +1,10 @@
 <template>
-    <div>
-        sdaflkjaslkdfjalk
-    </div>
+    
 </template>
 
 <script>
     export default {
-        name: "OrderPlanList"
+        name: "PersonCenter"
     }
 </script>
 
