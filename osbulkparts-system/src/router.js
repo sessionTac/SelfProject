@@ -36,16 +36,13 @@ export const constantRoutes = [
         name:'users',
         component: Layout,
         redirect: {name: 'userInfo'},
-      meta: { title: 'userinfo',breadcrumb: true},
+        meta: { title: 'userinfo',breadcrumb: true},
         children: [
             {
                 path: 'userInfo',
                 component: () => import('@/views/sysUsers/UserList.vue'),
                 name: 'userInfo',
-                meta: { title: 'userinfo',
-                  icon: 'userinfo',
-                  noCache: true,breadcrumb: true,
-                  keepAlive: true }
+                meta: { title: 'userinfo',icon: 'userinfo', noCache: true,breadcrumb: true,keepAlive: true }
             },
             {
                 path: 'roleFunction',
@@ -61,50 +58,53 @@ export const constantRoutes = [
         path: '/basicsData',
         name:'basicsData',
         component: Layout,
+        redirect: {name: 'basicsDataMatter'},
+        meta: { title: 'basicsData',breadcrumb: true},
         children: [
             {
                 path: 'basicsDataMatter',
                 component: () => import('@/views/sysBasedata/MatterList.vue'),
                 name: 'basicsDataMatter',
-                meta: { title: 'basicsDataMatter',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true }
+                meta: { title: 'basicsDataMatter',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: true }
             }
         ]
     },
 
     {
-        path: '/basicsDataWarehouse',
-        name:'basicsDataWarehouse',
+        path: '/warehouse',
+        name:'warehouse',
         component: Layout,
+        meta: { title: 'Warehouse',breadcrumb: true},
         children: [
             {
-                path: 'basicsDataWarehouseOrderplan',
+                path: 'warehouseOrderplan',
                 component: () => import('@/views/sysWarehouse/OrderPlanManagement/OrderPlanList.vue'),
-                name: 'basicsDataWarehouseOrderplan',
-                meta: { title: 'basicsDataWarehouseOrderplan',  icon: 'basicsDataWarehouseOrderplan', noCache: true,breadcrumb:true }
+                name: 'warehouseOrderplan',
+                meta: { title: 'warehouseOrderplan',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false  }
             },
             {
-                path: 'basicsDataWarehouseCollection',
+                path: 'warehouseCollection',
                 component: () => import('@/views/sysWarehouse/CollectionDeliveryManagement/CollectionList.vue'),
-                name: 'basicsDataWarehouseCollection',
-                meta: { title: 'basicsDataWarehouseCollection',  icon: 'basicsDataWarehouseCollection', noCache: true,breadcrumb:true }
+                name: 'warehouseCollection',
+                meta: { title: 'warehouseCollection',  icon: 'warehouseCollection', noCache: true,breadcrumb:true,keepAlive: true  }
             },
             {
-                path: 'basicsDataWarehouseDelivery',
+                path: 'warehouseDelivery',
                 component: () => import('@/views/sysWarehouse/CollectionDeliveryManagement/DeliveryList.vue'),
-                name: 'basicsDataWarehouseDelivery',
-                meta: { title: 'basicsDataWarehouseDelivery',  icon: 'basicsDataWarehouseDelivery', noCache: true,breadcrumb:true }
+                name: 'warehouseDelivery',
+                meta: { title: 'warehouseDelivery',  icon: 'warehouseDelivery', noCache: true,breadcrumb:true,keepAlive: true  }
             },
             {
-                path: 'basicsDataWarehouseRollingplan',
+                path: 'warehouseRollingplan',
                 component: () => import('@/views/sysWarehouse/RollingPlanManagement/RollingPlanList.vue'),
-                name: 'basicsDataWarehouseRollingplan',
-                meta: { title: 'basicsDataWarehouseRollingplan',  icon: 'basicsDataWarehouseRollingplan', noCache: true,breadcrumb:true }
+                name: 'warehouseRollingplan',
+                meta: { title: 'warehouseRollingplan',  icon: 'warehouseRollingplan', noCache: true,breadcrumb:true,keepAlive: true  }
             },
             {
-                path: 'basicsDataWarehouseFinance',
+                path: 'warehouseFinance',
                 component: () => import('@/views/sysWarehouse/FinanceManangement/FinanceList.vue'),
-                name: 'basicsDataWarehouseFinance',
-                meta: { title: 'basicsDataWarehouseFinance',  icon: 'basicsDataWarehouseFinance', noCache: true,breadcrumb:true }
+                name: 'warehouseFinance',
+                meta: { title: 'warehouseFinance',  icon: 'warehouseFinance', noCache: true,breadcrumb:true,keepAlive: true  }
             }
         ]
     }

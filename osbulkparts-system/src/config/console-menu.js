@@ -29,7 +29,6 @@ export default [
     requiresPermission: 'maintenance:basis:data',
     index: 'basicsData',
     children: [
-
       {
         title: '物料主数据',
         requiresPermission: 'maintenance:basis:matter',
@@ -41,33 +40,33 @@ export default [
   {
       title: '出入库管理',
       requiresPermission: 'maintenance:basis:warehouse',
-      index: 'basicsDataWarehouse',
+      index: 'warehouse',
       children: [
 
           {
               title: '订单计划',
-              requiresPermission: 'maintenance:basis:orderplan',
-              index: 'basicsDataWarehouseOrderplan',
+              requiresPermission: 'maintenance:warehouse:orderplan',
+              index: 'warehouseOrderplan',
           },
           {
               title: '收货管理',
-              requiresPermission: 'maintenance:basis:collection',
-              index: 'basicsDataWarehouseCollection',
+              requiresPermission: 'maintenance:warehouse:collection',
+              index: 'warehouseCollection',
           },
           {
               title: '发货管理',
-              requiresPermission: 'maintenance:basis:delivery',
-              index: 'basicsDataWarehouseDelivery',
+              requiresPermission: 'maintenance:warehouse:delivery',
+              index: 'warehouseDelivery',
           },
           {
               title: '滚动计划',
-              requiresPermission: 'maintenance:basis:rollingplan',
-              index: 'basicsDataWarehouseRollingplan',
+              requiresPermission: 'maintenance:warehouse:rollingplan',
+              index: 'warehouseRollingplan',
           },
           {
               title: '财务模块',
-              requiresPermission: 'maintenance:basis:finance',
-              index: 'basicsDataWarehouseFinance',
+              requiresPermission: 'maintenance:warehouse:finance',
+              index: 'warehouseFinance',
           },
       ]
   }

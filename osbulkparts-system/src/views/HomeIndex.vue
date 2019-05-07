@@ -5,7 +5,7 @@
         <img :src="'./static/img/logo.png'"/>
       </div>
       <div class="info-container">
-        <span class="display_name">Welcome To Wedotools</span>
+        <span class="display_name">Welcome To OSBulkPartsSystem</span>
         <span style="font-size:20px;padding-top:20px;display:inline-block;">Editor's Dashboard</span>
       </div>
     </div>

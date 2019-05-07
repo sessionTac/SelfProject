@@ -3,10 +3,10 @@
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
                 <el-form-item label="用户名">
-                    <el-input  placeholder="用户名" v-model="search_keys.userName" class="search-form-item-input"></el-input>
+                    <el-input placeholder="用户名" v-model="search_keys.userName" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-form-item label="姓名">
-                    <el-input  placeholder="姓名" v-model="search_keys.trueName" class="search-form-item-input"></el-input>
+                    <el-input placeholder="姓名" v-model="search_keys.trueName" class="search-form-item-input"></el-input>
                 </el-form-item>
 
                 <el-form-item style="float: right">
@@ -108,7 +108,6 @@
                             pageNumber = this.search_result.pageNum,
                             pageSize = this.search_result.pageSize,
                         }) {
-                debugger
                 let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
                 let userName = search_keys.userName;
                 let trueName = search_keys.trueName;

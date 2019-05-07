@@ -15,9 +15,9 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/dashboard">
+          <router-link to="/person">
             <el-dropdown-item>
-              {{ $t('navbar.dashboard') }}
+              {{ $t('navbar.person') }}
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
