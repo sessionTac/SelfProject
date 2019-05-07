@@ -1,9 +1,13 @@
 <template>
   <section class="app-main">
     <transition name="fade-transform" mode="out-in">
-      <keep-alive  >
-        <router-view :key="key" v-if="$route.meta.keepAlive" />
-      </keep-alive>
+      <div style="flex: 1;display: flex;flex-direction:column;height: 100%;width: 100%">
+        <keep-alive  >
+          <router-view :key="key" v-if="$route.meta.keepAlive" />
+        </keep-alive>
+        <router-view :key="key" v-if="!$route.meta.keepAlive" />
+      </div>
+
     </transition>
   </section>
 </template>

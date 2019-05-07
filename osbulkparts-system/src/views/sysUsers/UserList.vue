@@ -20,6 +20,9 @@
                         <i class="fa fa-search" aria-hidden="true"></i> 查询
                     </el-button>
                 </el-form-item>
+                <el-form-item style="float: right">
+                    <import-button target = "USER_INFO"></import-button>
+                </el-form-item>
             </el-form>
         </div>
         <EditUserDialog v-bind.sync="link_modal_state" @success="reSearch" v-if="link_modal_state.activated"></EditUserDialog>
@@ -72,7 +75,10 @@
     import activityService from '@/api/users/users.js'
     import ui_config from '@/config/ui_config'
 
+    import ImportButton from '@/components/data-import/ImportButton'
+
     export default {
+        components:{EditUserDialog,ImportButton},
         data() {
             return {
                 PAGE_SIZES : ui_config.PAGE_SIZES,
@@ -98,7 +104,6 @@
 
             };
         },
-        components: {EditUserDialog},
         mounted() {
             this.exec_search({search_keys:this.search_keys, pageNumber:1});
         },

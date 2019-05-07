@@ -1,15 +1,15 @@
 <template>
-  <el-dialog title="权限设置" width="700px"
+  <el-dialog title="权限设置" width="650px"
              :visible.sync="internal_activated" @closed="$emit('update:activated', false)">
     <!--<p>{{this.$route.query.row.username}} 权限设置</p>-->
     <!--<el-button type="primary" size="mini" style="float: right" class="btn-opt" @click="Return()">-->
     <!--返回</el-button>-->
-    <div style="height: 500px;;width: 260px">
+    <div style="height: 500px;;width: 100%">
       <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
         <el-form-item>
           系统菜单
         </el-form-item>
-        <div style="height: 450px">
+        <div style="height: 450px;padding-left: 10%">
           <el-scrollbar style="height: 100%">
             <el-tree :data="analysisTree"
                      class="filter-tree"
