@@ -1,13 +1,13 @@
 <template>
-  <div :class="classObj" class="app-wrapper" style="display: flex;flex-direction: row;width: 100%;height: 100%">
+  <div :class="classObj" class="app-wrapper" style="">
     <!--<div v-if="device==='mobile'&&sidebar.opened" class="drawer-bg" @click="handleClickOutside" />-->
     <sidebar class="sidebar-container" />
-    <div :class="{hasTagsView:needTagsView}" class="main-container" style="flex: 1;display: flex;flex-direction:column;width: 100%;height: 100%">
+    <div :class="{hasTagsView:needTagsView}" class="main-container" style="">
       <div :class="{'fixed-header':fixedHeader}">
         <navbar />
         <tags-view v-if="needTagsView" />
       </div>
-      <app-main style="flex: 1;display: flex;flex-direction:column;height: 100%;width: 100%" />
+      <app-main style="" />
       <!--<right-panel v-if="showSettings">-->
         <!--<settings />-->
       <!--</right-panel>-->

@@ -5,9 +5,9 @@
         <img v-if="logo" :src="logo" class="sidebar-logo">
         <h1 v-else class="sidebar-title">{{ title }} </h1>
       </router-link>
-      <router-link v-else key="expand" class="sidebar-logo-link" to="/">
-        <img v-if="logo" :src="logo" class="sidebar-logo">
-        <h1 class="sidebar-title">{{ title }} </h1>
+      <router-link style="display: flex" v-else key="expand" class="sidebar-logo-link" to="/">
+        <div style="padding-left: 5%;flex: 1"><img v-if="logo" :src="logo" class="sidebar-logo"></div>
+        <div class="sidebar-title" style=";flex: 3">{{ title }} </div>
       </router-link>
     </transition>
   </div>
