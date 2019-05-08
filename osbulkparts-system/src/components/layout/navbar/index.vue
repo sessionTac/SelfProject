@@ -9,23 +9,22 @@
 
         <lang-select class="right-menu-item hover-effect" />
       </template>
-      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click">
+      <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click" @command="handleCommand">
         <div class="avatar-wrapper">
           <img src="https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191" class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/person">
-            <el-dropdown-item>
-              {{ $t('navbar.person') }}
+            <el-dropdown-item command="person" >
+                {{ $t('navbar.person') }}
             </el-dropdown-item>
-          </router-link>
           <el-dropdown-item divided>
             <span style="display:block;" @click="">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </div>
+  <person-dialog v-bind.sync="edit_pass"  v-if="edit_pass.activated" ></person-dialog>
   </div>
 </template>
 
@@ -38,6 +37,7 @@
   // import SizeSelect from '@/components/SizeSelect'
   import LangSelect from '@/components/layout/navbar/LangSelect'
   // import Search from '@/components/HeaderSearch'
+  import PersonDialog from '@/views/sysPassport/PersonCenter'
   export default {
     components: {
       Breadcrumb,
@@ -47,11 +47,12 @@
       // SizeSelect,
       LangSelect,
       // Search
+    PersonDialog
     },
     name: "Index",
     data(){
       return{
-
+          edit_pass : {},
       }
     },
     computed: {
@@ -63,6 +64,14 @@
       toggleSideBar() {
         this.$store.dispatch('app/toggleSideBar')
       },
+        // openPerson(){
+        //     this.edit_pass = {activated:true,id:'1'}
+        // },
+        handleCommand(command){
+            if(command == 'person'){
+                this.edit_pass = {activated:true,id:'1'}
+            }
+        }
       // async logout() {
       //   await this.$store.dispatch('user/logout')
       //   this.$router.push(`/login?redirect=${this.$route.fullPath}`)
