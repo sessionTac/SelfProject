@@ -46,7 +46,7 @@
         </el-form-item>
         <el-form-item label="下载模板">
           <div>
-            <a  href="./static/img/test.xlsx" download >点击这里下载模板</a>
+            <el-link type="primary">点击这里下载模板</el-link>
           </div>
         </el-form-item>
       </el-form>
