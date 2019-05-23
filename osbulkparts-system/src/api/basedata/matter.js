@@ -10,6 +10,19 @@ export default {
     getRequest(`./static/mock-api/basticData/matterList.json`, {params}),
 
   /**
+   * 物料数据列表初始化
+   */
+  initData: () =>
+        // getRequest(`~/maintenance/basis/user/page`, {params}),
+        getRequest(`./static/mock-api/basticData/matterListInit.json`),
+  /**
+   * 物料数据列表初始化
+   */
+  init: () =>
+      // getRequest(`~/maintenance/basis/user/page`, {params}),
+      getRequest(`./static/mock-api/basticData/matterListInit.json`),
+
+  /**
    * 修改编辑
    */
   updateMatter:(data)=>

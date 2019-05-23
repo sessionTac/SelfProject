@@ -53,7 +53,21 @@ export const constantRoutes = [
             }
         ]
     },
-
+    {
+        path: '/system',
+        name:'system',
+        component: Layout,
+        redirect: {name: 'dictionary'},
+        meta: { title: 'config',breadcrumb: true},
+        children: [
+            {
+                path: 'dictionary',
+                component: () => import('@/views/sysConfig/Dictionary.vue'),
+                name: 'dictionary',
+                meta: { title: 'dictionary',icon: 'dictionary', noCache: true,breadcrumb: true,keepAlive: true }
+            },
+        ]
+    },
     {
         path: '/basicsData',
         name:'basicsData',

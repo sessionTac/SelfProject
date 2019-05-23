@@ -1,0 +1,52 @@
+{
+    "currencys":[
+    {
+      "name":"RMB",
+      "code":"1"
+    },
+    {
+      "name":"USD",
+      "code":"2"
+    },
+    {
+      "name":"JPY",
+      "code":"3"
+    },
+    {
+      "name":"KRW",
+      "code":"4"
+    }
+  ],
+  "units":[
+    {
+      "name":"EA",
+      "code":"1"
+    }
+  ],
+  "matterTypes":[
+    {
+      "name":"0",
+      "code":"0"
+    },
+    {
+      "name":"1",
+      "code":"1"
+    }
+  ],
+  "list":[
+    {
+      "matterHNRNo":"0060217298A",
+      "matterNo":"0060217298AHNR",
+      "matterType":"1",
+      "matterCnDec":"冷藏上饰条",
+      "matterEnDec":"RefrigeratorEndCapUpWH",
+      "unit":"1",
+      "scalerRela":"1",
+      "scalerUnit":"",
+      "currency":"1"
+    }
+  ],
+  "total" : 50,
+  "pageNum" : 1,
+  "pageSize" : 1
+}

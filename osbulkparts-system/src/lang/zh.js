@@ -9,6 +9,8 @@ export default {
     directivePermission: '指令权限',
     users: '用户管理',
     userinfo: '用户信息',
+    config: '系统设置',
+    dictionary: '数据字典',
     basicsData: '基础数据',
     basicsDataMatter: '物料主数据',
     Warehouse: '出入库管理',

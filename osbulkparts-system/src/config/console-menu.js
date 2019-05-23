@@ -23,7 +23,18 @@ export default [
           },
       ]
   },
-
+  {
+    title: '系统设置',
+    requiresPermission: 'maintenance:system:config',
+    index: 'config',
+    children: [
+        {
+            title: '数据字典',
+            requiresPermission: 'maintenance:system:dictionary',
+            index: 'dictionary',
+        },
+    ]
+  },
   {
     title: '基础数据',
     requiresPermission: 'maintenance:basis:data',

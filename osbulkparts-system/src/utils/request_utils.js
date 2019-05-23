@@ -3,7 +3,6 @@ import {API_HOME} from '@/config/url_config'
 
 
 // import {API_HOME} from '@/configs/url_config'
-// const API_HOME = 'http://127.0.0.1:8081'; //dev
 
 let axiosService = axios.create();
 

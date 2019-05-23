@@ -1,10 +1,10 @@
 <template>
     <div class="home-layer flex flex-v back-office">
-        <div class="flex" style="height:60px;width:100%;background-color:white;z-index:99999999;box-shadow: 0 1px 5px #666; ">
+        <div class="flex" style="height:50px;width:100%;background-color:white;z-index:99999999;box-shadow: 0 1px 5px #666; ">
             <div class="flex-1">
-                <div class="flex" style="width:20%;margin-left:15%;height:60px;">
-                    <div class="" style='width:100%;background-color:#7BBD1F;text-align:center;position:relative;'>
-                        <img style="width: 80%;z-index: 1300;display:inline-block;position:absolute;top:50%;left:50%;transform:translateY(-50%) translateX(-50%);" src="../../static/images/login/title.png" />
+                <div class="flex" style="width:20%;margin-left:15%;height:50px;">
+                    <div class="" style='width:100%;background-color:rgba(220,255,207,0);text-align:center;position:relative;'>
+                        <img style="width: 80%;z-index: 1300;display:inline-block;position:absolute;top:50%;left:50%;transform:translateY(-50%) translateX(-50%);" src="../../static/images/login/mainLogo.png" />
                     </div>
                 </div>
             </div>
@@ -36,6 +36,9 @@
                                     <input type="password" class="form-control" v-model="password" name="password" placeholder="密码" autocomplete="current-password" maxlength="20" style="height:100%;padding-left:55px;">
                                 </div>
                             </div>
+                        </div>
+                        <div>
+                            <a  href="" download >忘记密码？</a>
                         </div>
                     </div>
                     <div style="background-color:#f9f9f9;height:130px;width:100%;border-top:1px solid #dedede;">

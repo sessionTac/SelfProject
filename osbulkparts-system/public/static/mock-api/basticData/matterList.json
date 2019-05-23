@@ -1,25 +1,40 @@
 {
   "list" :[
     {
-      "userName":"admin",
-      "trueName":"系统管理员",
-      "phone":"15011112222",
-      "email":"admin@osbulkparts"
+      "matterHNRNo":"0060217298A",
+      "matterNo":"0060217298AHNR",
+      "matterType":"1",
+      "matterCnDec":"冷藏上饰条",
+      "matterEnDec":"RefrigeratorEndCapUpWH",
+      "unit":"EA",
+      "scalerRela":"1",
+      "scalerUnit":"",
+      "currency":"RMB"
     },
     {
-      "userName":"guest",
-      "trueName":"系统普通用户",
-      "phone":"15011112222",
-      "email":"guest@osbulkparts.com"
+      "matterHNRNo":"0060212649",
+      "matterNo":"0060212649HNR",
+      "matterType":"0",
+      "matterCnDec":"止档原色",
+      "matterEnDec":"DoorStop(HRF-227/327)",
+      "unit":"EA",
+      "scalerRela":"1",
+      "scalerUnit":"",
+      "currency":"RMB"
     },
     {
-      "userName":"customer",
-      "trueName":"系统客户",
-      "phone":"15011112222",
-      "email":"customer@osbulkparts"
+      "matterHNRNo":"0060116707",
+      "matterNo":"0060116707HNR",
+      "matterType":"0",
+      "matterCnDec":"钢丝搁物架",
+      "matterEnDec":"FreezerShelf305G/305B",
+      "unit":"EA",
+      "scalerRela":"1",
+      "scalerUnit":"",
+      "currency":"RMB"
     }
   ],
   "total" : 50,
   "pageNum" : 1,
-  "pageSize" : 1
+  "pageSize" : 10
 }

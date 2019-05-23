@@ -94,12 +94,12 @@
                 <template slot-scope="scope" >
                     <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.uuid)">
                         <i class="el-icon-news"></i></el-button>
-                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="delete(scope.row.uuid)">
+                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">
                         <i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>
         </el-table>
-
+        <edit-matter v-bind.sync="link_modal_state" @success="reSearch" v-if="link_modal_state.activated"></edit-matter>
         <!--分页-->
         <div style="text-align: center">
             <el-pagination @current-change="exec_search({pageNum:$event})"
@@ -121,6 +121,7 @@
     import activityService from '@/api/basedata/matter.js'
     import ui_config from '@/config/ui_config'
     import ImportButton from '@/components/data-import/ImportButton'
+    import EditMatter from './EditMatter'
 
     export default {
         data() {
@@ -131,7 +132,7 @@
                 is_searching : true,
                 matterTypes:[],
                 units:[],
-                currencys:[{'name':'人民币','code':'1'}],
+                currencys:[],
                 search_keys   : {
                     matterHNRNo:'',
                     matterNo:'',
@@ -147,11 +148,21 @@
                 search_result         : {},
             };
         },
-        components:{ImportButton},
+        components:{ImportButton,EditMatter},
         mounted() {
+            this.init();
             this.exec_search({search_keys:this.search_keys, pageNumber:1});
         },
         methods: {
+            init(){
+                activityService.init().then(resp =>{
+                    this.currencys = resp.data.currencys;
+                    this.units = resp.data.units;
+                    this.matterTypes = resp.data.matterTypes;
+                }, err => {
+                    console.error(err);
+                })
+            },
             exec_search({
                             search_keys = JSON.parse(this.search_keys_snap),
                             pageNumber = this.search_result.pageNum,
@@ -171,10 +182,10 @@
             },
             //编辑
             edit(id) {
-                console("edit")
+                this.link_modal_state={activated:true,id};
             },
             //删除
-            deleteUser(uuid) {
+            deleteMatter(uuid) {
                 this.$confirm("确定删除吗？", "提示", {
                     confirmButtonText: "是",
                     cancelButtonText: "否",
