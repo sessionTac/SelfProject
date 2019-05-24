@@ -26,6 +26,15 @@
                 <el-form-item label="物料英文描述">
                     <el-input placeholder="物料英文描述" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
                 </el-form-item>
+                <el-form-item label="物料俄文描述">
+                    <el-input placeholder="物料俄文描述" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="HS海关编码">
+                    <el-input placeholder="HS海关编码" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="供货商信息">
+                    <el-input placeholder="供货商信息" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
+                </el-form-item>
                 <el-form-item label="单位">
                     <el-select v-model="search_keys.unit"  size="mini" knx>
                         <el-option value=""></el-option>
@@ -44,6 +53,18 @@
                 <el-form-item label="换算后单位">
                     <el-input placeholder="换算后单位" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
                 </el-form-item>
+                <el-form-item label="最小包装数量">
+                    <el-input placeholder="最小包装数量" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="未税单价">
+                    <el-input placeholder="未税单价" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="含税单价">
+                    <el-input placeholder="含税单价" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="代理费率">
+                    <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
+                </el-form-item>
                 <el-form-item label="币种">
                     <el-select v-model="search_keys.currency"  size="mini" knx>
                         <el-option value=""></el-option>
@@ -56,6 +77,19 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
+                <el-form-item label="创建人">
+                    <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="创建时间">
+                    <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="最后修改人">
+                    <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="最后修改时间">
+                    <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
+                </el-form-item>
+
                 <el-form-item style="float: right">
                     <import-button target = "MATTER"></import-button>
                 </el-form-item>
@@ -70,6 +104,16 @@
                         <i class="fa fa-search" aria-hidden="true"></i> 查询
                     </el-button>
                 </el-form-item>
+                <el-form-item style="float: right">
+                    <el-button  @click="" icon="el-icon-download" >
+                        模板下载
+                    </el-button>
+                </el-form-item>
+                <el-form-item style="float: right">
+                    <el-button  @click="" icon="el-icon-delete" >
+                        清空
+                    </el-button>
+                </el-form-item>
             </el-form>
         </div>
 
@@ -80,17 +124,28 @@
                   :data="search_result.list" row-key="id"
                   :stripe="true"
         >
-            <el-table-column prop="matterHNRNo" align="center" label="物料HNR号"  />
-            <el-table-column prop="matterNo" align="center" label="物料专用号"  />
-            <el-table-column prop="matterType" align="center" label="物料类别" />
-            <el-table-column prop="matterCnDec" align="center" label="物料中文描述"  />
-            <el-table-column prop="matterEnDec" align="center" label="物料英文描述"  />
+            <el-table-column prop="matterHNRNo" fixed width="100" align="center" label="物料HNR号"  />
+            <el-table-column prop="matterNo" fixed width="100" align="center" label="物料号"  />
+            <el-table-column prop="matterType" fixed width="100" align="center" label="物料类别" />
+            <el-table-column prop="matterCnDec"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
+            <el-table-column prop="matterEnDec"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
+            <el-table-column prop="matterRuDec"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
+            <el-table-column prop="matterRuDec" align="center" label="HS海关编码"  />
+            <el-table-column prop="matterRuDec" align="center" label="供应商信息"  />
             <el-table-column prop="unit" align="center" label="单位"  />
             <el-table-column prop="scalerRela" align="center" label="换算关系"  />
             <el-table-column prop="scalerUnit" align="center" label="换算后单位"  />
+            <el-table-column prop="scalerUnit" align="center" label="最小包装数量"  />
+            <el-table-column prop="scalerUnit" align="center" label="未税单价"  />
+            <el-table-column prop="scalerUnit" align="center" label="含税单价"  />
+            <el-table-column prop="scalerUnit" align="center" label="代理费率"  />
             <el-table-column prop="currency" align="center" label="币种"  />
+            <el-table-column prop="currency" align="center" label="创建人"  />
+            <el-table-column prop="currency" align="center" label="创建时间"  />
+            <el-table-column prop="currency" align="center" label="最后修改人"  />
+            <el-table-column prop="currency" align="center" label="最后修改时间"  />
 
-            <el-table-column label="操作" >
+            <el-table-column fixed="right" width="120" label="操作" >
                 <template slot-scope="scope" >
                     <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.uuid)">
                         <i class="el-icon-news"></i></el-button>
@@ -209,5 +264,13 @@
 </script>
 
 <style scoped>
+    .search-result-table >>> .el-table__body-wrapper::-webkit-scrollbar {
+        width: 10px;
+        height: 15px;
+    }
+    .search-result-table >>>.el-table__body-wrapper::-webkit-scrollbar-thumb {
+        background-color: #a1a3a9;
+        border-radius: 3px;
+    }
 
 </style>

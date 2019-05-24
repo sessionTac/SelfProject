@@ -1,6 +1,7 @@
 <template>
     <div>
         <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)" width="600px">
+            {{multipleSelection}}
             <el-form ref="form" :model="form" label-width="200px"  size="mini">
                 <el-form-item label="物料HNR号" prop="matterHNRNo">
                     <el-input v-model="form.matterHNRNo" class="search-form-item-input"  style="width: 200px"size="mini" :maxlength="500" ></el-input>
@@ -84,7 +85,7 @@
     export default {
         name: "EditMatter",
         props:{
-            id: {}
+            multipleSelection: {}
         },
         data() {
             return {
@@ -155,7 +156,7 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let data={
-                            id       : this.id            || undefined,
+                            // id       : this.id            || undefined,
                             userName : this.form.userName || undefined,
                             trueName : this.form.trueName || undefined,
                             password : this.form.password || undefined,

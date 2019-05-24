@@ -21,7 +21,8 @@
         targetName() {
           return {
               USER_INFO                   : '用户信息',
-              MATTER                      : '物料数据'
+              MATTER                      : '物料数据',
+              ORDER_PLAN                  : '订单计划',
           }[this.target] || '未知导入类型';
         },
       },

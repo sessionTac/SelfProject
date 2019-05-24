@@ -32,7 +32,7 @@ export default [
             title: '数据字典',
             requiresPermission: 'maintenance:system:dictionary',
             index: 'dictionary',
-        },
+        }
     ]
   },
   {
