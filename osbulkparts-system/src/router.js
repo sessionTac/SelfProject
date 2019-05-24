@@ -66,6 +66,17 @@ export const constantRoutes = [
                 name: 'dictionary',
                 meta: { title: 'dictionary',icon: 'dictionary', noCache: true,breadcrumb: true,keepAlive: true }
             },
+            {
+                path: 'categories',
+                name: 'SystemDictionaryCategory',
+                component: ()=>import('@/views/sysConfig/Category'),
+                meta: {
+                    title: 'categories',
+                    breadcrumbTitle: '字典分类',
+                    requiresPermission: 'maintenance:basis:dictionary',
+                    activeMenuKey: 'BasicsDictionary',keepAlive: true
+                },
+            }
         ]
     },
     {

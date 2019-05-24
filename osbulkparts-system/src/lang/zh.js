@@ -11,6 +11,7 @@ export default {
     userinfo: '用户信息',
     config: '系统设置',
     dictionary: '数据字典',
+    categories:'字典分类',
     basicsData: '基础数据',
     basicsDataMatter: '物料主数据',
     Warehouse: '出入库管理',

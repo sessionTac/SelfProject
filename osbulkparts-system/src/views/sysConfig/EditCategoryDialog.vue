@@ -1,0 +1,184 @@
+<template>
+  <div >
+    <el-dialog
+      :title="title"
+      :visible.sync="dialogFormVisible"
+      @closed="$emit('update:activated', false);$emit('refresh')"
+      width="35%">
+
+    <el-form ref="form" :model="form" size="mini" label-width="200px" style="width:400px" :rules="rules" class="search-form search-form-normal">
+
+      <el-form-item label="父级"  >
+        <el-select clearable :disabled="true" v-model="form.parentUuid"  clearable size="mini" knx>
+          <el-option v-for="item in parentUuid" :key="item.value" :label="item.value" :value="item.value"></el-option>
+        </el-select>
+      </el-form-item>
+
+      <el-form-item label="名称" prop="name">
+        <el-input v-model="form.name"  clearable knx size="mini" :maxlength="50"></el-input>
+      </el-form-item>
+
+      <el-form-item label="编号" prop="code">
+        <el-input v-model="form.code" clearable knx size="mini" :maxlength="30"></el-input>
+      </el-form-item>
+
+      <el-form-item label="排序" prop="sortCode">
+        <el-input v-model="form.sortCode" clearable knx size="mini" :maxlength="11"></el-input>
+      </el-form-item>
+
+      <el-form-item label="是否有效" prop="sort">
+        <el-checkbox v-model="form.isEnable"></el-checkbox>
+      </el-form-item>
+
+      <el-form-item label="备注">
+        <el-input v-model="form.remark"  type="textarea" :rows="2" placeholder="请输入内容" size="mini" :maxlength="200"></el-input>
+      </el-form-item>
+
+    </el-form>
+      <span slot="footer">
+          <el-button type="primary" size="mini" @click="submit('form')">
+            <i class="fa fa-check"></i> 确定</el-button>
+          <el-button  size="mini" @click="cancel()">取消</el-button>
+        </span>
+    </el-dialog>
+  </div>
+
+</template>
+
+<script>
+  export default {
+    computed:{
+      title:function () {
+        let entityName = '字典分类'
+        if(this.mode === 'ADD'){return '新增'+entityName}
+        else if(this.mode === 'EDIT'){return '编辑'+entityName}
+      }
+    },
+    props:{
+      entity  : Object,
+      mode : String
+    },
+    data() {
+      return {
+        dialogFormVisible: true,
+        form: {
+          //id
+          id:0,
+          //code名称
+          name: '',
+          //code值
+          code: '',
+          //排序
+          sortCode: '',
+          //是否有效
+          isEnable: false,
+          //备注
+          remark: ''
+        },
+        parentUuid: [
+          {label: 1, value: "根节点"},
+          {label: 2, value: "通用分类"},
+          {label: 3, value: "婚姻"},
+          {label: 3, value: "性别"},
+          {label: 3, value: "民族"},
+          {label: 3, value: "学历"},
+        ],
+        subordinate: [
+          {label: 1, value: "根节点"},
+          {label: 2, value: "单位A"},
+          {label: 3, value: "单位B"},
+        ],
+
+        /*表单验证*/
+        rules: {
+          classification: [
+            {required: true, message: '请选择所属分类'},
+          ],
+          subordinate: [
+            {required: true, message: '请选择数据字典所属上级'}
+          ],
+          name: [
+            {required: true, message: '请填写数据字典名称'}
+          ],
+          code: [
+            {required: true, message: '请填写数据字典编号', trigger: 'blur'}
+          ],
+        }
+      }
+    },
+
+    mounted(){
+      this.init()
+    },
+    methods: {
+      init() {
+        if (this.mode === 'EDIT') {
+          if (this.entity.isEnable==='0'){
+            this.form.isEnable =false
+          } else {
+            this.form.isEnable =true
+          }
+          this.form.id = this.entity.id
+          this.form.name =  this.entity.name
+          this.form.code =  this.entity.code
+          this.form.sortCode = this.entity.sortCode
+          this.form.remark = this.entity.remark
+        }
+      },
+      /*确定*/
+      submit(formName){
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            if (this.mode === 'ADD'){
+              debugger
+              let  addfrom =this.form.isEnable
+              if (addfrom==true){
+                this.form.isEnable = 1;
+              }else {
+                this.form.isEnable = 0;
+              }
+
+              let add  = this.form
+              // service.addDictType(add).then(resp=>{
+              //   this.$notify({title: '成功',type: 'success', message: resp.data.msg});
+              //   this.dialogFormVisible = false
+              // })
+            }else if (this.mode === 'EDIT'){
+
+              let  isEnable =this.form.isEnable
+              if (isEnable==true){
+                this.form.isEnable = 1;
+              }else {
+                this.form.isEnable = 0;
+              }
+              let update  = this.form
+              // service.updateDictType(update).then(resp=>{
+              //   this.$notify({title: '成功',type: 'success', message: resp.data.msg});
+              //   this.dialogFormVisible = false
+              // });
+            }
+          } else {
+            console.log('error submit!!');
+            return false;
+          }
+        });
+      },
+      cancel(){
+        this.dialogFormVisible = false
+      }
+    }
+  }
+</script>
+
+<style scoped>
+  >>>.el-dialog__body {
+    padding: 0px 0px;
+    color: #606266;
+    font-size: 14px;
+  }
+
+  >>> .el-dialog__footer {
+    /*margin-top: -30px;*/
+    text-align: center;
+  }
+</style>

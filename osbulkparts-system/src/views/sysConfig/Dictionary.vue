@@ -1,20 +1,20 @@
 <template>
-    <el-card>
-        <div class="container">
-            <div style="display: flex; flex-direction: column; border-right: 1px solid lightGray">
-                <div style="width: 260px">
+    <!--<div style="width: 100%;height: 99%;display: flex">-->
+        <div style=";height: 100%;width: 100%;display: flex;flex-direction: row">
+            <div style="flex: 1;display: flex;flex-direction: column; border-right: 1px solid lightGray;height: 100%">
+                <div style="height: 99%;flex: 1;display: flex;flex-direction: column;">
                     <el-menu
-                            style="border-right:0;"
+                            style=";border-right:0;margin-top: 5px;height: 100%;flex: 1;display: flex;flex-direction: column;"
                             :default-openeds="openeds"
                             :router="false"
                             :collapse-transition="false">
                         <!--<submenu :menu-data="menu" :level="0" v-for="(menu, menu_idx) in system_menus" :key="'sys:'+menu_idx"/>-->
-                        <el-submenu index="1">
+                        <el-submenu index="1" style="overflow-x:hidden;;flex: 1;display: flex;flex-direction: column;height: 100%">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
                                 <span>通用分类</span>
                             </template>
-                            <el-menu-item-group style="height: 500px;  overflow-x:hidden;">
+                            <el-menu-item-group style="">
                                 <el-menu-item  v-for="(item,id) in system_menus" :index="item.code":key="id" @click="screenByMenu(item.id,item.name)">{{item.name}}</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
@@ -22,8 +22,8 @@
                     </el-menu>
                 </div>
             </div>
-            <div class="right">
-                <div style="padding-left: 30px" >
+            <div style="flex: 4;display: flex;flex-direction: column;height: 100%;">
+                <div style="padding-left: 30px;margin-top: 5px" >
                     <el-form :inline="true" size="mini"  @submit.native.prevent>
                         <el-form-item label="名称">
                             <el-input v-model="search_keys.name" placeholder="名称" size="mini" knx></el-input>
@@ -42,19 +42,17 @@
 
                 <div style="padding-top: 10px;padding-left: 30px">
                     <el-form :inline="true" size="mini">
-                        <!--<el-form-item>-->
-                        <!--<el-button @click="add()" style="width: 80px" size="mini">新增</el-button>-->
-                        <!--</el-form-item>-->
                         <el-form-item>
-                            <el-button @click="$router.push({name:'BasicsDictionaryCategory'})" style="width: 80px" size="mini">
+                            <el-button @click="$router.push({name:'SystemDictionaryCategory'})" style="width: 80px" size="mini">
                                 字典分类
                             </el-button>
                         </el-form-item>
                     </el-form>
                 </div>
-                <div style="padding-top: 10px;padding-left: 30px">
                     <el-table size="mini"
                               class="search-result-table"
+                              style="flex: 1"
+                              :height="650"
                               :data="search_result.list" row-key="uuId"
                               :cell-class-name="({row,rowIndex,columnIndex}) => { return null; }"
                               :row-class-name="({row,rowIndex}) => { return row.summary_line ? 'summary-row' : null; }"
@@ -90,14 +88,14 @@
                                 :total="search_result.total">
                         </el-pagination>
                     </div>
-                </div>
+
 
                 <div>
                     <EditDictionaryDialog v-bind.sync="dialogState" v-if="dialogState.activated" @refresh="refresh()"></EditDictionaryDialog>
                 </div>
             </div>
         </div>
-    </el-card>
+    <!--</div>-->
 </template>
 
 <script>
@@ -156,10 +154,21 @@
             },
             // 分类初始化
             init() {
-                dictionaryService.findMDictionaryItemsTree().then(resp => {
-                    this.system_menus = resp.data
-                }, err => {
-                });
+                // dictionaryService.findMDictionaryItemsTree().then(resp => {
+                //     this.system_menus = resp.data
+                // }, err => {
+                // });
+                this.system_menus=[
+                  {id:"001",code:"001",name:"分类1"},{id:"002",code:"002",name:"分类2"},
+                    {id:"003",code:"003",name:"分类3"},{id:"003",code:"003",name:"分类3"},
+                    {id:"004",code:"004",name:"分类4"}, {id:"005",code:"005",name:"分类5"},
+                    {id:"006",code:"006",name:"分类6"},{id:"007",code:"007",name:"分类7"},
+                    {id:"008",code:"008",name:"分类8"}, {id:"009",code:"009",name:"分类9"},
+                    {id:"010",code:"010",name:"分类10"},{id:"011",code:"011",name:"分类11"},
+                    {id:"012",code:"012",name:"分类12"},{id:"013",code:"013",name:"分类13"},
+                    {id:"014",code:"014",name:"分类14"},{id:"015",code:"015",name:"分类15"},
+                    {id:"016",code:"016",name:"分类16"},{id:"017",code:"017",name:"分类17"}
+                  ];
             },
             // 检索
             exec_search({
