@@ -198,7 +198,7 @@
         this.dialogState = {activated:true,entity,mode:'EDIT'}
       },
       Return(){
-        this.$router.push({name:'BasicsDictionaryIndex'})
+        this.$router.push({name:'dictionary'})
       },
       /*删除*/
       remove(row) {
