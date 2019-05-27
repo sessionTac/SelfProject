@@ -63,32 +63,37 @@
           <el-button type="" @click="exportData" size="mini" >
             <i class="fa fa-plus" aria-hidden="true"></i> 导出
           </el-button>
-        </el-form-item>
-
-        <el-form-item style="float: right">
           <el-button type="primary" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
             <i class="fa fa-search" aria-hidden="true"></i> 查询
           </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
           <el-button  @click="" icon="el-icon-download" >
             模板下载
           </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
           <el-button  @click="edit(multipleSelection)" icon="el-icon-download" >
             修改
           </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
           <el-button  @click="alert('发货')" icon="el-icon-download" >
             发货
           </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
           <el-button  @click="" icon="el-icon-delete" >
             清空
           </el-button>
+        </el-form-item>
+
+        <el-form-item style="float: right">
+
+        </el-form-item>
+        <el-form-item style="float: right">
+
+        </el-form-item>
+        <el-form-item style="float: right">
+
+        </el-form-item>
+        <el-form-item style="float: right">
+
+        </el-form-item>
+        <el-form-item style="float: right">
+
         </el-form-item>
       </el-form>
     </div>

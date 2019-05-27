@@ -60,22 +60,22 @@ export default [
               index: 'warehouseOrderplan',
           },
           {
-              title: '收货管理',
+              title: '预配发货',
               requiresPermission: 'maintenance:warehouse:collection',
               index: 'warehouseCollection',
           },
           {
-              title: '发货管理',
+              title: '发货明细',
               requiresPermission: 'maintenance:warehouse:delivery',
               index: 'warehouseDelivery',
           },
           {
-              title: '滚动计划',
+              title: '发货综合查询',
               requiresPermission: 'maintenance:warehouse:rollingplan',
               index: 'warehouseRollingplan',
           },
           {
-              title: '财务模块',
+              title: '发货统计信息',
               requiresPermission: 'maintenance:warehouse:finance',
               index: 'warehouseFinance',
           },

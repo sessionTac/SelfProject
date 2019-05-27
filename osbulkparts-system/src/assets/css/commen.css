@@ -1,0 +1,11 @@
+/** 查询条件表单 */
+.search-form {}
+
+.search-form.search-form-normal {}
+.search-form.search-form-normal .el-form-item__label { padding-right:6px; width:130px; line-height: 16px; }
+.search-form.search-form-normal .search-form-item-input { width: 250px; }
+.search-form.search-form-normal .el-select  { width: 250px; }
+
+.search-form.search-form-wide {}
+.search-form.search-form-wide .el-form-item__label { padding-right:6px; width:130px; line-height: 16px; }
+.search-form.search-form-wide .search-form-item-input { width: 250px; }
