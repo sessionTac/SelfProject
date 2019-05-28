@@ -21,7 +21,7 @@
         </el-form-item>
 
         <el-form-item label=" " label-width="40px" style="float: right">
-          <el-button type="primary"  @click="exec_search({search_keys, pageNumber:1})" native-type="submit" >
+          <el-button type="primary"  @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
             <i class="fa fa-search" aria-hidden="true"></i> 查询
           </el-button>
         </el-form-item>
@@ -50,7 +50,7 @@
               v-loading="is_searching"
     >
       <el-table-column
-        prop="id"
+        prop="dictTypeId"
         sortable
         label="编号">
       </el-table-column>
@@ -65,7 +65,7 @@
         label="排序">
       </el-table-column>
       <el-table-column
-        prop="parentUuid"
+        prop="parentId"
         sortable
         label="父级分类">
       </el-table-column>
@@ -106,8 +106,8 @@
     <div style="text-align: center; margin-top: 10px">
       <el-pagination
         :currentPage="search_result.pageNum"
-        @current-change="exec_search({pageNumber:$event})"
-        @size-change="exec_search({pageNumber:1,pageSize:$event})"
+        @current-change="exec_search({pageNum:$event})"
+        @size-change="exec_search({pageNum:1,pageSize:$event})"
         :page-size="search_result.pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="search_result.total">
@@ -120,8 +120,8 @@
 </template>
 
 <script>
-  import {getRequest, postRequest} from "@/utils/request_utils";
   import EditCategoryDialog from './EditCategoryDialog'
+  import service from '@/api/sysConfig/dictionary'
   export default {
     components:{
       EditCategoryDialog
@@ -141,7 +141,7 @@
     },
     mounted() {
       this.init();
-      // this.exec_search({search_keys: this.search_keys, pageNumber: 1});
+      this.exec_search({search_keys: this.search_keys, pageNum: 1});
     },
     methods: {
       init() {
@@ -150,42 +150,28 @@
       // 查询处理
       exec_search({
                     search_keys = JSON.parse(this.search_keys_snap),
-                    pageNumber = this.search_result.pageNumber,
+                    pageNum = this.search_result.pageNum,
                     pageSize = this.search_result.pageSize,
                   }) {
         let search_key = this.search_keys;
         let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
-        // this.is_searching = true;
-        // service.findDictTypes({...search_key, pageNumber, pageSize}).then(resp => {
-        //   debugger
-        //   this.search_result = resp.data;                //视图展示查询结果
-        //   this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
-        //   this.search_keys_snap = search_keys_snap;             //存储查询条件快照      //存储查询条件快照
-        // }, err => {
-        //   // this.$notify.error({ title: '服务器被吃了⊙﹏⊙∥', message: err.response && err.response.data.message || err.message }); //异常处理
-        //   console.error(err);
-        // }).finally (()=>{
-        //   this.is_searching = false;
-        // })
-        /*getRequest(`~/setting/dictionaries/findMDictionaryItems`, {
-          params: {
-            ...search_key,
-            page_number,
-            page_size
-          }
-        }).then(resp => {
-          this.search_result = resp.data;                //视图展示查询结果
+        this.is_searching = true;
+        service.findDictTypes({...search_key, pageNum, pageSize}).then(resp => {
+          this.search_result = resp.data.resultInfo;                //视图展示查询结果
           this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
           this.search_keys_snap = search_keys_snap;             //存储查询条件快照      //存储查询条件快照
         }, err => {
           // this.$notify.error({ title: '服务器被吃了⊙﹏⊙∥', message: err.response && err.response.data.message || err.message }); //异常处理
           console.error(err);
-        })*/
+        }).finally (()=>{
+          this.is_searching = false;
+        })
+
       },
 
       //页面刷新
       refresh(){
-        this.exec_search({search_keys: this.search_keys, pageNumber: 1});
+        this.exec_search({search_keys: this.search_keys, pageNum: 1});
       },
 
 

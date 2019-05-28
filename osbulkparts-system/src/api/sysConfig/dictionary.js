@@ -20,7 +20,7 @@ export default {
    * @returns {*}
    */
   findDictTypes:(params)=>
-    getRequest(`~/maintenance/basis/dict/type/page`, {params}),
+    getRequest(`~/dict/getDictTypeList`, {params}),
 
   // findMDictionaryItemsDetails: () =>
   //   getRequest('./static/mockdata/basics/dictionary/dictionary_education.json'),
