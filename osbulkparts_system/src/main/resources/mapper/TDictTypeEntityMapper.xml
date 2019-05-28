@@ -251,7 +251,8 @@
     	and code = #{code,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(name)">
-    	and name = #{name,jdbcType=VARCHAR}
+      <bind name="name_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(name)"/>
+        AND name LIKE #{name_like}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(desc)">
     	and desc = #{desc,jdbcType=VARCHAR}
