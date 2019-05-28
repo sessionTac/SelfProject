@@ -1,11 +1,11 @@
 package cn.springboot.osbulkparts.common.security.service.impl;
 
+import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.springboot.osbulkparts.common.security.dao.SecurityDao;
 import cn.springboot.osbulkparts.common.security.service.SecurityService;
-import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 
 @Service
 public class SecurityServiceImpl implements SecurityService {

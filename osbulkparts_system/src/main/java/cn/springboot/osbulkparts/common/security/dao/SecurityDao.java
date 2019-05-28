@@ -1,9 +1,8 @@
 package cn.springboot.osbulkparts.common.security.dao;
 
+import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-
-import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 
 @Mapper
 public interface SecurityDao {

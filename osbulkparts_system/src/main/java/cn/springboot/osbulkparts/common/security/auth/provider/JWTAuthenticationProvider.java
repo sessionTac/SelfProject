@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.common.security.auth.provider;
 
 import java.util.List;
 
+import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,7 +15,6 @@ import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.security.exception.Authentication401Exception;
 import cn.springboot.osbulkparts.common.security.service.SecurityService;
 import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
-import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import cn.springboot.osbulkparts.entity.TUserAttrEntity;
 
 @Component
@@ -45,20 +45,20 @@ public class JWTAuthenticationProvider implements AuthenticationProvider{
 		}
 		
 		SecurityUserInfoEntity principal = new SecurityUserInfoEntity();
-		List<TUserAttrEntity> tuserAttrEntity = user.getUserAttr();
+//		List<TUserAttrEntity> tuserAttrEntity = user.getUserAttr();
 		String userRealName = null;
 		String userType = null;
-		for(TUserAttrEntity userAttr:tuserAttrEntity) {
-			if(CommonSqlUtils.isNotBlank(userAttr.getAttrId())) {
-				String[] attg = userAttr.getAttrId().split(":");
-				if(("用户类型").equals(attg[0])||("1").equals(attg[1])) {
-					userType = userAttr.getAttrValue().split(":")[1].toString();
-				}
-				if(("用户真实姓名").equals(attg[0])||("2").equals(attg[1])) {
-					userRealName = userAttr.getAttrValue().split(":")[1].toString();
-				}
-			}
-		}
+//		for(TUserAttrEntity userAttr:tuserAttrEntity) {
+//			if(CommonSqlUtils.isNotBlank(userAttr.getAttrId())) {
+//				String[] attg = userAttr.getAttrId().split(":");
+//				if(("用户类型").equals(attg[0])||("1").equals(attg[1])) {
+//					userType = userAttr.getAttrValue().split(":")[1].toString();
+//				}
+//				if(("用户真实姓名").equals(attg[0])||("2").equals(attg[1])) {
+//					userRealName = userAttr.getAttrValue().split(":")[1].toString();
+//				}
+//			}
+//		}
 		principal.setUserId(user.getUserId());
 		principal.setUserName(user.getUserName());
 		principal.setUserRealName(userRealName);

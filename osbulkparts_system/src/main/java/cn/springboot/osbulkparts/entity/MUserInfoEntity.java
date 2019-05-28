@@ -1,9 +1,6 @@
 package cn.springboot.osbulkparts.entity;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.List;
-
 import lombok.Data;
 
 @Data
@@ -19,14 +16,29 @@ public class MUserInfoEntity implements Serializable {
     private String userName;
 
     /**
-     * 用户密码
+     * 密码
      */
     private String password;
 
     /**
-     * 电话号码
+     * 用户真实姓名
      */
-    private String phoneNum;
+    private String userRealName;
+
+    /**
+     * 用户类型   1:系统管理员;2:操作用户;3:客户
+     */
+    private Integer userType;
+
+    /**
+     * 用户状态 0:启用;1:停用;
+     */
+    private Integer userStatus;
+
+    /**
+     * 用户所属  关联数据字典中用户所属:客户类型[如：海尔：1；海信：2]
+     */
+    private Integer userLevel;
 
     /**
      * 创建者
@@ -34,9 +46,9 @@ public class MUserInfoEntity implements Serializable {
     private String createUser;
 
     /**
-     * 创建时间
+     * 创建时间   YYYYMMDDHHmmSS
      */
-    private Date createTime;
+    private String createTime;
 
     /**
      * 更新者
@@ -44,21 +56,19 @@ public class MUserInfoEntity implements Serializable {
     private String updateUser;
 
     /**
-     * 更新时间
+     * 更新时间   YYYYMMDDHHmmSS
      */
-    private Date updateTime;
+    private String updateTime;
 
     /**
-     * 逻辑删除
+     * 逻辑删除  0：正常  1：删除
      */
     private Integer isDelete;
 
     /**
-     * 版本号
+     * 版本 
      */
     private Integer version;
-    
-    private List<TUserAttrEntity> userAttr;
 
     private static final long serialVersionUID = 1L;
 }

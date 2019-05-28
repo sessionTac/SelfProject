@@ -1,13 +1,13 @@
 package cn.springboot.osbulkparts.service;
 
+import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import org.springframework.security.core.Authentication;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
-import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 
 public interface UserInfoService {
 	
-	CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity,int pageNumber,int pageSize);
+	CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity, int pageNumber, int pageSize);
 	
 	CommonResultInfo<MUserInfoEntity> getUserInfo(String userId);
 	
