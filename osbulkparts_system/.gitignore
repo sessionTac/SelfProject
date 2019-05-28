@@ -1,0 +1,5 @@
+/target/
+.idea/
+/springboot-shop/.idea/
+/springboot-shop/logs/
+/logs/
