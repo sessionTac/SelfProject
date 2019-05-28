@@ -1,5 +1,14 @@
 import axios from 'axios'
+import {Message, Notification} from 'element-ui'
 import {API_HOME} from '@/config/url_config'
+import Qs from 'qs'
+import router from '@/router'
+
+// window.axiosRouter = router;
+
+// import i18n from '@/common/i18n'
+import BusinessException from './BusinessException'
+
 
 
 // import {API_HOME} from '@/configs/url_config'
@@ -11,7 +20,7 @@ axiosService.interceptors.request.use(config => {
   // console.log('config.url=' + config.url);
   if (config.url.substr(0,2) === '~/') {
     if (localStorage.console_user_token) {
-      config.headers['Authorization'] = 'Bearer '+ localStorage.console_user_token;
+      config.headers['Authorization'] = 'osbulkparts '+ localStorage.console_user_token;
     }
 
     // 替换api前缀
