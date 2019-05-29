@@ -45,6 +45,11 @@ export default [
         requiresPermission: 'maintenance:basis:matter',
         index: 'basicsDataMatter',
       },
+      {
+        title: '供应商信息',
+        requiresPermission: 'maintenance:basis:supplier',
+        index: 'basicsDataSupplier',
+      },
     ]
   },
 

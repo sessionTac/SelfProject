@@ -91,6 +91,12 @@ export const constantRoutes = [
                 component: () => import('@/views/sysBasedata/MatterList.vue'),
                 name: 'basicsDataMatter',
                 meta: { title: 'basicsDataMatter',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: true }
+            },
+            {
+                path: 'basicsDataSupplier',
+                component: () => import('@/views/sysBasedata/SupplierList.vue'),
+                name: 'basicsDataSupplier',
+                meta: { title: 'basicsDataSupplier',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: true }
             }
         ]
     },

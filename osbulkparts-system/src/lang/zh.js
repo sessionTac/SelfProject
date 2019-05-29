@@ -14,6 +14,7 @@ export default {
     categories:'字典分类',
     basicsData: '基础数据',
     basicsDataMatter: '物料主数据',
+    basicsDataSupplier:"供应商信息",
     Warehouse: '出入库管理',
     warehouseOrderplan: '订单计划',
     warehouseCollection: '预配发货',

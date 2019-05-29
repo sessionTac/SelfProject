@@ -5,8 +5,8 @@
                 <el-form-item label="用户名">
                     <el-input placeholder="用户名" v-model="search_keys.userName" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="姓名">
-                    <el-input placeholder="姓名" v-model="search_keys.userRealName" class="search-form-item-input"></el-input>
+                <el-form-item label="真实姓名">
+                    <el-input placeholder="真实姓名" v-model="search_keys.userRealName" class="search-form-item-input"></el-input>
                 </el-form-item>
 
                 <el-form-item style="float: right">
@@ -35,7 +35,7 @@
                   :stripe="true"
         >
             <el-table-column prop="userName" align="center" label="用户名" width="180"  />
-            <el-table-column prop="userRealName" align="center" label="姓名"  width="180" />
+            <el-table-column prop="userRealName" align="center" label="真实姓名"  width="180" />
             <el-table-column prop="dictUserType.name" align="center" label="用户类型"  />
             <el-table-column prop="dictUserStatus.name" align="center" label="用户状态"   />
             <el-table-column prop="dictUserLevel.name" align="center" label="用户所属"   />
