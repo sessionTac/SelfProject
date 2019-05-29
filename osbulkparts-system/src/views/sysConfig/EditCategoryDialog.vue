@@ -9,8 +9,8 @@
     <el-form ref="form" :model="form" size="mini" label-width="200px" style="width:400px" :rules="rules" class="search-form search-form-normal">
 
       <el-form-item label="父级"  >
-        <el-select clearable :disabled="true" v-model="form.parentUuid"  clearable size="mini" knx>
-          <el-option v-for="item in parentUuid" :key="item.value" :label="item.value" :value="item.value"></el-option>
+        <el-select  :disabled="true" v-model="form.parentId"   size="mini" >
+          <el-option v-for="item in parentUuid" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
 
@@ -46,6 +46,7 @@
 </template>
 
 <script>
+  import service from '@/api/sysConfig/dictionary'
   export default {
     computed:{
       title:function () {
@@ -76,12 +77,12 @@
           remark: ''
         },
         parentUuid: [
-          {label: 1, value: "根节点"},
-          {label: 2, value: "通用分类"},
-          {label: 3, value: "婚姻"},
-          {label: 3, value: "性别"},
-          {label: 3, value: "民族"},
-          {label: 3, value: "学历"},
+          {value: "0", label: "根节点"},
+          {value: "1", label: "通用分类"},
+          {value: "2", label: "婚姻"},
+          {value: "2", label: "性别"},
+          {value: "2", label: "民族"},
+          {value: "2", label: "学历"},
         ],
         subordinate: [
           {label: 1, value: "根节点"},
@@ -113,16 +114,16 @@
     methods: {
       init() {
         if (this.mode === 'EDIT') {
-          if (this.entity.isEnable==='0'){
-            this.form.isEnable =false
-          } else {
-            this.form.isEnable =true
-          }
-          this.form.id = this.entity.id
-          this.form.name =  this.entity.name
-          this.form.code =  this.entity.code
-          this.form.sortCode = this.entity.sortCode
-          this.form.remark = this.entity.remark
+          service.findTypeDetails({dictTypeId:this.entity.dictTypeId}).then(resp=>{
+            this.form=resp.data.result;
+            if (this.form.isEnable==='0'){
+              this.form.isEnable =false
+            } else {
+              this.form.isEnable =true
+            }
+          },error => {
+
+          });
         }
       },
       /*确定*/

@@ -2,6 +2,9 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.util.List;
 
+import cn.springboot.osbulkparts.entity.TDictTypeEntity;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -28,12 +31,15 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TDictDataEntity> getDictDataInfo(String dictTypeId) {
+	public CommonResultInfo<TDictDataEntity> getDictDataInfo(String dictTypeId, int pageNumber,
+															 int pageSize) {
 		CommonResultInfo<TDictDataEntity> result = new CommonResultInfo<TDictDataEntity>();
 		try {
-			List<TDictDataEntity> dictDataResultLst = tdictDataDao.selectByPrimaryKey(dictTypeId);
+			PageHelper.startPage(pageNumber, pageSize);
+			PageInfo<TDictDataEntity> pageInfo = new PageInfo<>(
+					tdictDataDao.selectByPrimaryKey(dictTypeId));
+			result.setResultInfo(pageInfo);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-			result.setResultList(dictDataResultLst);
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
