@@ -10,6 +10,8 @@ public interface DictTypeSettingService {
 	CommonResultInfo<TDictTypeEntity> getDictTypeList(TDictTypeEntity tdictTypeEntity,int pageNumber,int pageSize);
 	
 	CommonResultInfo<TDictTypeEntity> getDictTypeInfo(String dictTypeId);
+
+	CommonResultInfo<TDictTypeEntity> getDictType();
 	
 	CommonResultInfo<?> addDictTypeInfo(TDictTypeEntity tdictTypeEntity, Authentication auth);
 	

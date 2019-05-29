@@ -1,5 +1,7 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -40,10 +42,39 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 		}
 	}
 
+	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<TDictTypeEntity> getDictType(){
+		CommonResultInfo<TDictTypeEntity> result = new CommonResultInfo<TDictTypeEntity>();
+		try {
+			TDictTypeEntity tdictTypeEntity = new TDictTypeEntity();
+			List<TDictTypeEntity> tdictTypeInfoLst = tdictTypeDao.getDictTypeList(tdictTypeEntity);
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			result.setResultList(tdictTypeInfoLst);
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+	
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<TDictTypeEntity> getDictTypeInfo(String dictTypeId) {
-		// TODO Auto-generated method stub
-		return null;
+		CommonResultInfo<TDictTypeEntity> result = new CommonResultInfo<TDictTypeEntity>();
+		try {
+			TDictTypeEntity tdictTypeInfo = tdictTypeDao.selectByPrimaryKey(dictTypeId);
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			result.setResult(tdictTypeInfo);
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
 	}
 
 	@Override

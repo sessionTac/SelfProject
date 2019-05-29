@@ -1,7 +1,10 @@
 package cn.springboot.osbulkparts.dao.system;
 
-import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
+
+import cn.springboot.osbulkparts.entity.TDictDataEntity;
 
 @Mapper
 public interface TDictDataDao {
@@ -11,7 +14,7 @@ public interface TDictDataDao {
 
     int insertSelective(TDictDataEntity record);
 
-    TDictDataEntity selectByPrimaryKey(String dictTypeId);
+    List<TDictDataEntity> selectByPrimaryKey(String dictTypeId);
 
     int updateByPrimaryKeySelective(TDictDataEntity record);
 

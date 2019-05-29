@@ -13,6 +13,7 @@ import cn.springboot.osbulkparts.entity.TDictTypeEntity;
 import cn.springboot.osbulkparts.service.DictDataSettingService;
 import cn.springboot.osbulkparts.service.DictTypeSettingService;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 
 @RestController
@@ -26,12 +27,32 @@ public class DictSettingController {
 	private DictDataSettingService dictDataSettingService;
 	
 	@ApiOperation(value="获取数据字典类型列表信息", notes="查询所有数据字典类型的列表")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "TDictTypeEntity", value = "数据字典实体对象", required = true, dataType = "String", paramType = "body"),
+		@ApiImplicitParam(name = "pageNum", value = "分页-当前页码", required = true, dataType = "String", paramType = "path"),
+		@ApiImplicitParam(name = "pageSize", value = "分页-总页数", required = true, dataType = "String", paramType = "path")
+	})
 	@GetMapping("/getDictTypeList")
 	public CommonResultInfo<TDictTypeEntity> getDictTypeInfoList(
 			TDictTypeEntity tdictTypeEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="10") int pageSize){
 		CommonResultInfo<TDictTypeEntity> result = dictTypeSettingService.getDictTypeList(tdictTypeEntity,pageNum,pageSize);
+		return result;
+	}
+	
+	@ApiOperation(value="获取所有数据字典类型", notes="查询所有数据字典类型")
+	@GetMapping("/getDictType")
+	public CommonResultInfo<TDictTypeEntity> getDictType(){
+		CommonResultInfo<TDictTypeEntity> result = dictTypeSettingService.getDictType();
+		return result;
+	}
+	
+	@ApiOperation(value="获取数据字典类型的信息", notes="根据数据字典类型ID查询其信息")
+	@ApiImplicitParam(name = "dictTypeId", value = "数据字典类型ID", required = true, dataType = "String", paramType = "path")
+	@GetMapping("/getDictTypeInfo/{dictTypeId}")
+	public CommonResultInfo<TDictTypeEntity> getDictTypeInfo(@PathVariable String dictTypeId){
+		CommonResultInfo<TDictTypeEntity> result = dictTypeSettingService.getDictTypeInfo(dictTypeId);
 		return result;
 	}
 	

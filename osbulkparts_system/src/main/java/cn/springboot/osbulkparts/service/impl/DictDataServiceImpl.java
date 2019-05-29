@@ -1,5 +1,7 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -9,7 +11,6 @@ import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.ConstantMessageInfo;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
-import cn.springboot.osbulkparts.entity.TDictTypeEntity;
 import cn.springboot.osbulkparts.service.DictDataSettingService;
 
 @Service
@@ -30,9 +31,9 @@ public class DictDataServiceImpl implements DictDataSettingService {
 	public CommonResultInfo<TDictDataEntity> getDictDataInfo(String dictTypeId) {
 		CommonResultInfo<TDictDataEntity> result = new CommonResultInfo<TDictDataEntity>();
 		try {
-			TDictDataEntity dictDataResult = tdictDataDao.selectByPrimaryKey(dictTypeId);
+			List<TDictDataEntity> dictDataResultLst = tdictDataDao.selectByPrimaryKey(dictTypeId);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-			result.setResult(dictDataResult);
+			result.setResultList(dictDataResultLst);
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
