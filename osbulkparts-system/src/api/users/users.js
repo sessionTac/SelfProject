@@ -6,8 +6,18 @@ export default {
    * 查询用户列表
    */
   findUserList: (params) =>
-     // getRequest(`~/maintenance/basis/user/page`, {params}),
-    getRequest(`./static/mock-api/users/userList.json`, {params}),
+    getRequest(`~/user/getUserInfoList`, {params}),
+  /**根据id查询这条数据*/
+  selectUserById:(id)=>
+    getRequest(`~/user/getUserInfo/`+id),
+  /**
+   * 获取所有下拉选信息
+   * @returns {*|*}
+   */
+  findOptions:()=>
+    getRequest(`~/user/getOptions`),
+
+
   selectUnit:()=>
     getRequest(``),
 
@@ -15,9 +25,7 @@ export default {
   addUser:(data)=>
     postRequest(`~/maintenance/basis/user/insertInfo`, {data}),
 
-   /**根据id查询这条数据*/
-  selectUserById:(id)=>
-     getRequest(`~/maintenance/basis/user/getInfoById/`+id),
+
   /**
    * 修改编辑
    */

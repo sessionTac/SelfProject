@@ -14,19 +14,37 @@
                     </el-form-item>
                 </template>
                 <el-form-item label="真实姓名" prop="trueName">
-                    <el-input v-model="form.trueName" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
+                    <el-input v-model="form.userRealName" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
                 </el-form-item>
-                <el-form-item label="电话号码" prop="tel">
-                    <el-input v-model="form.tel" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="11"></el-input>
+                <el-form-item label="用户类型" >
+                    <el-select v-model="form.userType+''" placeholder="请选择">
+                        <el-option
+                          v-for="item in options.userType"
+                          :key="item.value"
+                          :label="item.name"
+                          :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="邮箱" prop="email">
-                    <el-input v-model="form.email" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
+                <el-form-item label="用户状态" >
+                    <el-select v-model="form.userStatus+''" placeholder="请选择">
+                        <el-option
+                          v-for="item in options.userStatus"
+                          :key="item.value"
+                          :label="item.name"
+                          :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
-                <el-form-item label="地区" prop="region">
-                    <el-cascader placeholder="江西省" change-on-select="true"  clearable  size="mini"   :options="regions"   v-model="form.region"></el-cascader>
-                </el-form-item>
-                <el-form-item label="备注">
-                    <el-input type="textarea" class="search-form-item-input"  style="width: 200px" v-model="form.memo" size="mini" :maxlength="200"></el-input>
+                <el-form-item label="用户所属" >
+                    <el-select v-model="form.userLevel+''" placeholder="请选择">
+                        <el-option
+                          v-for="item in options.usserLevel"
+                          :key="item.value"
+                          :label="item.name"
+                          :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
             </el-form>
             <span slot="footer">
@@ -82,6 +100,9 @@
                 regions:[],
                 dialogFormVisible: true,
                 search_keys:{},
+                options:{
+
+                },
                 form: {
                     userName: '',
                     trueName: '',
@@ -122,16 +143,17 @@
         },
 
         mounted(){
-            // this.init()
+            this.init()
         },
         methods: {
 
-            init(){
-                selectorService.findRegions().then(resp =>this.regions=resp.data);//调用service   级联操作
+            async init(){
+                await service.findOptions().then(resp=>{
+                    this.options=resp.data.result
+                });
                 if(this.mode == 'EDIT'){
                     service.selectUserById(this.id).then(resp => {
-                        resp.data.region = resp.data && [resp.data.cityAreaCode,resp.data.countyAreaCode];
-                        this.form = resp.data && resp.data;
+                        this.form = resp.data.result ;
                     })
                 }
             },

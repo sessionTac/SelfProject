@@ -70,5 +70,18 @@ public class MUserInfoEntity implements Serializable {
      */
     private Integer version;
 
+    /**
+     * 用户类型 关联字典表
+     */
+    private  TDictDataEntity dictUserType;
+    /**
+     * 用户状态 关联字典表
+     */
+    private  TDictDataEntity dictUserStatus;
+    /**
+     * 用户所属 关联字典表
+     */
+    private  TDictDataEntity dictUserLevel;
+
     private static final long serialVersionUID = 1L;
 }

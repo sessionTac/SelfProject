@@ -1,6 +1,8 @@
 package cn.springboot.osbulkparts.controller.user;
 
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
+import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import io.swagger.annotations.ApiImplicitParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,6 +16,9 @@ import cn.springboot.osbulkparts.service.UserInfoService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+
+import java.util.List;
+import java.util.Map;
 
 @Slf4j
 @RestController
@@ -33,12 +38,18 @@ public class UserInfoController {
 	private CommonActiveMqMange commonActiveMqMange; // ActiveMQ公共类
 	
 	@ApiOperation(value="获取用户列表信息", notes="查询所有用户的列表")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String", paramType = "query"),
+			@ApiImplicitParam(name = "userRealName", value = "用户真实姓名", required = true, dataType = "String", paramType = "query"),
+			@ApiImplicitParam(name = "pageNum", value = "当前第几页默认1", required = true, dataType = "String", paramType = "query"),
+			@ApiImplicitParam(name = "pageSize", value = "一页多少数据 默认10", required = true, dataType = "String", paramType = "query")
+	})
 	@GetMapping("/getUserInfoList")
 	public CommonResultInfo<MUserInfoEntity> getUserInfoList(
 			MUserInfoEntity muserInfoEntity,
-			@RequestParam(defaultValue = "1") int pageNumber,
-            @RequestParam(defaultValue="5") int pageSize){
-		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfoList(muserInfoEntity,pageNumber,pageSize);
+			@RequestParam(defaultValue = "1") int pageNum,
+            @RequestParam(defaultValue="10") int pageSize){
+		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfoList(muserInfoEntity,pageNum,pageSize);
 		return result;
 	}
 	
@@ -48,12 +59,15 @@ public class UserInfoController {
 	public CommonResultInfo<MUserInfoEntity> getUserInfo(@PathVariable String userId){
 		log.info("getUserInfo is started.Paramater is userID["+userId+"]");
 		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfo(userId);
-//        Destination destination = new ActiveMQQueue(topicRealtime);
-//        //传入队列以及值
-//        commonActiveMqMange.send(destination, result.getResult().toString());
 		return result;
 	}
-	
+	@ApiOperation(value="获取用户详细信息的下拉选信息", notes="获取下拉选信息")
+	@GetMapping("/getOptions")
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> findOptions(){
+		return  userInfoService.getOptions();
+	}
+
+
 	@ApiOperation(value="获取用户的客户详细信息", notes="根据url的id来获取用户的客户详细信息")
 	@ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Integer", paramType = "path")
 	@GetMapping("/getUserCustomerInfo/{userId}")
