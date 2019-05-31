@@ -30,6 +30,23 @@ let passportService = {
   },
 
   /**
+   * 选取role
+   * @param tempToken
+   * @param role_id
+   * @returns console_user_token
+   */
+  select_role({tempToken, roleId}) {
+    return axios({
+      method: 'get',
+      url: `${API_HOME}/auth/token/${roleId}`,
+      headers: {
+        'Authorization': 'Bearer '+ tempToken,
+      },
+    }).then(resp=>resp.data);
+
+  },
+
+  /**
    * 取用户信息（用户名、角色、权限信息）
    * @returns {*}
    */

@@ -8,12 +8,18 @@ export const constantRoutes = [
     {
         path: '/',
         name: 'Root',
-        redirect: {name: 'login'}
+        redirect: {name: 'Login'}
     },
     {
         path: '/login',
-        name: 'login',
+        name: 'Login',
         component: () => import('@/views/sysPassport/Login')
+    },
+    //token自动恢复登录
+    {
+      path: '/quick_token_login',
+      name: 'QuickTokenLogin',
+      component: require('@/views/sysPassport/QuickTokenLogin').default,
     },
 
     {

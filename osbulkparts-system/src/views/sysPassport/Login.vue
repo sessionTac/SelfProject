@@ -49,49 +49,82 @@
                 </form>
             </div>
         </div>
+        <select-role-dialog  v-bind.sync="selectRoleDialogState" v-if="selectRoleDialogState.activated" @roleSelected="roleSelected" @cancelled="cancelled" />
+
     </div>
+
 </template>
 
 <script>
 
     import passportService from '@/api/passport'
+    import SelectRoleDialog from "./SelectRoleDialog"
+
 
     import {
         Notification
     } from 'element-ui'
+    // import subject from "@/utils/Subject"
 
     export default {
 
+        components: {
+            SelectRoleDialog
+        },
         data() {
             return {
-                username: 'admin',
+                username: 'security',
                 password: '123456',
+                registerReadmeDialogState : {},
+                selectRoleDialogState : {},
             }
         },
 
         methods: {
+            roleSelected({console_user_token}) {
+                localStorage.console_user_token = console_user_token;
+                this.$router.push({ name: 'QuickTokenLogin', query: { redir: this.$route.query.redir || undefined }});
+            },
+
             async usersLogin() {
+
                 try {
-                    // let loginRet = await passportService.login({username: this.username, password: this.password});
-                    //
-                    // let trueName      = loginRet.trueName;
-                    // let tempToken     = loginRet.token;
-                    this.$router.push({name:'userInfo',params:{}})
+                    let loginRet = await passportService.login({username: this.username, password: this.password, platform: '2',});
+
+                    let trueName      = loginRet.trueName;
+                    let roles         = loginRet.roles;
+                    let tempToken     = loginRet.token;
+
+                    this.selectRoleDialogState = {activated: true, trueName, tempToken, roles};
+
                 } catch (err) {
-                    console.error('登录操作异常', err);
-                    Notification.error({title:"网络异常"})
+                    // let error = err;
+                    //  debugger
+                    console.log(err);
+                    // if (err.response && err.response.status === 401) return;
+                    if (err.response && err.response.status === 401){
+                        Notification.error({title:"账号或者密码错误"})
+                    }else {
+                        Notification.error({title:"网络异常"})
+                    }
+                    // console.error('登录操作异常', err);
+                    // Notification.error({message:err.message})
+                    // Notification.error({title:"网络异常"})
                 }
+
             },
             cancelled() {
                 this.username = '';
                 this.password = '';
             },
+
             cancel() {
                 this.$router.push({
                     name: 'SystemHomeRootIndex'
                 });
             }
         },
+
     }
 </script>
 
