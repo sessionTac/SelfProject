@@ -40,7 +40,7 @@ let passportService = {
       method: 'get',
       url: `${API_HOME}/auth/token/${roleId}`,
       headers: {
-        'Authorization': 'Bearer '+ tempToken,
+        'Authorization': 'osbulkparts '+ tempToken,
       },
     }).then(resp=>resp.data);
 

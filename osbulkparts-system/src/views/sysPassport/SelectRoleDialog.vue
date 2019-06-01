@@ -22,7 +22,7 @@
           <el-radio-group v-model="selectedRoleId">
             <el-radio v-for="(role, idx) in roles" :label="role.roleId" :key="role.roleId">
               <i class="fa fa-id-card-o" aria-hidden="true"></i>
-              {{role.roleName}}
+              {{role.roleDesc}}
             </el-radio>
           </el-radio-group>
         </div>
