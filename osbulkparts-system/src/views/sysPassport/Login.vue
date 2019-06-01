@@ -38,7 +38,7 @@
                             </div>
                         </div>
                         <div>
-                            <a  href="" download >忘记密码？</a>
+                            <el-link type="primary" >忘记密码？</el-link>
                         </div>
                     </div>
                     <div style="background-color:#f9f9f9;height:130px;width:100%;border-top:1px solid #dedede;">
@@ -73,7 +73,7 @@
         },
         data() {
             return {
-                username: 'security',
+                username: 'admin',
                 password: '123456',
                 registerReadmeDialogState : {},
                 selectRoleDialogState : {},
