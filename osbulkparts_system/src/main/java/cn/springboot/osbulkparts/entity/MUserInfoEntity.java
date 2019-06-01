@@ -36,12 +36,12 @@ public class MUserInfoEntity implements Serializable {
     private Integer userStatus;
 
     /**
-     * 用户所属  关联数据字典中用户所属:客户类型[如：海尔：1；海信：2]
+     * 用户手机
      */
-    private Integer userPhone;
+    private String userPhone;
 
     /**
-     * 
+     * 用户邮箱
      */
     private String userMail;
 
@@ -74,6 +74,15 @@ public class MUserInfoEntity implements Serializable {
      * 版本 
      */
     private Integer version;
+
+    /**
+     * 用户类型
+     */
+    private TDictDataEntity dictUserType;
+    /**
+     * 用户状态
+     */
+    private TDictDataEntity dictUserStatus;
 
     private static final long serialVersionUID = 1L;
 }
