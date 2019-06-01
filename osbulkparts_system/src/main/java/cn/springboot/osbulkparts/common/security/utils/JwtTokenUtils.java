@@ -23,7 +23,7 @@ public class JwtTokenUtils {
 	 * @return
 	 */
 	public static String createToken(SecurityUserInfoEntity principal, JwtTokenProperty jwtTokenProperty, boolean isRememberMe) {
-		long expiration = isRememberMe ? EXPIRATION_REMEMBER : jwtTokenProperty.getExpirationTime();
+		long expiration = isRememberMe ? EXPIRATION_REMEMBER : jwtTokenProperty.getRefreshTokenExpTime();
 
 		Claims claims = Jwts.claims().setSubject(principal.getUserName());
 		claims.put("userRealName", principal.getUserRealName());
@@ -31,8 +31,8 @@ public class JwtTokenUtils {
 		claims.put("userId", principal.getUserId());
 		String token = Jwts
 				.builder()
-				.signWith(SignatureAlgorithm.HS512, jwtTokenProperty.getSignKey())
-				.setIssuer(jwtTokenProperty.getIssuer())
+				.signWith(SignatureAlgorithm.HS512, jwtTokenProperty.getTokenSigningKey())
+				.setIssuer(jwtTokenProperty.getTokenIssuer())
 				.setClaims(claims)
 				.setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + 30 * 1000)) 
@@ -49,7 +49,7 @@ public class JwtTokenUtils {
 	 * @return
 	 */
 	public static String createTokenByRoleId(SecurityUserInfoEntity principal, JwtTokenProperty jwtTokenProperty, boolean isRememberMe) {
-		long expiration = isRememberMe ? EXPIRATION_REMEMBER : jwtTokenProperty.getExpirationTime();
+		long expiration = isRememberMe ? EXPIRATION_REMEMBER : jwtTokenProperty.getRefreshTokenExpTime();
 
 		Claims claims = Jwts.claims().setSubject(principal.getUserName());
 		claims.put("userRealName", principal.getUserRealName());
@@ -57,8 +57,8 @@ public class JwtTokenUtils {
 		claims.put("userId", principal.getUserId());
 		String token = Jwts
 				.builder()
-				.signWith(SignatureAlgorithm.HS512, jwtTokenProperty.getSignKey())
-				.setIssuer(jwtTokenProperty.getIssuer())
+				.signWith(SignatureAlgorithm.HS512, jwtTokenProperty.getTokenSigningKey())
+				.setIssuer(jwtTokenProperty.getTokenIssuer())
 				.setClaims(claims)
 				.setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + expiration * 60 * 1000))
@@ -80,7 +80,7 @@ public class JwtTokenUtils {
 		SecurityUserInfoEntity principal = new SecurityUserInfoEntity();
 		principal.setUserName(String.valueOf(claims.getSubject()));
 		principal.setUserRealName(String.valueOf(claims.get("userRealName")));
-		principal.setUserType(String.valueOf(claims.get("userType")));
+		principal.setUserType(Integer.parseInt((String) claims.get("userType")));
 		principal.setUserId(String.valueOf(claims.get("userId")));
 		return principal;
 	}

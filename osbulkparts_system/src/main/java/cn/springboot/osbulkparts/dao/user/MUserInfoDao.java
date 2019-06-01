@@ -1,12 +1,14 @@
 package cn.springboot.osbulkparts.dao.user;
 
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
-import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Mapper;
+
 @Mapper
 public interface MUserInfoDao {
+	
     int deleteByPrimaryKey(String userId);
 
     int insert(MUserInfoEntity record);

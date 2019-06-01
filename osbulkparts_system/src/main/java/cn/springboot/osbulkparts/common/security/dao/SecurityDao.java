@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 @Mapper
 public interface SecurityDao {
 	
-	public MUserInfoEntity selectUserInfoToCheck(@Param("username") String username);
+	public MUserInfoEntity selectUserInfoToCheck(@Param("userName") String userName);
 	
 //	@Select(
 //			"SELECT r.role_name as roleName,ur.role_id as id " 

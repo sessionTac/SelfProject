@@ -32,25 +32,25 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 		<!-- 用户信息表 -->
-<!-- 		<table tableName="m_user_info" domainObjectName="MUserInfoEntity" 
+ 		<table tableName="m_user_info" domainObjectName="MUserInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
-		</table> -->
-		<!-- 用户属性表 -->
-<!-- 		<table tableName="t_user_attr" domainObjectName="TUserAttrEntity" 
+		</table>
+		<!-- 角色信息表 -->
+ 		<table tableName="m_role_info" domainObjectName="MRoleInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
-		</table> -->
+		</table>
 		<!-- 公共数据字典表  -->
- 		<table tableName="t_dict_data" domainObjectName="TDictDataEntity" 
+<!--  		<table tableName="t_dict_data" domainObjectName="TDictDataEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
-		</table>
+		</table> -->
 		<!-- 公共数据字典类型表  -->
- 		<table tableName="t_dict_type" domainObjectName="TDictTypeEntity" 
+<!--  		<table tableName="t_dict_type" domainObjectName="TDictTypeEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
-		</table>
+		</table> -->
 
 	</context>
 </generatorConfiguration>

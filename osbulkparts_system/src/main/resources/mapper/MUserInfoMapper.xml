@@ -294,10 +294,6 @@
 		customer.user_id,
 		uattr.attr_id
   </select>
-    <select id="selectUserInfoToCheck" parameterType="java.lang.String" resultMap="BaseResultMap">
-
-    </select>
-
     <!-- 根据 用户名和用户姓名进行模糊查询 查找用户信息列表  luka -->
     <select id="selectUserInfoList" parameterType="cn.springboot.osbulkparts.entity.MUserInfoEntity" resultMap="BaseResultMap">
         SELECT

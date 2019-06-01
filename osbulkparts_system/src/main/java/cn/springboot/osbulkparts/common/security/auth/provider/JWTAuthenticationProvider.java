@@ -1,8 +1,5 @@
 package cn.springboot.osbulkparts.common.security.auth.provider;
 
-import java.util.List;
-
-import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -14,8 +11,7 @@ import cn.springboot.osbulkparts.common.security.entity.LoginRequestParamEntity;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.security.exception.Authentication401Exception;
 import cn.springboot.osbulkparts.common.security.service.SecurityService;
-import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
-import cn.springboot.osbulkparts.entity.TUserAttrEntity;
+import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 
 @Component
 public class JWTAuthenticationProvider implements AuthenticationProvider{
@@ -39,7 +35,11 @@ public class JWTAuthenticationProvider implements AuthenticationProvider{
 			throw new Authentication401Exception("user name is invalid!");
 		}
 		
-		boolean passwordIsRight = encoder.matches(param.getPassword(), user.getPassword());
+//		boolean passwordIsRight = encoder.matches(param.getPassword(), user.getPassword());
+		boolean passwordIsRight = false;
+		if(param.getPassword().equals(user.getPassword())) {
+			passwordIsRight = true;
+		}
 		if(!passwordIsRight) {
 			throw new Authentication401Exception("password is invalid!");
 		}
@@ -61,8 +61,8 @@ public class JWTAuthenticationProvider implements AuthenticationProvider{
 //		}
 		principal.setUserId(user.getUserId());
 		principal.setUserName(user.getUserName());
-		principal.setUserRealName(userRealName);
-		principal.setUserType(userType);
+		principal.setUserRealName(user.getUserRealName());
+		principal.setUserType(user.getUserType());
 //		principal.setRoles(getRolesToJsonArray(user.getRoles()));
 		
 		// 添加操作日志

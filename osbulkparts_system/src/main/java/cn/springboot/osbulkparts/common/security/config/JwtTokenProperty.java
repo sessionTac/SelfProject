@@ -12,15 +12,15 @@ public class JwtTokenProperty {
 	 /**
      * token过期时间
      */
-    private Integer expirationTime;
+    private Integer refreshTokenExpTime;
 
     /**
      * Token issuer.
      */
-    private String issuer;
+    private String tokenIssuer;
     
     /**
      * token秘钥
      */
-    private String signKey;
+    private String tokenSigningKey;
 }

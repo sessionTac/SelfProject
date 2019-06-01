@@ -15,7 +15,7 @@ public class SecurityUserInfoEntity {
 	
 	private String passWord;
 	
-	private String userType;
+	private Integer userType;
 	
 	private String userRealName;
 	

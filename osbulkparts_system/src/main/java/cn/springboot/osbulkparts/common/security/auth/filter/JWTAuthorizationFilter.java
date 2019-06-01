@@ -22,8 +22,6 @@ import cn.springboot.osbulkparts.common.security.utils.JwtTokenUtils;
 
 /**
  * 登录以外的所有url都会被此Filter拦截验证
- * @author liuhb
- *
  */
 public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 
@@ -59,13 +57,12 @@ public class JWTAuthorizationFilter extends BasicAuthenticationFilter {
 			response.setStatus(HttpServletResponse.SC_FORBIDDEN);
 			response.getWriter().write(json.toJSONString());
 		}
-		
 	}
 
 	// 这里从token中获取用户信息并新建一个token
 	private UsernamePasswordAuthenticationToken getAuthentication(String tokenHeader) {
 		String token = tokenHeader.replace(JwtTokenUtils.TOKEN_PREFIX, "");
-		SecurityUserInfoEntity principal = JwtTokenUtils.getPrincipal(token,jwtTokenProperty.getSignKey());
+		SecurityUserInfoEntity principal = JwtTokenUtils.getPrincipal(token,jwtTokenProperty.getTokenSigningKey());
 
 		if (principal != null) {
 			return new UsernamePasswordAuthenticationToken(principal, null, new ArrayList<>());
