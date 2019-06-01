@@ -2,6 +2,8 @@ package cn.springboot.osbulkparts.common.security.utils;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import cn.springboot.osbulkparts.common.security.config.JwtTokenProperty;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import io.jsonwebtoken.Claims;
@@ -55,6 +57,7 @@ public class JwtTokenUtils {
 		claims.put("userRealName", principal.getUserRealName());
 		claims.put("userType", principal.getUserType());
 		claims.put("userId", principal.getUserId());
+		claims.put("roleId",StringUtils.isEmpty(principal.getRoleIdSelected()) ? StringUtils.EMPTY : principal.getRoleIdSelected());
 		String token = Jwts
 				.builder()
 				.signWith(SignatureAlgorithm.HS512, jwtTokenProperty.getTokenSigningKey())
@@ -80,8 +83,9 @@ public class JwtTokenUtils {
 		SecurityUserInfoEntity principal = new SecurityUserInfoEntity();
 		principal.setUserName(String.valueOf(claims.getSubject()));
 		principal.setUserRealName(String.valueOf(claims.get("userRealName")));
-		principal.setUserType(Integer.parseInt((String) claims.get("userType")));
+		principal.setUserType((Integer)(claims.get("userType")));
 		principal.setUserId(String.valueOf(claims.get("userId")));
+		principal.setRoleIdSelected(String.valueOf(claims.get("roleId")));
 		return principal;
 	}
 

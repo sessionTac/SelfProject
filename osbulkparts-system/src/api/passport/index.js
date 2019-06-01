@@ -40,7 +40,7 @@ let passportService = {
       method: 'get',
       url: `${API_HOME}/auth/token/${roleId}`,
       headers: {
-        'Authorization': 'osbulkparts '+ tempToken,
+        'Authorization': 'Bearer '+ tempToken,
       },
     }).then(resp=>resp.data);
 
@@ -51,7 +51,7 @@ let passportService = {
    * @returns {*}
    */
   user_info() {
-    return getRequest(`~/passport/userinfo`).then(resp =>resp.data);
+    return getRequest(`~/passport/userinfo`).then(resp =>resp.data.result);
   },
 };
 export default passportService;

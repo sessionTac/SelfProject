@@ -16,7 +16,7 @@ import cn.springboot.osbulkparts.common.security.auth.handler.JWTAuthenticationE
 import cn.springboot.osbulkparts.common.security.auth.provider.JWTAuthenticationProvider;
 import cn.springboot.osbulkparts.common.security.config.JwtTokenProperty;
 
-@EnableWebSecurity
+//@EnableWebSecurity
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -45,8 +45,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.cors().and().csrf().disable().authorizeRequests()
 				// 需要验证了的用户才能访问
-				.antMatchers("/**").authenticated()
-//				.antMatchers("/sys1/**").authenticated()
+//				.antMatchers("/**").authenticated()
+				.antMatchers("/system/**").authenticated()
 //				.antMatchers("/portal1/**").authenticated()
 				// 其他都放行了
 				.anyRequest().permitAll().and()

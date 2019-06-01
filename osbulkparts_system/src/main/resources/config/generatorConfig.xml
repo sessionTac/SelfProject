@@ -42,7 +42,17 @@
 			enableDeleteByExample="false">
 		</table> -->
 		<!-- 用户角色关系 -->
-  		<table tableName="t_user_role_relation" domainObjectName="TUserRoleRelationEntity" 
+<!--   		<table tableName="t_user_role_relation" domainObjectName="TUserRoleRelationEntity" 
+			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false">
+		</table> -->
+		<!-- 权限信息 -->
+  		<table tableName="m_function_info" domainObjectName="MFunctionInfoEntity" 
+			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false">
+		</table>
+		<!-- 角色权限关系 -->
+  		<table tableName="t_role_function_relation" domainObjectName="TRoleFunctionRelationEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
 		</table>

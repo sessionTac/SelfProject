@@ -31,6 +31,15 @@
         <result property="value" column="user_status"/>
         <result property="name" column="dictUserStatus"/>
     </association>
+    <collection property="roleList" ofType="cn.springboot.osbulkparts.entity.MRoleInfoEntity" javaType="java.util.ArrayList"  >
+   		<id column="role_id" property="roleId" />
+     	<result column="role_name" property="roleName"/>
+		<collection property="functionList" ofType="cn.springboot.osbulkparts.entity.MFunctionInfoEntity" javaType="java.util.ArrayList">
+		  	<id column="function_id" property="functionId" />
+		    <result column="function_name" property="functionName"/>
+		    <result column="function_code" property="functionCode"/>
+		</collection>
+     </collection>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -344,5 +353,40 @@
         WHERE
         t1.is_delete = 0
         and t1.user_id = #{userId}
+    </select>
+    <select id="selectUserWithRoleAndFunc" resultMap="BaseResultMap">
+		SELECT
+			u.user_id,
+			u.user_real_name,
+			u.user_name,
+			u.user_phone,
+			u.user_mail,
+			mrole.role_id,
+			mrole.role_name,
+		  mrole.role_desc,
+		  mrole.role_at,
+			mfunction.function_id,
+			mfunction.function_code,
+			mfunction.function_name
+		FROM
+			(
+				SELECT
+					muser.user_id,
+					muser.user_name,
+					muser.user_real_name,
+					muser.user_phone,
+					muser.user_mail
+				FROM
+					m_user_info muser
+				WHERE
+					muser.user_name = #{userName}
+			) u
+		LEFT JOIN t_user_role_relation ur ON u.user_id = ur.user_id
+		AND ur.role_id = #{roleId}
+		LEFT JOIN m_role_info mrole ON mrole.role_id = ur.role_id
+		LEFT JOIN t_role_function_relation rf ON ur.role_id = rf.role_id
+		LEFT JOIN m_function_info mfunction ON rf.function_id = mfunction.function_id
+		ORDER BY
+			priority ASC
     </select>
 </mapper>

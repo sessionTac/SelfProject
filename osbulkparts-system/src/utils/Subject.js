@@ -52,19 +52,19 @@ class Subject {
     this.__permission_ver = this.__permission_ver + 1;
 
     this.logged_in = true;
-    this.status = user_info.status;
+    this.status = user_info.userStatus;
     this.principal = {
       username  : user_info.userName,
-      trueName  : user_info.trueName,
-      orgName    : user_info.orgName,
-      tel  : user_info.tel,
-      email : user_info.email,
+      trueName  : user_info.userRealName,
+/*      orgName    : user_info.orgName,*/
+      tel  : user_info.userPhone,
+      email : user_info.userMail,
       // map_region : {"code":"360100","name":"南昌市"}, //地图组件使用的区域代码
-      map_region : {"code":"360000","name":"江西省"}, //地图组件使用的区域代码
+/*      map_region : {"code":"360000","name":"江西省"}, //地图组件使用的区域代码*/
     };
 
-    if (user_info.roles) this.setRoles(user_info.roles);
-    if (user_info.functions) this.setPermissions(user_info.functions);
+    if (user_info.roleList) this.setRoles(user_info.roleList);
+    if (user_info.roleList.functionList) this.setPermissions(user_info.roleList.functionList);
   }
 
 

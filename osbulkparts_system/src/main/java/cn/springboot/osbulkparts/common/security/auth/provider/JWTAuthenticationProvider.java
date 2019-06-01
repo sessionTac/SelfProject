@@ -66,21 +66,4 @@ public class JWTAuthenticationProvider implements AuthenticationProvider{
 	public boolean supports(Class<?> authentication) {
 		return (UsernamePasswordAuthenticationToken.class.isAssignableFrom(authentication));
 	}
-	
-//	/**
-//	 * 将数据库查出的角色实体类中的角色名称和id组成json对象
-//	 * @param roles
-//	 * @return
-//	 */
-//	private JSONArray getRolesToJsonArray(List<MRoleEntity> roles) {
-//		JSONArray jsonArray = new JSONArray();
-//		for (MRoleEntity role : roles) {
-//			JSONObject jsonObject = new JSONObject();
-//			jsonObject.put("roleId",role.getId());
-//			jsonObject.put("roleName",role.getRoleName());
-//			jsonArray.add(jsonObject);
-//		}
-//		return jsonArray;
-//	}
-
 }

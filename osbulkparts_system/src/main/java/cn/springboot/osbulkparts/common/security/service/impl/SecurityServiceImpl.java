@@ -20,8 +20,6 @@ public class SecurityServiceImpl implements SecurityService {
 			return null;
 		}
 		return user;
-//		List<MRoleEntity> roles = dao.selectRoles(user.getId(), platform);
-//		user.setRoles(roles);
 	}
 
 //	@Override

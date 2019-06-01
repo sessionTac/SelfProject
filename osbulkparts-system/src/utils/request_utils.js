@@ -20,7 +20,7 @@ axiosService.interceptors.request.use(config => {
   // console.log('config.url=' + config.url);
   if (config.url.substr(0,2) === '~/') {
     if (localStorage.console_user_token) {
-      config.headers['Authorization'] = 'osbulkparts '+ localStorage.console_user_token;
+      config.headers['Authorization'] = 'Bearer '+ localStorage.console_user_token;
     }
 
     // 替换api前缀

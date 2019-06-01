@@ -67,6 +67,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	}
 
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions() {
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
@@ -77,6 +78,23 @@ public class UserInfoServiceImpl implements UserInfoService {
 			map.put("usserLevel",tDictDataDao.selectByPrimaryKey("7"));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(map);
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+	
+	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth){
+		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
+		try {
+			MUserInfoEntity userInfo = muserInfoEntityMapper.selectUserWithRoleAndFunc(userName, roleId);
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			result.setResult(userInfo);
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);

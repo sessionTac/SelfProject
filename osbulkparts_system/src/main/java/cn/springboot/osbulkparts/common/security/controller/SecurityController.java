@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.alibaba.fastjson.JSONObject;
 
 import cn.springboot.osbulkparts.common.security.config.JwtTokenProperty;
+import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.security.service.SecurityService;
 import cn.springboot.osbulkparts.common.security.utils.JwtTokenUtils;
 
@@ -47,21 +48,21 @@ public class SecurityController {
 //		return map;
 //	}
 	
-//	/**
-//	 * 根据登录时选择的角色，重新生成一个token
-//	 * @param roleId
-//	 * @param auth
-//	 * @return
-//	 */
-//	@GetMapping("/auth/token/{roleId}")
-//	public JSONObject refreshTokenByRoleId(@PathVariable("roleId") String roleId,Authentication auth){
-//		Principal principal = (Principal)auth.getPrincipal();
-//		principal.setRoleIdSelected(roleId);
-//		
-//		String token = JwtTokenUtils.createTokenByRoleId(principal, jwtTokenProperty, false);
-//		JSONObject jsonObject = new JSONObject();
-//		jsonObject.put("token", token);
-//		return jsonObject;
-//	}
+	/**
+	 * 根据登录时选择的角色，重新生成一个token
+	 * @param roleId
+	 * @param auth
+	 * @return
+	 */
+	@GetMapping("/auth/token/{roleId}")
+	public JSONObject refreshTokenByRoleId(@PathVariable("roleId") String roleId,Authentication auth){
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity) auth.getPrincipal();
+		principal.setRoleIdSelected(roleId);
+		
+		String token = JwtTokenUtils.createTokenByRoleId(principal, jwtTokenProperty, false);
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("token", token);
+		return jsonObject;
+	}
 	
 }

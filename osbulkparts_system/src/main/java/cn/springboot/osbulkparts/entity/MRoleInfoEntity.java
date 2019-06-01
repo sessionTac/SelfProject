@@ -1,6 +1,9 @@
 package cn.springboot.osbulkparts.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -55,5 +58,10 @@ public class MRoleInfoEntity implements Serializable {
      */
     private Integer version;
 
+    /**
+     * 角色权限列表
+     */
+    private List<MFunctionInfoEntity> functionList = new ArrayList<MFunctionInfoEntity>();
+    
     private static final long serialVersionUID = 1L;
 }

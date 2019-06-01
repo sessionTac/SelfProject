@@ -5,6 +5,7 @@ import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface MUserInfoDao {
@@ -32,4 +33,9 @@ public interface MUserInfoDao {
      * 根据 userid 查找一条用户的详细信息  luka
      */
     MUserInfoEntity selectUserInfo(String userId);
+    
+    /**
+     * 根据 用户名和角色ID 查找当前用户的权限信息
+     */
+    MUserInfoEntity selectUserWithRoleAndFunc(@Param("userName") String userName,@Param("roleId") String roleId);
 }
