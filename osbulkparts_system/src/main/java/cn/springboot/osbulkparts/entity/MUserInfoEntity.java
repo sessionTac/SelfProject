@@ -1,6 +1,9 @@
 package cn.springboot.osbulkparts.entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -83,6 +86,11 @@ public class MUserInfoEntity implements Serializable {
      * 用户状态
      */
     private TDictDataEntity dictUserStatus;
+    
+    /**
+     * 用户角色
+     */
+	private List<MRoleInfoEntity> roleList = new ArrayList<MRoleInfoEntity>();
 
     private static final long serialVersionUID = 1L;
 }

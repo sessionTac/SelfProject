@@ -98,12 +98,7 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 		JSONObject jsonObject = new JSONObject();
 		jsonObject.put("token", token);
 		jsonObject.put("trueName", principal.getUserRealName());
-		List<Map<String,String>> roles = new ArrayList();
-		Map<String,String> rolemap = new HashMap();
-		rolemap.put("roleId", "0");
-		rolemap.put("roleName", "系统管理员0");
-		roles.add(rolemap);
-		jsonObject.put("roles",roles);
+		jsonObject.put("roles",principal.getRoleList());
 		
 		response.setCharacterEncoding("UTF-8");
 		response.setContentType("application/json; charset=utf-8");

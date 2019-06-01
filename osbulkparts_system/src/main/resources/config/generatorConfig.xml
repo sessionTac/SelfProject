@@ -2,7 +2,7 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-	<context id="context1">
+	<context id="context1" defaultModelType="flat">
 		<plugin type="org.mybatis.generator.plugins.SerializablePlugin" />
 		<plugin type="cn.springboot.osbulkparts.generator.plugin.MysqlPagePlugin" />
 		<plugin type="cn.springboot.osbulkparts.generator.plugin.LombokPlugin" />
@@ -32,15 +32,20 @@
 			<property name="enableSubPackages" value="true" />
 		</javaClientGenerator>
 		<!-- 用户信息表 -->
- 		<table tableName="m_user_info" domainObjectName="MUserInfoEntity" 
+<!--  		<table tableName="m_user_info" domainObjectName="MUserInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
-		</table>
+		</table> -->
 		<!-- 角色信息表 -->
 <!--  		<table tableName="m_role_info" domainObjectName="MRoleInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
 		</table> -->
+		<!-- 用户角色关系 -->
+  		<table tableName="t_user_role_relation" domainObjectName="TUserRoleRelationEntity" 
+			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false">
+		</table>
 		<!-- 公共数据字典表  -->
 <!--  		<table tableName="t_dict_data" domainObjectName="TDictDataEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 

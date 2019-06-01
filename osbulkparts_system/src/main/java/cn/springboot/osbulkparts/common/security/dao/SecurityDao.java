@@ -1,21 +1,19 @@
 package cn.springboot.osbulkparts.common.security.dao;
 
-import cn.springboot.osbulkparts.entity.MUserInfoEntity;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
+import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 
 @Mapper
 public interface SecurityDao {
 	
 	public MUserInfoEntity selectUserInfoToCheck(@Param("userName") String userName);
 	
-//	@Select(
-//			"SELECT r.role_name as roleName,ur.role_id as id " 
-//			+ " FROM t_user_role ur"
-//			+ " INNER JOIN m_role r ON ur.role_id = r.id AND ur.user_id = #{id}"
-//			+ " WHERE INSTR(r.platform, #{platform}) AND r.delete_flag = '0';"
-//			)
-//	public List<MRoleEntity> selectRoles(@Param("id") Integer id,@Param("platform") String platform);
+	public List<MRoleInfoEntity> selectRoles(@Param("roleId") Integer roleId);
 //	
 //	@Select(
 //			"SELECT f.function_code AS functionCode ,f.function_name AS functionName" 

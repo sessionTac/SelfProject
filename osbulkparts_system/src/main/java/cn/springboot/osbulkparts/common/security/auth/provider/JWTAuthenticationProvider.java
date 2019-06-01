@@ -29,7 +29,13 @@ public class JWTAuthenticationProvider implements AuthenticationProvider{
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		LoginRequestParamEntity param = (LoginRequestParamEntity)authentication.getPrincipal();
-		MUserInfoEntity user = service.getUserByUsername(param.getUsername());
+		MUserInfoEntity user = new MUserInfoEntity();
+		try {
+			user = service.getUserByUsername(param.getUsername());
+		}
+		catch(Exception e) {
+			e.printStackTrace();
+		}
 		
 		if ( null == user) {
 			throw new Authentication401Exception("user name is invalid!");
@@ -45,25 +51,11 @@ public class JWTAuthenticationProvider implements AuthenticationProvider{
 		}
 		
 		SecurityUserInfoEntity principal = new SecurityUserInfoEntity();
-//		List<TUserAttrEntity> tuserAttrEntity = user.getUserAttr();
-		String userRealName = null;
-		String userType = null;
-//		for(TUserAttrEntity userAttr:tuserAttrEntity) {
-//			if(CommonSqlUtils.isNotBlank(userAttr.getAttrId())) {
-//				String[] attg = userAttr.getAttrId().split(":");
-//				if(("用户类型").equals(attg[0])||("1").equals(attg[1])) {
-//					userType = userAttr.getAttrValue().split(":")[1].toString();
-//				}
-//				if(("用户真实姓名").equals(attg[0])||("2").equals(attg[1])) {
-//					userRealName = userAttr.getAttrValue().split(":")[1].toString();
-//				}
-//			}
-//		}
 		principal.setUserId(user.getUserId());
 		principal.setUserName(user.getUserName());
 		principal.setUserRealName(user.getUserRealName());
 		principal.setUserType(user.getUserType());
-//		principal.setRoles(getRolesToJsonArray(user.getRoles()));
+		principal.setRoleList(user.getRoleList());
 		
 		// 添加操作日志
 //		service.writeLog(String.valueOf(user.getId()),user.getUserName());
