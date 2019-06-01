@@ -37,10 +37,10 @@
 			enableDeleteByExample="false">
 		</table>
 		<!-- 角色信息表 -->
- 		<table tableName="m_role_info" domainObjectName="MRoleInfoEntity" 
+<!--  		<table tableName="m_role_info" domainObjectName="MRoleInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
-		</table>
+		</table> -->
 		<!-- 公共数据字典表  -->
 <!--  		<table tableName="t_dict_data" domainObjectName="TDictDataEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
