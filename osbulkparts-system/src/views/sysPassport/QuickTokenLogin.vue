@@ -39,6 +39,7 @@
 
         let to = null;
 
+        // this.$router.push({name:"Root"})
         if (redir) {
           let toRoute = this.$router.resolve(redir).route;
           if (toRoute.meta.requiresPermission && !this.subject.hasPermissions(toRoute.meta.requiresPermission)) {
@@ -56,7 +57,7 @@
           // } else if (this.subject.hasPermissions('homepage:biomass:view')) {
           //   to = {name:'Homepage'};
           } else {
-            to = {name:'Root'};
+            to = {name:'dashboard'};
           }
         }
 
