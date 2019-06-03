@@ -1,6 +1,8 @@
 package cn.springboot.osbulkparts.service.impl;
 
 import cn.springboot.osbulkparts.common.ConstantMessageInfo;
+import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
+import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.dao.user.MUserInfoDao;
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
@@ -8,8 +10,10 @@ import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
@@ -23,11 +27,12 @@ import java.util.Map;
 public class UserInfoServiceImpl implements UserInfoService {
 
 	@Autowired
-	private MUserInfoDao muserInfoEntityMapper;
+	private MUserInfoDao muserInfoDao;
 
 	@Autowired
 	private TDictDataDao tDictDataDao;
-
+	
+	private static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	@SuppressWarnings("finally")
 	@Override
@@ -37,7 +42,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 		try {
 			PageHelper.startPage(pageNumber, pageSize);
 			PageInfo<MUserInfoEntity> pageInfo = new PageInfo<>(
-					muserInfoEntityMapper.selectUserInfoList(muserInfoEntity));
+					muserInfoDao.selectUserInfoList(muserInfoEntity));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResultInfo(pageInfo);
 		} catch (Exception e) {
@@ -54,7 +59,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public CommonResultInfo<MUserInfoEntity> getUserInfo(String userId) {
 		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
 		try {
-			MUserInfoEntity userInfo = muserInfoEntityMapper.selectUserInfo(userId);
+			MUserInfoEntity userInfo = muserInfoDao.selectUserInfo(userId);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(userInfo);
 		} catch (Exception e) {
@@ -92,7 +97,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth){
 		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
 		try {
-			MUserInfoEntity userInfo = muserInfoEntityMapper.selectUserWithRoleAndFunc(userName, roleId);
+			MUserInfoEntity userInfo = muserInfoDao.selectUserWithRoleAndFunc(userName, roleId);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(userInfo);
 		} catch (Exception e) {
@@ -122,22 +127,63 @@ public class UserInfoServiceImpl implements UserInfoService {
 		return null;
 	}
 
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<?> updateUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth) {
-		// TODO Auto-generated method stub
-		return null;
+		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			String userUUID = CommonSqlUtils.getUUID32();
+			mUserInfoEntity.setUserId(userUUID);
+			mUserInfoEntity.setUpdateUser(principal.getUserId());
+			int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+			}
+			else {
+				result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+			}
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
 	}
 
 	@Override
-	public CommonResultInfo<?> deleteUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth) {
+	public CommonResultInfo<?> deleteUserInfo(String userId, Authentication auth) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<?> addUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth) {
-		// TODO Auto-generated method stub
-		return null;
+		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			String userUUID = CommonSqlUtils.getUUID32();
+			mUserInfoEntity.setUserId(userUUID);
+			mUserInfoEntity.setPassword(encoder.encode(mUserInfoEntity.getPassword()));
+			mUserInfoEntity.setCreateUser(principal.getUserId());
+			mUserInfoEntity.setIsDelete(0);
+			mUserInfoEntity.setVersion(1);
+			int returnInt = muserInfoDao.insertSelective(mUserInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+			}
+			else {
+				result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+			}
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
 	}
 
 }

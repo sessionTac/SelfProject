@@ -41,11 +41,7 @@ public class JWTAuthenticationProvider implements AuthenticationProvider{
 			throw new Authentication401Exception("user name is invalid!");
 		}
 		
-//		boolean passwordIsRight = encoder.matches(param.getPassword(), user.getPassword());
-		boolean passwordIsRight = false;
-		if(param.getPassword().equals(user.getPassword())) {
-			passwordIsRight = true;
-		}
+		boolean passwordIsRight = encoder.matches(param.getPassword(), user.getPassword());
 		if(!passwordIsRight) {
 			throw new Authentication401Exception("password is invalid!");
 		}

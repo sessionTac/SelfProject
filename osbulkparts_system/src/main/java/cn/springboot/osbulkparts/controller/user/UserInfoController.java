@@ -1,48 +1,41 @@
 package cn.springboot.osbulkparts.controller.user;
 
-import cn.springboot.osbulkparts.entity.MUserInfoEntity;
-import cn.springboot.osbulkparts.entity.TDictDataEntity;
-import io.swagger.annotations.ApiImplicitParams;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
-import cn.springboot.osbulkparts.common.activemq.CommonActiveMqMange;
+import cn.springboot.osbulkparts.entity.MUserInfoEntity;
+import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.service.UserInfoService;
 import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
 @RequestMapping("/user")
 public class UserInfoController {
 
-//	@Value("${activemq.topic.realtime}")
-//	private String topicRealtime;
-//	
-//	@Value("${activemq.topic.delay}")
-//	private String topic_delay;
-	
 	@Autowired
 	private UserInfoService userInfoService;
 	
-	@Autowired
-	private CommonActiveMqMange commonActiveMqMange; // ActiveMQ公共类
-	
 	@ApiOperation(value="获取用户列表信息", notes="查询所有用户的列表")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "userName", value = "用户名", required = true, dataType = "String", paramType = "query"),
-			@ApiImplicitParam(name = "userRealName", value = "用户真实姓名", required = true, dataType = "String", paramType = "query"),
-			@ApiImplicitParam(name = "pageNum", value = "当前第几页默认1", required = true, dataType = "String", paramType = "query"),
-			@ApiImplicitParam(name = "pageSize", value = "一页多少数据 默认10", required = true, dataType = "String", paramType = "query")
+			@ApiImplicitParam(name = "muserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body"),
+			@ApiImplicitParam(name = "pageNum", value = "当前页码(默认1)", required = true, dataType = "String", paramType = "query"),
+			@ApiImplicitParam(name = "pageSize", value = "每页数据条数(默认10)", required = true, dataType = "String", paramType = "query")
 	})
 	@GetMapping("/getUserInfoList")
 	public CommonResultInfo<MUserInfoEntity> getUserInfoList(
@@ -53,26 +46,43 @@ public class UserInfoController {
 		return result;
 	}
 	
-	@ApiOperation(value="获取用户详细信息", notes="根据url的id来获取用户详细信息")
-	@ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Integer", paramType = "path")
+	@ApiOperation(value="获取用户详细信息", notes="根据用户Id来获取用户详细信息")
+	@ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "String", paramType = "path")
 	@GetMapping("/getUserInfo/{userId}")
 	public CommonResultInfo<MUserInfoEntity> getUserInfo(@PathVariable String userId){
 		log.info("getUserInfo is started.Paramater is userID["+userId+"]");
 		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfo(userId);
 		return result;
 	}
+	
 	@ApiOperation(value="获取用户详细信息的下拉选信息", notes="获取下拉选信息")
 	@GetMapping("/getOptions")
 	public CommonResultInfo<Map<String, List<TDictDataEntity>>> findOptions(){
-		return  userInfoService.getOptions();
+		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = userInfoService.getOptions();
+		return  result;
 	}
 
-
-	@ApiOperation(value="获取用户的客户详细信息", notes="根据url的id来获取用户的客户详细信息")
-	@ApiImplicitParam(name = "id", value = "用户ID", required = true, dataType = "Integer", paramType = "path")
-	@GetMapping("/getUserCustomerInfo/{userId}")
-	public CommonResultInfo<MUserInfoEntity> getUserCustomerInfo(@PathVariable String userId){
-		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserCustomerRelationInfo(userId);
+	@ApiOperation(value="添加用户", notes="添加用户")
+	@ApiImplicitParam(name = "muserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body")
+	@PostMapping("/addUser")
+	public CommonResultInfo<?> addUserInfo(MUserInfoEntity muserInfoEntity,Authentication auth){
+		CommonResultInfo<?> result = userInfoService.addUserInfo(muserInfoEntity, auth);
+		return result;
+	}
+	
+	@ApiOperation(value="更新用户", notes="更新用户信息")
+	@ApiImplicitParam(name = "muserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body")
+	@PutMapping("/updateUser")
+	public CommonResultInfo<?> updateUserInfo(MUserInfoEntity muserInfoEntity,Authentication auth){
+		CommonResultInfo<?> result = userInfoService.updateUserInfo(muserInfoEntity, auth);
+		return result;
+	}
+	
+	@ApiOperation(value="删除用户", notes="删除用户（逻辑删除）")
+	@ApiImplicitParam(name = "userId", value = "用户Id", required = true, dataType = "String", paramType = "path")
+	@DeleteMapping("/deleteUser/{userId}")
+	public CommonResultInfo<?> deleteUserInfoById(@PathVariable String userId,Authentication auth){
+		CommonResultInfo<?> result = userInfoService.deleteUserInfo(userId, auth);
 		return result;
 	}
 }

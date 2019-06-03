@@ -23,7 +23,7 @@ public interface UserInfoService {
 	
 	CommonResultInfo<?> updateUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth);
 	
-	CommonResultInfo<?> deleteUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth);
+	CommonResultInfo<?> deleteUserInfo(String userId, Authentication auth);
 	
 	CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth);
 
