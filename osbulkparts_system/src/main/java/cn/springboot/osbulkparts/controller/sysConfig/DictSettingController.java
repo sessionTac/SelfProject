@@ -1,8 +1,10 @@
 package cn.springboot.osbulkparts.controller.sysConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,9 +30,9 @@ public class DictSettingController {
 	
 	@ApiOperation(value="获取数据字典类型列表信息", notes="查询所有数据字典类型的列表")
 	@ApiImplicitParams({
-		@ApiImplicitParam(name = "TDictTypeEntity", value = "数据字典实体对象", required = true, dataType = "String", paramType = "body"),
-		@ApiImplicitParam(name = "pageNum", value = "分页-当前页码", required = true, dataType = "String", paramType = "path"),
-		@ApiImplicitParam(name = "pageSize", value = "分页-总页数", required = true, dataType = "String", paramType = "path")
+		@ApiImplicitParam(name = "TDictTypeEntity", value = "数据字典实体对象", required = true, dataType = "body", paramType = "body"),
+		@ApiImplicitParam(name = "pageNum", value = "分页-当前页码(默认1)", required = true, dataType = "String", paramType = "body"),
+		@ApiImplicitParam(name = "pageSize", value = "分页-总页数(默认10)", required = true, dataType = "String", paramType = "body")
 	})
 	@GetMapping("/getDictTypeList")
 	public CommonResultInfo<TDictTypeEntity> getDictTypeInfoList(
@@ -59,13 +61,21 @@ public class DictSettingController {
 	@ApiOperation(value="获取数据字典类型的数据信息", notes="根据数据字典类型ID查询其数据信息")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "dictTypeId", value = "数据字典类型ID", required = true, dataType = "String", paramType = "path"),
-			@ApiImplicitParam(name = "pageNum", value = "当前第几页默认1", required = true, dataType = "String", paramType = "query"),
-			@ApiImplicitParam(name = "pageSize", value = "一页多少数据 默认10", required = true, dataType = "String", paramType = "query")
+			@ApiImplicitParam(name = "pageNum", value = "分页-当前页码(默认1)", required = true, dataType = "String", paramType = "path"),
+			@ApiImplicitParam(name = "pageSize", value = "分页-总页数(默认10)", required = true, dataType = "String", paramType = "path")
 	})
 	@GetMapping("/getDictDataInfo/{dictTypeId}")
-	public CommonResultInfo<TDictDataEntity> getDictDataInfo(@PathVariable String dictTypeId,@RequestParam(defaultValue = "1") int pageNum,
+	public CommonResultInfo<TDictDataEntity> getDictDataInfoList(@PathVariable String dictTypeId,@RequestParam(defaultValue = "1") int pageNum,
 															 @RequestParam(defaultValue="10") int pageSize){
 		CommonResultInfo<TDictDataEntity> result = dictDataSettingService.getDictDataInfo(dictTypeId,pageNum,pageSize);
+		return result;
+	}
+	
+	@ApiOperation(value="添加数据字典类型", notes="添加数据字典类型")
+	@ApiImplicitParam(name = "TDictTypeEntity", value = "数据字典类型实体对象", required = true, dataType = "body", paramType = "body")
+	@PostMapping("/addDictType")
+	public CommonResultInfo<?> addDictType(TDictTypeEntity tdictTypeEntity,Authentication auth){
+		CommonResultInfo<?> result = dictTypeSettingService.addDictTypeInfo(tdictTypeEntity, auth);
 		return result;
 	}
 }

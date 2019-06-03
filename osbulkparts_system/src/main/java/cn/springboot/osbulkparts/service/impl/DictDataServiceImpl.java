@@ -1,17 +1,16 @@
 package cn.springboot.osbulkparts.service.impl;
 
-import java.util.List;
-
-import cn.springboot.osbulkparts.entity.TDictTypeEntity;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import cn.springboot.osbulkparts.common.CommonResultInfo;
-import cn.springboot.osbulkparts.common.ConstantMessageInfo;
+import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.service.DictDataSettingService;
@@ -21,6 +20,9 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@Autowired
 	private TDictDataDao tdictDataDao;
+	
+	@Autowired
+	private I18nMessageBean messageBean;
 	
 	@Override
 	public CommonResultInfo<TDictDataEntity> getDictDataList(TDictDataEntity tdictTypeEntity, int pageNumber,
@@ -41,8 +43,8 @@ public class DictDataServiceImpl implements DictDataSettingService {
 			result.setResultInfo(pageInfo);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 		} catch (Exception e) {
-			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
-			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
 		} finally {
 			return result;

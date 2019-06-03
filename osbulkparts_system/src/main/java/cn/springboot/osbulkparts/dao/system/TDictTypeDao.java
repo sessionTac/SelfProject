@@ -10,15 +10,15 @@ import cn.springboot.osbulkparts.entity.TDictTypeEntity;
 public interface TDictTypeDao {
     int deleteByPrimaryKey(String dictTypeId);
 
-    int insert(TDictTypeEntity record);
+    int insert(TDictTypeEntity tdictTypeEntity);
 
-    int insertSelective(TDictTypeEntity record);
+    int insertSelective(TDictTypeEntity tdictTypeEntity);
 
-    TDictTypeEntity selectByPrimaryKey(String dictTypeId);
+    List<TDictTypeEntity> selectByPrimaryKey(TDictTypeEntity tdictTypeEntity);
 
-    int updateByPrimaryKeySelective(TDictTypeEntity record);
+    int updateByPrimaryKeySelective(TDictTypeEntity tdictTypeEntity);
 
-    int updateByPrimaryKey(TDictTypeEntity record);
+    int updateByPrimaryKey(TDictTypeEntity tdictTypeEntity);
     
     List<TDictTypeEntity> getDictTypeList(TDictTypeEntity tdictTypeEntity);
 }

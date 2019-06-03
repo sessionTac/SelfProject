@@ -1,14 +1,9 @@
 package cn.springboot.osbulkparts.service.impl;
 
-import cn.springboot.osbulkparts.common.ConstantMessageInfo;
-import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
-import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
-import cn.springboot.osbulkparts.dao.system.TDictDataDao;
-import cn.springboot.osbulkparts.dao.user.MUserInfoDao;
-import cn.springboot.osbulkparts.entity.MUserInfoEntity;
-import cn.springboot.osbulkparts.entity.TDictDataEntity;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,12 +11,19 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import cn.springboot.osbulkparts.common.CommonResultInfo;
-import cn.springboot.osbulkparts.service.UserInfoService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import cn.springboot.osbulkparts.common.CommonConstantEnum;
+import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
+import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
+import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
+import cn.springboot.osbulkparts.dao.system.TDictDataDao;
+import cn.springboot.osbulkparts.dao.user.MUserInfoDao;
+import cn.springboot.osbulkparts.entity.MUserInfoEntity;
+import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.service.UserInfoService;
 
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
@@ -31,6 +33,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Autowired
 	private TDictDataDao tDictDataDao;
+	
+	@Autowired
+	private I18nMessageBean messageBean;
 	
 	private static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
@@ -46,8 +51,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResultInfo(pageInfo);
 		} catch (Exception e) {
-			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
-			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
 		} finally {
 			return result;
@@ -63,8 +68,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(userInfo);
 		} catch (Exception e) {
-			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
-			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
 		} finally {
 			return result;
@@ -83,8 +88,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(map);
 		} catch (Exception e) {
-			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
-			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
 		} finally {
 			return result;
@@ -100,8 +105,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(userInfo);
 		} catch (Exception e) {
-			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
-			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
 		} finally {
 			return result;
@@ -149,7 +154,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 				result.setMessage("用户名重复");
 			}
 		} catch (Exception e) {
-			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
 		} finally {
 			return result;
@@ -171,9 +177,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 				result.setMessage("删除成功");
 			}
-
 		} catch (Exception e) {
-			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
 		} finally {
 			return result;
@@ -202,10 +208,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 					result.setMessage("添加成功");
 				}
 			}else {
-				result.setMessage("已经存在用户名为："+mUserInfoEntity.getUserName()+"的用户");
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
 			}
 		} catch (Exception e) {
-			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
 		} finally {
 			return result;
