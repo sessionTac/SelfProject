@@ -80,7 +80,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
 			map.put("userType",tDictDataDao.selectByPrimaryKey("5"));
 			map.put("userStatus",tDictDataDao.selectByPrimaryKey("6"));
-			map.put("usserLevel",tDictDataDao.selectByPrimaryKey("7"));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(map);
 		} catch (Exception e) {
