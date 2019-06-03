@@ -130,20 +130,25 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@Override
 	public CommonResultInfo<?> updateUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		//校验 用户名是否重复
+		Map<String,String> checkMap=muserInfoDao.selectCountByUserName(mUserInfoEntity.getUserName());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			String userUUID = CommonSqlUtils.getUUID32();
-			mUserInfoEntity.setUserId(userUUID);
-			mUserInfoEntity.setUpdateUser(principal.getUserId());
-			int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
-			if (returnInt > 0) {
-				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-			}
-			else {
-				result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+			if (    ("0".equals(String.valueOf(checkMap.get("num"))))
+					||
+					( ( "1".equals(String.valueOf(checkMap.get("num"))) ) && ( mUserInfoEntity.getUserId().equals(String.valueOf(checkMap.get("id"))) ) )
+			){
+				mUserInfoEntity.setUpdateUser(principal.getUserId());
+				int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
+				if (returnInt > 0) {
+					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+					result.setMessage("修改成功");
+				}
+			} else {
+				result.setMessage("用户名重复");
 			}
 		} catch (Exception e) {
-			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
 			result.setException(e.getMessage().toString());
 		} finally {
@@ -153,31 +158,53 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Override
 	public CommonResultInfo<?> deleteUserInfo(String userId, Authentication auth) {
-		// TODO Auto-generated method stub
-		return null;
+		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		MUserInfoEntity mUserInfoEntity =new MUserInfoEntity();
+		try {
+			mUserInfoEntity.setUserId(userId);
+			mUserInfoEntity.setUpdateUser(principal.getUserId());
+			mUserInfoEntity.setIsDelete(1);
+			int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage("删除成功");
+			}
+
+		} catch (Exception e) {
+			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
 	}
 
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<?> addUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		//校验 用户名是否重复
+		Map<String,String> checkMap=muserInfoDao.selectCountByUserName(mUserInfoEntity.getUserName());
 		try {
-			String userUUID = CommonSqlUtils.getUUID32();
-			mUserInfoEntity.setUserId(userUUID);
-			mUserInfoEntity.setPassword(encoder.encode(mUserInfoEntity.getPassword()));
-			mUserInfoEntity.setCreateUser(principal.getUserId());
-			mUserInfoEntity.setIsDelete(0);
-			mUserInfoEntity.setVersion(1);
-			int returnInt = muserInfoDao.insertSelective(mUserInfoEntity);
-			if (returnInt > 0) {
-				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-			}
-			else {
-				result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+			if ("0".equals(String.valueOf(checkMap.get("num")))){
+				String userUUID = CommonSqlUtils.getUUID32();
+				mUserInfoEntity.setUserId(userUUID);
+				mUserInfoEntity.setPassword(encoder.encode(mUserInfoEntity.getPassword()));
+				mUserInfoEntity.setCreateUser(principal.getUserId());
+				mUserInfoEntity.setIsDelete(0);
+				mUserInfoEntity.setVersion(1);
+				int returnInt = muserInfoDao.insertSelective(mUserInfoEntity);
+				if (returnInt > 0) {
+					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+					result.setMessage("添加成功");
+				}
+			}else {
+				result.setMessage("已经存在用户名为："+mUserInfoEntity.getUserName()+"的用户");
 			}
 		} catch (Exception e) {
-			result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 			result.setMessage(ConstantMessageInfo.SERVICE_ERROR);
 			result.setException(e.getMessage().toString());
 		} finally {

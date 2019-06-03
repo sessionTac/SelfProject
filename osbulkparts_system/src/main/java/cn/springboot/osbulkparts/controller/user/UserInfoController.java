@@ -5,14 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
@@ -65,7 +58,7 @@ public class UserInfoController {
 	@ApiOperation(value="添加用户", notes="添加用户")
 	@ApiImplicitParam(name = "muserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/addUser")
-	public CommonResultInfo<?> addUserInfo(MUserInfoEntity muserInfoEntity,Authentication auth){
+	public CommonResultInfo<?> addUserInfo(@RequestBody MUserInfoEntity muserInfoEntity, Authentication auth){
 		CommonResultInfo<?> result = userInfoService.addUserInfo(muserInfoEntity, auth);
 		return result;
 	}
@@ -73,7 +66,7 @@ public class UserInfoController {
 	@ApiOperation(value="更新用户", notes="更新用户信息")
 	@ApiImplicitParam(name = "muserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body")
 	@PutMapping("/updateUser")
-	public CommonResultInfo<?> updateUserInfo(MUserInfoEntity muserInfoEntity,Authentication auth){
+	public CommonResultInfo<?> updateUserInfo(@RequestBody MUserInfoEntity muserInfoEntity,Authentication auth){
 		CommonResultInfo<?> result = userInfoService.updateUserInfo(muserInfoEntity, auth);
 		return result;
 	}

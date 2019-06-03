@@ -17,24 +17,26 @@ export default {
   findOptions:()=>
     getRequest(`~/user/getOptions`),
 
-
-  selectUnit:()=>
-    getRequest(``),
-
   /**新增用户*/
   addUser:(data)=>
-    postRequest(`~/maintenance/basis/user/insertInfo`, {data}),
-
-
+    postRequest(`~/user/addUser`, {data}),
   /**
-   * 修改编辑
+   * 修改用户
    */
   updateUser:(data)=>
-    putRequest(`~/maintenance/basis/user/update`, {data}),
+    putRequest(`~/user/updateUser`, {data}),
 
   /***根据id删除本条数据*/
   deleteById:(id)=>
-    deleteRequest(`~/maintenance/basis/user/`+id),
+    deleteRequest(`~/user/deleteUser/`+id),
+
+
+
+
+
+
+
+
 
   /**密码重置*/
   reset:(data)=>

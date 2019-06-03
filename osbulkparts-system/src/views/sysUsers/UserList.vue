@@ -137,9 +137,10 @@
                     type: 'warning',
                     center: true
                 }).then(() => {
-                        activityService.delete(uuid).then(resp => {
-                            if (resp.data == 1) {
+                        activityService.deleteById(uuid).then(resp => {
+                            if (resp.data.code == "201") {
                                 this.$notify({message: "删除成功", type: 'success'});
+                                this.exec_search({search_keys:this.search_keys, pageNum:1})
                             } else {
                                 this.$notify({message: "删除失败", type: 'error'});
                             }

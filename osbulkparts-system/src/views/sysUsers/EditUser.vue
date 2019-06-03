@@ -13,11 +13,17 @@
                         <el-input v-model="form.checkPass" class="search-form-item-input" type="password" style="width: 200px" size="mini" :maxlength="64"></el-input>
                     </el-form-item>
                 </template>
-                <el-form-item label="真实姓名" prop="trueName">
+                <el-form-item label="真实姓名" prop="userRealName">
                     <el-input v-model="form.userRealName" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
                 </el-form-item>
+                <el-form-item label="手机" prop="userPhone">
+                    <el-input v-model="form.userPhone" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
+                </el-form-item>
+                <el-form-item label="邮箱" prop="userMail">
+                    <el-input v-model="form.userMail" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
+                </el-form-item>
                 <el-form-item label="用户类型" >
-                    <el-select v-model="form.userType+''" placeholder="请选择">
+                    <el-select v-model="form.userType" placeholder="请选择">
                         <el-option
                           v-for="item in options.userType"
                           :key="item.value"
@@ -27,19 +33,9 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item label="用户状态" >
-                    <el-select v-model="form.userStatus+''" placeholder="请选择">
+                    <el-select v-model="form.userStatus" placeholder="请选择">
                         <el-option
                           v-for="item in options.userStatus"
-                          :key="item.value"
-                          :label="item.name"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="用户所属" >
-                    <el-select v-model="form.userLevel+''" placeholder="请选择">
-                        <el-option
-                          v-for="item in options.usserLevel"
                           :key="item.value"
                           :label="item.name"
                           :value="item.value">
@@ -122,7 +118,7 @@
                         {max: 30, message: '长度不超过30个字符', trigger: 'blur' },
                         { pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur',message: '请输入英文数字下划线',}
                     ],
-                    trueName: [
+                    userRealName: [
                         {  required: true, message: '请填写真实姓名', trigger: 'blur' },
                         {max: 30, message: '长度不超过30个字符', trigger: 'blur' }
                     ],
@@ -132,10 +128,10 @@
                     checkPass:[
                         { validator: validatePass2, trigger: 'blur' },
                     ],
-                    tel:[
+                    userPhone:[
                         { required: false,pattern: /^1(3|4|5|7|8)\d{9}$/, trigger: 'blur',message: '请输入正确的手机号',}
                     ],
-                    email: [
+                    userMail: [
                         { required: false, type: 'email', message: '请输入正确的邮箱', trigger: ['blur'] }
                     ]
                 },
@@ -154,6 +150,9 @@
                 if(this.mode == 'EDIT'){
                     service.selectUserById(this.id).then(resp => {
                         this.form = resp.data.result ;
+                        this.form.userType=this.form.userType+"";
+                        this.form.userStatus=this.form.userStatus+"";
+
                     })
                 }
             },
@@ -162,32 +161,33 @@
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let data={
-                            id       : this.id            || undefined,
+                            userId       : this.id            || undefined,
                             userName : this.form.userName || undefined,
-                            trueName : this.form.trueName || undefined,
+                            userRealName : this.form.userRealName || undefined,
                             password : this.form.password || undefined,
-                            tel      : this.form.tel      || undefined,
-                            email    : this.form.email    || undefined,
-                            memo     : this.form.memo     || undefined,
-                            transferorNo : this.form.transferorEntity && this.form.transferorEntity.transferorNo || undefined,
-                            orgNo    : this.form.orgEntity && this.form.orgEntity.orgNo  || undefined,
-                            cityAreaCode   : this.form.region && this.form.region[0]   || undefined,
-                            countyAreaCode : this.form.region && this.form.region[1]   || undefined,
+                            userMail :  this.form.userMail || undefined,
+                            userPhone: this.form.userPhone || undefined,
+                            userType      : this.form.userType      || undefined,
+                            userStatus     : this.form.userStatus     || undefined,
                         }
                         if(this.mode == 'EDIT'){  //编辑
                             service.updateUser({...data}).then(resp=>{
-                                this.$notify({message: resp.data.msg, type: resp.data.type});
-                                if(resp.data.type == "success"){
+                                if(resp.data.code == "201"){
+                                    this.$notify({message: resp.data.message, type: 'success'});
                                     this.$emit("success");
                                     this.dialogFormVisible = false
+                                }else {
+                                    this.$notify({message: resp.data.message, type: 'error'});
                                 }
                             })
                         }else{
                             service.addUser({...data}).then(resp=>{  //添加
-                                this.$notify({message: resp.data.msg, type: resp.data.type});
-                                if(resp.data.type == "success"){
+                                if(resp.data.code == "201"){
+                                    this.$notify({message: resp.data.message, type: 'success'});
                                     this.$emit("success");
                                     this.dialogFormVisible = false
+                                }else {
+                                    this.$notify({message: resp.data.message, type: 'error'});
                                 }
                             })
                         }
