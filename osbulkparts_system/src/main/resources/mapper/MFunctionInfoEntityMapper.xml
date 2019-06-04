@@ -225,4 +225,18 @@
       version = #{version,jdbcType=INTEGER}
     where function_id = #{functionId,jdbcType=VARCHAR}
   </update>
+  <!-- 查询树结构 -->
+  <select  id="selectTree" resultMap="BaseResultMap" >
+     SELECT
+      f.function_id,
+      f.parent_id,
+      f.function_name,
+      f.function_code,
+      f.function_desc,
+      f.priority,
+      f.menu_id
+     FROM m_function as f
+     WHERE f.delete_flag = 0
+     order by priority asc
+  </select>
 </mapper>

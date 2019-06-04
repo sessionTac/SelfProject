@@ -62,6 +62,11 @@ public class MRoleInfoEntity implements Serializable {
      * 角色权限列表
      */
     private List<MFunctionInfoEntity> functionList = new ArrayList<MFunctionInfoEntity>();
-    
+
+    /**
+     *
+     */
+    private TDictDataEntity dictRoleAt;
+
     private static final long serialVersionUID = 1L;
 }

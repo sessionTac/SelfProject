@@ -5,8 +5,18 @@
                 <el-form-item label="角色名">
                     <el-input placeholder="角色名" v-model="search_keys.roleName" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="权限内容">
-                    <el-input placeholder="权限内容" v-model="search_keys.function" class="search-form-item-input"></el-input>
+                <el-form-item label="角色说明">
+                    <el-input placeholder="角色说明" v-model="search_keys.roleDesc" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="角色所属" >
+                    <el-select v-model="search_keys.roleAt" placeholder="请选择">
+                        <el-option
+                          v-for="item in options.roleAt"
+                          :key="item.value"
+                          :label="item.name"
+                          :value="item.value">
+                        </el-option>
+                    </el-select>
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="" @click="add" size="mini" >
@@ -31,8 +41,8 @@
                   :stripe="true"
         >
             <el-table-column prop="roleName" align="center" label="角色名"  />
-            <el-table-column prop="function" align="center" label="权限内容" />
-            <el-table-column prop="remark" align="center" label="备注"  />
+            <el-table-column prop="roleDesc" align="center" label="角色说明" />
+            <el-table-column prop="dictRoleAt.name" align="center" label="角色所属"  />
 
             <el-table-column label="操作" >
                 <template slot-scope="scope" >
@@ -73,6 +83,7 @@
         components: { SetAuthority},
         data() {
             return {
+                options:{},
                 PAGE_SIZES : ui_config.PAGE_SIZES,
                 set_role_dialog       : {},
                 see_role_dialog       : {},
@@ -87,31 +98,36 @@
                 //单位下拉框数据
                 is_searching : true,
                 search_keys   : {
-                    orgEntity:null,
-                    roleName:'',
-                    function:'',
+                    roleDesc:"",
+                    roleName:"",
+                    roleAt:""
                 },
                 search_keys_snap      : null,
                 search_result         : {},
 
             };
         },
-        mounted() {
-            this.exec_search({search_keys:this.search_keys, pageNumber:1});
+        async mounted() {
+            await this.init();
+            this.exec_search({search_keys:this.search_keys, pageNum:1});
         },
         methods: {
+            init(){
+              return  activityService.findRoleOptions().then(resp=>{
+                  this.options=resp.data.result
+              })
+            },
             exec_search({
                             search_keys = JSON.parse(this.search_keys_snap),
-                            pageNumber = this.search_result.pageNum,
+                            pageNum = this.search_result.pageNum,
                             pageSize = this.search_result.pageSize,
                         }) {
-                debugger
                 let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
-                let userName = search_keys.userName;
-                let trueName = search_keys.trueName;
-                let compName
-                activityService.findRole({userName, trueName, pageNumber, pageSize}).then(resp => {
-                    this.search_result = resp.data;                //视图展示查询结果
+                let roleDesc = search_keys.roleDesc || undefined;
+                let roleName = search_keys.roleName || undefined;
+                let roleAt   = search_keys.roleAt   || undefined;
+                activityService.findRoleList({roleDesc, roleName,roleAt, pageNum, pageSize}).then(resp => {
+                    this.search_result = resp.data.resultInfo;                //视图展示查询结果
                     this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
                     this.search_keys_snap = search_keys_snap;             //存储查询条件快照
                 }, err => {

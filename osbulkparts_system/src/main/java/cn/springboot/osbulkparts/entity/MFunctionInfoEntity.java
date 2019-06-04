@@ -1,6 +1,8 @@
 package cn.springboot.osbulkparts.entity;
 
 import java.io.Serializable;
+import java.util.List;
+
 import lombok.Data;
 
 @Data
@@ -69,6 +71,7 @@ public class MFunctionInfoEntity implements Serializable {
      * 
      */
     private Integer version;
+    private List<MFunctionInfoEntity> children;
 
     private static final long serialVersionUID = 1L;
 }

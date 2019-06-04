@@ -17,6 +17,11 @@
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="version" jdbcType="INTEGER" property="version" />
+    <association property="dictRoleAt"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="role_at"/>
+      <result property="name" column="dictRoleAt"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -190,4 +195,26 @@
       version = #{version,jdbcType=INTEGER}
     where role_id = #{roleId,jdbcType=VARCHAR}
   </update>
+  <select id="selectRoleInfoList" parameterType="cn.springboot.osbulkparts.entity.MRoleInfoEntity" resultMap="BaseResultMap">
+    SELECT
+        t1.role_id,t1.role_name,t1.role_desc,t1.role_at, t2.NAME AS dictRoleAt
+    FROM
+        m_role_info AS t1
+    LEFT JOIN t_dict_data AS t2 ON t1.role_at = t2.`value`
+    AND t2.dict_type_code = 'roleAt'
+    AND t2.delete_flg = 0
+    WHERE
+        t1.is_delete = 0
+        <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(roleName)">
+          <bind name="roleName_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(roleName)"/>
+          AND t1.role_name LIKE #{roleName_like}
+        </if>
+        <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(roleDesc)">
+          <bind name="roleDesc_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(roleDesc)"/>
+          AND t1.role_desc LIKE #{roleDesc_like}
+        </if>
+        <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(roleAt)">
+          AND t1.role_at=#{roleAt}
+        </if>
+  </select>
 </mapper>

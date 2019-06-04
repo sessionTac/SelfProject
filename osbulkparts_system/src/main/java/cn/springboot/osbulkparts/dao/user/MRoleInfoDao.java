@@ -3,6 +3,8 @@ package cn.springboot.osbulkparts.dao.user;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface MRoleInfoDao {
     int deleteByPrimaryKey(String roleId);
@@ -16,4 +18,9 @@ public interface MRoleInfoDao {
     int updateByPrimaryKeySelective(MRoleInfoEntity record);
 
     int updateByPrimaryKey(MRoleInfoEntity record);
+
+    /**
+     * 根据 角色名 来查找角色列表 分页
+     */
+    List<MRoleInfoEntity> selectRoleInfoList(MRoleInfoEntity mRoleInfoEntity);
 }
