@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.common;
 
 public enum CommonConstantEnum {
 	DICT_TYPE("字典分类"),
+	DICT_TYPE_CODE("字典分类编码"),
 	USER_NAME("用户名");
 	
 	private String typeName;  

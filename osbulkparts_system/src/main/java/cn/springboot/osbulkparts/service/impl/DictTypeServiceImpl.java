@@ -99,13 +99,6 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			// 验证字典名称重复
-			if(!checkNameRepeat(tdictTypeEntity)) {
-				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName()));
-				return result;
-			}
-			// 验证字典编码重复
-			
 			String dictUUID = CommonSqlUtils.getUUID32();
 			tdictTypeEntity.setDictTypeId(dictUUID);
 			tdictTypeEntity.setCreateUser(principal.getUserId());
@@ -132,23 +125,19 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			// 验证字典名称重复
-			if(!checkNameRepeat(tdictTypeEntity)) {
-				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName()));
-				return result;
-			}
 			// 验证版本号
-			if(!checkVersion(tdictTypeEntity)) {
-				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.DICT_TYPE.getTypeName()));
-				return result;
+			if(checkVersion(tdictTypeEntity)) {
+				// 更新处理
+				tdictTypeEntity.setUpdateUser(principal.getUserId());
+				tdictTypeEntity.setVersion(tdictTypeEntity.getVersion()+1);
+				int returnInt = tdictTypeDao.updateByPrimaryKeySelective(tdictTypeEntity);
+				if (returnInt > 0) {
+					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.DICT_TYPE.getTypeName()));
+				}
 			}
-			// 更新处理
-			tdictTypeEntity.setUpdateUser(principal.getUserId());
-			tdictTypeEntity.setVersion(tdictTypeEntity.getVersion()+1);
-			int returnInt = tdictTypeDao.updateByPrimaryKeySelective(tdictTypeEntity);
-			if (returnInt > 0) {
-				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.DICT_TYPE.getTypeName()));
+			else {
+				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.DICT_TYPE.getTypeName()));
 			}
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -195,39 +184,49 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 		}
 	}
 	
-	/******Private Method*****/
-	
 	/**
 	 * 名称重复验证
 	 */
-	private boolean checkNameRepeat(TDictTypeEntity tdictTypeEntity){
+	@Override
+	public CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity){
+		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
 		TDictTypeEntity tdictTypeEntityCheckName = new TDictTypeEntity();
 		tdictTypeEntityCheckName.setName(tdictTypeEntity.getName());
 		List<TDictTypeEntity> resultLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntityCheckName);
 		if(resultLst.size()>0 && resultLst.get(0) != null) {
-			return false;
+			result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName()));
+		}else {
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 		}
-		return true;
+		return result;
 	}
 	
 	/**
 	 * 编码重复验证
 	 */
-	private boolean checkCodeRepeat(TDictTypeEntity tdictTypeEntity){
+	@Override
+	public CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity){
+		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
 		TDictTypeEntity tdictTypeEntityCheckName = new TDictTypeEntity();
-		tdictTypeEntityCheckName.setName(tdictTypeEntity.getName());
+		tdictTypeEntityCheckName.setCode(tdictTypeEntity.getCode());
 		List<TDictTypeEntity> resultLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntityCheckName);
 		if(resultLst.size()>0 && resultLst.get(0) != null) {
-			return false;
+			result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE_CODE.getTypeName()));
+		}else {
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 		}
-		return true;
+		return result;
 	}
 	
+	/****Private Method****/
 	/**
 	 * 验证版本号
 	 */
 	private boolean checkVersion(TDictTypeEntity tdictTypeEntity) {
-		List<TDictTypeEntity> resultVersionLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntity);
+		TDictTypeEntity tdictTypeEntityParam = new TDictTypeEntity();
+		tdictTypeEntityParam.setDictTypeId(tdictTypeEntity.getDictTypeId());
+		tdictTypeEntityParam.setVersion(tdictTypeEntity.getVersion());
+		List<TDictTypeEntity> resultVersionLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntityParam);
 		if(resultVersionLst.size()>0 && resultVersionLst.get(0) != null) {
 			return true;
 		}

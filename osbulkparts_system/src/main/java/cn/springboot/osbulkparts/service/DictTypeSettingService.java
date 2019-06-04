@@ -1,6 +1,7 @@
 package cn.springboot.osbulkparts.service;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.entity.TDictTypeEntity;
@@ -17,6 +18,11 @@ public interface DictTypeSettingService {
 	
 	CommonResultInfo<?> updateDictType(TDictTypeEntity tdictTypeEntity, Authentication auth);
 	
+	@Transactional
 	CommonResultInfo<?> deleteDictType(String dictTypeId, Authentication auth);
-
+	
+	CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity);
+	
+	CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity);
+	
 }
