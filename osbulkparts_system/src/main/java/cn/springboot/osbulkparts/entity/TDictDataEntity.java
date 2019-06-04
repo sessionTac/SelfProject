@@ -13,7 +13,7 @@ public class TDictDataEntity implements Serializable {
     /**
      * 字典分类表主键
      */
-    private String dictTypeId;
+    private String dictTypeCode;
 
     /**
      * 字典值
@@ -68,7 +68,7 @@ public class TDictDataEntity implements Serializable {
     /**
      * 删除标识
      */
-    private String deleteFlg;
+    private Integer deleteFlg;
 
     /**
      * 版本号

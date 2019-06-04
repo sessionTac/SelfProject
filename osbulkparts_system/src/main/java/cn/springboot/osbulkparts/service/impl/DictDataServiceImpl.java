@@ -33,13 +33,13 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TDictDataEntity> getDictDataInfo(String dictTypeId, int pageNumber,
+	public CommonResultInfo<TDictDataEntity> getDictDataInfo(String dictTypeCode, int pageNumber,
 															 int pageSize) {
 		CommonResultInfo<TDictDataEntity> result = new CommonResultInfo<TDictDataEntity>();
 		try {
 			PageHelper.startPage(pageNumber, pageSize);
 			PageInfo<TDictDataEntity> pageInfo = new PageInfo<>(
-					tdictDataDao.selectByPrimaryKey(dictTypeId));
+					tdictDataDao.selectByPrimaryKey(dictTypeCode));
 			result.setResultInfo(pageInfo);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 		} catch (Exception e) {

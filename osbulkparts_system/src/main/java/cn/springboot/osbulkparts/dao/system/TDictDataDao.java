@@ -14,9 +14,11 @@ public interface TDictDataDao {
 
     int insertSelective(TDictDataEntity record);
 
-    List<TDictDataEntity> selectByPrimaryKey(String dictTypeId);
+    List<TDictDataEntity> selectByPrimaryKey(String dictTypeCode);
 
     int updateByPrimaryKeySelective(TDictDataEntity record);
 
     int updateByPrimaryKey(TDictDataEntity record);
+    
+    int updateForDeleteLogicByTypeCode(TDictDataEntity record);
 }

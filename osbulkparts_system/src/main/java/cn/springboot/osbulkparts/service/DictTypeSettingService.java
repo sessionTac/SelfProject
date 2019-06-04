@@ -17,6 +17,6 @@ public interface DictTypeSettingService {
 	
 	CommonResultInfo<?> updateDictType(TDictTypeEntity tdictTypeEntity, Authentication auth);
 	
-	CommonResultInfo<?> deleteDictType(TDictTypeEntity tdictTypeEntity, Authentication auth);
+	CommonResultInfo<?> deleteDictType(String dictTypeId, Authentication auth);
 
 }
