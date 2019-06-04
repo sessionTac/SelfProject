@@ -40,7 +40,7 @@ public interface MUserInfoDao {
      */
     MUserInfoEntity selectUserWithRoleAndFunc(@Param("userName") String userName,@Param("roleId") String roleId);
     /**
-     * 根据用户名 来进行查找 如果有重复的 则不进行其他的操作 luka
+     * 查重（用户名）和排他字段比较   luka
      */
-    Map<String,String> selectCountByUserName(@Param("userName") String userName);
+    List<MUserInfoEntity> checkingAndVersion(MUserInfoEntity userInfoEntity);
 }

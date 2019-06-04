@@ -136,23 +136,36 @@ public class UserInfoServiceImpl implements UserInfoService {
 	public CommonResultInfo<?> updateUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
-		//校验 用户名是否重复
-		Map<String,String> checkMap=muserInfoDao.selectCountByUserName(mUserInfoEntity.getUserName());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		MUserInfoEntity mUserInfoEntityVersion= new MUserInfoEntity();
+		mUserInfoEntityVersion.setVersion(mUserInfoEntity.getVersion());
+		mUserInfoEntityVersion.setUserId(mUserInfoEntity.getUserId());
+		//校验 version 排他  (根据id和version)
+		List<MUserInfoEntity> checkListVersion=muserInfoDao.checkingAndVersion(mUserInfoEntityVersion);
 		try {
-			if (    ("0".equals(String.valueOf(checkMap.get("num"))))
-					||
-					( ( "1".equals(String.valueOf(checkMap.get("num"))) ) && ( mUserInfoEntity.getUserId().equals(String.valueOf(checkMap.get("id"))) ) )
-			){
-				mUserInfoEntity.setUpdateUser(principal.getUserId());
-				int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
-				if (returnInt > 0) {
-					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage("修改成功");
+
+			if(checkListVersion.size()==1){
+				MUserInfoEntity mUserInfoEntityUserName= new MUserInfoEntity();
+				mUserInfoEntityUserName.setUserName(mUserInfoEntity.getUserName());
+				//校验 用户名是否重复（只根据username）
+				List<MUserInfoEntity> checkListName=muserInfoDao.checkingAndVersion(mUserInfoEntityUserName);
+				if (    (checkListName.size()==0)
+						||
+						( ( checkListName.size()==1 ) && ( mUserInfoEntity.getUserId().equals(checkListName.get(0).getUserId()) ) )
+				){
+					mUserInfoEntity.setUpdateUser(principal.getUserId());
+					int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
+					if (returnInt > 0) {
+						result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+						result.setMessage(messageBean.getMessage("common.update.sucess", CommonConstantEnum.USER_NAME.getTypeName()));
+					}
+				} else {
+					result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
 				}
-			} else {
-				result.setMessage("用户名重复");
+			}else {
+				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.USER_NAME.getTypeName()));
 			}
+
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("common.server.error"));
@@ -175,7 +188,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage("删除成功");
+				result.setMessage(messageBean.getMessage("common.delete.sucess", CommonConstantEnum.USER_NAME.getTypeName()));
 			}
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -192,10 +205,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-		//校验 用户名是否重复
-		Map<String,String> checkMap=muserInfoDao.selectCountByUserName(mUserInfoEntity.getUserName());
 		try {
-			if ("0".equals(String.valueOf(checkMap.get("num")))){
+			//校验 用户名是否重复
+			List<MUserInfoEntity> checkList=muserInfoDao.checkingAndVersion(mUserInfoEntity);
+			if (checkList.size()==0){
 				String userUUID = CommonSqlUtils.getUUID32();
 				mUserInfoEntity.setUserId(userUUID);
 				mUserInfoEntity.setPassword(encoder.encode(mUserInfoEntity.getPassword()));
@@ -205,7 +218,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 				int returnInt = muserInfoDao.insertSelective(mUserInfoEntity);
 				if (returnInt > 0) {
 					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage("添加成功");
+					result.setMessage(messageBean.getMessage("common.add.sucess", CommonConstantEnum.USER_NAME.getTypeName()));
 				}
 			}else {
 				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));

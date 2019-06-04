@@ -169,6 +169,7 @@
                             userPhone: this.form.userPhone || undefined,
                             userType      : this.form.userType      || undefined,
                             userStatus     : this.form.userStatus     || undefined,
+                            version   : this.form.version || undefined,
                         }
                         if(this.mode == 'EDIT'){  //编辑
                             service.updateUser({...data}).then(resp=>{
