@@ -137,13 +137,12 @@ public class UserInfoServiceImpl implements UserInfoService {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-		MUserInfoEntity mUserInfoEntityVersion= new MUserInfoEntity();
-		mUserInfoEntityVersion.setVersion(mUserInfoEntity.getVersion());
-		mUserInfoEntityVersion.setUserId(mUserInfoEntity.getUserId());
-		//校验 version 排他  (根据id和version)
-		List<MUserInfoEntity> checkListVersion=muserInfoDao.checkingAndVersion(mUserInfoEntityVersion);
 		try {
-
+            MUserInfoEntity mUserInfoEntityVersion= new MUserInfoEntity();
+            mUserInfoEntityVersion.setVersion(mUserInfoEntity.getVersion());
+            mUserInfoEntityVersion.setUserId(mUserInfoEntity.getUserId());
+            //校验 version 排他  (根据id和version)
+            List<MUserInfoEntity> checkListVersion=muserInfoDao.checkingAndVersion(mUserInfoEntityVersion);
 			if(checkListVersion.size()==1){
 				MUserInfoEntity mUserInfoEntityUserName= new MUserInfoEntity();
 				mUserInfoEntityUserName.setUserName(mUserInfoEntity.getUserName());
