@@ -1,5 +1,6 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -94,7 +95,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			//校验 用户名是否重复
+			//校验字典类型名称是否重复
 			List<TDictTypeEntity> resultLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntity);
 			if(resultLst.size()>0 && resultLst.get(0) != null) {
 				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName()));

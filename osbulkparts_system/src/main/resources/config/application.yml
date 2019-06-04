@@ -4,6 +4,11 @@ server:
   url: localhost
   #url: '192.168.8.236'
 spring:
+  application:
+    name: osbulkparts
+  messages:
+    basename: config/message
+    encodeing: UTF-8
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.jdbc.Driver
