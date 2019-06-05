@@ -9,6 +9,7 @@ import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.dao.user.MFunctionInfoDao;
 import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
 import cn.springboot.osbulkparts.dao.user.MUserInfoDao;
+import cn.springboot.osbulkparts.dao.user.TRoleFunctionRelationDao;
 import cn.springboot.osbulkparts.entity.MFunctionInfoEntity;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
@@ -24,6 +25,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,6 +42,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 	private TDictDataDao tDictDataDao;
 	@Autowired
 	private MFunctionInfoDao mFunctionInfoDao;
+	@Autowired
+	private TRoleFunctionRelationDao tRoleFunctionRelationDao;
 
 	@Autowired
 	private I18nMessageBean messageBean;
@@ -92,7 +97,7 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 		List<MFunctionInfoEntity> roots = new ArrayList<>();//根节点
 
 		List<MFunctionInfoEntity> list = mFunctionInfoDao.selectTree();
-		list.forEach(f->functionMap.put(Integer.parseInt(f.getFunctionId()), f));		//映射
+		list.forEach(f->functionMap.put(f.getFunctionId(), f));		//映射
 		list.forEach(f->{
 			MFunctionInfoEntity parentFunction =(MFunctionInfoEntity) functionMap.get(f.getParentId());//通过父节点id 取对应实体
 			if(parentFunction == null) {
@@ -108,12 +113,51 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 		});
 
 		//叶子节点Id
-		List<Integer> leafNodeIds = list.stream().filter(f -> f.getChildren() == null).map(f -> Integer.parseInt(f.getFunctionId())).collect(Collectors.toList());
+		List<Integer> leafNodeIds = list.stream().filter(f -> f.getChildren() == null).map(f -> f.getFunctionId()).collect(Collectors.toList());
 
 		ret.put("tree", roots);
 		ret.put("leafNodeIds", leafNodeIds);
 
 		return ret;
+	}
+
+	/**
+	 * 根據id查詢权限
+	 */
+	@Override
+	public Object findPowerByRoleId(String roleId) {
+
+		return tRoleFunctionRelationDao.selectPowerByRoleId(roleId);
+	}
+
+	/**
+	 * 添加权限
+	 */
+	@SuppressWarnings("finally")
+	@Transient
+	@Override
+	public Object insertPower(List<Integer> functionIds, String roleId, HttpServletRequest request, Authentication auth) {
+		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			tRoleFunctionRelationDao.deleteById(roleId);
+			int r = 0;
+			if (!functionIds.isEmpty()) {
+				r = tRoleFunctionRelationDao.insertList(functionIds, roleId,principal.getUserId());
+			}
+			if(r == functionIds.size()) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.USER_NAME.getTypeName()));
+			}
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+			throw new RuntimeException();
+		} finally {
+			return result;
+		}
 	}
 
 }

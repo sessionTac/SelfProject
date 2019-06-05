@@ -11,15 +11,15 @@
         </el-form-item>
         <div style="height: 450px;padding-left: 10%">
           <el-scrollbar style="height: 100%">
-            <el-tree :data="analysisTree"
+            <el-tree :data="maintainTree"
                      class="filter-tree"
                      default-expand-all
-                     ref="analysisTree"
+                     ref="maintainTree"
                      :filter-node-method="filterNode"
                      :props="defaultProps"
                      :show-checkbox="true"
-                     :default-checked-keys="analysisFunctions"
-                     node-key="id"
+                     :default-checked-keys="maintainFunctions"
+                     node-key="functionId"
                      @node-click="handleNodeClick">
             </el-tree>
           </el-scrollbar>
@@ -52,148 +52,51 @@
         },
         defaultProps: {
           children: 'children',
-          label: 'label'
+          label: 'functionName'
         },
-        //分析平台
-        analysisFunctions: null,
-        analysisTree: [
-          {
-            id:"1",
-            label: "首页"
-          }, {
-            id:"2",
-            label: '用户管理',
-            children: [{
-              id:"2-1",
-              label: '用户信息',
-              children: [{
-                id:"2-1-1",
-                label: '用户信息 查询按钮'
-              }, {
-                id:"2-1-2",
-                label: '用户信息 修改按钮'
-              }]
-            },{
-              id:"2-2",
-              label: '角色权限',
-              children: [{
-                id:"2-2-1",
-                label: '角色权限 查询按钮'
-              }, {
-                id:"2-2-2",
-                label: '角色权限 修改按钮'
-              }]
-            }]
-          }, {
-            id:"3",
-            label: '基础数据',
-            children: [{
-              id:"3-1",
-              label: '物料主数据',
-              children: [{
-                id:"3-1-1",
-                label: '物料主数据 查询按钮'
-              }, {
-                id:"3-1-2",
-                label: '物料主数据 修改按钮'
-              }]
-            }]
-          }, {
-            id:"4",
-            label: '出入库管理',
-            children: [{
-              id:"4-1",
-              label: '订单计划',
-              children: [{
-                id:"4-1-1",
-                label: '订单计划 查询按钮'
-              }, {
-                id:"4-1-2",
-                label: '订单计划 修改按钮'
-              }]
-            }, {
-              id:"4-2",
-              label: '收货管理',
-              children: [{
-                id:"4-2-1",
-                label: '收货管理 查询按钮'
-              }, {
-                id:"4-2-2",
-                label: '收货管理 修改按钮'
-              }]
-            },{
-              id:"4-3",
-              label: '发货管理',
-              children: [{
-                id:"4-3-1",
-                label: '发货管理 查询按钮'
-              }, {
-                id:"4-3-2",
-                label: '发货管理 修改按钮'
-              }]
-            },{
-              id:"4-4",
-              label: '滚动计划',
-              children: [{
-                id:"4-4-1",
-                label: '滚动计划 查询按钮'
-              }, {
-                id:"4-4-2",
-                label: '滚动计划 修改按钮'
-              }]
-            },{
-              id:"4-5",
-              label: '财务模块',
-              children: [{
-                id:"4-5-1",
-                label: '财务模块 查询按钮'
-              }, {
-                id:"4-5-2",
-                label: '财务模块 修改按钮'
-              }]
-            }]
-          }],
-        analysisLeafNodeIds: null,
+
+        maintainFunctions:null,
+        maintainTree: [],
+        maintainLeafNodeIds: null,
       }
     },
     mounted() {
-      // this.init();
+      this.init();
     },
     methods: {
       getCheckedKeys() {
         // console.log("tree",this.$refs.tree2.getCheckedKeys())
 
-        let functionIds = [].concat(this.$refs.analysisTree.getCheckedKeys())
-          .concat(this.$refs.analysisTree.getHalfCheckedKeys());
+        let functionIds = [].concat(this.$refs.maintainTree.getCheckedKeys())
+          .concat(this.$refs.maintainTree.getHalfCheckedKeys());
 
         console.log('functionIds', functionIds);
 
-        alert(functionIds)
         let data = {
           functionIds,
           roleId: this.roleId || undefined,
         }
-        // service.insertPower({...data}).then(resp=>{
-        //   this.$notify({type:resp.data.type, message:resp.data.msg});
-        //   if(resp.data.type == "success"){
-        //     this.internal_activated = false
-        //   }
-        // })
+        service.insertPower({...data}).then(resp=>{
+          this.$notify({type:resp.data.type, message:resp.data.msg});
+          if(resp.data.type == "success"){
+            this.internal_activated = false
+          }
+        })
 
       },
       init() {
         let treePromise = service.findFunctionTree().then(resp => {
-          this.analysisTree = resp.data.tree;
-          this.analysisLeafNodeIds = resp.data.leafNodeIds;
+          this.maintainTree = resp.data.maintainTree.tree;
+          this.maintainLeafNodeIds = resp.data.maintainTree.leafNodeIds;
           return resp;
         });
         let roleFunctionPromise = service.findRoleDetail(this.roleId);//根据roleId查询functionId
 
         Promise.all([treePromise, roleFunctionPromise]).then(([treeResp, roleFunctionResp]) => {
-          this.analysisFunctions = roleFunctionResp.data
+          this.maintainFunctions = roleFunctionResp.data
             .map(e => Number.parseInt(e.functionId))
             .filter(id => {
-              return treeResp.data.leafNodeIds.indexOf(id) !== -1;
+              return treeResp.data.maintainTree.leafNodeIds.indexOf(id) !== -1;
             });
         });
 

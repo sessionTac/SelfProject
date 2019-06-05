@@ -44,6 +44,17 @@ export default {
    */
   findRoleList: (params) =>
     getRequest(`~/role/getRoleInfoList`, {params}),
+  /**
+   * 获得权限树
+   */
+  findFunctionTree:()=>
+    getRequest(`~/role/getTree`),
+  //查询该角色拥有的权限id
+  findRoleDetail: (roleId) =>
+    getRequest(`~/role/getPower/`+roleId),
+  //添加权限
+  insertPower:(data)=>
+    postRequest(`~/role/insertPower`,{data}),
 
 
 
@@ -70,10 +81,7 @@ export default {
   insertRole:(data)=>
     postRequest(`~/maintenance/basis/user/insertRole`, {data}),
 
-  /**查询角色*/
-  findFunctionTree:()=>
-      // getRequest(`~/maintenance/basis/user/rolePage`),
-      getRequest(`./static/mock-api/users/roleList.json`),
+
 
     /**根据用户id查询用户所属角色*/
   findRoleById:(userId)=>

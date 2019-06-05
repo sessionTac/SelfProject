@@ -46,11 +46,11 @@
 
             <el-table-column label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="权限设置" type="primary" size="mini" class="btn-opt" @click="setFunction(scope)">
+                    <el-button title="权限设置" type="primary" size="mini" class="btn-opt" @click="setFunction(scope.row.roleId)">
                         权限设置</el-button>
-                    <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.uuid)">
+                    <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.roleId)">
                         <i class="el-icon-news"></i></el-button>
-                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.uuid)">
+                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.roleId)">
                         <i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>
@@ -144,7 +144,7 @@
             },
             //权限设置
             setFunction(id) {
-                this.link_modal_state={activated:true,id,mode:'EDIT'};
+                this.link_modal_state={activated:true,roleId:id,mode:'EDIT'};
             },
             //删除
             deleteUser(uuid) {

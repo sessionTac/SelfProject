@@ -179,4 +179,40 @@
       version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+
+  <select id="selectPowerByRoleId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select function_id
+    from  t_role_function_relation
+    where role_id=#{roleId}
+  </select>
+
+
+  <delete id="deleteById" parameterType="java.lang.String">
+    delete from t_role_function_relation where role_id=#{id}
+  </delete>
+  <!-- 添加权限 -->
+  <insert id="insertList">
+    insert into t_role_function_relation
+    (
+    id,
+    role_id,
+    function_id,
+    is_delete,
+    create_user,
+    create_time,
+    version
+    )
+    values
+    <foreach collection="list" item="item" index="index" separator=",">
+      (
+      REPLACE(UUID(),'-',''),
+      #{roleId},
+      #{item, jdbcType=VARCHAR},
+      0,
+      #{createUser},
+      DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
+      0
+      )
+    </foreach>
+  </insert>
 </mapper>

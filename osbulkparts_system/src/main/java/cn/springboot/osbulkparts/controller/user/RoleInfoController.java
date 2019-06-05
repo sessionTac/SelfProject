@@ -9,11 +9,13 @@ import cn.springboot.osbulkparts.service.UserInfoService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -55,6 +57,31 @@ public class RoleInfoController {
 		Map<String, Object> map = new HashMap<>();
 		map.put("maintainTree", roleInfoService.getTree());//维护平台树结构
 		return map;
+	}
+
+	/**
+	 *  根据角色id查询权限
+	 * @param roleId
+	 * @return
+	 */
+	@GetMapping("/getPower/{roleId}")
+	public Object getPower(@PathVariable String roleId) {
+		return roleInfoService.findPowerByRoleId(roleId);
+	}
+
+
+	@Data
+	public static class InsertFunctionForm {
+		List<Integer> functionIds;
+		String roleId;
+	}
+	/**
+	 * 添加权限
+	 */
+	@PostMapping("/insertPower")
+	public Object insertPower(@RequestBody InsertFunctionForm form, HttpServletRequest request, Authentication auth) {
+
+		return roleInfoService.insertPower(form.functionIds, form.roleId,request,auth);
 	}
 
 }

@@ -10,12 +10,12 @@ public class MFunctionInfoEntity implements Serializable {
     /**
      * 主键id
      */
-    private String functionId;
+    private Integer functionId;
 
     /**
      * 父节点
      */
-    private String parentId;
+    private Integer parentId;
 
     /**
      * 权限名称

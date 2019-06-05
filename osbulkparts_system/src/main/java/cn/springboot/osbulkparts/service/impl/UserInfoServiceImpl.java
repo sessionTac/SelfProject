@@ -83,8 +83,11 @@ public class UserInfoServiceImpl implements UserInfoService {
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
-			map.put("userType",tDictDataDao.selectByPrimaryKey("5"));
-			map.put("userStatus",tDictDataDao.selectByPrimaryKey("6"));
+			TDictDataEntity tDictDataEntity = new TDictDataEntity();
+			tDictDataEntity.setDictTypeCode("usertype");
+			map.put("userType",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+			tDictDataEntity.setDictTypeCode("userstatus");
+			map.put("userStatus",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(map);
 		} catch (Exception e) {

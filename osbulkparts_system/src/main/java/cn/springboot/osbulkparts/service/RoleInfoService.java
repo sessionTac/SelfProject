@@ -6,6 +6,7 @@ import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import org.springframework.security.core.Authentication;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -19,4 +20,19 @@ public interface RoleInfoService {
 	 * @return
 	 */
 	Object getTree();
+
+	/**
+	 * 根据角色id查询权限
+	 * @param roleId
+	 * @return
+	 */
+	Object findPowerByRoleId(String roleId);
+
+	/**
+	 * 添加权限
+	 * @param list
+	 * @return
+	 */
+	Object insertPower(List<Integer> functionIds, String roleId, HttpServletRequest request, Authentication auth);
+
 }
