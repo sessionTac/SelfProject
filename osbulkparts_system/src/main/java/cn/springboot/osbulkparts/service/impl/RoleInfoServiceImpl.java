@@ -66,8 +66,10 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 	public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions() {
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
+			TDictDataEntity dictDataParam = new TDictDataEntity();
+			dictDataParam.setDictTypeCode("roleAt");
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
-			map.put("roleAt",tDictDataDao.selectByPrimaryKey("roleAt"));
+			map.put("roleAt",tDictDataDao.selectByPrimaryKey(dictDataParam));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(map);
 		} catch (Exception e) {
