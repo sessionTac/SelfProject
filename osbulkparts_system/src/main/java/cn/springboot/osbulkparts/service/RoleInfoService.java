@@ -35,4 +35,8 @@ public interface RoleInfoService {
 	 */
 	Object insertPower(List<Integer> functionIds, String roleId, HttpServletRequest request, Authentication auth);
 
+    /**
+     * 根据角色id获取角色的详细信息
+     */
+    CommonResultInfo<MRoleInfoEntity> getRoleInfo(String roleId);
 }

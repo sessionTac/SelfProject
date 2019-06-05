@@ -84,4 +84,13 @@ public class RoleInfoController {
 		return roleInfoService.insertPower(form.functionIds, form.roleId,request,auth);
 	}
 
+    @ApiOperation(value="获取角色详细信息", notes="根据角色Id来获取角色详细信息")
+    @ApiImplicitParam(name = "roleId", value = "角色ID", required = true, dataType = "String", paramType = "path")
+    @GetMapping("/getRoleInfo/{roleId}")
+    public CommonResultInfo<MRoleInfoEntity> getRoleInfo(@PathVariable String roleId){
+        log.info("getUserInfo is started.Paramater is userID["+roleId+"]");
+        CommonResultInfo<MRoleInfoEntity> result = roleInfoService.getRoleInfo(roleId);
+        return result;
+    }
+
 }

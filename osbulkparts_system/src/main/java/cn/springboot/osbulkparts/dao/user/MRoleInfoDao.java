@@ -23,4 +23,8 @@ public interface MRoleInfoDao {
      * 根据 角色名 来查找角色列表 分页
      */
     List<MRoleInfoEntity> selectRoleInfoList(MRoleInfoEntity mRoleInfoEntity);
+    /**
+     * 根据 roleid 来查找一条数据的详细信息
+     */
+    MRoleInfoEntity selectRoleInfo(String roleId);
 }

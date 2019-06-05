@@ -159,5 +159,21 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 			return result;
 		}
 	}
+    @SuppressWarnings("finally")
+    @Override
+    public CommonResultInfo<MRoleInfoEntity> getRoleInfo(String roleId) {
+        CommonResultInfo<MRoleInfoEntity> result = new CommonResultInfo<MRoleInfoEntity>();
+        try {
+            MRoleInfoEntity userInfo = mRoleInfoDao.selectRoleInfo(roleId);
+            result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+            result.setResult(userInfo);
+        } catch (Exception e) {
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+    }
 
 }
