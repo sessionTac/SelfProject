@@ -26,7 +26,8 @@
             </el-form>
         </div>
         <EditUserDialog v-bind.sync="link_modal_state" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state.activated"></EditUserDialog>
-
+        <set-role-dialog v-bind.sync="set_role_dialog" @success="reSearch" v-if="set_role_dialog.activated"></set-role-dialog>
+        <see-role-dialog v-bind.sync="see_role_dialog" v-if="see_role_dialog.activated"></see-role-dialog>
         <el-table size="mini"
                   style="flex: 1"
                   :height="600"
@@ -42,9 +43,9 @@
 
             <el-table-column label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="角色设置" type="primary" size="mini" class="btn-opt" @click="setRole(scope)">
+                    <el-button title="角色设置" type="primary" size="mini" class="btn-opt" @click="setRole(scope.row.userId)">
                         角色设置</el-button>
-                    <el-button title="查看" size="mini" class="btn-opt"  @click="viewRole(scope)">
+                    <el-button title="查看" size="mini" class="btn-opt"  @click="viewRole(scope.row.userId)">
                         角色查看</el-button>
                     <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.userId)">
                         <i class="el-icon-news"></i></el-button>
@@ -74,11 +75,13 @@
     import EditUserDialog from './EditUser'
     import activityService from '@/api/users/users.js'
     import ui_config from '@/config/ui_config'
+    import SetRoleDialog from  './SetRoleDialog'
+    import SeeRoleDialog from './SeeRoleDialog'
 
     import ImportButton from '@/components/data-import/ImportButton'
 
     export default {
-        components:{EditUserDialog,ImportButton},
+        components:{EditUserDialog,ImportButton,SetRoleDialog,SeeRoleDialog},
         data() {
             return {
                 PAGE_SIZES : ui_config.PAGE_SIZES,
@@ -128,6 +131,17 @@
             //编辑用户
             edit(id) {
                 this.link_modal_state={activated:true,id,mode:'EDIT'};
+            },
+            reSearch(){
+                this.exec_search({search_keys:this.search_keys, pageNum:1});
+            },
+            //设置角色
+            setRole(userId){
+                this.set_role_dialog = {activated:true,userId};
+            },
+            //角色查看
+            viewRole(userId){
+                this.see_role_dialog={activated:true,userId};
             },
             //删除
             deleteUser(uuid) {

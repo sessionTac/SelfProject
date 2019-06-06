@@ -4,6 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.dao.user.TUserRoleRelationDao;
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
+import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +36,9 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Autowired
 	private TDictDataDao tDictDataDao;
+
+	@Autowired
+	private TUserRoleRelationDao tUserRoleRelationDao;
 	
 	@Autowired
 	private I18nMessageBean messageBean;
@@ -51,6 +57,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResultInfo(pageInfo);
 		} catch (Exception e) {
+			e.printStackTrace();
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
@@ -107,6 +114,22 @@ public class UserInfoServiceImpl implements UserInfoService {
 			MUserInfoEntity userInfo = muserInfoDao.selectUserWithRoleAndFunc(userName, roleId);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(userInfo);
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(String userId) {
+		CommonResultInfo<TUserRoleRelationEntity> result = new CommonResultInfo<TUserRoleRelationEntity>();
+		try {
+			List<TUserRoleRelationEntity> userInfo = tUserRoleRelationDao.findRoleByUserId(userId);
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			result.setResultList(userInfo);
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("common.server.error"));

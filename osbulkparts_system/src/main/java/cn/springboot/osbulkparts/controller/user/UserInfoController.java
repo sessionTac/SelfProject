@@ -3,6 +3,8 @@ package cn.springboot.osbulkparts.controller.user;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
+import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -26,7 +28,7 @@ public class UserInfoController {
 	
 	@ApiOperation(value="获取用户列表信息", notes="查询所有用户的列表")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "muserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body"),
+			@ApiImplicitParam(name = "mUserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body"),
 			@ApiImplicitParam(name = "pageNum", value = "当前页码(默认1)", required = true, dataType = "String", paramType = "query"),
 			@ApiImplicitParam(name = "pageSize", value = "每页数据条数(默认10)", required = true, dataType = "String", paramType = "query")
 	})
@@ -78,4 +80,12 @@ public class UserInfoController {
 		CommonResultInfo<?> result = userInfoService.deleteUserInfo(userId, auth);
 		return result;
 	}
+
+	@ApiOperation(value="获取该用户下角色列表信息", notes="根据用户Id来获取该用户下所有角色")
+	@ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "String", paramType = "path")
+	@GetMapping("/findRole/{userId}")
+	public CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(@PathVariable String userId){
+		return userInfoService.findRoleByUserId(userId);
+	}
+
 }

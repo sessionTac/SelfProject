@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="cn.springboot.osbulkparts.dao.TUserRoleRelationEntityMapper">
+<mapper namespace="cn.springboot.osbulkparts.dao.user.TUserRoleRelationDao">
   <resultMap id="BaseResultMap" type="cn.springboot.osbulkparts.entity.TUserRoleRelationEntity">
     <!--
       WARNING - @mbg.generated
@@ -16,6 +16,12 @@
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="version" jdbcType="INTEGER" property="version" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    <association property="mRoleInfoEntity"
+                 javaType="cn.springboot.osbulkparts.entity.MRoleInfoEntity">
+      <result property="roleId" column="role_id"/>
+      <result property="roleName" column="roleName"/>
+      <result property="roleDesc" column="roleDesc"/>
+    </association>
   </resultMap>
   <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="cn.springboot.osbulkparts.entity.TUserRoleRelationEntity">
     <!--
@@ -224,4 +230,15 @@
       and user_id = #{userId,jdbcType=VARCHAR}
       and role_id = #{roleId,jdbcType=VARCHAR}
   </update>
+
+  <select id="findRoleByUserId" resultMap="BaseResultMap">
+  SELECT
+      t1.user_id,t1.id,t1.role_id,t2.role_name as roleName,t2.role_desc as roleDesc
+  FROM
+      t_user_role_relation AS t1
+  LEFT JOIN m_role_info as t2 on t1.role_id=t2.role_id
+  WHERE
+      t1.is_delete = 0
+      and t1.user_id=#{userId}
+  </select>
 </mapper>

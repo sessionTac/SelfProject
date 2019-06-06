@@ -30,6 +30,12 @@ export default {
   /***根据id删除本条数据*/
   deleteById:(id)=>
     deleteRequest(`~/user/deleteUser/`+id),
+
+
+  /**根据用户id查询用户所属角色*/
+  findRoleById:(userId)=>
+    getRequest(`~/user/findRole/`+userId),
+
   //-------------------------------------------------------------------------------------------------
 
   //--------------------------------角色----------------------------------------------------------------
@@ -102,9 +108,7 @@ export default {
 
 
 
-    /**根据用户id查询用户所属角色*/
-  findRoleById:(userId)=>
-     getRequest(`~/maintenance/basis/user/findRole/`+userId),
+
   /**文件下载**/
   installdownloadExcel:(params) =>
     postRequest(`~/maintenance/basis/user/excel`,{params,responseType:'blob'}),

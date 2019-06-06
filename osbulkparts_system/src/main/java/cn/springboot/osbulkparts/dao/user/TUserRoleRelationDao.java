@@ -4,6 +4,8 @@ import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 @Mapper
 public interface TUserRoleRelationDao {
     int deleteByPrimaryKey(@Param("id") String id, @Param("userId") String userId, @Param("roleId") String roleId);
@@ -19,4 +21,6 @@ public interface TUserRoleRelationDao {
     int updateByPrimaryKeyWithBLOBs(TUserRoleRelationEntity record);
 
     int updateByPrimaryKey(TUserRoleRelationEntity record);
+
+    List<TUserRoleRelationEntity> findRoleByUserId(String userId);
 }
