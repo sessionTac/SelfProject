@@ -60,7 +60,7 @@
 </template>
 
 <script>
-
+  import service from '@/api/import'
   // import download from 'downloadjs'
 
   export default {
@@ -68,7 +68,7 @@
     components:{},
     computed:{
       title() {
-        return this.targetName + "信息导入"
+        return this.targetName+this.target + "信息导入"
       }
     },
 
@@ -215,7 +215,7 @@
       doPost() {
 
         switch(this.target) {
-          case 'USER_INFO' : ''
+          case 'MATTER' : return service.importData('/role/leadExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
 
           // case 'ORGANIZATION'                : return service.importData('/basis/organization/leadExcel', {categoryNo:this.form.categoryNo && this.form.categoryNo || ""}, {file:this.currentFile.raw}, this.onUploadProgress);
           //
@@ -303,51 +303,51 @@
         console.log("transferorNo:"+this.form.transferorNo)
         console.log("powerStation:"+this.form.powerStation)
         this.isUploading = !this.isUploading
-        // this.doPost().then(resp => {
-        //   this.isUploading = !this.isUploading
-        //   this.currentFile = false
-        //   let status = resp.data.status
-        //
-        //   if(status){
-        //     this.message = resp.data.message;
-        //     this.$emit('saved');
-        //     this.timeOut = setTimeout(() => {
-        //       this.dialogFormVisible = false;
-        //     }, 5000);
-        //
-        //
-        //     this.uploadState = {
-        //       state: 'uploading',
-        //       progressStatus: 'success',
-        //       percentage: 100,
-        //       stateMessage: undefined,
-        //     };
-        //
-        //   } else {
-        //
-        //
-        //     this.uploadState = {
-        //       state: 'uploading',
-        //       progressStatus: 'exception',
-        //       percentage: 100,
-        //       stateMessage: undefined,
-        //     };
-        //
-        //     this.message = resp.data.message;
-        //     this.entity = resp.data.entity;
-        //     this.fileNameErr = resp.data.fileName;
-        //     this.$refs.upload.clearFiles();
-        //     this.$refs.upload.abort();
-        //     this.currentFile = null;
-        //     this.fileName = '';
-        //   }
-        // }, err => {
-        //
-        //   this.uploadState.progressStatus = 'exception';
-        //   this.uploadState.stateMessage   = '服务器端异常';
-        //
-        //   console.error('上传失败', err);
-        // })
+        this.doPost().then(resp => {
+          this.isUploading = !this.isUploading
+          this.currentFile = false
+          let status = resp.data.status
+
+          if(status){
+            this.message = resp.data.message;
+            this.$emit('saved');
+            this.timeOut = setTimeout(() => {
+              this.dialogFormVisible = false;
+            }, 5000);
+
+
+            this.uploadState = {
+              state: 'uploading',
+              progressStatus: 'success',
+              percentage: 100,
+              stateMessage: undefined,
+            };
+
+          } else {
+
+
+            this.uploadState = {
+              state: 'uploading',
+              progressStatus: 'exception',
+              percentage: 100,
+              stateMessage: undefined,
+            };
+
+            this.message = resp.data.message;
+            this.entity = resp.data.entity;
+            this.fileNameErr = resp.data.fileName;
+            this.$refs.upload.clearFiles();
+            this.$refs.upload.abort();
+            this.currentFile = null;
+            this.fileName = '';
+          }
+        }, err => {
+
+          this.uploadState.progressStatus = 'exception';
+          this.uploadState.stateMessage   = '服务器端异常';
+
+          console.error('上传失败', err);
+        })
       },
 
       downloadFile(){

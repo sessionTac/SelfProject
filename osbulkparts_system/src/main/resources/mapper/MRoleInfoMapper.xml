@@ -156,23 +156,14 @@
       <if test="roleAt != null">
         role_at = #{roleAt,jdbcType=VARCHAR},
       </if>
-      <if test="createUser != null">
-        create_user = #{createUser,jdbcType=VARCHAR},
-      </if>
-      <if test="createTime != null">
-        create_time = #{createTime,jdbcType=VARCHAR},
-      </if>
       <if test="updateUser != null">
         update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=VARCHAR},
-      </if>
-      <if test="isDelete != null">
-        is_delete = #{isDelete,jdbcType=INTEGER},
+        update_time = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
       </if>
       <if test="version != null">
-        version = #{version,jdbcType=INTEGER},
+        version = version+1,
       </if>
     </set>
     where role_id = #{roleId,jdbcType=VARCHAR}
@@ -187,12 +178,9 @@
     set role_name = #{roleName,jdbcType=VARCHAR},
       role_desc = #{roleDesc,jdbcType=VARCHAR},
       role_at = #{roleAt,jdbcType=VARCHAR},
-      create_user = #{createUser,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=VARCHAR},
       update_user = #{updateUser,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=VARCHAR},
-      is_delete = #{isDelete,jdbcType=INTEGER},
-      version = #{version,jdbcType=INTEGER}
+      update_time = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
+      version = version+1
     where role_id = #{roleId,jdbcType=VARCHAR}
   </update>
   <select id="selectRoleInfoList" parameterType="cn.springboot.osbulkparts.entity.MRoleInfoEntity" resultMap="BaseResultMap">
@@ -223,6 +211,7 @@
         t1.role_name,
         t1.role_desc,
         t1.role_at,
+        t1.version,
         t2. NAME AS dictRoleAt
     FROM
         m_role_info AS t1
@@ -233,4 +222,31 @@
         t1.is_delete = 0
         and t1.role_id=#{roleId}
   </select>
+  <!--校验角色名是否重复和排他验证-->
+  <select id="checkInfo" parameterType="cn.springboot.osbulkparts.entity.MRoleInfoEntity" resultMap="BaseResultMap">
+    SELECT
+    t1.role_id,t1.role_name,t1.role_desc,t1.role_at
+    FROM
+    m_role_info AS t1
+    WHERE
+    t1.is_delete = 0
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(roleName)">
+      AND t1.role_name = #{roleName}
+    </if>
+      <if test="version != null and version != ''">
+          AND t1.version = #{version}
+      </if>
+      <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(roleId)">
+          AND t1.role_id = #{roleId}
+      </if>
+  </select>
+    <!-- 根据role 删除一条数据 逻辑删除-->
+    <update id="deleteByRoleId" parameterType="cn.springboot.osbulkparts.entity.MRoleInfoEntity">
+        update m_role_info
+        set
+        update_user=#{updateUser},
+        update_time=DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
+        is_delete = #{isDelete}
+        where role_id = #{roleId,jdbcType=VARCHAR}
+    </update>
 </mapper>

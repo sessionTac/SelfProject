@@ -39,7 +39,7 @@
             }
         },
         props:{
-            id: {},
+            roleId: {},
             mode:String
         },
         data() {
@@ -77,46 +77,54 @@
                     this.options=resp.data.result
                 });
                 if(this.mode == 'EDIT'){
-                    service.selectRoleById(this.id).then(resp => {
+                    service.selectRoleById(this.roleId).then(resp => {
                         this.form = resp.data.result ;
                     })
                 }
             },
             /*确定*/
-            submit(formName){
-                this.$refs[formName].validate((valid) => {
+             submit(formName){
+                this.$refs[formName].validate(async (valid) => {
                     if (valid) {
                         let data={
-                            userId       : this.id            || undefined,
-                            userName : this.form.userName || undefined,
-                            userRealName : this.form.userRealName || undefined,
-                            password : this.form.password || undefined,
-                            userMail :  this.form.userMail || undefined,
-                            userPhone: this.form.userPhone || undefined,
-                            userType      : this.form.userType      || undefined,
-                            userStatus     : this.form.userStatus     || undefined,
-                            version   : this.form.version || undefined,
+                            roleId       : this.roleId            || undefined,
+                            roleName : this.form.roleName || undefined,
+                            roleDesc : this.form.roleDesc || undefined,
+                            roleAt : this.form.roleAt || undefined,
+                            version:this.form.version || undefined,
                         }
                         if(this.mode == 'EDIT'){  //编辑
-                            service.updateUser({...data}).then(resp=>{
-                                if(resp.data.code == "201"){
-                                    this.$notify({message: resp.data.message, type: 'success'});
-                                    this.$emit("success");
-                                    this.dialogFormVisible = false
-                                }else {
-                                    this.$notify({message: resp.data.message, type: 'error'});
-                                }
-                            })
+                            let check = await service.checkRoleInfo({...data,checkFlag:"edit"});
+                            if (check.data.code== "201") {
+                                service.updateRole({...data}).then(resp=>{
+                                    if(resp.data.code == "201"){
+                                        this.$notify({message: resp.data.message, type: 'success'});
+                                        this.$emit("success");
+                                        this.dialogFormVisible = false
+                                    }else {
+                                        this.$notify({message: resp.data.message, type: 'error'});
+                                    }
+                                })
+                            }else {
+                                this.$notify({message: check.data.message, type: 'error'});
+                            }
+
                         }else{
-                            service.addUser({...data}).then(resp=>{  //添加
-                                if(resp.data.code == "201"){
-                                    this.$notify({message: resp.data.message, type: 'success'});
-                                    this.$emit("success");
-                                    this.dialogFormVisible = false
-                                }else {
-                                    this.$notify({message: resp.data.message, type: 'error'});
-                                }
-                            })
+                            let check = await service.checkRoleInfo({...data,checkFlag:"add"});
+                            if (check.data.code== "201") {
+                                service.addRole({...data}).then(resp=>{  //添加
+                                    if(resp.data.code == "201"){
+                                        this.$notify({message: resp.data.message, type: 'success'});
+                                        this.$emit("success");
+                                        this.dialogFormVisible = false
+                                    }else {
+                                        this.$notify({message: resp.data.message, type: 'error'});
+                                    }
+                                })
+                            }else {
+                                this.$notify({message: check.data.message, type: 'error'});
+                            }
+
                         }
 
                     } else {

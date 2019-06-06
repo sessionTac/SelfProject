@@ -59,7 +59,23 @@ export default {
   insertPower:(data)=>
     postRequest(`~/role/insertPower`,{data}),
 
+  /**
+   * 修改角色
+   */
+  updateRole:(data)=>
+    putRequest(`~/role/updateRole`, {data}),
 
+  /**新增角色*/
+  addRole:(data)=>
+    postRequest(`~/role/addRole`, {data}),
+  /**
+   * 添加或者修改角色 进行校验查重
+   */
+  checkRoleInfo:(params)=>
+    getRequest(`~/role/checkRoleInfo`, {params}),
+  /***根据id删除本条数据*/
+  deleteRoleById:(id)=>
+    deleteRequest(`~/role/deleteRole/`+id),
 
 
   //---------------------------------------------------------------------------------------------------

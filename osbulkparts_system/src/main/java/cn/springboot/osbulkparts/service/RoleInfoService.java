@@ -39,4 +39,16 @@ public interface RoleInfoService {
      * 根据角色id获取角色的详细信息
      */
     CommonResultInfo<MRoleInfoEntity> getRoleInfo(String roleId);
+	/**
+	 * 校验角色信息
+	 */
+	CommonResultInfo<?> checkInfo(MRoleInfoEntity mRoleInfoEntity,String checkFlag);
+    /**
+     * 更新角色信息
+     */
+    CommonResultInfo<?> updateRoleInfo(MRoleInfoEntity mRoleInfoEntity,Authentication auth);
+
+    CommonResultInfo<?> deleteRoleInfo(String roleId, Authentication auth);
+
+    CommonResultInfo<?> addRoleInfo(MRoleInfoEntity mRoleInfoEntity, Authentication auth);
 }

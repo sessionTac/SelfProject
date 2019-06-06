@@ -32,7 +32,7 @@
             </el-form>
         </div>
         <SetAuthority v-bind.sync="link_modal_state"  v-if="link_modal_state.activated"></SetAuthority>
-
+        <edit-role v-bind.sync="link_modal_state_edit" @success="exec_search({search_keys, pageNum:1})"  v-if="link_modal_state_edit.activated"></edit-role>
         <el-table size="mini"
                   style="flex: 1"
                   :height="600"
@@ -78,9 +78,10 @@
     import activityService from '@/api/users/users.js'
     import ui_config from '@/config/ui_config'
     import SetAuthority from '@/views/sysUsers/SetAuthority'
+    import EditRole from './EditRole'
 
     export default {
-        components: { SetAuthority},
+        components: { SetAuthority,EditRole},
         data() {
             return {
                 options:{},
@@ -136,29 +137,30 @@
             },
             //新增角色
             add() {
-                this.link_modal_state={activated:true,mode:'ADD'};
+                this.link_modal_state_edit={activated:true,mode:'ADD'};
             },
             //编辑角色
             edit(id) {
-                this.link_modal_state={activated:true,id,mode:'EDIT'};
+                this.link_modal_state_edit={activated:true,roleId:id,mode:'EDIT'};
             },
             //权限设置
             setFunction(id) {
                 this.link_modal_state={activated:true,roleId:id,mode:'EDIT'};
             },
             //删除
-            deleteUser(uuid) {
+            deleteUser(roleId) {
                 this.$confirm("确定删除吗？", "提示", {
                     confirmButtonText: "是",
                     cancelButtonText: "否",
                     type: 'warning',
                     center: true
                 }).then(() => {
-                        activityService.delete(uuid).then(resp => {
-                            if (resp.data == 1) {
-                                this.$notify({message: "删除成功", type: 'success'});
+                        activityService.deleteRoleById(roleId).then(resp => {
+                            if (resp.data.code == "201") {
+                                this.$notify({message: resp.data.message, type: 'success'});
+                                this.exec_search({search_keys:this.search_keys, pageNum:1})
                             } else {
-                                this.$notify({message: "删除失败", type: 'error'});
+                                this.$notify({message: resp.data.message, type: 'error'});
                             }
                         })
                     }

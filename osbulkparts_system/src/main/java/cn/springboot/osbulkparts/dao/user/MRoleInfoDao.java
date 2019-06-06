@@ -27,4 +27,12 @@ public interface MRoleInfoDao {
      * 根据 roleid 来查找一条数据的详细信息
      */
     MRoleInfoEntity selectRoleInfo(String roleId);
+    /**
+     * 校验角色名是否重复
+     */
+    List<MRoleInfoEntity> checkInfo(MRoleInfoEntity mRoleInfoEntity);
+    /**
+     * 根据role 删除一条数据 逻辑删除
+     */
+    int deleteByRoleId(MRoleInfoEntity mRoleInfoEntity);
 }

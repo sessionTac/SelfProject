@@ -77,10 +77,13 @@
           roleId: this.roleId || undefined,
         }
         service.insertPower({...data}).then(resp=>{
-          this.$notify({type:resp.data.type, message:resp.data.msg});
-          if(resp.data.type == "success"){
+          if (resp.data.code=='201') {
+            this.$notify({message: resp.data.message, type: 'success'});
             this.internal_activated = false
+          }else {
+            this.$notify({message: resp.data.message, type: 'error'});
           }
+
         })
 
       },
