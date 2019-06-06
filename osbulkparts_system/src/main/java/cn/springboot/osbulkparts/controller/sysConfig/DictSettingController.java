@@ -62,14 +62,14 @@ public class DictSettingController {
 	
 	@ApiOperation(value="获取数据字典类型的数据信息", notes="根据数据字典类型ID查询其数据信息")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "dictTypeId", value = "数据字典类型ID", required = true, dataType = "String", paramType = "path"),
+			@ApiImplicitParam(name = "dictTypeCode", value = "数据字典类型编码", required = true, dataType = "String", paramType = "path"),
 			@ApiImplicitParam(name = "pageNum", value = "分页-当前页码(默认1)", required = true, dataType = "String", paramType = "path"),
 			@ApiImplicitParam(name = "pageSize", value = "分页-总页数(默认10)", required = true, dataType = "String", paramType = "path")
 	})
-	@GetMapping("/getDictDataInfo/{dictTypeId}")
-	public CommonResultInfo<TDictDataEntity> getDictDataInfoList(@PathVariable String dictTypeId,@RequestParam(defaultValue = "1") int pageNum,
+	@GetMapping("/getDictDataInfo/{dictTypeCode}")
+	public CommonResultInfo<TDictDataEntity> getDictDataInfoList(@PathVariable String dictTypeCode,@RequestParam(defaultValue = "1") int pageNum,
 															 @RequestParam(defaultValue="10") int pageSize){
-		CommonResultInfo<TDictDataEntity> result = dictDataSettingService.getDictDataInfo(dictTypeId,pageNum,pageSize);
+		CommonResultInfo<TDictDataEntity> result = dictDataSettingService.getDictDataInfo(dictTypeCode,pageNum,pageSize);
 		return result;
 	}
 	

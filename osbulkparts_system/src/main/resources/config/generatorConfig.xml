@@ -47,15 +47,15 @@
 			enableDeleteByExample="false">
 		</table> -->
 		<!-- 权限信息 -->
-  		<table tableName="m_function_info" domainObjectName="MFunctionInfoEntity" 
+<!--   		<table tableName="m_function_info" domainObjectName="MFunctionInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
-		</table>
+		</table> -->
 		<!-- 角色权限关系 -->
-  		<table tableName="t_role_function_relation" domainObjectName="TRoleFunctionRelationEntity" 
+<!--   		<table tableName="t_role_function_relation" domainObjectName="TRoleFunctionRelationEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
-		</table>
+		</table> -->
 		<!-- 公共数据字典表  -->
 <!--  		<table tableName="t_dict_data" domainObjectName="TDictDataEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
@@ -66,6 +66,10 @@
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
 		</table> -->
-
+		<!-- 供应商信息表  -->
+  		<table tableName="m_supplier_info" domainObjectName="NSupplierInfoEntity" 
+			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false">
+		</table>
 	</context>
 </generatorConfiguration>

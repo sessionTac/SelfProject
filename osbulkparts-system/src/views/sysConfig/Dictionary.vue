@@ -15,7 +15,7 @@
                                 <span>通用分类</span>
                             </template>
                             <el-menu-item-group style="">
-                                <el-menu-item  v-for="(item,index) in system_menus" :index="item.code":key="index" @click="screenByMenu(item.dictTypeId,item.name)">{{item.name}}</el-menu-item>
+                                <el-menu-item  v-for="(item,index) in system_menus" :index="item.code":key="index" @click="screenByMenu(item.code,item.name)">{{item.name}}</el-menu-item>
                             </el-menu-item-group>
                         </el-submenu>
 
@@ -23,7 +23,7 @@
                 </div>
             </div>
             <div style="flex: 4;display: flex;flex-direction: column;height: 100%;">
-                <div style="padding-left: 30px;margin-top: 5px" >
+<!--                <div style="padding-left: 30px;margin-top: 5px" >
                     <el-form :inline="true" size="mini"  @submit.native.prevent>
                         <el-form-item style="float: right;margin-right: 20px;margin-top: 10px">
                             <el-button type="" @click="add()" :disabled="disableFlag"  size="mini" >
@@ -31,7 +31,7 @@
                             </el-button>
                         </el-form-item>
                     </el-form>
-                </div>
+                </div>-->
 
                 <div style="padding-top: 10px;padding-left: 30px">
                     <el-form :inline="true" size="mini">
@@ -66,8 +66,8 @@
                             <template slot-scope="scope" >
                                 <el-button title="编辑" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row)">
                                     <i class="el-icon-edit"></i></el-button>
-                                <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="remove(scope.row)">
-                                    <i class="el-icon-delete"></i></el-button>
+<!--                                <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="remove(scope.row)">-->
+<!--                                    <i class="el-icon-delete"></i></el-button>-->
                             </template>
                         </el-table-column>
                     </el-table>

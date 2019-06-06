@@ -2,57 +2,60 @@
   <div style="display: flex;flex-direction: column;height: 100%">
     <div class="el-header">
       <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-        <el-form-item label="供应商编号">
-          <el-input placeholder="供应商编号" v-model="search_keys.matterHNRNo" class="search-form-item-input"></el-input>
-        </el-form-item>
         <el-form-item label="供应商代码">
-          <el-input placeholder="供应商代码" v-model="search_keys.matterNo" class="search-form-item-input"></el-input>
+          <el-input placeholder="供应商代码" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
         </el-form-item>
-        <el-form-item label="供应商名称">
-          <el-input placeholder="供应商名称" v-model="search_keys.matterNo" class="search-form-item-input"></el-input>
+        <el-form-item label="供应商中文名称">
+          <el-input placeholder="供应商中文名称" v-model="search_keys.supplierNameCn" class="search-form-item-input"></el-input>
         </el-form-item>
-        <el-form-item label="供应商说明">
-          <el-input placeholder="供应商说明" v-model="search_keys.matterNo" class="search-form-item-input"></el-input>
+        <el-form-item label="供应商英文名称">
+          <el-input placeholder="供应商英文名称" v-model="search_keys.supplierNameEn" class="search-form-item-input"></el-input>
         </el-form-item>
-        <el-form-item label="地址">
-          <el-input placeholder="地址" v-model="search_keys.matterNo" class="search-form-item-input"></el-input>
+        <el-form-item label="供应商中文说明">
+          <el-input placeholder="供应商中文说明" v-model="search_keys.supplierDescCn" class="search-form-item-input"></el-input>
         </el-form-item>
-        <el-form-item label="联系人">
-          <el-input placeholder="联系人" v-model="search_keys.matterNo" class="search-form-item-input"></el-input>
-        </el-form-item>
-        <el-form-item label="联系方式">
-          <el-input placeholder="联系方式" v-model="search_keys.matterNo" class="search-form-item-input"></el-input>
+        <el-form-item label="供应商英文说明">
+          <el-input placeholder="供应商英文说明" v-model="search_keys.supplierDescEn" class="search-form-item-input"></el-input>
         </el-form-item>
         <el-form-item label="供应商分类">
-          <el-input placeholder="供应商分类" v-model="search_keys.matterNo" class="search-form-item-input"></el-input>
+          <el-select v-model="search_keys.supplierCata"  size="mini" knx>
+            <el-option value=""></el-option>
+            <el-option
+                    size="mini" knx
+                    v-for="item in supplierCatas"
+                    :key="item.code"
+                    :label="item.name"
+                    :value="item.code">
+            </el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="供应商等级">
-          <el-select v-model="search_keys.matterType"  size="mini" knx>
+          <el-select v-model="search_keys.supplierLevel"  size="mini" knx>
             <el-option value=""></el-option>
             <el-option
               size="mini" knx
-              v-for="item in matterTypes"
+              v-for="item in supplierLevels"
               :key="item.code"
               :label="item.name"
               :value="item.code">
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="创建人">
-          <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-        </el-form-item>
-        <el-form-item label="创建时间">
-          <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-        </el-form-item>
-        <el-form-item label="最后修改人">
-          <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-        </el-form-item>
-        <el-form-item label="最后修改时间">
-          <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
+        <el-form-item label="供应商所属">
+          <el-select v-model="search_keys.supplierAt"  size="mini" knx>
+            <el-option value=""></el-option>
+            <el-option
+                    size="mini" knx
+                    v-for="item in supplierAts"
+                    :key="item.code"
+                    :label="item.name"
+                    :value="item.code">
+            </el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item style="float: right">
-          <import-button target = "MATTER"></import-button>
+          <import-button target = "SUPPLIER"></import-button>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="" @click="exportData" size="mini" >
@@ -85,25 +88,31 @@
               :data="search_result.list" row-key="id"
               :stripe="true"
     >
-      <el-table-column prop="matterHNRNo" fixed width="100" align="center" label="供应商编码"  />
-      <el-table-column prop="matterNo" fixed width="100" align="center" label="供应商代码"  />
-      <el-table-column prop="matterType" fixed width="100" align="center" label="供应商名称" />
-      <el-table-column prop="matterCnDec"  :show-overflow-tooltip="true" align="center" label="供应商说明"  />
-      <el-table-column prop="matterEnDec"  :show-overflow-tooltip="true" align="center" label="地址"  />
-      <el-table-column prop="matterRuDec"  :show-overflow-tooltip="true" align="center" label="联系人"  />
-      <el-table-column prop="matterRuDec" align="center" label="联系方式"  />
-      <el-table-column prop="matterRuDec" align="center" label="供应商分类"  />
-      <el-table-column prop="unit" align="center" label="供应商等级"  />
-      <el-table-column prop="currency" align="center" label="创建人"  />
-      <el-table-column prop="currency" align="center" label="创建时间"  />
-      <el-table-column prop="currency" align="center" label="最后修改人"  />
-      <el-table-column prop="currency" align="center" label="最后修改时间"  />
+      <el-table-column prop="supplierCode" fixed width="100" align="center" label="供应商代码"  />
+      <el-table-column prop="supplierNameCn" fixed width="100" align="center" label="供应商中文名称" />
+      <el-table-column prop="supplierNameEn" fixed width="100" align="center" label="供应商英文名称" />
+      <el-table-column prop="supplierDescCn"  :show-overflow-tooltip="true" align="center" label="供应商中文说明"  />
+      <el-table-column prop="supplierDescEn"  :show-overflow-tooltip="true" align="center" label="供应商英文说明"  />
+      <el-table-column prop="address"  :show-overflow-tooltip="true" align="center" label="地址"  />
+      <el-table-column prop="contact"  :show-overflow-tooltip="true" align="center" label="联系人"  />
+      <el-table-column prop="accountBank" align="center" label="开户银行"  />
+      <el-table-column prop="bankAddress" align="center" label="开户银行地址"  />
+      <el-table-column prop="accountNo" align="center" label="帐号信息"  />
+      <el-table-column prop="accountant" align="center" label="账户人"  />
+      <el-table-column prop="contactWays" align="center" label="联系方式"  />
+      <el-table-column prop="dictSupplierCata.name" align="center" label="供应商分类"  />
+      <el-table-column prop="dictSupplierLevel.name" align="center" label="供应商等级"  />
+      <el-table-column prop="dictSupplierAt.name" align="center" label="供应商等级"  />
+      <el-table-column prop="createUser" align="center" label="创建人"  />
+      <el-table-column prop="createTime" align="center" label="创建时间"  />
+      <el-table-column prop="updateUser" align="center" label="最后修改人"  />
+      <el-table-column prop="updateTime" align="center" label="最后修改时间"  />
 
       <el-table-column fixed="right" width="120" label="操作" >
         <template slot-scope="scope" >
-          <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.uuid)">
+          <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.supplierId)">
             <i class="el-icon-news"></i></el-button>
-          <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">
+          <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.supplierId)">
             <i class="el-icon-delete"></i></el-button>
         </template>
       </el-table-column>
@@ -127,7 +136,7 @@
 </template>
 
 <script>
-  import activityService from '@/api/basedata/matter.js'
+  import activityService from '@/api/basedata/supplier.js'
   import ui_config from '@/config/ui_config'
   import ImportButton from '@/components/data-import/ImportButton'
   import EditSupplier from './EditSupplier'
@@ -139,19 +148,18 @@
         link_modal_state      : {},
         //单位下拉框数据
         is_searching : true,
-        matterTypes:[],
-        units:[],
-        currencys:[],
+        supplierCatas:[],
+        supplierLevels:[],
+        supplierAts:[],
         search_keys   : {
-          matterHNRNo:'',
-          matterNo:'',
-          matterType:'',
-          matterCnDec:'',
-          matterEnDec:'',
-          unit:'',
-          scalerRela:'',
-          scalerUnit:'',
-          currency:'',
+          supplierCode:'',
+          supplierNameCn:'',
+          supplierNameEn:'',
+          supplierDescCn:'',
+          supplierDescEn:'',
+          supplierCata:'',
+          supplierLevel:'',
+          supplierAt:'',
         },
         search_keys_snap      : null,
         search_result         : {},
@@ -164,10 +172,10 @@
     },
     methods: {
       init(){
-        activityService.init().then(resp =>{
-          this.currencys = resp.data.currencys;
-          this.units = resp.data.units;
-          this.matterTypes = resp.data.matterTypes;
+        activityService.initData().then(resp =>{
+          this.supplierCatas = resp.data.result.supplierCatas;
+          this.supplierLevels = resp.data.result.supplierLevels;
+          this.supplierAts = resp.data.result.supplierAts;
         }, err => {
           console.error(err);
         })
@@ -178,8 +186,8 @@
                     pageSize = this.search_result.pageSize,
                   }) {
         let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
-        activityService.findMatterList({search_keys, pageNumber, pageSize}).then(resp => {
-          this.search_result = resp.data;                //视图展示查询结果
+        activityService.findSupplierList({...search_keys, pageNumber, pageSize}).then(resp => {
+          this.search_result = resp.data.resultInfo;                //视图展示查询结果
           this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
           this.search_keys_snap = search_keys_snap;             //存储查询条件快照
         }, err => {

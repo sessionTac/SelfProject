@@ -14,11 +14,11 @@
           </el-button>
         </el-form-item>
 
-        <el-form-item style="float: right">
-          <el-button type="" @click="add()"  size="mini" >
-            <i class="fa fa-plus" aria-hidden="true"></i> 添加
-          </el-button>
-        </el-form-item>
+<!--        <el-form-item style="float: right">-->
+<!--          <el-button type="" @click="add()"  size="mini" >-->
+<!--            <i class="fa fa-plus" aria-hidden="true"></i> 添加-->
+<!--          </el-button>-->
+<!--        </el-form-item>-->
 
         <el-form-item label=" " label-width="40px" style="float: right">
           <el-button type="primary"  @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
@@ -89,8 +89,8 @@
         <template slot-scope="scope" >
           <el-button title="编辑" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row,'编辑')">
             <i class="el-icon-edit"></i></el-button>
-          <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="remove(scope.row)">
-            <i class="el-icon-delete"></i></el-button>
+<!--          <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="remove(scope.row)">-->
+<!--            <i class="el-icon-delete"></i></el-button>-->
         </template>
       </el-table-column>
       <!--<el-table-column fixed="right" label="操作" width="300">-->
