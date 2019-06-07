@@ -113,4 +113,14 @@ public class UserInfoController {
 		return userInfoService.insertRole(form.roleIds, form.userId,auth);
 	}
 
+	@ApiOperation(value="校验用户名是否重复", notes="校验用户名是否重复")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "mRoleInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body"),
+			@ApiImplicitParam(name = "checkFlag", value = "判断是添加校验还是修改校验的标志", required = true, dataType = "body", paramType = "body"),
+	})
+	@GetMapping("/checkRoleInfo")
+	public CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity, String checkFlag){
+		return userInfoService.checkInfo(mUserInfoEntity,checkFlag);
+	}
+
 }

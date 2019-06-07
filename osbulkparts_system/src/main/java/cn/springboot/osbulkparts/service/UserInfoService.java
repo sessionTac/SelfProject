@@ -41,4 +41,9 @@ public interface UserInfoService {
      * @return
      */
     Object insertRole(List<Integer> roleIds, String userId,Authentication auth);
+
+    /**
+     * 校验角色信息
+     */
+    CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity,String checkFlag);
 }

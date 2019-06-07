@@ -188,6 +188,40 @@ public class UserInfoServiceImpl implements UserInfoService {
             return result;
         }
     }
+    @SuppressWarnings("finally")
+    @Override
+    public CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity, String checkFlag) {
+        CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+        result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+        try {
+            MUserInfoEntity checkEntity = new MUserInfoEntity();
+            checkEntity.setUserName(mUserInfoEntity.getUserName());
+            List<MUserInfoEntity> checkList = muserInfoDao.checkingAndVersion(checkEntity);
+            if (checkFlag.equals("add")) {
+                if (checkList.size() == 0) {
+                    result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                } else {
+                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
+                }
+            } else if (checkFlag.equals("edit")) {
+                if (
+                        (checkList.size() == 0)
+                                ||
+                                ((checkList.size() == 1) && (mUserInfoEntity.getUserId().equals(checkList.get(0).getUserId())))
+                ) {
+                    result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                } else {
+                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
+                }
+            }
+        } catch (Exception e) {
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+    }
 
     @SuppressWarnings("finally")
 	@Override
@@ -220,23 +254,12 @@ public class UserInfoServiceImpl implements UserInfoService {
             //校验 version 排他  (根据id和version)
             List<MUserInfoEntity> checkListVersion=muserInfoDao.checkingAndVersion(mUserInfoEntityVersion);
 			if(checkListVersion.size()==1){
-				MUserInfoEntity mUserInfoEntityUserName= new MUserInfoEntity();
-				mUserInfoEntityUserName.setUserName(mUserInfoEntity.getUserName());
-				//校验 用户名是否重复（只根据username）
-				List<MUserInfoEntity> checkListName=muserInfoDao.checkingAndVersion(mUserInfoEntityUserName);
-				if (    (checkListName.size()==0)
-						||
-						( ( checkListName.size()==1 ) && ( mUserInfoEntity.getUserId().equals(checkListName.get(0).getUserId()) ) )
-				){
-					mUserInfoEntity.setUpdateUser(principal.getUserId());
-					int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
-					if (returnInt > 0) {
-						result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-						result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.USER_NAME.getTypeName()));
-					}
-				} else {
-					result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
-				}
+                mUserInfoEntity.setUpdateUser(principal.getUserId());
+                int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
+                if (returnInt > 0) {
+                    result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.USER_NAME.getTypeName()));
+                }
 			}else {
 				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.USER_NAME.getTypeName()));
 			}
@@ -281,23 +304,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			//校验 用户名是否重复
-			List<MUserInfoEntity> checkList=muserInfoDao.checkingAndVersion(mUserInfoEntity);
-			if (checkList.size()==0){
-				String userUUID = CommonSqlUtils.getUUID32();
-				mUserInfoEntity.setUserId(userUUID);
-				mUserInfoEntity.setPassword(encoder.encode(mUserInfoEntity.getPassword()));
-				mUserInfoEntity.setCreateUser(principal.getUserId());
-				mUserInfoEntity.setIsDelete(0);
-				mUserInfoEntity.setVersion(1);
-				int returnInt = muserInfoDao.insertSelective(mUserInfoEntity);
-				if (returnInt > 0) {
-					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.USER_NAME.getTypeName()));
-				}
-			}else {
-				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
-			}
+            String userUUID = CommonSqlUtils.getUUID32();
+            mUserInfoEntity.setUserId(userUUID);
+            mUserInfoEntity.setPassword(encoder.encode(mUserInfoEntity.getPassword()));
+            mUserInfoEntity.setCreateUser(principal.getUserId());
+            mUserInfoEntity.setIsDelete(0);
+            mUserInfoEntity.setVersion(1);
+            int returnInt = muserInfoDao.insertSelective(mUserInfoEntity);
+            if (returnInt > 0) {
+                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.USER_NAME.getTypeName()));
+            }
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("common.server.error"));
