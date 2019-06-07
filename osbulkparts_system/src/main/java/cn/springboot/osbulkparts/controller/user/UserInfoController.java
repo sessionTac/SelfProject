@@ -118,7 +118,7 @@ public class UserInfoController {
 			@ApiImplicitParam(name = "mRoleInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body"),
 			@ApiImplicitParam(name = "checkFlag", value = "判断是添加校验还是修改校验的标志", required = true, dataType = "body", paramType = "body"),
 	})
-	@GetMapping("/checkRoleInfo")
+	@GetMapping("/checkUserInfo")
 	public CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity, String checkFlag){
 		return userInfoService.checkInfo(mUserInfoEntity,checkFlag);
 	}

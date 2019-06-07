@@ -258,10 +258,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
                 if (returnInt > 0) {
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.USER_NAME.getTypeName()));
+                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.USER.getTypeName()));
                 }
 			}else {
-				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.USER_NAME.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.USER.getTypeName()));
 			}
 
 		} catch (Exception e) {
@@ -286,7 +286,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.USER_NAME.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.USER.getTypeName()));
 			}
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -313,7 +313,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             int returnInt = muserInfoDao.insertSelective(mUserInfoEntity);
             if (returnInt > 0) {
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.USER_NAME.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.USER.getTypeName()));
             }
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());

@@ -158,7 +158,7 @@
             },
             /*确定*/
             submit(formName){
-                this.$refs[formName].validate((valid) => {
+                this.$refs[formName].validate(async (valid) => {
                     if (valid) {
                         let data={
                             userId       : this.id            || undefined,
@@ -172,25 +172,35 @@
                             version   : this.form.version || undefined,
                         }
                         if(this.mode == 'EDIT'){  //编辑
-                            service.updateUser({...data}).then(resp=>{
-                                if(resp.data.code == "201"){
-                                    this.$notify({message: resp.data.message, type: 'success'});
-                                    this.$emit("success");
-                                    this.dialogFormVisible = false
-                                }else {
-                                    this.$notify({message: resp.data.message, type: 'error'});
-                                }
-                            })
+                            let check = await service.checkUserInfo({...data,checkFlag:"edit"});
+                            if (check.data.code== "201") {
+                                service.updateUser({...data}).then(resp=>{
+                                    if(resp.data.code == "201"){
+                                        this.$notify({message: resp.data.message, type: 'success'});
+                                        this.$emit("success");
+                                        this.dialogFormVisible = false
+                                    }else {
+                                        this.$notify({message: resp.data.message, type: 'error'});
+                                    }
+                                })
+                            }else {
+                                this.$notify({message: check.data.message, type: 'error'});
+                            }
                         }else{
-                            service.addUser({...data}).then(resp=>{  //添加
-                                if(resp.data.code == "201"){
-                                    this.$notify({message: resp.data.message, type: 'success'});
-                                    this.$emit("success");
-                                    this.dialogFormVisible = false
-                                }else {
-                                    this.$notify({message: resp.data.message, type: 'error'});
-                                }
-                            })
+                            let check = await service.checkUserInfo({...data,checkFlag:"add"});
+                            if (check.data.code== "201") {
+                                service.addUser({...data}).then(resp=>{  //添加
+                                    if(resp.data.code == "201"){
+                                        this.$notify({message: resp.data.message, type: 'success'});
+                                        this.$emit("success");
+                                        this.dialogFormVisible = false
+                                    }else {
+                                        this.$notify({message: resp.data.message, type: 'error'});
+                                    }
+                                })
+                            }else {
+                                this.$notify({message: check.data.message, type: 'error'});
+                            }
                         }
 
                     } else {

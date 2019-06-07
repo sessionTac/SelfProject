@@ -7,6 +7,7 @@ public enum CommonConstantEnum {
     ROLE_NAME("角色名"),
     ROLE("角色"),
     POWER("权限"),
+    USER("用户"),
 	USER_NAME("用户名");
 	
 	private String typeName;  
