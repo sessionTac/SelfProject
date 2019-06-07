@@ -1,0 +1,39 @@
+<template>
+  <el-dialog title="角色查看" :visible.sync="user_role_view" @closed="$emit('update:activated', false)" width="600px">
+      <el-table size="mini"
+                class="search-result-table"
+                :data="search_result"
+                tooltip-effect="dark"
+                ref="table">
+        <el-table-column prop="roleId" label="角色编号" ></el-table-column>
+        <el-table-column prop="mroleInfoEntity.roleName" label="角色名称" ></el-table-column>
+      </el-table>
+  </el-dialog>
+</template>
+
+<script>
+  import activityService from '@/api/users/users'
+    export default {
+      props:{
+        userId : {},
+      },
+      data(){
+        return {
+          user_role_view:true,
+          search_result:null,
+        }
+      },
+      mounted(){
+          this.init();
+      },
+      methods:{
+        init(){
+          activityService.findRoleById(this.userId).then(resp => this.search_result = resp.data.resultList);
+        }
+      },
+    }
+</script>
+
+<style scoped>
+
+</style>

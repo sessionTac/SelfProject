@@ -1,5 +1,6 @@
 package cn.springboot.osbulkparts.dao.user;
 
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 
 import java.util.List;
@@ -43,4 +44,5 @@ public interface MUserInfoDao {
      * 查重（用户名）和排他字段比较   luka
      */
     List<MUserInfoEntity> checkingAndVersion(MUserInfoEntity userInfoEntity);
+
 }

@@ -3,6 +3,9 @@ package cn.springboot.osbulkparts.controller.user;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
+import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +19,8 @@ import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Slf4j
 @RestController
 @RequestMapping("/user")
@@ -26,7 +31,7 @@ public class UserInfoController {
 	
 	@ApiOperation(value="获取用户列表信息", notes="查询所有用户的列表")
 	@ApiImplicitParams({
-			@ApiImplicitParam(name = "muserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body"),
+			@ApiImplicitParam(name = "mUserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body"),
 			@ApiImplicitParam(name = "pageNum", value = "当前页码(默认1)", required = true, dataType = "String", paramType = "query"),
 			@ApiImplicitParam(name = "pageSize", value = "每页数据条数(默认10)", required = true, dataType = "String", paramType = "query")
 	})
@@ -78,4 +83,44 @@ public class UserInfoController {
 		CommonResultInfo<?> result = userInfoService.deleteUserInfo(userId, auth);
 		return result;
 	}
+
+	@ApiOperation(value="获取该用户下角色列表信息", notes="根据用户Id来获取该用户下所有角色")
+	@ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "String", paramType = "path")
+	@GetMapping("/findRole/{userId}")
+	public CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(@PathVariable String userId){
+		return userInfoService.findRoleByUserId(userId);
+	}
+	@ApiOperation(value="获取所有角色列表信息", notes="获取所有角色")
+	@ApiImplicitParam(name = "mRoleInfoEntity", value = "角色实体类", required = true, dataType = "body", paramType = "query")
+	@GetMapping("/findAllRole")
+	public CommonResultInfo<MRoleInfoEntity> findAllRole (MRoleInfoEntity mRoleInfoEntity){
+		return userInfoService.findAllRole(mRoleInfoEntity);
+	}
+
+	@Data
+	public static class InsertRoleForm {
+		List<Integer> roleIds;
+		String userId;
+	}
+	/**
+	 * 添加权限
+	 * @return
+	 */
+	@ApiOperation(value="给用户添加权限", notes="给用户添加权限")
+	@ApiImplicitParam(name = "InsertRoleForm", value = "添加权限内部类（user Id和roleIds集合）", required = true, dataType = "body", paramType = "body")
+	@PostMapping("/insertRole")
+	public Object insertPower(@RequestBody InsertRoleForm form, Authentication auth) {
+		return userInfoService.insertRole(form.roleIds, form.userId,auth);
+	}
+
+	@ApiOperation(value="校验用户名是否重复", notes="校验用户名是否重复")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "mRoleInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body"),
+			@ApiImplicitParam(name = "checkFlag", value = "判断是添加校验还是修改校验的标志", required = true, dataType = "body", paramType = "body"),
+	})
+	@GetMapping("/checkRoleInfo")
+	public CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity, String checkFlag){
+		return userInfoService.checkInfo(mUserInfoEntity,checkFlag);
+	}
+
 }

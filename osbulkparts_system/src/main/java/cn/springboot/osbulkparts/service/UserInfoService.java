@@ -1,11 +1,14 @@
 package cn.springboot.osbulkparts.service;
 
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
 import org.springframework.security.core.Authentication;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -27,4 +30,20 @@ public interface UserInfoService {
 	
 	CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth);
 
+	CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(String userId);
+
+    CommonResultInfo<MRoleInfoEntity> findAllRole(MRoleInfoEntity mRoleInfoEntity);
+
+    /**
+     * 添加角色
+     * @param roleIds
+     * @param userId
+     * @return
+     */
+    Object insertRole(List<Integer> roleIds, String userId,Authentication auth);
+
+    /**
+     * 校验角色信息
+     */
+    CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity,String checkFlag);
 }

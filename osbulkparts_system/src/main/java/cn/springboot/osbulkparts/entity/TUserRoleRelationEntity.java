@@ -55,5 +55,7 @@ public class TUserRoleRelationEntity implements Serializable {
      */
     private String privateMenu;
 
+    private MRoleInfoEntity mRoleInfoEntity;
+
     private static final long serialVersionUID = 1L;
 }

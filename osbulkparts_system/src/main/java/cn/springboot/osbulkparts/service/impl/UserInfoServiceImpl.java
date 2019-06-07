@@ -1,9 +1,14 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import java.beans.Transient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
+import cn.springboot.osbulkparts.dao.user.TUserRoleRelationDao;
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
+import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,7 +38,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Autowired
 	private TDictDataDao tDictDataDao;
-	
+
+	@Autowired
+	private TUserRoleRelationDao tUserRoleRelationDao;
+
+    @Autowired
+    private MRoleInfoDao mRoleInfoDao;
+
 	@Autowired
 	private I18nMessageBean messageBean;
 	
@@ -51,6 +62,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResultInfo(pageInfo);
 		} catch (Exception e) {
+			e.printStackTrace();
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
@@ -115,8 +127,103 @@ public class UserInfoServiceImpl implements UserInfoService {
 			return result;
 		}
 	}
-
 	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(String userId) {
+		CommonResultInfo<TUserRoleRelationEntity> result = new CommonResultInfo<TUserRoleRelationEntity>();
+		try {
+			List<TUserRoleRelationEntity> userInfo = tUserRoleRelationDao.findRoleByUserId(userId);
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			result.setResultList(userInfo);
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+    @SuppressWarnings("finally")
+    @Override
+    public CommonResultInfo<MRoleInfoEntity> findAllRole(MRoleInfoEntity mRoleInfoEntity) {
+        CommonResultInfo<MRoleInfoEntity> result = new CommonResultInfo<MRoleInfoEntity>();
+        try {
+            List<MRoleInfoEntity> list = mRoleInfoDao.selectRoleInfoList(mRoleInfoEntity);
+            result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+            result.setResultList(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage(""));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+    }
+    @SuppressWarnings("finally")
+    @Transient
+    @Override
+    public Object insertRole(List<Integer> roleIds, String userId, Authentication auth) {
+        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+        CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+        result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+        try {
+            tUserRoleRelationDao.deleteById(userId);
+            int r = 0;
+            if (!roleIds.isEmpty()) {
+                r = tUserRoleRelationDao.insertList(roleIds, userId, principal.getUserId());
+            }
+            if (r == roleIds.size()) {
+                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.ROLE.getTypeName()));
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+            throw new RuntimeException();
+        } finally {
+            return result;
+        }
+    }
+    @SuppressWarnings("finally")
+    @Override
+    public CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity, String checkFlag) {
+        CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+        result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+        try {
+            MUserInfoEntity checkEntity = new MUserInfoEntity();
+            checkEntity.setUserName(mUserInfoEntity.getUserName());
+            List<MUserInfoEntity> checkList = muserInfoDao.checkingAndVersion(checkEntity);
+            if (checkFlag.equals("add")) {
+                if (checkList.size() == 0) {
+                    result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                } else {
+                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
+                }
+            } else if (checkFlag.equals("edit")) {
+                if (
+                        (checkList.size() == 0)
+                                ||
+                                ((checkList.size() == 1) && (mUserInfoEntity.getUserId().equals(checkList.get(0).getUserId())))
+                ) {
+                    result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                } else {
+                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
+                }
+            }
+        } catch (Exception e) {
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+    }
+
+    @SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MUserInfoEntity> getUserCustomerRelationInfo(String userId) {
 //		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
@@ -147,23 +254,12 @@ public class UserInfoServiceImpl implements UserInfoService {
             //校验 version 排他  (根据id和version)
             List<MUserInfoEntity> checkListVersion=muserInfoDao.checkingAndVersion(mUserInfoEntityVersion);
 			if(checkListVersion.size()==1){
-				MUserInfoEntity mUserInfoEntityUserName= new MUserInfoEntity();
-				mUserInfoEntityUserName.setUserName(mUserInfoEntity.getUserName());
-				//校验 用户名是否重复（只根据username）
-				List<MUserInfoEntity> checkListName=muserInfoDao.checkingAndVersion(mUserInfoEntityUserName);
-				if (    (checkListName.size()==0)
-						||
-						( ( checkListName.size()==1 ) && ( mUserInfoEntity.getUserId().equals(checkListName.get(0).getUserId()) ) )
-				){
-					mUserInfoEntity.setUpdateUser(principal.getUserId());
-					int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
-					if (returnInt > 0) {
-						result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-						result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.USER_NAME.getTypeName()));
-					}
-				} else {
-					result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
-				}
+                mUserInfoEntity.setUpdateUser(principal.getUserId());
+                int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
+                if (returnInt > 0) {
+                    result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.USER_NAME.getTypeName()));
+                }
 			}else {
 				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.USER_NAME.getTypeName()));
 			}
@@ -208,23 +304,17 @@ public class UserInfoServiceImpl implements UserInfoService {
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			//校验 用户名是否重复
-			List<MUserInfoEntity> checkList=muserInfoDao.checkingAndVersion(mUserInfoEntity);
-			if (checkList.size()==0){
-				String userUUID = CommonSqlUtils.getUUID32();
-				mUserInfoEntity.setUserId(userUUID);
-				mUserInfoEntity.setPassword(encoder.encode(mUserInfoEntity.getPassword()));
-				mUserInfoEntity.setCreateUser(principal.getUserId());
-				mUserInfoEntity.setIsDelete(0);
-				mUserInfoEntity.setVersion(1);
-				int returnInt = muserInfoDao.insertSelective(mUserInfoEntity);
-				if (returnInt > 0) {
-					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.USER_NAME.getTypeName()));
-				}
-			}else {
-				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
-			}
+            String userUUID = CommonSqlUtils.getUUID32();
+            mUserInfoEntity.setUserId(userUUID);
+            mUserInfoEntity.setPassword(encoder.encode(mUserInfoEntity.getPassword()));
+            mUserInfoEntity.setCreateUser(principal.getUserId());
+            mUserInfoEntity.setIsDelete(0);
+            mUserInfoEntity.setVersion(1);
+            int returnInt = muserInfoDao.insertSelective(mUserInfoEntity);
+            if (returnInt > 0) {
+                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.USER_NAME.getTypeName()));
+            }
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("common.server.error"));
