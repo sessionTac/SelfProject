@@ -124,18 +124,4 @@ public class RoleInfoController {
         CommonResultInfo<?> result = roleInfoService.addRoleInfo(mRoleInfoEntity, auth);
         return result;
     }
-
-    /**
-     * 导入Excle 例子
-     * @param excleFile
-     * @return wd
-     */
-    @PostMapping("/leadExcel")
-    public Object ImportExcelData(
-            @RequestParam("file") MultipartFile excleFile,HttpServletRequest request,Authentication auth) {
-        log.info("导入Excel");
-        return "";
-
-    }
-
 }
