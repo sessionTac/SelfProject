@@ -241,4 +241,33 @@
       t1.is_delete = 0
       and t1.user_id=#{userId}
   </select>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+      delete from t_user_role_relation where user_id=#{userId}
+    </delete>
+    <!-- 添加角色 -->
+    <insert id="insertList">
+        insert into t_user_role_relation
+        (
+        id,
+        user_id,
+        role_id,
+        is_delete,
+        create_user,
+        create_time,
+        version
+        )
+        values
+        <foreach collection="list" item="item" index="index" separator=",">
+            (
+            REPLACE(UUID(),'-',''),
+            #{userId},
+            #{item, jdbcType=VARCHAR},
+            0,
+            #{createUser},
+            DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
+            0
+            )
+        </foreach>
+    </insert>
 </mapper>

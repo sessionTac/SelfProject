@@ -8,6 +8,7 @@ import org.springframework.security.core.Authentication;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 import java.util.Map;
 
@@ -30,4 +31,14 @@ public interface UserInfoService {
 	CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth);
 
 	CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(String userId);
+
+    CommonResultInfo<MRoleInfoEntity> findAllRole(MRoleInfoEntity mRoleInfoEntity);
+
+    /**
+     * 添加角色
+     * @param roleIds
+     * @param userId
+     * @return
+     */
+    Object insertRole(List<Integer> roleIds, String userId,Authentication auth);
 }

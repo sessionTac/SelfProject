@@ -36,6 +36,14 @@ export default {
   findRoleById:(userId)=>
     getRequest(`~/user/findRole/`+userId),
 
+  /**查询所有Juese角色*/
+  findRole:(params)=>
+    getRequest(`~/user/findAllRole`, {params}),
+
+  /**给用户添加角色*/
+  insertRole:(data)=>
+    postRequest(`~/user/insertRole`, {data}),
+
   //-------------------------------------------------------------------------------------------------
 
   //--------------------------------角色----------------------------------------------------------------
@@ -97,14 +105,9 @@ export default {
   reset:(data)=>
     putRequest(`~/maintenance/basis/user/changePass`,{data}),
 
-  /**查询角色*/
-  findRole:(params)=>
-     // getRequest(`~/maintenance/basis/user/rolePage`),
-      getRequest(`./static/mock-api/users/roleList.json`, {params}),
 
-  /**添加角色*/
-  insertRole:(data)=>
-    postRequest(`~/maintenance/basis/user/insertRole`, {data}),
+
+
 
 
 

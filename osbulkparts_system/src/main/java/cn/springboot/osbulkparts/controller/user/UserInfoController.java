@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
+import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +18,8 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+
+import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -86,6 +89,28 @@ public class UserInfoController {
 	@GetMapping("/findRole/{userId}")
 	public CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(@PathVariable String userId){
 		return userInfoService.findRoleByUserId(userId);
+	}
+	@ApiOperation(value="获取所有角色列表信息", notes="获取所有角色")
+	@ApiImplicitParam(name = "mRoleInfoEntity", value = "角色实体类", required = true, dataType = "body", paramType = "query")
+	@GetMapping("/findAllRole")
+	public CommonResultInfo<MRoleInfoEntity> findAllRole (MRoleInfoEntity mRoleInfoEntity){
+		return userInfoService.findAllRole(mRoleInfoEntity);
+	}
+
+	@Data
+	public static class InsertRoleForm {
+		List<Integer> roleIds;
+		String userId;
+	}
+	/**
+	 * 添加权限
+	 * @return
+	 */
+	@ApiOperation(value="给用户添加权限", notes="给用户添加权限")
+	@ApiImplicitParam(name = "InsertRoleForm", value = "添加权限内部类（user Id和roleIds集合）", required = true, dataType = "body", paramType = "body")
+	@PostMapping("/insertRole")
+	public Object insertPower(@RequestBody InsertRoleForm form, Authentication auth) {
+		return userInfoService.insertRole(form.roleIds, form.userId,auth);
 	}
 
 }

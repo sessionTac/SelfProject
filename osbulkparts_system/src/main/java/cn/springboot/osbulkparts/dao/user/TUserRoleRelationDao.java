@@ -23,4 +23,9 @@ public interface TUserRoleRelationDao {
     int updateByPrimaryKey(TUserRoleRelationEntity record);
 
     List<TUserRoleRelationEntity> findRoleByUserId(String userId);
+
+    int deleteById(String userId);
+
+    int insertList(@Param("list") List<Integer> list, @Param("userId") String userId, @Param("createUser") String createUser);
+
 }

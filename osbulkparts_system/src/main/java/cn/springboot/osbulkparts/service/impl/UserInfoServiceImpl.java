@@ -1,9 +1,11 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import java.beans.Transient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
 import cn.springboot.osbulkparts.dao.user.TUserRoleRelationDao;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
@@ -39,7 +41,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Autowired
 	private TUserRoleRelationDao tUserRoleRelationDao;
-	
+
+    @Autowired
+    private MRoleInfoDao mRoleInfoDao;
+
 	@Autowired
 	private I18nMessageBean messageBean;
 	
@@ -138,8 +143,53 @@ public class UserInfoServiceImpl implements UserInfoService {
 			return result;
 		}
 	}
+    @SuppressWarnings("finally")
+    @Override
+    public CommonResultInfo<MRoleInfoEntity> findAllRole(MRoleInfoEntity mRoleInfoEntity) {
+        CommonResultInfo<MRoleInfoEntity> result = new CommonResultInfo<MRoleInfoEntity>();
+        try {
+            List<MRoleInfoEntity> list = mRoleInfoDao.selectRoleInfoList(mRoleInfoEntity);
+            result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+            result.setResultList(list);
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage(""));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+    }
+    @SuppressWarnings("finally")
+    @Transient
+    @Override
+    public Object insertRole(List<Integer> roleIds, String userId, Authentication auth) {
+        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+        CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+        result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+        try {
+            tUserRoleRelationDao.deleteById(userId);
+            int r = 0;
+            if (!roleIds.isEmpty()) {
+                r = tUserRoleRelationDao.insertList(roleIds, userId, principal.getUserId());
+            }
+            if (r == roleIds.size()) {
+                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.ROLE.getTypeName()));
+            }
 
-	@SuppressWarnings("finally")
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+            throw new RuntimeException();
+        } finally {
+            return result;
+        }
+    }
+
+    @SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MUserInfoEntity> getUserCustomerRelationInfo(String userId) {
 //		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
