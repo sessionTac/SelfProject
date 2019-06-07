@@ -14,11 +14,11 @@
           </el-button>
         </el-form-item>
 
-<!--        <el-form-item style="float: right">-->
-<!--          <el-button type="" @click="add()"  size="mini" >-->
-<!--            <i class="fa fa-plus" aria-hidden="true"></i> 添加-->
-<!--          </el-button>-->
-<!--        </el-form-item>-->
+        <el-form-item style="float: right">
+          <el-button type="" @click="add()"  size="mini" >
+            <i class="fa fa-plus" aria-hidden="true"></i> 添加
+          </el-button>
+        </el-form-item>
 
         <el-form-item label=" " label-width="40px" style="float: right">
           <el-button type="primary"  @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
