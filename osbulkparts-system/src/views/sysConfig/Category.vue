@@ -82,15 +82,14 @@
       <el-table-column
         prop="createTime"
         sortable
-        :formatter="(row,col,val)=>val&&$moment(val,'YYYYMMDDHHmmss').format('YYYY-MM-DD HH:mm:ss')"
         label="创建时间">
       </el-table-column>
       <el-table-column label="操作" >
         <template slot-scope="scope" >
           <el-button title="编辑" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row,'编辑')">
             <i class="el-icon-edit"></i></el-button>
-<!--          <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="remove(scope.row)">-->
-<!--            <i class="el-icon-delete"></i></el-button>-->
+          <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="remove(scope.row)">
+            <i class="el-icon-delete"></i></el-button>
         </template>
       </el-table-column>
       <!--<el-table-column fixed="right" label="操作" width="300">-->
@@ -194,10 +193,14 @@
           type: 'warning',
           center: true
         }).then(() => {
-          service.deleteDictType(row.id).then(resp=>{
-
-            this.$notify({title: '成功',type: 'success', message: resp.data.msg});
+          service.deleteDictType({dictTypeId:row.dictTypeId}).then(resp=>{
+            if (resp.data.code=='201'){
+              this.$notify({type: 'success', message: resp.data.message});
               this.refresh()
+            } else {
+              this.$notify({type: 'error', message: resp.data.message});
+            }
+
 
           })
         }).catch(() => {

@@ -21,8 +21,8 @@ public interface DictTypeSettingService {
 	@Transactional
 	CommonResultInfo<?> deleteDictType(String dictTypeId, Authentication auth);
 	
-	CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity);
+	CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag);
 	
-	CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity);
+	CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag);
 	
 }

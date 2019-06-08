@@ -1,7 +1,10 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import java.beans.Transient;
 import java.util.List;
 
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
+import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +24,7 @@ import cn.springboot.osbulkparts.dao.system.TDictTypeDao;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.entity.TDictTypeEntity;
 import cn.springboot.osbulkparts.service.DictTypeSettingService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DictTypeServiceImpl implements DictTypeSettingService {
@@ -110,6 +114,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.DICT_TYPE.getTypeName()));
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
@@ -140,6 +145,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.DICT_TYPE.getTypeName()));
 			}
 		} catch (Exception e) {
+			e.printStackTrace();
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
@@ -149,6 +155,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 	}
 
 	@SuppressWarnings("finally")
+	@Transactional
 	@Override
 	public CommonResultInfo<?> deleteDictType(String dictTypeId, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
@@ -179,6 +186,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
+			throw new RuntimeException();
 		} finally {
 			return result;
 		}
@@ -188,15 +196,28 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 	 * 名称重复验证
 	 */
 	@Override
-	public CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity){
+	public CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag){
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		TDictTypeEntity tdictTypeEntityCheckName = new TDictTypeEntity();
 		tdictTypeEntityCheckName.setName(tdictTypeEntity.getName());
 		List<TDictTypeEntity> resultLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntityCheckName);
-		if(resultLst.size()>0 && resultLst.get(0) != null) {
-			result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName()));
-		}else {
-			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+		if (checkFlag.equals("add")) {
+			if (resultLst.size() == 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+			} else {
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName()));
+			}
+		} else if (checkFlag.equals("edit")) {
+			if (
+					(resultLst.size() == 0)
+							||
+							((resultLst.size() == 1) && (tdictTypeEntity.getDictTypeId().equals(resultLst.get(0).getDictTypeId())))
+			) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+			} else {
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName()));
+			}
 		}
 		return result;
 	}
@@ -205,15 +226,29 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 	 * 编码重复验证
 	 */
 	@Override
-	public CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity){
+	public CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag){
+
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
-		TDictTypeEntity tdictTypeEntityCheckName = new TDictTypeEntity();
-		tdictTypeEntityCheckName.setCode(tdictTypeEntity.getCode());
-		List<TDictTypeEntity> resultLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntityCheckName);
-		if(resultLst.size()>0 && resultLst.get(0) != null) {
-			result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE_CODE.getTypeName()));
-		}else {
-			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		TDictTypeEntity tdictTypeEntityCheckCode = new TDictTypeEntity();
+		tdictTypeEntityCheckCode.setCode(tdictTypeEntity.getCode());
+		List<TDictTypeEntity> resultLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntityCheckCode);
+		if (checkFlag.equals("add")) {
+			if (resultLst.size() == 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+			} else {
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE_CODE.getTypeName()));
+			}
+		} else if (checkFlag.equals("edit")) {
+			if (
+					(resultLst.size() == 0)
+							||
+							((resultLst.size() == 1) && (tdictTypeEntity.getDictTypeId().equals(resultLst.get(0).getDictTypeId())))
+			) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+			} else {
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE_CODE.getTypeName()));
+			}
 		}
 		return result;
 	}

@@ -147,9 +147,7 @@
       <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createUser)">
         create_user,
       </if>
-      <if test="createTime != null">
         create_time,
-      </if>
       <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateUser)">
         update_user,
       </if>

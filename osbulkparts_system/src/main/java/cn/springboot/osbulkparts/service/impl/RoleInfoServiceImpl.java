@@ -24,6 +24,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpServletRequest;
 import java.beans.Transient;
@@ -135,7 +136,7 @@ public class RoleInfoServiceImpl implements RoleInfoService {
      * 添加权限
      */
     @SuppressWarnings("finally")
-    @Transient
+    @Transactional
     @Override
     public Object insertPower(List<Integer> functionIds, String roleId, HttpServletRequest request, Authentication auth) {
         CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();

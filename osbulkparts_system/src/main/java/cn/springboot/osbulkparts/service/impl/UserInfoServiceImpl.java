@@ -29,6 +29,7 @@ import cn.springboot.osbulkparts.dao.user.MUserInfoDao;
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.service.UserInfoService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
@@ -161,7 +162,7 @@ public class UserInfoServiceImpl implements UserInfoService {
         }
     }
     @SuppressWarnings("finally")
-    @Transient
+    @Transactional
     @Override
     public Object insertRole(List<Integer> roleIds, String userId, Authentication auth) {
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();

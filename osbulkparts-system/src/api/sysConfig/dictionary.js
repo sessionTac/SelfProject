@@ -23,12 +23,24 @@ export default {
    * 根据dictTypeId 获取一条type 详细信息
    */
   findTypeDetails:(params)=>
-    getRequest('~/dict/getDictTypeInfo/'+params.dictTypeId)
-  //增加数据
-  // addDict:(data)=>
-  //   postRequest(`~/maintenance/basis/dict/`, {data}),
-  //修改字典类型数据
-  // updateDictType:(data)=>
-  //   putRequest(`~/maintenance/basis/dict/type`,{data})
+    getRequest('~/dict/getDictTypeInfo/'+params.dictTypeId),
+  // 增加字典类型数据
+  addDictType:(data)=>
+    postRequest(`~/dict/addDictType`, {data}),
+  // 修改字典类型数据
+  updateDictType:(data)=>
+    putRequest(`~/dict/updateDictType`,{data}),
+  deleteDictType:(params)=>
+    deleteRequest('~/dict/deleteDictType/'+params.dictTypeId),
+  /**
+   * 添加或者修改用户 进行校验查重
+   */
+  checkNameRepeat:(params)=>
+    getRequest(`~/dict/checkNameRepeat`, {params}),
+  /**
+   * 添加或者修改用户 进行校验查重
+   */
+  checkCodeRepeat:(params)=>
+    getRequest(`~/dict/checkCodeRepeat`, {params}),
 
 }

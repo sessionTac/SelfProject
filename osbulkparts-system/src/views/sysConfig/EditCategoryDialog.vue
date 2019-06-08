@@ -128,22 +128,36 @@
       },
       /*确定*/
       submit(formName){
-        this.$refs[formName].validate((valid) => {
+        this.$refs[formName].validate(async (valid) => {
           if (valid) {
             if (this.mode === 'ADD'){
-              debugger
               let  addfrom =this.form.isEnable
               if (addfrom==true){
                 this.form.isEnable = 1;
               }else {
                 this.form.isEnable = 0;
               }
+              let add  = this.form;
 
-              let add  = this.form
-              // service.addDictType(add).then(resp=>{
-              //   this.$notify({title: '成功',type: 'success', message: resp.data.msg});
-              //   this.dialogFormVisible = false
-              // })
+              let checkName = await service.checkNameRepeat({...add,checkFlag:"add"});
+              let checkCode = await service.checkCodeRepeat({...add,checkFlag:"add"});
+              if (checkName.data.code== "201" && checkCode.data.code=='201') {
+                service.addDictType({...add}).then(resp=>{
+                  if(resp.data.code == "201"){
+                    this.$notify({type: 'success', message: resp.data.message});
+                    this.dialogFormVisible = false
+                  }else {
+                    this.$notify({message: resp.data.message, type: 'error'});
+                  }
+                })
+              }else {
+                if (checkName.data.code== "201") {
+                  this.$notify({message: checkCode.data.message, type: 'error'});
+                }else {
+                  this.$notify({message: checkName.data.message, type: 'error'});
+                }
+
+              }
             }else if (this.mode === 'EDIT'){
 
               let  isEnable =this.form.isEnable
@@ -152,11 +166,25 @@
               }else {
                 this.form.isEnable = 0;
               }
-              let update  = this.form
-              // service.updateDictType(update).then(resp=>{
-              //   this.$notify({title: '成功',type: 'success', message: resp.data.msg});
-              //   this.dialogFormVisible = false
-              // });
+              let update  = this.form;
+              let checkName = await service.checkNameRepeat({...update,checkFlag:"edit"});
+              let checkCode = await service.checkCodeRepeat({...update,checkFlag:"edit"});
+              if (checkName.data.code== "201" && checkCode.data.code=='201') {
+                service.updateDictType({...update}).then(resp=>{
+                  if(resp.data.code == "201"){
+                    this.$notify({type: 'success', message: resp.data.message});
+                    this.dialogFormVisible = false
+                  }else {
+                    this.$notify({message: resp.data.message, type: 'error'});
+                  }
+                });
+              }else {
+                if (checkName.data.code== "201") {
+                  this.$notify({message: checkCode.data.message, type: 'error'});
+                }else {
+                  this.$notify({message: checkName.data.message, type: 'error'});
+                }
+              }
             }
           } else {
             console.log('error submit!!');

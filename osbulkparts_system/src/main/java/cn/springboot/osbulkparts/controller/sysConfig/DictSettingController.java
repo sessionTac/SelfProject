@@ -2,14 +2,7 @@ package cn.springboot.osbulkparts.controller.sysConfig;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
@@ -76,7 +69,7 @@ public class DictSettingController {
 	@ApiOperation(value="添加数据字典类型", notes="添加数据字典类型")
 	@ApiImplicitParam(name = "TDictTypeEntity", value = "数据字典类型实体对象", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/addDictType")
-	public CommonResultInfo<?> addDictType(TDictTypeEntity tdictTypeEntity,Authentication auth){
+	public CommonResultInfo<?> addDictType(@RequestBody TDictTypeEntity tdictTypeEntity, Authentication auth){
 		CommonResultInfo<?> result = dictTypeSettingService.addDictTypeInfo(tdictTypeEntity, auth);
 		return result;
 	}
@@ -84,7 +77,7 @@ public class DictSettingController {
 	@ApiOperation(value="编辑数据字典类型", notes="修改数据字典类型的信息")
 	@ApiImplicitParam(name = "TDictTypeEntity", value = "数据字典类型实体对象", required = true, dataType = "body", paramType = "body")
 	@PutMapping("/updateDictType")
-	public CommonResultInfo<?> updateDictType(TDictTypeEntity tdictTypeEntity,Authentication auth){
+	public CommonResultInfo<?> updateDictType(@RequestBody TDictTypeEntity tdictTypeEntity,Authentication auth){
 		CommonResultInfo<?> result = dictTypeSettingService.updateDictType(tdictTypeEntity, auth);
 		return result;
 	}
@@ -99,17 +92,17 @@ public class DictSettingController {
 	
 	@ApiOperation(value="验证数据字典类型名称", notes="验证数据字典类型名称")
 	@ApiImplicitParam(name = "TDictTypeEntity", value = "数据字典类型实体对象", required = true, dataType = "body", paramType = "body")
-	@PostMapping("/checkNameRepeat")
-	public CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity){
-		CommonResultInfo<?> result = dictTypeSettingService.checkNameRepeat(tdictTypeEntity);
+	@GetMapping("/checkNameRepeat")
+	public CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag){
+		CommonResultInfo<?> result = dictTypeSettingService.checkNameRepeat(tdictTypeEntity,checkFlag);
 		return result;
 	}
 	
 	@ApiOperation(value="验证数据字典类型编码", notes="验证数据字典类型编码")
 	@ApiImplicitParam(name = "TDictTypeEntity", value = "数据字典类型实体对象", required = true, dataType = "body", paramType = "body")
-	@PostMapping("/checkCodeRepeat")
-	public CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity){
-		CommonResultInfo<?> result = dictTypeSettingService.checkCodeRepeat(tdictTypeEntity);
+	@GetMapping("/checkCodeRepeat")
+	public CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag){
+		CommonResultInfo<?> result = dictTypeSettingService.checkCodeRepeat(tdictTypeEntity,checkFlag);
 		return result;
 	}
 }
