@@ -8,12 +8,12 @@ export default [
   },
   {
     title: '用户管理',
-    requiresPermission: 'maintenance:system:users',
+    requiresPermission: 'maintenance:system:users:manages',
     index: 'users',
       children: [
           {
               title: '用户信息',
-              requiresPermission: 'maintenance:system:users:info',
+              requiresPermission: 'maintenance:system:users:info:view',
               index: 'userInfo',
           },
           {

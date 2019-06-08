@@ -59,7 +59,7 @@ export const constantRoutes = [
                     noCache: true,
                     breadcrumb: true,
                     keepAlive: true,
-                    requiresPermission: 'maintenance:system:users:info', }
+                    requiresPermission: 'maintenance:system:users:info:view', }
             },
             {
                 path: 'roleFunction',

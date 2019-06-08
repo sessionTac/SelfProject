@@ -47,7 +47,7 @@
                         角色设置</el-button>
                     <el-button title="查看" size="mini" class="btn-opt"  @click="viewRole(scope.row.userId)">
                         角色查看</el-button>
-                    <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.userId)">
+                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:system:users:info:edit')" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.userId)">
                         <i class="el-icon-news"></i></el-button>
                     <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.userId)">
                         <i class="el-icon-delete"></i></el-button>
