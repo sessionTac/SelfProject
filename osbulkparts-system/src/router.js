@@ -15,6 +15,12 @@ export const constantRoutes = [
         name: 'Login',
         component: () => import('@/views/sysPassport/Login')
     },
+    //404
+    {
+        path: '/404',
+        name: 'NotFound',
+        component: ()=>import('@/views/common/404'),
+    },
     //token自动恢复登录
     {
       path: '/quick_token_login',
@@ -48,14 +54,20 @@ export const constantRoutes = [
                 path: 'userInfo',
                 component: () => import('@/views/sysUsers/UserList.vue'),
                 name: 'userInfo',
-                meta: { title: 'userinfo',icon: 'userinfo', noCache: true,breadcrumb: true,keepAlive: true }
+                meta: { title: 'userinfo',
+                    icon: 'userinfo',
+                    noCache: true,
+                    breadcrumb: true,
+                    keepAlive: true,
+                    requiresPermission: 'maintenance:system:users:info', }
             },
             {
                 path: 'roleFunction',
                 component: () => import('@/views/sysUsers/UserRole.vue'),
                 name: 'roleFunction',
                 meta: { title: 'rolePermission',
-                  icon: 'rolePermission', noCache: true,breadcrumb: true,keepAlive: true  }
+                  icon: 'rolePermission', noCache: true,breadcrumb: true,keepAlive: true,
+                    requiresPermission: 'maintenance:system:users:role'}
             }
         ]
     },
@@ -70,7 +82,9 @@ export const constantRoutes = [
                 path: 'dictionary',
                 component: () => import('@/views/sysConfig/Dictionary.vue'),
                 name: 'dictionary',
-                meta: { title: 'dictionary',icon: 'dictionary', noCache: true,breadcrumb: true,keepAlive: true }
+                meta: { title: 'dictionary',icon: 'dictionary',
+                    noCache: true,breadcrumb: true,keepAlive: true,
+                    requiresPermission: 'maintenance:system:dictionary'}
             },
             {
                 path: 'categories',

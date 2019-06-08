@@ -355,6 +355,8 @@
 			u.user_name,
 			u.user_phone,
 			u.user_mail,
+			u.user_type,
+			u.user_status,
 			mrole.role_id,
 			mrole.role_name,
 		  mrole.role_desc,
@@ -369,6 +371,8 @@
 					muser.user_name,
 					muser.user_real_name,
 					muser.user_phone,
+					muser.user_type,
+					muser.user_status,
 					muser.user_mail
 				FROM
 					m_user_info muser

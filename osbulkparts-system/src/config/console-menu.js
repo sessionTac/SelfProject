@@ -13,12 +13,12 @@ export default [
       children: [
           {
               title: '用户信息',
-              requiresPermission: 'maintenance:system:user',
+              requiresPermission: 'maintenance:system:users:info',
               index: 'userInfo',
           },
           {
               title: '角色权限',
-              requiresPermission: 'maintenance:system:role',
+              requiresPermission: 'maintenance:system:users:role',
               index: 'roleFunction',
           },
       ]

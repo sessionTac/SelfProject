@@ -51,7 +51,7 @@ let passportService = {
    * @returns {*}
    */
   user_info() {
-    return getRequest(`~/passport/userinfo`).then(resp =>resp.data.result);
+    return getRequest(`~/passport/userinfo`).then(resp =>resp.data);
   },
 };
 export default passportService;

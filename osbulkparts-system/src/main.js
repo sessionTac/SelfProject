@@ -30,8 +30,34 @@ Vue.config.productionTip = false
 
 let subject = new Subject();
 
-subject.setPermissions('*')
+// subject.setPermissions('*')
 Vue.mixin({ data() { return {subject};}});
+
+router.beforeEach((to, from, next) => {
+
+  let requiresPermission = to.meta.requiresPermission;
+
+  if (!requiresPermission) {
+
+    next();
+
+  } else if (requiresPermission && subject.logged_in) {
+
+    if (subject.hasPermissions(requiresPermission)) {
+      console.log("1");
+      next();
+    } else {
+      console.log("2");
+      next({name: 'NotFound', query: {redir: to.fullPath}})
+    }
+
+  } else {
+
+    next({name: 'QuickTokenLogin', query: {redir: to.fullPath}})
+
+  }
+
+});
 
 new Vue({
   router,
