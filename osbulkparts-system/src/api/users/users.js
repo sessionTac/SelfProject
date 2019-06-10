@@ -50,6 +50,11 @@ export default {
   checkUserInfo:(params)=>
     getRequest(`~/user/checkUserInfo`, {params}),
 
+
+  /**密码重置*/
+  reset:(data)=>
+    putRequest(`~/user/resetPass`,{data}),
+
   //-------------------------------------------------------------------------------------------------
 
   //--------------------------------角色----------------------------------------------------------------
@@ -107,9 +112,7 @@ export default {
 
 
 
-  /**密码重置*/
-  reset:(data)=>
-    putRequest(`~/maintenance/basis/user/changePass`,{data}),
+
 
 
 

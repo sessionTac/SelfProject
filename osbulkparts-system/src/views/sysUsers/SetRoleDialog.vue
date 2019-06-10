@@ -16,7 +16,7 @@
     <el-button type="primary" class="btn-opt" style="float:right;margin-right: 10px" size="mini" @click="OnSubmit">
       保存</el-button>
 
-    <p> 请选择你的角色{{multipleSelection}}</p>
+    <p> 请选择你的角色</p>
     <div >
       <el-table size="mini"
                 class="search-result-table"

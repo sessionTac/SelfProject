@@ -6,10 +6,7 @@ import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
-import cn.springboot.osbulkparts.dao.user.MFunctionInfoDao;
-import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
-import cn.springboot.osbulkparts.dao.user.MUserInfoDao;
-import cn.springboot.osbulkparts.dao.user.TRoleFunctionRelationDao;
+import cn.springboot.osbulkparts.dao.user.*;
 import cn.springboot.osbulkparts.entity.MFunctionInfoEntity;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
@@ -45,6 +42,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
     private MFunctionInfoDao mFunctionInfoDao;
     @Autowired
     private TRoleFunctionRelationDao tRoleFunctionRelationDao;
+    @Autowired
+    private TUserRoleRelationDao tUserRoleRelationDao;
 
     @Autowired
     private I18nMessageBean messageBean;
@@ -256,6 +255,10 @@ public class RoleInfoServiceImpl implements RoleInfoService {
             mRoleInfoEntity.setIsDelete(1);
             int returnInt = mRoleInfoDao.deleteByRoleId(mRoleInfoEntity);
             if (returnInt > 0) {
+                //根据roleId把角色权限关系表中的有关该角色的信息删除 物理删除
+                tRoleFunctionRelationDao.deleteById(roleId);
+                //根据roleId把用户与角色关系表中的有关该角色的信息删除 物理删除
+                tUserRoleRelationDao.deleteByRoleId(roleId);
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.ROLE.getTypeName()));
             }

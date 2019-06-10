@@ -35,11 +35,11 @@
                   :data="search_result.list" row-key="id"
                   :stripe="true"
         >
-            <el-table-column prop="userName" align="center" label="用户名" width="180"  />
-            <el-table-column prop="userRealName" align="center" label="真实姓名"  width="180" />
-            <el-table-column prop="dictUserType.name" align="center" label="用户类型"  />
+            <el-table-column prop="userName" align="center" label="用户名" width="140"  />
+            <el-table-column prop="userRealName" align="center" label="真实姓名"  width="140" />
+            <el-table-column prop="dictUserType.name" align="center" label="用户类型"  width="140" />
             <el-table-column prop="dictUserStatus.name" align="center" label="用户状态"   />
-            <el-table-column prop="dictUserLevel.name" align="center" label="用户所属"   />
+            <el-table-column prop="dictUserLevel.name" align="center" label="用户所属"    />
 
             <el-table-column label="操作" >
                 <template slot-scope="scope" >

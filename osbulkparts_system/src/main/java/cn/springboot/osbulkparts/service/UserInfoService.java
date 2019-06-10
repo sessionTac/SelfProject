@@ -46,4 +46,10 @@ public interface UserInfoService {
      * 校验角色信息
      */
     CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity,String checkFlag);
+
+	/**
+	 * 修改密码
+	 * @return
+	 */
+	CommonResultInfo<?> resetPassword(MUserInfoEntity userInfoEntity, Authentication auth);
 }

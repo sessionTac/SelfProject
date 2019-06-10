@@ -2,10 +2,13 @@
 .search-form {}
 
 .search-form.search-form-normal {}
-.search-form.search-form-normal .el-form-item__label { padding-right:6px; width:130px; line-height: 16px; }
-.search-form.search-form-normal .search-form-item-input { width: 250px; }
-.search-form.search-form-normal .el-select  { width: 250px; }
+.search-form.search-form-normal .el-form-item__label { font-size: 10px;padding-right:6px; width:100px; line-height: 30px; }
+.search-form.search-form-normal .el-input--mini .el-input__inner{  height: 18px; }
+.search-form.search-form-normal .search-form-item-input { width: 120px; }
+.search-form.search-form-normal .el-select  { width: 200px; }
 
 .search-form.search-form-wide {}
-.search-form.search-form-wide .el-form-item__label { padding-right:6px; width:130px; line-height: 16px; }
-.search-form.search-form-wide .search-form-item-input { width: 250px; }
+.search-form.search-form-wide .el-form-item__label {font-size: 10px;padding-right:6px; width:100px; line-height: 10px; }
+.search-form.search-form-normal .el-input--mini .el-input__inner{  height: 18px; }
+.search-form.search-form-normal .search-form-item-input { width: 120px; }
+.search-form.search-form-wide .search-form-item-input { width: 200px; }

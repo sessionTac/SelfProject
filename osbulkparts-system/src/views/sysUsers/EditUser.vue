@@ -46,9 +46,9 @@
             <span slot="footer">
                 <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
                 <el-button size="mini" @click=" cancel">取消</el-button>
-                <el-button v-if="this.mode === 'EDIT'" size="mini" @click="editPass">密码重置</el-button>
+                <el-button v-if="this.mode === 'EDIT'" size="mini" @click="resetPass">密码重置</el-button>
             </span>
-            <EditPasswordDialog v-bind.sync="edit_pass"  v-if="edit_pass.activated" ></EditPasswordDialog>
+            <!--<EditPasswordDialog v-bind.sync="edit_pass"  v-if="edit_pass.activated" ></EditPasswordDialog>-->
         </el-dialog>
     </div>
 
@@ -214,9 +214,33 @@
             },
 
 
-            //修改密码
-            editPass(){
-                this.edit_pass = {activated:true,userName:this.form.userName,id:this.id}
+            //重置密码
+            resetPass(){
+                this.$confirm("确定重置密码吗？", "提示", {
+                    confirmButtonText: "是",
+                    cancelButtonText: "否",
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                    let data ={
+                        userId : this.id || undefined,
+                    };
+                    service.reset({...data}).then(resp =>{
+                        if (resp.data.code=="201"){
+                            this.$notify({message: resp.data.message, type: "success"});
+                            this.dialogFormVisible = false
+                        } else {
+                            this.$notify({message: resp.data.message, type: "error"});
+                        }
+
+                    })
+                  }
+                ).catch(() => {
+                    this.internal_activated = true;
+                })//删除
+
+                // this.edit_pass = {activated:true,userName:this.form.userName,id:this.id}
+
             }
         }
     }

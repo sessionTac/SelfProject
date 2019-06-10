@@ -45,7 +45,7 @@
                                 <el-input placeholder="供应商编号" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
                             </el-form-item>
                             <el-form-item label="币种">
-                                <el-select v-model="search_keys.materialCurrency"  size="mini" knx>
+                                <el-select v-model="search_keys.materialCurrency"  size="mini" >
                                     <el-option value=""></el-option>
                                     <el-option
                                             size="mini"

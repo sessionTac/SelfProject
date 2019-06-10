@@ -28,4 +28,5 @@ public interface TUserRoleRelationDao {
 
     int insertList(@Param("list") List<Integer> list, @Param("userId") String userId, @Param("createUser") String createUser);
 
+    int deleteByRoleId(String roleId);
 }

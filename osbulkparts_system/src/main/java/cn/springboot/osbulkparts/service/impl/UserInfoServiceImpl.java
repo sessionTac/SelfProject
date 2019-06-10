@@ -223,8 +223,34 @@ public class UserInfoServiceImpl implements UserInfoService {
             return result;
         }
     }
+	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<?> resetPassword(MUserInfoEntity userInfoEntity, Authentication auth) {
+		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		MUserInfoEntity mUserInfoEntity = new MUserInfoEntity();
+		try {
+			mUserInfoEntity.setUserId(userInfoEntity.getUserId());
+			mUserInfoEntity.setPassword(encoder.encode("123456"));
+			mUserInfoEntity.setUpdateUser(principal.getUserId());
+			int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.resetPassword.success"));
+			}else {
+				result.setMessage(messageBean.getMessage("common.resetPassword.failed"));
+			}
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
 
-    @SuppressWarnings("finally")
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MUserInfoEntity> getUserCustomerRelationInfo(String userId) {
 //		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
@@ -273,7 +299,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			return result;
 		}
 	}
-
+	@Transactional
 	@Override
 	public CommonResultInfo<?> deleteUserInfo(String userId, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
@@ -286,6 +312,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			mUserInfoEntity.setIsDelete(1);
 			int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
 			if (returnInt > 0) {
+				tUserRoleRelationDao.deleteById(userId);
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.USER.getTypeName()));
 			}

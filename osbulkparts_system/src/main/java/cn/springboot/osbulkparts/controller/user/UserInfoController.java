@@ -103,10 +103,10 @@ public class UserInfoController {
 		String userId;
 	}
 	/**
-	 * 添加权限
+	 * 添加角色
 	 * @return
 	 */
-	@ApiOperation(value="给用户添加权限", notes="给用户添加权限")
+	@ApiOperation(value="给用户添加角色", notes="给用户添加权限")
 	@ApiImplicitParam(name = "InsertRoleForm", value = "添加权限内部类（user Id和roleIds集合）", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/insertRole")
 	public Object insertPower(@RequestBody InsertRoleForm form, Authentication auth) {
@@ -121,6 +121,16 @@ public class UserInfoController {
 	@GetMapping("/checkUserInfo")
 	public CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity, String checkFlag){
 		return userInfoService.checkInfo(mUserInfoEntity,checkFlag);
+	}
+
+	/**
+	 * 重置密码
+	 * @param userInfoEntity
+	 * @return
+	 */
+	@PutMapping("/resetPass")
+	public Object resetPass(@RequestBody MUserInfoEntity userInfoEntity, Authentication auth) {
+		return userInfoService.resetPassword(userInfoEntity,auth);
 	}
 
 }
