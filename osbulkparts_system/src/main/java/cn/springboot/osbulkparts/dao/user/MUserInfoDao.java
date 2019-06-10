@@ -45,4 +45,10 @@ public interface MUserInfoDao {
      */
     List<MUserInfoEntity> checkingAndVersion(MUserInfoEntity userInfoEntity);
 
+    //验证密码
+    String selectPass(@Param("userId") String userId);
+
+    //修改密码
+    int changePass(@Param("userId") String userId,@Param("password") String password);
+
 }

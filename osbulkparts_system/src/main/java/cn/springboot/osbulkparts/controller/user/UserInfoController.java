@@ -132,5 +132,19 @@ public class UserInfoController {
 	public Object resetPass(@RequestBody MUserInfoEntity userInfoEntity, Authentication auth) {
 		return userInfoService.resetPassword(userInfoEntity,auth);
 	}
+	@Data
+	public static class ChangePassForm {
+		MUserInfoEntity userInfoEntity;
+		String inputPassword;//旧密码
+	}
+
+	/**
+	 * 修改密码
+	 * @return
+	 */
+	@PutMapping("/changePass")
+	public CommonResultInfo<?> changePass(@RequestBody ChangePassForm form, Authentication auth) {
+		return userInfoService.changePassword(form.userInfoEntity,form.inputPassword,auth);
+	}
 
 }

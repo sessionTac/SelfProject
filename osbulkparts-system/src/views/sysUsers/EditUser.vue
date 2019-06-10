@@ -1,53 +1,56 @@
 <template>
     <div>
         <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)" width="600px">
-            <el-form ref="form" :model="form" label-width="200px"  :rules="rules" size="mini">
-                <el-form-item label="用户名" prop="userName">
-                    <el-input v-model="form.userName" class="search-form-item-input"  style="width: 200px"size="mini" :maxlength="500" ></el-input>
-                </el-form-item>
-                <template v-if="this.mode === 'ADD'">
-                    <el-form-item label="密码" prop="password">
-                        <el-input v-model="form.password" class="search-form-item-input" type="password" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+            <div class="dialogStyle" style="display: flex;flex-direction: column">
+                <el-form ref="form" style="flex: 5" :model="form" label-width="200px"  :rules="rules" size="mini">
+                    <el-form-item label="用户名" prop="userName">
+                        <el-input v-model="form.userName" class="search-form-item-input"  style="width: 200px"size="mini" :maxlength="500" ></el-input>
                     </el-form-item>
-                    <el-form-item label="确认密码" prop="checkPass">
-                        <el-input v-model="form.checkPass" class="search-form-item-input" type="password" style="width: 200px" size="mini" :maxlength="64"></el-input>
+                    <template v-if="this.mode === 'ADD'">
+                        <el-form-item label="密码" prop="password">
+                            <el-input v-model="form.password" class="search-form-item-input" type="password" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                        </el-form-item>
+                        <el-form-item label="确认密码" prop="checkPass">
+                            <el-input v-model="form.checkPass" class="search-form-item-input" type="password" style="width: 200px" size="mini" :maxlength="64"></el-input>
+                        </el-form-item>
+                    </template>
+                    <el-form-item label="真实姓名" prop="userRealName">
+                        <el-input v-model="form.userRealName" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
                     </el-form-item>
-                </template>
-                <el-form-item label="真实姓名" prop="userRealName">
-                    <el-input v-model="form.userRealName" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
-                </el-form-item>
-                <el-form-item label="手机" prop="userPhone">
-                    <el-input v-model="form.userPhone" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
-                </el-form-item>
-                <el-form-item label="邮箱" prop="userMail">
-                    <el-input v-model="form.userMail" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
-                </el-form-item>
-                <el-form-item label="用户类型" >
-                    <el-select v-model="form.userType" placeholder="请选择">
-                        <el-option
-                          v-for="item in options.userType"
-                          :key="item.value"
-                          :label="item.name"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="用户状态" >
-                    <el-select v-model="form.userStatus" placeholder="请选择">
-                        <el-option
-                          v-for="item in options.userStatus"
-                          :key="item.value"
-                          :label="item.name"
-                          :value="item.value">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
-            <span slot="footer">
-                <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
-                <el-button size="mini" @click=" cancel">取消</el-button>
-                <el-button v-if="this.mode === 'EDIT'" size="mini" @click="resetPass">密码重置</el-button>
-            </span>
+                    <el-form-item label="手机" prop="userPhone">
+                        <el-input v-model="form.userPhone" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
+                    </el-form-item>
+                    <el-form-item label="邮箱" prop="userMail">
+                        <el-input v-model="form.userMail" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
+                    </el-form-item>
+                    <el-form-item label="用户类型" >
+                        <el-select v-model="form.userType" placeholder="请选择">
+                            <el-option
+                              v-for="item in options.userType"
+                              :key="item.value"
+                              :label="item.name"
+                              :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="用户状态" >
+                        <el-select v-model="form.userStatus" placeholder="请选择">
+                            <el-option
+                              v-for="item in options.userStatus"
+                              :key="item.value"
+                              :label="item.name"
+                              :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <div class="dialogButton">
+                    <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
+                    <el-button size="mini" @click=" cancel">取消</el-button>
+                    <el-button v-if="this.mode === 'EDIT'" size="mini" @click="resetPass">密码重置</el-button>
+                </div>
+            </div>
+
             <!--<EditPasswordDialog v-bind.sync="edit_pass"  v-if="edit_pass.activated" ></EditPasswordDialog>-->
         </el-dialog>
     </div>

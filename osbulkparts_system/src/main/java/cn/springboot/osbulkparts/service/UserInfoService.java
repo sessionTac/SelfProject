@@ -48,8 +48,14 @@ public interface UserInfoService {
     CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity,String checkFlag);
 
 	/**
-	 * 修改密码
+	 * 重置密码
 	 * @return
 	 */
 	CommonResultInfo<?> resetPassword(MUserInfoEntity userInfoEntity, Authentication auth);
+
+	/**
+	 * 修改密码
+	 * @return
+	 */
+	CommonResultInfo<?> changePassword(MUserInfoEntity userInfoEntity,String oldPassword, Authentication auth);
 }

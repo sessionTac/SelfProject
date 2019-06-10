@@ -53,6 +53,7 @@ public class PassportController {
 		Map<String,Object> resultMap = new HashMap<>();
 		resultMap.put("functions", functions);
 		resultMap.put("userName", userInfo.getUserName());
+		resultMap.put("userId", userInfo.getUserId());
 		resultMap.put("trueName", userInfo.getUserRealName());
 		resultMap.put("tel", userInfo.getUserPhone());
 		resultMap.put("email", userInfo.getUserMail());

@@ -249,6 +249,41 @@ public class UserInfoServiceImpl implements UserInfoService {
 			return result;
 		}
 	}
+	@Transactional
+	@Override
+	public CommonResultInfo<?> changePassword(MUserInfoEntity userInfoEntity, String oldPassword, Authentication auth) {
+		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		MUserInfoEntity mUserInfoEntity = new MUserInfoEntity();
+		mUserInfoEntity.setUpdateUser(principal.getUserId());
+
+		try {
+			String password = muserInfoDao.selectPass(userInfoEntity.getUserId());//获取数据库中的加密的password
+			//判断是否一致
+			BCryptPasswordEncoder encryptor = new BCryptPasswordEncoder(10);
+			boolean flag = encryptor.matches(oldPassword,password);
+			if(!flag) {
+				result.setMessage(messageBean.getMessage("common.changePassword.error"));
+			}else {
+				String plainPassword = userInfoEntity.getPassword();
+				String encryptedPassword = encryptor.encode(plainPassword);//加密后的密码
+				int num = muserInfoDao.changePass(userInfoEntity.getUserId(), encryptedPassword);
+				if(num == 1) {
+					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+					result.setMessage(messageBean.getMessage("common.changePassword.success"));
+				}else {
+					result.setMessage(messageBean.getMessage("common.changePassword.failed"));
+				}
+			}
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
 
 	@SuppressWarnings("finally")
 	@Override

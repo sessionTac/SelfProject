@@ -1,5 +1,6 @@
 <template>
   <el-dialog title="角色查看" :visible.sync="user_role_view" @closed="$emit('update:activated', false)" width="600px">
+    <div class="dialogStyle">
       <el-table size="mini"
                 class="search-result-table"
                 :data="search_result"
@@ -8,6 +9,7 @@
         <el-table-column prop="roleId" label="角色编号" ></el-table-column>
         <el-table-column prop="mroleInfoEntity.roleName" label="角色名称" ></el-table-column>
       </el-table>
+    </div>
   </el-dialog>
 </template>
 

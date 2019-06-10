@@ -7,12 +7,13 @@
       <template>
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <lang-select class="right-menu-item hover-effect" />
+        <!--<lang-select class="right-menu-item hover-effect" />-->
       </template>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click" @command="handleCommand">
-        <div class="avatar-wrapper">
-          <img src="https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191" class="user-avatar">
-          <i class="el-icon-caret-bottom" />
+        <div class="avatar-wrapper" style="font-size: 15px">
+          <!--<img src="https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191" class="user-avatar">-->
+          {{subject.principal.username}},您好！
+          <i class="el-icon-s-tools" />
         </div>
         <el-dropdown-menu slot="dropdown">
             <el-dropdown-item command="person" >
@@ -69,7 +70,7 @@
         // },
         handleCommand(command){
             if(command == 'person'){
-                this.edit_pass = {activated:true,id:'1'}
+                this.edit_pass = {activated:true,id:this.subject.principal.userId}
             }
         }
       // async logout() {
