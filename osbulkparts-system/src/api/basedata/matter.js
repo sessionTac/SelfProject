@@ -6,21 +6,18 @@ export default {
    * 查询物料数据列表
    */
   findMatterList: (params) =>
-     // getRequest(`~/maintenance/basis/user/page`, {params}),
-    getRequest(`./static/mock-api/basticData/matterList.json`, {params}),
+    getRequest(`~/material/getMaterialList`, {params}),
 
   /**
    * 物料数据列表初始化
    */
   initData: () =>
-        // getRequest(`~/maintenance/basis/user/page`, {params}),
-        getRequest(`./static/mock-api/basticData/matterListInit.json`),
+        getRequest(`~/material/init`),
   /**
    * 物料数据列表初始化
    */
-  init: () =>
-      // getRequest(`~/maintenance/basis/user/page`, {params}),
-      getRequest(`./static/mock-api/basticData/matterListInit.json`),
+  findMatterInfo: () =>
+      getRequest(`~/material/getMaterialInfo`, {params}),
 
   /**
    * 修改编辑

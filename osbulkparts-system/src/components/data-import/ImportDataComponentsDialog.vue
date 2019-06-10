@@ -215,7 +215,7 @@
       doPost() {
 
         switch(this.target) {
-          case 'MATTER' : return service.importData('/role/leadExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
+          case 'MATTER' : return service.importData('/material/importExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
 
           // case 'ORGANIZATION'                : return service.importData('/basis/organization/leadExcel', {categoryNo:this.form.categoryNo && this.form.categoryNo || ""}, {file:this.currentFile.raw}, this.onUploadProgress);
           //

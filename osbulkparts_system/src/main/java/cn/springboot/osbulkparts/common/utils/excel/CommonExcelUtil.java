@@ -1,6 +1,5 @@
-package cn.springboot.osbulkparts.common.utils;
+package cn.springboot.osbulkparts.common.utils.excel;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -13,6 +12,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
@@ -29,18 +29,20 @@ import org.apache.poi.xssf.usermodel.XSSFShape;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFSimpleShape;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import org.springframework.web.multipart.MultipartFile;
+//import org.springframework.web.multipart.MultipartFile;
 
-import com.github.pagehelper.util.StringUtil;
+//import com.knx.pojo.InterestTestExclePojo;
 
-import lombok.extern.slf4j.Slf4j;
+//import lombok.extern.slf4j.Slf4j;
 
 /**
  * poi读取Excel表的工具类
  * 
+ * @author 齐义峰
+ *
  */
-@Slf4j
-public class ExcelUtil {
+
+public class CommonExcelUtil {
 	/**
 	 * 把一个表格数据取出取出到一个ListMap里面，直接以第一列做key
 	 * 
@@ -106,95 +108,7 @@ public class ExcelUtil {
 	public static List<Map<String, String>> readArrearageExcel(int titleLine, File excel) throws Exception {
 		return readArrearageExcel(1, titleLine, null, excel);
 	}
-	
-	/**
-	 * 
-	 */
-	public static ByteArrayOutputStream setRowColor(MultipartFile excel, int sheetNum, int rownum, int colnum1, int colnum2,int colnum3) throws Exception {
-		Workbook wb = null;
-		String fileName = excel.getOriginalFilename();
-		wb = readExcel(fileName, excel.getInputStream());
-		CellStyle style = wb.createCellStyle();
-		Sheet sheet = wb.getSheetAt(sheetNum-1);
-		Row row = sheet.getRow(rownum);
-		style.setFillForegroundColor(IndexedColors.RED.getIndex());
-		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
-		row.getCell(colnum1).setCellStyle(style);
-		row.getCell(colnum2).setCellStyle(style);
-		row.getCell(colnum3).setCellStyle(style);
-		ByteArrayOutputStream retOs = null;
-		retOs = new ByteArrayOutputStream();
-		wb.write(retOs);
-		return retOs;
-	}
 
-	/***
-	 * 上传文件的数据验证
-	 * @param sheetNum
-	 * @param titleLine
-	 * @param columns
-	 * @param excel
-	 * @param checkRule
-	 * @return 返回字节流
-	 * @throws Exception
-	 */
-	public static ByteArrayOutputStream excelDataCheck(int sheetNum, int titleLine, String columns[],
-			MultipartFile excel,int[] checkRule) throws Exception{
-		ByteArrayOutputStream retOs = null;
-		Workbook wb = null;
-		Row rowData = null;
-		// 判断是否为空
-		if (excel.isEmpty()) {
-			log.debug("文档为空");
-			throw new Exception("MultipartFile为空");
-		}
-		String fileName = excel.getOriginalFilename();
-		wb = readExcel(fileName, excel.getInputStream());
-		if (wb != null) {
-			log.info("wb:"+wb);
-			// 设置数据异常时单元格的格式
-	        CellStyle  style =  wb.createCellStyle();
-	        style.setFillPattern(FillPatternType.SOLID_FOREGROUND);  
-	        style.setFillForegroundColor(IndexedColors.RED.getIndex());
-	        // 读取sheet
-	        Sheet sheet = wb.getSheetAt(sheetNum-1);
-	        // 获取最大条数
-	        int lastRowIndex = sheet.getPhysicalNumberOfRows();
-	        
-			// 获取标题列
-			rowData = sheet.getRow(titleLine-1);
-			int colnum = 0;
-			if (columns == null) {
-				colnum = rowData.getPhysicalNumberOfCells();
-			} else {
-				colnum = columns.length;
-			}
-			//错误cell条数
-			int abnormalCount = 0;
-			for (int i = titleLine; i < lastRowIndex; i++) {
-				rowData = sheet.getRow(i);
-				if (rowData != null) {
-					for (int j = 0; j < colnum; j++) {
-						if(checkRule[j] == 1){
-							if(StringUtil.isEmpty(getCellFormatValue(rowData.getCell(j)).toString())){
-								rowData.createCell(j).setCellStyle(style);
-								abnormalCount++;
-							}
-						}
-					}
-				} else {
-					break;
-				}
-			}
-			// 错误Cell条数判断
-			if(abnormalCount > 0){
-				retOs = new ByteArrayOutputStream();
-				wb.write(retOs);
-			}
-		}
-		return retOs;
-	}
-	
 	/**
 	 * 把一个表格数据取出取出到一个ListMap里面，可以当json用，key是传进来的数组，value是单元格数据.会忽略第一行
 	 * 
@@ -209,7 +123,7 @@ public class ExcelUtil {
 			File excel) throws Exception {
 		Workbook wb = null;
 		String filePath = excel.getPath();
-		log.debug("读取excel，文件地址:" + filePath);
+		System.out.println("读取excel，文件地址:" + filePath);
 		wb = readExcel(filePath);
 		return readExcel(sheetNum - 1, titleLine - 1, columns, wb);
 	}
@@ -224,24 +138,45 @@ public class ExcelUtil {
 	 * @return 可以当场josn格式用的ListMap
 	 * @throws Exception
 	 */
-	public static List<Map<String, String>> readArrearageExcel(int sheetNum, int titleLine, String columns[],
-			MultipartFile excel) throws Exception {
+//	public static List<Map<String, String>> readArrearageExcel(int sheetNum, int titleLine, String columns[],
+//			MultipartFile excel) throws Exception {
+//
+//		Workbook wb = null;
+//
+//		// 判断是否为空
+//		if (excel.isEmpty()) {
+//			System.out.println("文档为空");
+//			throw new Exception("MultipartFile为空");
+//		}
+//
+//		String fileName = excel.getOriginalFilename();
+//		wb = readExcel(fileName, excel.getInputStream());
+//		if (wb != null) {
+//			return readExcel(sheetNum - 1, titleLine - 1, columns, wb);
+//		}
+//
+//		return null;
+//	}
 
-		Workbook wb = null;
+	public static Workbook setRowColor(Workbook wb, int Sheetnum, int rownum, int colnum1, int colnum2) {
+		CellStyle style = wb.createCellStyle();
+		Sheet sheet = wb.getSheetAt(Sheetnum);
+		Row row = sheet.getRow(rownum);
+		style.setFillForegroundColor(IndexedColors.RED.getIndex());
+		style.setFillPattern(FillPatternType.SOLID_FOREGROUND);
+		row.getCell(colnum1).setCellStyle(style);
+		row.getCell(colnum2).setCellStyle(style);
+		// row.setRowStyle(style);
+		return wb;
+	}
 
-		// 判断是否为空
-		if (excel.isEmpty()) {
-			log.debug("文档为空");
-			throw new Exception("MultipartFile为空");
-		}
-
-		String fileName = excel.getOriginalFilename();
-		wb = readExcel(fileName, excel.getInputStream());
-		if (wb != null) {
-			return readExcel(sheetNum , titleLine, columns, wb);
-		}
-
-		return null;
+	public static void main(String[] args) throws IOException {
+		String filePath = "D:/工作簿1.xlsx";
+		System.out.println("读取excel，文件地址:" + filePath);
+		Workbook wb = readExcel(filePath);
+		wb = setRowColor(wb, 0, 0, 1, 2);
+		FileOutputStream fileOut = new FileOutputStream("D:/POIFillAndColorExample.xlsx");
+		wb.write(fileOut);
 	}
 
 	private static List<Map<String, String>> readExcel(int sheetNum, int titleLine, String columns[], Workbook wb)
@@ -256,11 +191,12 @@ public class ExcelUtil {
 			// 用来存放表中数据
 			list = new ArrayList<Map<String, String>>();
 			// 获取第一个sheet
-			sheet = wb.getSheetAt(sheetNum-1);//TODO
+			sheet = wb.getSheetAt(sheetNum);
 			// 获取最大行数
-			int rownum = sheet.getPhysicalNumberOfRows() ;
+			int rownum = sheet.getPhysicalNumberOfRows() - titleLine;
 			// 获取标题列
-			row = sheet.getRow(1);
+			row = sheet.getRow(titleLine);
+
 			// 获取最大列数
 			int colnum = 0;
 			if (columns == null) {
@@ -275,15 +211,12 @@ public class ExcelUtil {
 			} else {
 				ColumnName = columns;
 			}
-			
-			for (int i = titleLine ; i < rownum; i++) {
+			for (int i = titleLine + 1; i < rownum; i++) {
 				Map<String, String> map = new LinkedHashMap<String, String>();
 				row = sheet.getRow(i);
 				if (row != null) {
 					for (int j = 0; j < colnum; j++) {
-						//System.out.println("------------------------row.getCell(j)----------------------------"+row.getCell(j));
-						cellData = getCellFormatValue(row.getCell(j)).toString();
-					//	System.out.println("------------------------ColumnName----------------------------"+ColumnName[j]);
+						cellData = getCellFormatValue(row.getCell(j)).toString(); 
 						map.put(ColumnName[j], cellData);
 					}
 				} else {
@@ -292,15 +225,14 @@ public class ExcelUtil {
 				list.add(map);
 			}
 		}
-/*		// 遍历解析出来的list
+		// 遍历解析出来的list
 		for (Map<String, String> map : list) {
 			for (Entry<String, String> entry : map.entrySet()) {
-				
+				System.out.print(entry.getKey() + ":" + entry.getValue() + " | ");
 			}
 			System.out.println();
 			System.out.println("----------------------------------------------------");
-		}*/
-		//System.out.println("------------------------list----------------------------"+list);
+		}
 		return list;
 	}
 
@@ -373,16 +305,13 @@ public class ExcelUtil {
 					// 解决数据变成科学计数法值
 					DecimalFormat df = new DecimalFormat("0");
 					cellValue = df.format(cell.getNumericCellValue());
-//					cellValue = cell.getNumericCellValue();
 				}
 
 			} else if (cell.getCellTypeEnum() == CellType.FORMULA) {
 				// 数字
 				// 解决数据变成科学计数法值
-//				DecimalFormat df = new DecimalFormat("0");
-//				cellValue = df.format(cell.getNumericCellValue());
-				cellValue = cell.getNumericCellValue();
-
+				DecimalFormat df = new DecimalFormat("0");
+				cellValue = df.format(cell.getNumericCellValue());
 
 			} else if (cell.getCellTypeEnum() == CellType.STRING) {
 				// 字符串

@@ -15,6 +15,8 @@ public interface MSupplierInfoDao {
     int insertSelective(MSupplierInfoEntity record);
 
     MSupplierInfoEntity selectByPrimaryKey(String supplierId);
+    
+    MSupplierInfoEntity selectByCode(String supplierCode);
 
     int updateByPrimaryKeySelective(MSupplierInfoEntity record);
 

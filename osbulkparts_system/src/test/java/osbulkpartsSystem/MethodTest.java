@@ -12,6 +12,8 @@ public class MethodTest {
 		
 //		String password = encoder.encode("123456");
 		;
-		System.out.println(CommonConstantEnum.DICT_TYPE.getTypeName());
+		System.out.println(Double.valueOf(""));
+		
+		
 	}
 }

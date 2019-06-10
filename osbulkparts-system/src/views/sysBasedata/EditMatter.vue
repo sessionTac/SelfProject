@@ -1,54 +1,81 @@
 <template>
     <div>
-        <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)" width="600px">
+        <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)" width="900px">
             <el-form ref="form" :model="form" label-width="200px"  size="mini">
-                <el-form-item label="物料HNR号" prop="matterHNRNo">
-                    <el-input v-model="form.matterHNRNo" class="search-form-item-input"  style="width: 200px"size="mini" :maxlength="500" ></el-input>
+                <el-form-item label="物料号" prop="materialCode">
+                    <el-input v-model="form.materialCode" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
                 </el-form-item>
-                <el-form-item label="物料号" prop="matterNo">
-                    <el-input v-model="form.matterNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                <el-form-item label="物料CKD号" prop="materialCkdCode">
+                    <el-input v-model="form.materialCkdCode" class="search-form-item-input"  style="width: 200px"size="mini" :maxlength="500" ></el-input>
                 </el-form-item>
-                <el-form-item label="物料类别" prop="matterType">
-                    <el-select v-model="form.matterType"  size="mini">
+                <el-form-item label="物料类别" prop="materialCategory">
+                    <el-select v-model="form.materialCategory"  size="mini">
                         <el-option value=""></el-option>
                         <el-option
                                 size="mini"
-                                v-for="item in matterTypes"
+                                v-for="item in materialCategorys"
                                 :key="item.code"
                                 :label="item.name"
                                 :value="item.code">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="物料中文描述" prop="matterCnDec">
-                    <el-input v-model="form.matterCnDec" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="200"></el-input>
+                <el-form-item label="物料中文描述" prop="materialDescCn">
+                    <el-input v-model="form.materialDescCn" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="200"></el-input>
                 </el-form-item>
-                <el-form-item label="物料英文描述" prop="matterEnDec">
-                    <el-input v-model="form.matterEnDec" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="200"></el-input>
+                <el-form-item label="物料英文描述" prop="materialDescEn">
+                    <el-input v-model="form.materialDescEn" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="200"></el-input>
                 </el-form-item>
-                <el-form-item label="物料俄文描述" prop="matterEnDec">
-                    <el-input v-model="form.matterEnDec" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="200"></el-input>
+                <el-form-item label="物料俄文描述" prop="materialDescRn">
+                    <el-input v-model="form.materialDescRn" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="200"></el-input>
                 </el-form-item>
-                <el-form-item label="单位" prop="unit">
-                    <el-select v-model="form.unit"  size="mini">
+                <el-form-item label="单位" prop="materialUnit">
+                    <el-select v-model="form.materialUnit"  size="mini">
                         <el-option value=""></el-option>
                         <el-option
                                 size="mini"
-                                v-for="item in units"
+                                v-for="item in materialUnits"
                                 :key="item.code"
                                 :label="item.name"
                                 :value="item.code">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="换算关系" prop="scalerRela">
-                    <el-input v-model="form.scalerRela" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
+                <el-form-item label="HS海关编码" prop="hsNo">
+                    <el-input v-model="form.hsNo" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
                 </el-form-item>
-                <el-form-item label="换算后单位">
-                    <el-input class="search-form-item-input"  style="width: 200px" v-model="form.scalerUnit" size="mini" :maxlength="10"></el-input>
+                <el-form-item label="供应商编号" prop="supplierCode">
+                    <el-input v-model="form.supplierCode" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
                 </el-form-item>
-                <el-form-item label="币种" prop="currency">
-                    <el-select v-model="form.currency"  size="mini">
+                <el-form-item label="换算关系" prop="materialRelation">
+                    <el-input v-model="form.materialRelation" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
+                </el-form-item>
+                <el-form-item label="换算后单位" prop="materialRelationUnit">
+                    <el-select v-model="form.materialRelationUnit"  size="mini">
+                        <el-option value=""></el-option>
+                        <el-option
+                                size="mini"
+                                v-for="item in materialRelationUnits"
+                                :key="item.code"
+                                :label="item.name"
+                                :value="item.code">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="最小包装数量" prop="materialMinpackageAmt">
+                    <el-input v-model="form.materialMinpackageAmt" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
+                </el-form-item>
+                <el-form-item label="未税单价" prop="materialTaxPrice">
+                    <el-input v-model="form.materialTaxPrice" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
+                </el-form-item>
+                <el-form-item label="含税单价" prop="materialVatPrice">
+                    <el-input class="search-form-item-input"  style="width: 200px" v-model="form.materialVatPrice" size="mini" :maxlength="10"></el-input>
+                </el-form-item>
+                <el-form-item label="单价" prop="materialPrice">
+                    <el-input v-model="form.materialPrice" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
+                </el-form-item>
+                <el-form-item label="币种" prop="materialCurrency">
+                    <el-select v-model="form.materialCurrency"  size="mini">
                         <el-option value=""></el-option>
                         <el-option
                                 size="mini"
@@ -59,14 +86,26 @@
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="单价" prop="scalerRela">
-                    <el-input v-model="form.scalerRela" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
+                <el-form-item label="代理费率" prop="materialRate">
+                    <el-input v-model="form.materialRate" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
                 </el-form-item>
-                <el-form-item label="分级BOM编码" prop="scalerRela">
-                    <el-input v-model="form.scalerRela" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
+                <el-form-item label="分级BOM编码" prop="levelBomCode">
+                    <el-input v-model="form.levelBomCode" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
                 </el-form-item>
-                <el-form-item label="物料供货模式分类标识" prop="scalerRela">
-                    <el-input v-model="form.scalerRela" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
+                <el-form-item label="物料供货模式分类标识" prop="materialSupplyMode">
+                    <el-select v-model="form.materialSupplyMode"  size="mini">
+                        <el-option value=""></el-option>
+                        <el-option
+                                size="mini"
+                                v-for="item in materialSupplyModes"
+                                :key="item.code"
+                                :label="item.name"
+                                :value="item.code">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="工厂号" prop="factoryCode">
+                    <el-input v-model="form.factoryCode" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
                 </el-form-item>
             </el-form>
             <span slot="footer">
@@ -92,18 +131,31 @@
                 dialogFormVisible: true,
                 search_keys:{},
                 currencys:[],
-                units:[],
-                matterTypes:[],
+                materialUnits:[],
+                materialRelationUnits:[],
+                materialCategorys:[],
+                materialSupplyModes:[],
                 form: {
-                    matterHNRNo: '',
-                    matterNo: '',
-                    matterType: '',
-                    matterCnDec: '',
-                    matterEnDec:'',
-                    unit: '',
-                    scalerRela:'',
-                    scalerUnit:'',
-                    currency:'',
+                    materialCode: '',
+                    materialCkdCode: '',
+                    materialCategory: '',
+                    materialDescCn: '',
+                    materialDescEn: '',
+                    materialDescRn: '',
+                    materialUnit: '',
+                    hsNo: '',
+                    supplierCode: '',
+                    materialRelation: '',
+                    materialRelationUnit: '',
+                    materialMinpackageAmt: '',
+                    materialTaxPrice: '',
+                    materialVatPrice: '',
+                    materialPrice: '',
+                    materialCurrency: '',
+                    materialRate: '',
+                    levelBomCode: '',
+                    materialSupplyMode: '',
+                    factoryCode: '',
                 },
                 /**表单的验证*/
                 // rules: {
@@ -137,15 +189,17 @@
         },
         methods: {
             async init(){
-                await activityService.init().then(resp =>{
-                    this.currencys = resp.data.currencys;
-                    this.units = resp.data.units;
-                    this.matterTypes = resp.data.matterTypes;
+                await activityService.initData().then(resp =>{
+                    this.materialRelationUnits = resp.data.result.materialRelationUnits;
+                    this.materialUnits = resp.data.result.materialUnits;
+                    this.currencys = resp.data.result.currencys;
+                    this.materialCategorys = resp.data.result.materialCategorys;
+                    this.materialSupplyModes = resp.data.result.materialSupplyModes;
                 }, err => {
                     console.error(err);
                 });
-                await activityService.init().then(resp =>{
-                    this.form = resp.data.list[0];
+                await activityService.findMatterInfo({...form}).then(resp =>{
+                    this.form = resp.data.resultList;
                 }, err => {
                     console.error(err);
                 });

@@ -2,94 +2,75 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="物料HNR号">
-                    <el-input placeholder="物料HNR号" v-model="search_keys.matterHNRNo" class="search-form-item-input"></el-input>
+                <el-form-item label="成品型号">
+                    <el-input placeholder="成品型号" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="物料专用号">
-                    <el-input placeholder="物料专用号" v-model="search_keys.matterNo" class="search-form-item-input"></el-input>
+                <el-form-item label="子件型号">
+                    <el-input placeholder="子件型号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
+                </el-form-item>
+                <el-form-item label="物料CKD号">
+                    <el-input placeholder="物料CKD号" v-model="search_keys.materialCkdCode" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-form-item label="物料类别">
-                    <el-select v-model="search_keys.matterType"  size="mini" knx>
+                    <el-select v-model="search_keys.materialCategory"  size="mini" knx>
                         <el-option value=""></el-option>
                         <el-option
                                 size="mini" knx
-                                v-for="item in matterTypes"
+                                v-for="item in materialCategorys"
                                 :key="item.code"
                                 :label="item.name"
                                 :value="item.code">
                         </el-option>
                     </el-select>
                 </el-form-item>
-                <el-form-item label="物料中文描述">
-                    <el-input placeholder="物料中文描述" v-model="search_keys.matterCnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="物料英文描述">
-                    <el-input placeholder="物料英文描述" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="物料俄文描述">
-                    <el-input placeholder="物料俄文描述" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="HS海关编码">
-                    <el-input placeholder="HS海关编码" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="供货商信息">
-                    <el-input placeholder="供货商信息" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="单位">
-                    <el-select v-model="search_keys.unit"  size="mini" knx>
-                        <el-option value=""></el-option>
-                        <el-option
-                                size="mini" knx
-                                v-for="item in units"
-                                :key="item.code"
-                                :label="item.name"
-                                :value="item.code">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="换算关系">
-                    <el-input placeholder="换算关系" v-model="search_keys.scalerRela" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="换算后单位">
-                    <el-input placeholder="换算后单位" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="最小包装数量">
-                    <el-input placeholder="最小包装数量" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="未税单价">
-                    <el-input placeholder="未税单价" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="含税单价">
-                    <el-input placeholder="含税单价" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="代理费率">
-                    <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="币种">
-                    <el-select v-model="search_keys.currency"  size="mini" knx>
-                        <el-option value=""></el-option>
-                        <el-option
-                                size="mini"
-                                v-for="item in currencys"
-                                :key="item.code"
-                                :label="item.name"
-                                :value="item.code">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="创建人">
-                    <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="创建时间">
-                    <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="最后修改人">
-                    <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="最后修改时间">
-                    <el-input placeholder="代理费率" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-
+                <el-collapse accordion>
+                    <el-collapse-item>
+                        <template slot="title">
+                            <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
+                        </template>
+                        <div>
+                            <el-form-item label="物料中文描述">
+                                <el-input placeholder="物料中文描述" v-model="search_keys.materialDescCn" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="物料英文描述">
+                                <el-input placeholder="物料英文描述" v-model="search_keys.materialDescEn" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="物料俄文描述">
+                                <el-input placeholder="物料俄文描述" v-model="search_keys.materialDescRn" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="HS海关编码">
+                                <el-input placeholder="HS海关编码" v-model="search_keys.hsNo" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="供应商编号">
+                                <el-input placeholder="供应商编号" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="币种">
+                                <el-select v-model="search_keys.materialCurrency"  size="mini" knx>
+                                    <el-option value=""></el-option>
+                                    <el-option
+                                            size="mini"
+                                            v-for="item in currencys"
+                                            :key="item.code"
+                                            :label="item.name"
+                                            :value="item.code">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="创建人">
+                                <el-input placeholder="创建人" v-model="search_keys.createUser" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="创建时间">
+                                <el-input placeholder="创建时间" v-model="search_keys.createTime" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="最后修改人">
+                                <el-input placeholder="最后修改人" v-model="search_keys.updateUser" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="最后修改时间">
+                                <el-input placeholder="最后修改时间" v-model="search_keys.updateTime" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                        </div>
+                    </el-collapse-item>
+                </el-collapse>
                 <el-form-item style="float: right">
                     <import-button target = "MATTER"></import-button>
                 </el-form-item>
@@ -98,20 +79,24 @@
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
-
+                <el-form-item style="float: right">
+                    <el-button  @click="" icon="el-icon-delete" >
+                        删除
+                    </el-button>
+                </el-form-item>
+                <el-form-item style="float: right">
+                    <el-button  @click="" icon="el-icon-error" >
+                        清空
+                    </el-button>
+                </el-form-item>
+                <el-form-item style="float: right">
+                    <el-button  @click="edit('')" icon="el-icon-plus" >
+                        添加
+                    </el-button>
+                </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="primary" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
                         <i class="fa fa-search" aria-hidden="true"></i> 查询
-                    </el-button>
-                </el-form-item>
-                <el-form-item style="float: right">
-                    <el-button  @click="" icon="el-icon-download" >
-                        模板下载
-                    </el-button>
-                </el-form-item>
-                <el-form-item style="float: right">
-                    <el-button  @click="" icon="el-icon-delete" >
-                        清空
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -124,22 +109,26 @@
                   :data="search_result.list" row-key="id"
                   :stripe="true"
         >
-            <el-table-column prop="matterHNRNo" fixed width="100" align="center" label="物料HNR号"  />
-            <el-table-column prop="matterNo" fixed width="100" align="center" label="物料号"  />
-            <el-table-column prop="matterType" fixed width="100" align="center" label="物料类别" />
-            <el-table-column prop="matterCnDec"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
-            <el-table-column prop="matterEnDec"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
-            <el-table-column prop="matterRuDec"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
-            <el-table-column prop="matterRuDec" align="center" label="HS海关编码"  />
-            <el-table-column prop="matterRuDec" align="center" label="供应商信息"  />
-            <el-table-column prop="unit" align="center" label="单位"  />
-            <el-table-column prop="scalerRela" align="center" label="换算关系"  />
-            <el-table-column prop="scalerUnit" align="center" label="换算后单位"  />
-            <el-table-column prop="scalerUnit" align="center" label="最小包装数量"  />
-            <el-table-column prop="scalerUnit" align="center" label="未税单价"  />
-            <el-table-column prop="scalerUnit" align="center" label="含税单价"  />
-            <el-table-column prop="scalerUnit" align="center" label="代理费率"  />
-            <el-table-column prop="currency" align="center" label="币种"  />
+            <el-table-column type="selection" fixed width="100" align="center"/>
+            <el-table-column prop="materialOrderCode" fixed width="100" align="center" label="成品型号"  />
+            <el-table-column prop="materialCkdCode" fixed width="100" align="center" label="物料CKD号"  />
+            <el-table-column prop="materialCode" fixed width="100" align="center" label="子件型号"/>
+            <el-table-column prop="dictMaterialCategory.name" fixed width="100" align="center" label="物料类别" />
+            <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
+            <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
+            <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
+            <el-table-column prop="hsNo" align="center" label="HS海关编码"  />
+            <el-table-column prop="supplierCode" align="center" label="供应商代码"  />
+            <el-table-column prop="dictMaterialUnit.name" align="center" label="单位"  />
+            <el-table-column prop="materialRelation" align="center" label="换算关系"  />
+            <el-table-column prop="dictMaterialRelationUnit.name" align="center" label="换算后单位"  />
+            <el-table-column prop="materialMinpackageAmt" align="center" label="最小包装数量"  />
+            <el-table-column prop="materialTaxPrice" align="center" label="未税单价"  />
+            <el-table-column prop="materialVatPrice" align="center" label="含税单价"  />
+            <el-table-column prop="materialPrice" align="center" label="单价"  />
+            <el-table-column prop="materialRate" align="center" label="代理费率"  />
+            <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />
+            <el-table-column prop="factoryCode" align="center" label="工厂号"  />
             <el-table-column prop="currency" align="center" label="创建人"  />
             <el-table-column prop="currency" align="center" label="创建时间"  />
             <el-table-column prop="currency" align="center" label="最后修改人"  />
@@ -149,8 +138,8 @@
                 <template slot-scope="scope" >
                     <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.uuid)">
                         <i class="el-icon-news"></i></el-button>
-                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">
-                        <i class="el-icon-delete"></i></el-button>
+<!--                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">-->
+<!--                        <i class="el-icon-delete"></i></el-button>-->
                 </template>
             </el-table-column>
         </el-table>
@@ -185,19 +174,23 @@
                 link_modal_state      : {},
                 //单位下拉框数据
                 is_searching : true,
-                matterTypes:[],
-                units:[],
+                materialCategorys:[],
                 currencys:[],
                 search_keys   : {
-                    matterHNRNo:'',
-                    matterNo:'',
-                    matterType:'',
-                    matterCnDec:'',
-                    matterEnDec:'',
-                    unit:'',
-                    scalerRela:'',
-                    scalerUnit:'',
-                    currency:'',
+                    materialOrderCode:'',
+                    materialCode:'',
+                    materialCkdCode:'',
+                    materialCategory:'',
+                    materialDescCn:'',
+                    materialDescEn:'',
+                    materialDescRn:'',
+                    hsNo:'',
+                    supplierCode:'',
+                    materialCurrency:'',
+                    createUser:'',
+                    createTime:'',
+                    updateUser:'',
+                    updateTime:'',
                 },
                 search_keys_snap      : null,
                 search_result         : {},
@@ -210,22 +203,35 @@
         },
         methods: {
             init(){
-                activityService.init().then(resp =>{
-                    this.currencys = resp.data.currencys;
-                    this.units = resp.data.units;
-                    this.matterTypes = resp.data.matterTypes;
+                activityService.initData().then(resp =>{
+                    this.currencys = resp.data.result.currencys;
+                    this.materialCategorys = resp.data.result.materialCategorys;
                 }, err => {
                     console.error(err);
                 })
             },
             exec_search({
                             search_keys = JSON.parse(this.search_keys_snap),
-                            pageNumber = this.search_result.pageNum,
+                            pageNum = this.search_result.pageNum,
                             pageSize = this.search_result.pageSize,
                         }) {
                 let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
-                activityService.findMatterList({search_keys, pageNumber, pageSize}).then(resp => {
-                    this.search_result = resp.data;                //视图展示查询结果
+                activityService.findMatterList({...search_keys, pageNum, pageSize}).then(resp => {
+                    this.search_result = resp.data.resultInfo;                //视图展示查询结果
+                    this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
+                    this.search_keys_snap = search_keys_snap;             //存储查询条件快照
+                }, err => {
+                    console.error(err);
+                })
+            },
+            reSearch({
+                            search_keys = JSON.parse(this.search_keys_snap),
+                            pageNum = this.search_result.pageNum,
+                            pageSize = this.search_result.pageSize,
+                        }) {
+                let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
+                activityService.findMatterList({...search_keys, pageNum, pageSize}).then(resp => {
+                    this.search_result = resp.data.resultInfo;                //视图展示查询结果
                     this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
                     this.search_keys_snap = search_keys_snap;             //存储查询条件快照
                 }, err => {
@@ -234,6 +240,10 @@
             },
             exportData() {
                 console("excel export")
+            },
+            //添加
+            add(id) {
+                this.link_modal_state={activated:true,id};
             },
             //编辑
             edit(id) {

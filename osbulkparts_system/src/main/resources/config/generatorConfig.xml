@@ -67,7 +67,12 @@
 			enableDeleteByExample="false">
 		</table> -->
 		<!-- 供应商信息表  -->
-  		<table tableName="m_supplier_info" domainObjectName="NSupplierInfoEntity" 
+<!--   		<table tableName="m_supplier_info" domainObjectName="NSupplierInfoEntity" 
+			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false">
+		</table> -->
+		<!-- 散件物料表  -->
+  		<table tableName="m_material_info" domainObjectName="MMaterialInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
 		</table>
