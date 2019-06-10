@@ -140,10 +140,16 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	@Override
 	public CommonResultInfo<MMaterialInfoEntity> selectMaterialInfo(MMaterialInfoEntity materialInfoEntity){
 		CommonResultInfo<MMaterialInfoEntity> result = new CommonResultInfo<MMaterialInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		try {
 			List<MMaterialInfoEntity> resultList = mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity);
-			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-			result.setResultList(resultList);
+			if (resultList.size()>0){
+				result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+				result.setResult(resultList.get(0));
+			}else {
+				result.setMessage(messageBean.getMessage("common.select.failed"));
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());

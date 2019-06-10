@@ -16,7 +16,7 @@ export default {
   /**
    * 物料数据列表初始化
    */
-  findMatterInfo: () =>
+  findMatterInfo: (params) =>
       getRequest(`~/material/getMaterialInfo`, {params}),
 
   /**

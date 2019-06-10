@@ -136,7 +136,7 @@
 
             <el-table-column fixed="right" width="120" label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.uuid)">
+                    <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
                         <i class="el-icon-news"></i></el-button>
 <!--                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">-->
 <!--                        <i class="el-icon-delete"></i></el-button>-->
