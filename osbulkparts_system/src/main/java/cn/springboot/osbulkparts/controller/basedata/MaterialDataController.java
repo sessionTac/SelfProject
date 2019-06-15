@@ -118,7 +118,6 @@ public class MaterialDataController {
 	 */
 	@PostMapping("/excel")
 	public Object downExcel(
-			@RequestParam()String name,
 			@RequestBody Map<String, String> body) {
 		//获取excel导出的流
 		//之后修改 将service 写在这里

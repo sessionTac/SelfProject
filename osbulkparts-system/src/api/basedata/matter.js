@@ -33,6 +33,6 @@ export default {
     putRequest(`~/material/deleteMater` ,{data}),
 
   /**文件下载**/
-  installdownloadExcel:(params) =>
-    postRequest(`~/material/excel`,{params,responseType:'blob'}),
+  installdownloadExcel:(data) =>
+    postRequest(`~/material/excel`,{data,responseType:'blob'}),
 }

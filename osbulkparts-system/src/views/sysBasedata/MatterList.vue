@@ -286,15 +286,15 @@
                 })//删除
             },
             //导出
-            excel(old_search_keys){
+            excel(){
                 // let data={
                 //   deviceTypeNo : search_keys.deviceType || undefined,
                 //   powerStationNo : search_keys.powerStationEntity && search_keys.powerStationEntity.no || undefined ,
                 //   powerStationName:search_keys.powerStationName  || "",
                 //   name: search_keys.name || undefined,
                 // }
-
-                activityService.installdownloadExcel({...old_search_keys,name:"123"}).then(resp=>{
+                let data={name:"123"}
+                activityService.installdownloadExcel({...data}).then(resp=>{
                     downloadBlobResponse(resp); // 文件下载
                 })
             },
