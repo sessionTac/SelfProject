@@ -45,14 +45,6 @@ public class SupplierInfoController {
 		return result;
 	}
 	
-	@ApiOperation(value="获取供应商信息", notes="根据查询供应商的列表")
-	@ApiImplicitParam(name = "supplierId", value = "供应商ID", required = true, dataType = "String", paramType = "path")
-	@GetMapping("/getSupplierInfo")
-	public CommonResultInfo<MSupplierInfoEntity> getSupplierInfo(@PathVariable String supplierId){
-    	CommonResultInfo<MSupplierInfoEntity> result = supplierInfoService.getSupplierInfo(supplierId);
-    	return result;
-	}
-	
     @ApiOperation(value="添加供应商信息", notes="添加一条新的供应商信息")
     @ApiImplicitParam(name = "mSupplierInfoEntity", value = "供应商信息实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/addSupplierInfo")
