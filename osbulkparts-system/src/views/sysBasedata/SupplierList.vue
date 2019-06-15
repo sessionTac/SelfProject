@@ -23,9 +23,9 @@
             <el-option
                     size="mini" knx
                     v-for="item in supplierCatas"
-                    :key="item.code"
+                    :key="item.value"
                     :label="item.name"
-                    :value="item.code">
+                    :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -35,9 +35,9 @@
             <el-option
               size="mini" knx
               v-for="item in supplierLevels"
-              :key="item.code"
+              :key="item.value"
               :label="item.name"
-              :value="item.code">
+              :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
@@ -45,39 +45,37 @@
           <el-select v-model="search_keys.supplierAt"  size="mini" knx>
             <el-option value=""></el-option>
             <el-option
-                    size="mini" knx
+                    size="mini"
                     v-for="item in supplierAts"
-                    :key="item.code"
+                    :key="item.value"
                     :label="item.name"
-                    :value="item.code">
+                    :value="item.value">
             </el-option>
           </el-select>
         </el-form-item>
-
         <el-form-item style="float: right">
-          <import-button target = "SUPPLIER"></import-button>
-        </el-form-item>
-        <el-form-item style="float: right">
-          <el-button type="" @click="exportData" size="mini" >
-            <i class="fa fa-plus" aria-hidden="true"></i> 导出
+          <el-button  @click="deleteMatter" icon="el-icon-delete" >
+            删除
           </el-button>
         </el-form-item>
+        <el-form-item style="float: right">
+          <el-button  @click="" icon="el-icon-error" >
+            清空
+          </el-button>
+        </el-form-item>
+        <el-form-item style="float: right">
+          <el-button  @click="add()" icon="el-icon-plus" >
+            添加
+          </el-button>
+        </el-form-item>
+
 
         <el-form-item style="float: right">
           <el-button type="primary" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
             <i class="fa fa-search" aria-hidden="true"></i> 查询
           </el-button>
         </el-form-item>
-        <el-form-item style="float: right">
-          <el-button  @click="" icon="el-icon-download" >
-            模板下载
-          </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
-          <el-button  @click="" icon="el-icon-delete" >
-            清空
-          </el-button>
-        </el-form-item>
+
       </el-form>
     </div>
 
@@ -87,7 +85,9 @@
               class="search-result-table"
               :data="search_result.list" row-key="id"
               :stripe="true"
+              @selection-change="handleSelectionChange"
     >
+      <el-table-column type="selection" fixed width="50" align="center"/>
       <el-table-column prop="supplierCode" fixed width="100" align="center" label="供应商代码"  />
       <el-table-column prop="supplierNameCn" fixed width="100" align="center" label="供应商中文名称" />
       <el-table-column prop="supplierNameEn" fixed width="100" align="center" label="供应商英文名称" />
@@ -102,7 +102,7 @@
       <el-table-column prop="contactWays" align="center" label="联系方式"  />
       <el-table-column prop="dictSupplierCata.name" align="center" label="供应商分类"  />
       <el-table-column prop="dictSupplierLevel.name" align="center" label="供应商等级"  />
-      <el-table-column prop="dictSupplierAt.name" align="center" label="供应商等级"  />
+      <el-table-column prop="dictSupplierAt.name" align="center" label="供应商所属"  />
       <el-table-column prop="createUser" align="center" label="创建人"  />
       <el-table-column prop="createTime" align="center" label="创建时间"  />
       <el-table-column prop="updateUser" align="center" label="最后修改人"  />
@@ -112,12 +112,10 @@
         <template slot-scope="scope" >
           <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.supplierId)">
             <i class="el-icon-news"></i></el-button>
-          <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.supplierId)">
-            <i class="el-icon-delete"></i></el-button>
         </template>
       </el-table-column>
     </el-table>
-    <edit-supplier v-bind.sync="link_modal_state" @success="reSearch" v-if="link_modal_state.activated"></edit-supplier>
+    <edit-supplier v-bind.sync="link_modal_state" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state.activated"></edit-supplier>
     <!--分页-->
     <div style="text-align: center">
       <el-pagination @current-change="exec_search({pageNum:$event})"
@@ -163,6 +161,8 @@
         },
         search_keys_snap      : null,
         search_result         : {},
+        multipleSelection:[],
+        idsStr:[],
       };
     },
     components:{ImportButton,EditSupplier},
@@ -197,9 +197,16 @@
       exportData() {
         console("excel export")
       },
+      //
+      add() {
+        this.link_modal_state={activated:true,mode:"ADD"};
+      },
       //编辑
       edit(id) {
-        this.link_modal_state={activated:true,id};
+        this.link_modal_state={activated:true,id,mode:"EDIT"};
+      },
+      handleSelectionChange(val) {
+        this.multipleSelection = val;
       },
       //删除
       deleteMatter(uuid) {
@@ -209,11 +216,15 @@
           type: 'warning',
           center: true
         }).then(() => {
-            activityService.deleteById(uuid).then(resp => {
-              if (resp.data == 1) {
-                this.$notify({message: "删除成功", type: 'success'});
+            this.idsStr=[];
+            this.multipleSelection.forEach(item=>{
+              this.idsStr.push(item.supplierId)
+            })
+            activityService.deleteById({idsStr:this.idsStr}).then(resp => {
+              if (resp.data.code=="201"){
+                this.$notify({message: resp.data.message, type: "success"});
               } else {
-                this.$notify({message: "删除失败", type: 'error'});
+                this.$notify({message: resp.data.message, type: "error"});
               }
             })
           }

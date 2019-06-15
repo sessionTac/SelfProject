@@ -449,9 +449,7 @@
       <if test="createUser != null">
         create_user,
       </if>
-      <if test="createTime != null">
         create_time,
-      </if>
       <if test="updateUser != null">
         update_user,
       </if>

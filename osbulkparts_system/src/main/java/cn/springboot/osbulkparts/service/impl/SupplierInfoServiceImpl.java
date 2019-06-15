@@ -134,6 +134,7 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 		try {
 			mSupplierInfoEntity.setUpdateUser(principal.getUserName());
 			mSupplierInfoEntity.setVersion(mSupplierInfoEntity.getVersion()+1);
+			mSupplierInfoEntity.setIsDelete(0);
 			int returnInt = msupplierInfoDao.updateByPrimaryKey(mSupplierInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());

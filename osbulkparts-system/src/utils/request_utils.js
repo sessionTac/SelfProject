@@ -2,6 +2,8 @@ import axios from 'axios'
 import {Message, Notification} from 'element-ui'
 import {API_HOME} from '@/config/url_config'
 import Qs from 'qs'
+import download from 'downloadjs'
+import contentDisposition from 'content-disposition'
 import router from '@/router'
 
 // window.axiosRouter = router;
@@ -172,4 +174,28 @@ export function getRequest(url, {params, responseType, async=true} = {}) {
     params,
     responseType
   });
+}
+/**
+ * 下载blob响应中的附件数据
+ * @param resp
+ */
+export function downloadBlobResponse(resp) {
+
+  if (!resp.data) {
+    return
+  }
+  // debugger
+  let disposition = contentDisposition.parse(resp.headers['content-disposition']);
+  let fileName = disposition.parameters.filename;
+
+  download(resp.data, fileName);
+
+  // let url = window.URL.createObjectURL(new Blob([resp.data]));
+  // let link = document.createElement('a');
+  // link.style.display = 'none';
+  // link.href = url;
+  // link.setAttribute('download', fileName);
+  // // document.body.appendChild(link)
+  // link.click();
+
 }

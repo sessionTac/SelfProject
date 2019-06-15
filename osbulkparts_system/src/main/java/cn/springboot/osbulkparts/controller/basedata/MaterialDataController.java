@@ -1,19 +1,17 @@
 package cn.springboot.osbulkparts.controller.basedata;
 
+import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
@@ -24,6 +22,7 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.util.UriUtils;
 
 @Slf4j
 @RestController
@@ -66,7 +65,7 @@ public class MaterialDataController {
     @ApiOperation(value="添加物料数据", notes="添加一条新的物料数据")
     @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/addMaterialInfo")
-	public CommonResultInfo<?> addMaterialInfo(MMaterialInfoEntity mmaterialInfoEntity,Authentication auth){
+	public CommonResultInfo<?> addMaterialInfo(@RequestBody MMaterialInfoEntity mmaterialInfoEntity, Authentication auth){
     	CommonResultInfo<?> result = materialDataService.insertMaterialInfo(mmaterialInfoEntity, auth);
     	return result;
 	}
@@ -74,7 +73,7 @@ public class MaterialDataController {
     @ApiOperation(value="更新物料数据", notes="更新一条新的物料数据")
     @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
     @PutMapping("/updateMaterialInfo")
-	public CommonResultInfo<?> updateMaterialInfo(MMaterialInfoEntity mmaterialInfoEntity,Authentication auth){
+	public CommonResultInfo<?> updateMaterialInfo(@RequestBody MMaterialInfoEntity mmaterialInfoEntity,Authentication auth){
     	CommonResultInfo<?> result = materialDataService.updateMaterialInfo(mmaterialInfoEntity, auth);
     	return result;
 	}
@@ -104,4 +103,34 @@ public class MaterialDataController {
     	CommonResultInfo<?> result = materialDataService.lockMaterialInfo(materialId, auth);
     	return result;
     }
+	@ApiOperation(value="删除物料数据", notes="删除新的物料数据")
+	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "Stirng", paramType = "query")
+	@PutMapping("/deleteMater")
+	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
+		return null;
+	}
+
+	/**
+	 * 导出excel
+	 * @param name
+	 * @param body
+	 * @return
+	 */
+	@PostMapping("/excel")
+	public Object downExcel(
+			@RequestBody Map<String, String> body) {
+		//获取excel导出的流
+		//之后修改 将service 写在这里
+		byte[] fileblob = null;
+		String filename_enc = UriUtils.encode("test.xls", "UTF-8");
+		ResponseEntity<byte[]> response = ResponseEntity
+				.ok()
+				.contentType( MediaType.parseMediaType("application/octet-stream"))
+				.header("Access-Control-Expose-Headers", "Content-Disposition")
+				.header("Content-Disposition", "attachment; filename*=UTF-8''" + filename_enc)
+				.body(fileblob);
+		return response;
+
+	}
+
 }

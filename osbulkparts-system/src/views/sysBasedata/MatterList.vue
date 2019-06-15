@@ -17,9 +17,9 @@
                         <el-option
                                 size="mini" knx
                                 v-for="item in materialCategorys"
-                                :key="item.code"
+                                :key="item.value"
                                 :label="item.name"
-                                :value="item.code">
+                                :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -50,9 +50,9 @@
                                     <el-option
                                             size="mini"
                                             v-for="item in currencys"
-                                            :key="item.code"
+                                            :key="item.value"
                                             :label="item.name"
-                                            :value="item.code">
+                                            :value="item.value">
                                     </el-option>
                                 </el-select>
                             </el-form-item>
@@ -80,12 +80,12 @@
                     <import-button target = "MATTER"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="" @click="exportData" size="mini" >
+                    <el-button type="" @click="excel" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="" icon="el-icon-delete" >
+                    <el-button  @click="deleteMatter" icon="el-icon-delete" >
                         删除
                     </el-button>
                 </el-form-item>
@@ -95,7 +95,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="edit('')" icon="el-icon-plus" >
+                    <el-button  @click="add()" icon="el-icon-plus" >
                         添加
                     </el-button>
                 </el-form-item>
@@ -113,8 +113,9 @@
                   class="search-result-table"
                   :data="search_result.list" row-key="id"
                   :stripe="true"
+                  @selection-change="handleSelectionChange"
         >
-            <el-table-column type="selection" fixed width="100" align="center"/>
+            <el-table-column type="selection" fixed width="50" align="center"/>
             <el-table-column prop="materialOrderCode" fixed width="100" align="center" label="成品型号"  />
             <el-table-column prop="materialCkdCode" fixed width="100" align="center" label="物料CKD号"  />
             <el-table-column prop="materialCode" fixed width="100" align="center" label="子件型号"/>
@@ -139,7 +140,7 @@
             <el-table-column prop="currency" align="center" label="最后修改人"  />
             <el-table-column prop="currency" align="center" label="最后修改时间"  />
 
-            <el-table-column fixed="right" width="120" label="操作" >
+            <el-table-column fixed="right" width="80" label="操作" >
                 <template slot-scope="scope" >
                     <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
                         <i class="el-icon-news"></i></el-button>
@@ -171,6 +172,7 @@
     import ui_config from '@/config/ui_config'
     import ImportButton from '@/components/data-import/ImportButton'
     import EditMatter from './EditMatter'
+    import {downloadBlobResponse} from '@/utils/request_utils'
 
     export default {
         data() {
@@ -199,6 +201,8 @@
                 },
                 search_keys_snap      : null,
                 search_result         : {},
+                multipleSelection:[],
+                idsStr:[],
             };
         },
         components:{ImportButton,EditMatter},
@@ -246,13 +250,16 @@
             exportData() {
                 console("excel export")
             },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
             //添加
-            add(id) {
-                this.link_modal_state={activated:true,id};
+            add() {
+                this.link_modal_state={activated:true,mode:"ADD"};
             },
             //编辑
             edit(id) {
-                this.link_modal_state={activated:true,id};
+                this.link_modal_state={activated:true,id,mode:"EDIT"};
             },
             //删除
             deleteMatter(uuid) {
@@ -262,17 +269,34 @@
                     type: 'warning',
                     center: true
                 }).then(() => {
-                        activityService.deleteById(uuid).then(resp => {
-                            if (resp.data == 1) {
-                                this.$notify({message: "删除成功", type: 'success'});
+                        this.idsStr=[];
+                        this.multipleSelection.forEach(item=>{
+                            this.idsStr.push(item.materialInfoId)
+                        })
+                        activityService.deleteById({idsStr:this.idsStr}).then(resp => {
+                            if (resp.data.code=="201"){
+                                this.$notify({message: resp.data.message, type: "success"});
                             } else {
-                                this.$notify({message: "删除失败", type: 'error'});
+                                this.$notify({message: resp.data.message, type: "error"});
                             }
                         })
                     }
                 ).catch(() => {
                     this.internal_activated = true;
                 })//删除
+            },
+            //导出
+            excel(){
+                // let data={
+                //   deviceTypeNo : search_keys.deviceType || undefined,
+                //   powerStationNo : search_keys.powerStationEntity && search_keys.powerStationEntity.no || undefined ,
+                //   powerStationName:search_keys.powerStationName  || "",
+                //   name: search_keys.name || undefined,
+                // }
+                let data={name:"123"}
+                activityService.installdownloadExcel({...data}).then(resp=>{
+                    downloadBlobResponse(resp); // 文件下载
+                })
             },
         },
     }

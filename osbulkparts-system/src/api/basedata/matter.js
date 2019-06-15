@@ -19,17 +19,20 @@ export default {
   findMatterInfo: (params) =>
       getRequest(`~/material/getMaterialInfo`, {params}),
 
+  /**新增一条物料数据*/
+  addMatter:(data)=>
+    postRequest(`~/material/addMaterialInfo`, {data}),
   /**
    * 修改编辑
    */
   updateMatter:(data)=>
-    putRequest(`~/maintenance/basis/user/update`, {data}),
+    putRequest(`~/material/updateMaterialInfo`, {data}),
 
   /***根据id删除本条数据*/
-  deleteById:(id)=>
-    deleteRequest(`~/maintenance/basis/user/`+id),
+  deleteById:(data)=>
+    putRequest(`~/material/deleteMater` ,{data}),
 
   /**文件下载**/
-  installdownloadExcel:(params) =>
-    postRequest(`~/maintenance/basis/user/excel`,{params,responseType:'blob'}),
+  installdownloadExcel:(data) =>
+    postRequest(`~/material/excel`,{data,responseType:'blob'}),
 }

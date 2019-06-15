@@ -3,14 +3,10 @@ package cn.springboot.osbulkparts.controller.basedata;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.entity.MSupplierInfoEntity;
@@ -60,15 +56,15 @@ public class SupplierInfoController {
     @ApiOperation(value="添加供应商信息", notes="添加一条新的供应商信息")
     @ApiImplicitParam(name = "mSupplierInfoEntity", value = "供应商信息实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/addSupplierInfo")
-	public CommonResultInfo<?> addSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity,Authentication auth){
+	public CommonResultInfo<?> addSupplierInfo(@RequestBody  MSupplierInfoEntity mSupplierInfoEntity, Authentication auth){
     	CommonResultInfo<?> result = supplierInfoService.insertSupplierInfo(mSupplierInfoEntity, auth);
     	return result;
 	}
     
     @ApiOperation(value="更新供应商信息", notes="更新一条新的供应商信息")
     @ApiImplicitParam(name = "mSupplierInfoEntity", value = "供应商信息实体对象", required = true, dataType = "body", paramType = "body")
-    @PostMapping("/updateSupplierInfo")
-	public CommonResultInfo<?> updateSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity,Authentication auth){
+    @PutMapping("/updateSupplierInfo")
+	public CommonResultInfo<?> updateSupplierInfo(@RequestBody MSupplierInfoEntity mSupplierInfoEntity,Authentication auth){
     	CommonResultInfo<?> result = supplierInfoService.updateSupplierInfo(mSupplierInfoEntity, auth);
     	return result;
 	}
@@ -79,5 +75,19 @@ public class SupplierInfoController {
 	public CommonResultInfo<?> deleteSupplierInfo(@PathVariable String SupplierId,Authentication auth){
     	CommonResultInfo<?> result = supplierInfoService.deleteSupplierInfo(SupplierId, auth);
     	return result;
+	}
+	@ApiOperation(value="删除供应商信息", notes="删除新的物料数据")
+	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "Stirng", paramType = "query")
+	@PutMapping("/deleteSupplier")
+	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
+		return null;
+	}
+
+	@ApiOperation(value="获取供应商信息", notes="根据查询供应商的列表")
+	@ApiImplicitParam(name = "supplierId", value = "供应商ID", required = true, dataType = "String", paramType = "path")
+	@GetMapping("/getSupplierInfo/{supplierId}")
+	public CommonResultInfo<MSupplierInfoEntity> getSupplierInfo(@PathVariable String supplierId){
+		CommonResultInfo<MSupplierInfoEntity> result = supplierInfoService.getSupplierInfo(supplierId);
+		return result;
 	}
 }

@@ -15,23 +15,30 @@ export default {
         getRequest(`~/supplier/init`),
 
     /**
-     * 供应商数据列表初始化
+     *
      */
-    init: () =>
-        // getRequest(`~/maintenance/basis/user/page`, {params}),
-        getRequest(`./static/mock-api/basticData/matterListInit.json`),
-
+    findSupplierInfo: (params) =>
+      getRequest(`~/supplier/getSupplierInfo/`+params.supplierId),
     /**
      * 修改编辑
      */
-    updateMatter:(data)=>
-        putRequest(`~/maintenance/basis/user/update`, {data}),
-
+    updateSupplier:(data)=>
+      putRequest(`~/supplier/updateSupplierInfo`, {data}),
+    /**新增一条物料数据*/
+    addSupplier:(data)=>
+      postRequest(`~/supplier/addSupplierInfo`, {data}),
     /***根据id删除本条数据*/
-    deleteById:(id)=>
-        deleteRequest(`~/maintenance/basis/user/`+id),
+    deleteById:(data)=>
+      putRequest(`~/supplier/deleteSupplier` ,{data}),
 
-    /**文件下载**/
-    installdownloadExcel:(params) =>
-        postRequest(`~/maintenance/basis/user/excel`,{params,responseType:'blob'}),
+
+
+
+
+
+
+
+
+
+
 }
