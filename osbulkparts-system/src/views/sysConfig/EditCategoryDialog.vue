@@ -4,42 +4,48 @@
       :title="title"
       :visible.sync="dialogFormVisible"
       @closed="$emit('update:activated', false);$emit('refresh')"
-      width="35%">
+      width="600px">
 
-    <el-form ref="form" :model="form" size="mini" label-width="200px" style="width:400px" :rules="rules" class="search-form search-form-normal">
+      <el-card>
+        <div class="dialogStyle" >
+          <el-form ref="form" :model="form" size="mini" label-width="200px" style="width:400px" :rules="rules" class="search-form search-form-normal">
 
-      <el-form-item label="父级"  >
-        <el-select  :disabled="true" v-model="form.parentId"   size="mini" >
-          <el-option v-for="item in parentUuid" :key="item.value" :label="item.label" :value="item.value"></el-option>
-        </el-select>
-      </el-form-item>
+            <el-form-item label="父级"  >
+              <el-select  :disabled="true" v-model="form.parentId"   size="mini" >
+                <el-option v-for="item in parentUuid" :key="item.value" :label="item.label" :value="item.value"></el-option>
+              </el-select>
+            </el-form-item>
 
-      <el-form-item label="名称" prop="name">
-        <el-input v-model="form.name"  clearable knx size="mini" :maxlength="50"></el-input>
-      </el-form-item>
+            <el-form-item label="名称" prop="name">
+              <el-input v-model="form.name"  clearable knx size="mini" :maxlength="50"></el-input>
+            </el-form-item>
 
-      <el-form-item label="编号" prop="code">
-        <el-input v-model="form.code" clearable knx size="mini" :maxlength="30"></el-input>
-      </el-form-item>
+            <el-form-item label="编号" prop="code">
+              <el-input v-model="form.code" clearable knx size="mini" :maxlength="30"></el-input>
+            </el-form-item>
 
-      <el-form-item label="排序" prop="sortCode">
-        <el-input v-model="form.sortCode" clearable knx size="mini" :maxlength="11"></el-input>
-      </el-form-item>
+            <el-form-item label="排序" prop="sortCode">
+              <el-input v-model="form.sortCode" clearable knx size="mini" :maxlength="11"></el-input>
+            </el-form-item>
 
-      <el-form-item label="是否有效" prop="sort">
-        <el-checkbox v-model="form.isEnable"></el-checkbox>
-      </el-form-item>
+            <el-form-item label="是否有效" prop="sort">
+              <el-checkbox v-model="form.isEnable"></el-checkbox>
+            </el-form-item>
 
-      <el-form-item label="备注">
-        <el-input v-model="form.remark"  type="textarea" :rows="2" placeholder="请输入内容" size="mini" :maxlength="200"></el-input>
-      </el-form-item>
+            <el-form-item label="备注">
+              <el-input v-model="form.remark"  type="textarea" :rows="2" placeholder="请输入内容" size="mini" :maxlength="200"></el-input>
+            </el-form-item>
 
-    </el-form>
-      <span slot="footer">
+          </el-form>
+        </div>
+
+      </el-card>
+
+      <div class="dialogButton">
           <el-button type="primary" size="mini" @click="submit('form')">
             <i class="fa fa-check"></i> 确定</el-button>
           <el-button  size="mini" @click="cancel()">取消</el-button>
-        </span>
+        </div>
     </el-dialog>
   </div>
 
@@ -200,14 +206,5 @@
 </script>
 
 <style scoped>
-  >>>.el-dialog__body {
-    padding: 0px 0px;
-    color: #606266;
-    font-size: 14px;
-  }
 
-  >>> .el-dialog__footer {
-    /*margin-top: -30px;*/
-    text-align: center;
-  }
 </style>

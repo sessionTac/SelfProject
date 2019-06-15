@@ -43,9 +43,9 @@
 
             <el-table-column label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="角色设置" type="primary" size="mini" class="btn-opt" @click="setRole(scope.row.userId)">
+                    <el-button title="角色设置" type="primary" size="mini" class="btn-opt smallButton" @click="setRole(scope.row.userId)">
                         角色设置</el-button>
-                    <el-button title="查看" size="mini" class="btn-opt"  @click="viewRole(scope.row.userId)">
+                    <el-button title="查看" size="mini" class="btn-opt smallButton"  @click="viewRole(scope.row.userId)">
                         角色查看</el-button>
                     <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:system:users:info:edit')" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.userId)">
                         <i class="el-icon-news"></i></el-button>

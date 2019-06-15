@@ -1,5 +1,6 @@
 <template>
   <div class="about">
-    <h1>This is an about page</h1>
+    <!--<img src="../../public/static/img/timg.gif" height="494" width="658"/>-->
+    <img src="/static/img/timg.gif" height="750" width="950"/>
   </div>
 </template>
