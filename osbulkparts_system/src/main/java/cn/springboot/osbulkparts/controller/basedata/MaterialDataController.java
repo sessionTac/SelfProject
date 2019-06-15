@@ -12,6 +12,15 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
@@ -47,7 +56,7 @@ public class MaterialDataController {
 	})
 	@GetMapping("/getMaterialList")
 	public CommonResultInfo<MMaterialInfoEntity> getMaterialList(
-			MMaterialInfoEntity mmaterialInfoEntity,
+			@RequestBody MMaterialInfoEntity mmaterialInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="10") int pageSize){
 		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfoList(mmaterialInfoEntity, pageNum, pageSize);
@@ -57,7 +66,7 @@ public class MaterialDataController {
 	@ApiOperation(value="获取物料数据信息", notes="根据条件查询物料数据的详细数据")
 	@ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
 	@GetMapping("/getMaterialInfo")
-	public CommonResultInfo<MMaterialInfoEntity> getMaterialInfo(MMaterialInfoEntity mmaterialInfoEntity){
+	public CommonResultInfo<MMaterialInfoEntity> getMaterialInfo(@RequestBody MMaterialInfoEntity mmaterialInfoEntity){
 		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfo(mmaterialInfoEntity);
 		return result;
 	}
@@ -65,7 +74,7 @@ public class MaterialDataController {
     @ApiOperation(value="添加物料数据", notes="添加一条新的物料数据")
     @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/addMaterialInfo")
-	public CommonResultInfo<?> addMaterialInfo(@RequestBody MMaterialInfoEntity mmaterialInfoEntity, Authentication auth){
+	public CommonResultInfo<?> addMaterialInfo(@RequestBody MMaterialInfoEntity mmaterialInfoEntity,Authentication auth){
     	CommonResultInfo<?> result = materialDataService.insertMaterialInfo(mmaterialInfoEntity, auth);
     	return result;
 	}
@@ -80,7 +89,7 @@ public class MaterialDataController {
     
     @ApiOperation(value="删除物料数据", notes="删除一条新的物料数据")
     @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
-    @PostMapping("/deleteMaterialInfo/{materialId}")
+    @DeleteMapping("/deleteMaterialInfo/{materialId}")
 	public CommonResultInfo<?> deleteMaterialInfo(@PathVariable String materialId,Authentication auth){
     	CommonResultInfo<?> result = materialDataService.deleteMaterialInfo(materialId, auth);
     	return result;
@@ -89,18 +98,20 @@ public class MaterialDataController {
     @ApiOperation(value="物料数据导入", notes="excel的物料数据文件导入")
     @ApiImplicitParam(name = "excleFile", value = "物料数据文件", required = true, dataType = "body", paramType = "body")
     @PostMapping("/importExcel")
-    public Object ImportExcelData(
+    public CommonResultInfo<?> ImportExcelData(
             @RequestParam("file") MultipartFile excleFile,HttpServletRequest request,Authentication auth) {
-        log.info("导入Excel");
-        materialDataService.importExcel(excleFile, request, auth);
-        return "";
+        CommonResultInfo<?> result = materialDataService.importExcel(excleFile, request, auth);
+        return result;
     }
     
-    @ApiOperation(value="锁定物料数据", notes="锁定一条新的物料数据")
-    @ApiImplicitParam(name = "materialId", value = "物料数据ID", required = true, dataType = "Stirng", paramType = "path")
+    @ApiOperation(value="锁定或解锁物料数据", notes="锁定或解锁一条新的物料数据")
+	@ApiImplicitParams({
+		@ApiImplicitParam(name = "materialId", value = "物料数据ID", required = true, dataType = "String", paramType = "path"),
+		@ApiImplicitParam(name = "toLocked", value = "锁定/解锁(true/false)", required = true, dataType = "String", paramType = "body")
+	})
     @PutMapping("/lockMaterialInfo")
-    public CommonResultInfo<?> lockMaterialInfo(@PathVariable String materialId,Authentication auth){
-    	CommonResultInfo<?> result = materialDataService.lockMaterialInfo(materialId, auth);
+    public CommonResultInfo<?> lockMaterialInfo(@PathVariable String materialId,@PathVariable String toLocked,Authentication auth){
+    	CommonResultInfo<?> result = materialDataService.lockMaterialInfo(materialId,toLocked,auth);
     	return result;
     }
 	@ApiOperation(value="删除物料数据", notes="删除新的物料数据")
