@@ -179,7 +179,7 @@ public class MMaterialInfoEntity implements Serializable {
     /**
      * 用户自定义10
      */
-    private Integer is_locked;
+    private Integer isLocked;
 
     /**
      * 创建者
