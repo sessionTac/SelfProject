@@ -197,6 +197,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		try {
 			materialInfoEntity.setUpdateUser(principal.getUserName());
 			materialInfoEntity.setVersion(materialInfoEntity.getVersion()+1);
+			materialInfoEntity.setIsDelete(0);
 			int returnInt = mmaterialInfoDao.updateByPrimaryKey(materialInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
