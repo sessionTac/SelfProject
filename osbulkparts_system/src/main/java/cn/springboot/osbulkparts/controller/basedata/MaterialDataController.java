@@ -1,17 +1,14 @@
 package cn.springboot.osbulkparts.controller.basedata;
 
-import java.lang.reflect.Array;
 import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -22,8 +19,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.service.MaterialDataService;
@@ -31,7 +30,6 @@ import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.util.UriUtils;
 
 @Slf4j
 @RestController
@@ -56,7 +54,7 @@ public class MaterialDataController {
 	})
 	@GetMapping("/getMaterialList")
 	public CommonResultInfo<MMaterialInfoEntity> getMaterialList(
-			@RequestBody MMaterialInfoEntity mmaterialInfoEntity,
+			MMaterialInfoEntity mmaterialInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="10") int pageSize){
 		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfoList(mmaterialInfoEntity, pageNum, pageSize);
@@ -110,10 +108,11 @@ public class MaterialDataController {
 		@ApiImplicitParam(name = "toLocked", value = "锁定/解锁(true/false)", required = true, dataType = "String", paramType = "body")
 	})
     @PutMapping("/lockMaterialInfo")
-    public CommonResultInfo<?> lockMaterialInfo(@PathVariable String materialId,@PathVariable String toLocked,Authentication auth){
-    	CommonResultInfo<?> result = materialDataService.lockMaterialInfo(materialId,toLocked,auth);
+    public CommonResultInfo<?> lockMaterialInfo(@RequestBody CommonEntity commonEntity, Authentication auth){
+    	CommonResultInfo<?> result = materialDataService.lockMaterialInfo(commonEntity,auth);
     	return result;
     }
+    
 	@ApiOperation(value="删除物料数据", notes="删除新的物料数据")
 	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "Stirng", paramType = "query")
 	@PutMapping("/deleteMater")
@@ -128,12 +127,11 @@ public class MaterialDataController {
 	 * @return
 	 */
 	@PostMapping("/excel")
-	public Object downExcel(
-			@RequestBody Map<String, String> body) {
+	public Object downExcel(@RequestBody Map<String, String> body) {
 		//获取excel导出的流
 		//之后修改 将service 写在这里
 		byte[] fileblob = null;
-		String filename_enc = UriUtils.encode("test.xls", "UTF-8");
+		String filename_enc = UriUtils.encode("散件物料数据.xls", "UTF-8");
 		ResponseEntity<byte[]> response = ResponseEntity
 				.ok()
 				.contentType( MediaType.parseMediaType("application/octet-stream"))

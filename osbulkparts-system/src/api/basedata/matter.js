@@ -32,6 +32,10 @@ export default {
   deleteById:(data)=>
     putRequest(`~/material/deleteMater` ,{data}),
 
+  /***根据id锁定本条数据*/
+  lockedById:(data)=>
+      putRequest(`~/material/lockMaterialInfo` ,{data}),
+
   /**文件下载**/
   installdownloadExcel:(data) =>
     postRequest(`~/material/excel`,{data,responseType:'blob'}),

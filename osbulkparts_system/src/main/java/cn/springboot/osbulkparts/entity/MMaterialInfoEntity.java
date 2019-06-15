@@ -232,6 +232,11 @@ public class MMaterialInfoEntity implements Serializable {
 	private TDictDataEntity dictMaterialCurrency;
 	
 	/**
+	 * 数据锁定状态
+	 */
+	private TDictDataEntity dictLockStatus;
+	
+	/**
 	 * 物料供货模式分类标识
 	*/
 	private TDictDataEntity dictMaterialSupplyMode;

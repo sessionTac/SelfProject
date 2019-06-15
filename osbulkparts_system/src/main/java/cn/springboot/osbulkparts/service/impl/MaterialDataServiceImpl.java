@@ -20,6 +20,7 @@ import com.github.pagehelper.PageInfo;
 
 import cn.springboot.osbulkparts.common.CommonConstantEnum;
 import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.utils.CommonMethods;
 import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
@@ -241,24 +242,19 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> lockMaterialInfo(String materialId,String toLocked,Authentication auth){
+	public CommonResultInfo<?> lockMaterialInfo(CommonEntity commonEntity,Authentication auth){
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			MMaterialInfoEntity materialInfoEntity = new MMaterialInfoEntity();
-			materialInfoEntity.setMaterialInfoId(materialId);
-			materialInfoEntity.setUpdateUser(principal.getUserName());
-			if(toLocked.equals("true")) {
-				materialInfoEntity.setIsLocked(1);
-				int returnInt = mmaterialInfoDao.updateByPrimaryKey(materialInfoEntity);
+			if(commonEntity.isToLocked()) {
+				int returnInt = mmaterialInfoDao.lockedData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.LOCK_TRUE.getTypeName());
 				if (returnInt > 0) {
 					result.setMessage(messageBean.getMessage("common.locked.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
 				}
 			}
 			else {
-				materialInfoEntity.setIsLocked(0);
-				int returnInt = mmaterialInfoDao.updateByPrimaryKey(materialInfoEntity);
+				int returnInt = mmaterialInfoDao.lockedData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.LOCK_TRUE.getTypeName());
 				if (returnInt > 0) {
 					result.setMessage(messageBean.getMessage("common.unlocked.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
 				}

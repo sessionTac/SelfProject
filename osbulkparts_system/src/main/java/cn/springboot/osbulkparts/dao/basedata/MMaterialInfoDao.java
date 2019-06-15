@@ -3,6 +3,7 @@ package cn.springboot.osbulkparts.dao.basedata;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 
@@ -23,4 +24,6 @@ public interface MMaterialInfoDao {
     int updateByPrimaryKeySelective(MMaterialInfoEntity record);
 
     int updateByPrimaryKey(MMaterialInfoEntity record);
+    
+    int lockedData(@Param("ids") String[] ids,@Param("updateUser") String updateUser,@Param("isLocked") String isLocked);
 }

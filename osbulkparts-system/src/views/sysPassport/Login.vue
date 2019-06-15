@@ -37,9 +37,9 @@
                                 </div>
                             </div>
                         </div>
-                        <div>
+<!--                        <div>
                             <el-link type="primary" >忘记密码？</el-link>
-                        </div>
+                        </div>-->
                     </div>
                     <div style="background-color:#f9f9f9;height:130px;width:100%;border-top:1px solid #dedede;">
                         <div class="form-group" style="width: 100%;padding-top:10px;" align="center">

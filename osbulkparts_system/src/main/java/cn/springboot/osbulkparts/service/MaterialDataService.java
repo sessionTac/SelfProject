@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 
@@ -28,5 +29,5 @@ public interface MaterialDataService {
 	
 	CommonResultInfo<?> deleteMaterialInfo(String materialId,Authentication auth);
 	
-	CommonResultInfo<?> lockMaterialInfo(String materialId,String toLocked,Authentication auth);
+	CommonResultInfo<?> lockMaterialInfo(CommonEntity commonEntity,Authentication auth);
 }

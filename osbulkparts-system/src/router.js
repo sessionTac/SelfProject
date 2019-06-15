@@ -67,7 +67,7 @@ export const constantRoutes = [
                 name: 'roleFunction',
                 meta: { title: 'rolePermission',
                   icon: 'rolePermission', noCache: true,breadcrumb: true,keepAlive: true,
-                    requiresPermission: 'maintenance:system:users:role'}
+                    requiresPermission: 'maintenance:system:users:role:view'}
             }
         ]
     },
@@ -93,7 +93,7 @@ export const constantRoutes = [
                 meta: {
                     title: 'categories',
                     breadcrumbTitle: '字典分类',
-                    requiresPermission: 'maintenance:basis:dictionary',
+                    requiresPermission: 'maintenance:system:dictionary:type',
                     activeMenuKey: 'BasicsDictionary',keepAlive: true
                 },
             }
@@ -104,19 +104,22 @@ export const constantRoutes = [
         name:'basicsData',
         component: Layout,
         redirect: {name: 'basicsDataMatter'},
-        meta: { title: 'basicsData',breadcrumb: true},
+        meta: { title: 'basicsData',requiresPermission: 'maintenance:basis:data',breadcrumb: true},
         children: [
             {
                 path: 'basicsDataMatter',
                 component: () => import('@/views/sysBasedata/MatterList.vue'),
                 name: 'basicsDataMatter',
-                meta: { title: 'basicsDataMatter',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: true }
+                meta: { title: 'basicsDataMatter',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: true,
+                    requiresPermission: 'maintenance:basis:matter:info:view'},
+
             },
             {
                 path: 'basicsDataSupplier',
                 component: () => import('@/views/sysBasedata/SupplierList.vue'),
                 name: 'basicsDataSupplier',
-                meta: { title: 'basicsDataSupplier',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: true }
+                meta: { title: 'basicsDataSupplier',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: true,
+                requiresPermission: 'maintenance:basis:supplier:info:view', },
             }
         ]
     },

@@ -1,6 +1,8 @@
 package cn.springboot.osbulkparts.common;
 
 public enum CommonConstantEnum {
+	LOCK_TRUE("1"),
+	LOCK_FALSE("0"),
 	DICT_TYPE("字典分类"),
 	DICT_TYPE_CODE("字典分类编码"),
 	DICT_DATA("字典数据"),

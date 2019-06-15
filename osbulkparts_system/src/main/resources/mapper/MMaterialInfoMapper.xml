@@ -73,6 +73,11 @@
         <result property="value" column="material_supply_mode"/>
         <result property="name" column="dictMaterialSupplyMode"/>
     </association>
+    <association property="dictLockStatus"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+        <result property="value" column="is_locked"/>
+        <result property="name" column="dictLockStatus"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -136,6 +141,7 @@
 			material.user_defined9,
 			material.user_defined10,
 			material.is_locked,
+			dictLockStatus.`name` AS dictLockStatus,
 			material.create_user,
 			material.create_time,
 			material.update_user,
@@ -164,6 +170,10 @@
 		AND dictSupplyMode.dict_type_code = 'supplyMode'
 		AND dictSupplyMode.is_enable = 1
 		AND dictSupplyMode.delete_flg = 0
+		LEFT JOIN t_dict_data dictLockStatus ON material.is_locked = dictLockStatus.`value`
+		AND dictLockStatus.dict_type_code = 'lockStatus'
+		AND dictLockStatus.is_enable = 1
+		AND dictLockStatus.delete_flg = 0
 		WHERE
 			is_delete = 0
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialInfoId)">
@@ -851,5 +861,13 @@
       is_delete = #{isDelete,jdbcType=INTEGER},
       version = #{version,jdbcType=INTEGER}
     where material_info_id = #{materialInfoId,jdbcType=VARCHAR}
+  </update>
+  <update id="lockedData">
+  	update m_material_info
+  	set update_user = #{updateUser,jdbcType=VARCHAR},update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),is_locked = #{isLocked,jdbcType=INTEGER} 
+  	where material_info_id IN
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+        #{item}
+    </foreach>
   </update>
 </mapper>

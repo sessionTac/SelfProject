@@ -72,20 +72,20 @@
                     </el-collapse-item>
                 </el-collapse>
                 <el-form-item style="float: right">
-                    <el-button  @click="" icon="el-icon-s-check" >
+                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" @click="lockData" icon="el-icon-s-check" >
                         锁定
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <import-button target = "MATTER"></import-button>
+                    <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" target = "MATTER"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="" @click="excel" size="mini" >
+                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="excel" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="deleteMatter" icon="el-icon-delete" >
+                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" @click="deleteMatter" icon="el-icon-delete" >
                         删除
                     </el-button>
                 </el-form-item>
@@ -95,12 +95,12 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="add()" icon="el-icon-plus" >
+                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:add')" @click="add()" icon="el-icon-plus" >
                         添加
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:select')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
                         <i class="fa fa-search" aria-hidden="true"></i> 查询
                     </el-button>
                 </el-form-item>
@@ -135,14 +135,14 @@
             <el-table-column prop="materialRate" align="center" label="代理费率"  />
             <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />
             <el-table-column prop="factoryCode" align="center" label="工厂号"  />
-            <el-table-column prop="currency" align="center" label="创建人"  />
-            <el-table-column prop="currency" align="center" label="创建时间"  />
-            <el-table-column prop="currency" align="center" label="最后修改人"  />
-            <el-table-column prop="currency" align="center" label="最后修改时间"  />
-
-            <el-table-column fixed="right" width="80" label="操作" >
+            <el-table-column prop="createUser" align="center" label="创建人"  />
+            <el-table-column prop="createTime" align="center" label="创建时间"  />
+            <el-table-column prop="updateUser" align="center" label="最后修改人"  />
+            <el-table-column prop="updateTime" align="center" label="最后修改时间"  />
+            <el-table-column fixed="right" prop="dictLockStatus.name" align="center" label="是否锁定"  />
+            <el-table-column fixed="right"  width="80" label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
+                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')" :disabled="toLocked(isLocked)" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
                         <i class="el-icon-news"></i></el-button>
 <!--                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">-->
 <!--                        <i class="el-icon-delete"></i></el-button>-->
@@ -219,6 +219,14 @@
                     console.error(err);
                 })
             },
+            toLocked(isLocked){
+                if(isLocked  == "0"){
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            },
             exec_search({
                             search_keys = JSON.parse(this.search_keys_snap),
                             pageNum = this.search_result.pageNum,
@@ -264,6 +272,29 @@
             //删除
             deleteMatter(uuid) {
                 this.$confirm("确定删除吗？", "提示", {
+                    confirmButtonText: "是",
+                    cancelButtonText: "否",
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                        this.idsStr=[];
+                        this.multipleSelection.forEach(item=>{
+                            this.idsStr.push(item.materialInfoId)
+                        })
+                        activityService.deleteById({idsStr:this.idsStr}).then(resp => {
+                            if (resp.data.code=="201"){
+                                this.$notify({message: resp.data.message, type: "success"});
+                            } else {
+                                this.$notify({message: resp.data.message, type: "error"});
+                            }
+                        })
+                    }
+                ).catch(() => {
+                    this.internal_activated = true;
+                })//删除
+            },
+            lockData(){
+                this.$confirm("确定锁定吗？", "提示", {
                     confirmButtonText: "是",
                     cancelButtonText: "否",
                     type: 'warning',
