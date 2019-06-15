@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -61,6 +62,30 @@ public class MaterialDataController {
 		return result;
 	}
 	
+    @ApiOperation(value="添加物料数据", notes="添加一条新的物料数据")
+    @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
+    @PostMapping("/addMaterialInfo")
+	public CommonResultInfo<?> addMaterialInfo(MMaterialInfoEntity mmaterialInfoEntity,Authentication auth){
+    	CommonResultInfo<?> result = materialDataService.insertMaterialInfo(mmaterialInfoEntity, auth);
+    	return result;
+	}
+    
+    @ApiOperation(value="更新物料数据", notes="更新一条新的物料数据")
+    @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
+    @PostMapping("/updateMaterialInfo")
+	public CommonResultInfo<?> updateMaterialInfo(MMaterialInfoEntity mmaterialInfoEntity,Authentication auth){
+    	CommonResultInfo<?> result = materialDataService.updateMaterialInfo(mmaterialInfoEntity, auth);
+    	return result;
+	}
+    
+    @ApiOperation(value="删除物料数据", notes="删除一条新的物料数据")
+    @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
+    @PostMapping("/deleteMaterialInfo/{materialId}")
+	public CommonResultInfo<?> deleteMaterialInfo(@PathVariable String materialId,Authentication auth){
+    	CommonResultInfo<?> result = materialDataService.deleteMaterialInfo(materialId, auth);
+    	return result;
+	}
+    
     @ApiOperation(value="物料数据导入", notes="excel的物料数据文件导入")
     @ApiImplicitParam(name = "excleFile", value = "物料数据文件", required = true, dataType = "body", paramType = "body")
     @PostMapping("/importExcel")

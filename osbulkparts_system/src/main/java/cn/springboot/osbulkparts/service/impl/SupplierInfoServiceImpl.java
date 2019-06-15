@@ -13,10 +13,14 @@ import org.springframework.stereotype.Service;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import cn.springboot.osbulkparts.common.CommonConstantEnum;
 import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
+import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.basedata.MSupplierInfoDao;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
+import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.MSupplierInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.service.SupplierInfoService;
@@ -77,40 +81,98 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 		}
 	}
 
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MSupplierInfoEntity> getSupplierInfo(String supplierId) {
-		// TODO Auto-generated method stub
-		return null;
+		CommonResultInfo<MSupplierInfoEntity> result = new CommonResultInfo<MSupplierInfoEntity>();
+		try {
+			MSupplierInfoEntity supplierInfo = msupplierInfoDao.selectByPrimaryKey(supplierId);
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			result.setResult(supplierInfo);
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
 	}
 
+	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions() {
-		// TODO Auto-generated method stub
-		return null;
+	public CommonResultInfo<?> insertSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth) {
+		CommonResultInfo<?> result = new CommonResultInfo<MSupplierInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			String dictUUID = CommonSqlUtils.getUUID32();
+			mSupplierInfoEntity.setSupplierId(dictUUID);
+			mSupplierInfoEntity.setCreateUser(principal.getUserName());
+			mSupplierInfoEntity.setIsDelete(0);
+			mSupplierInfoEntity.setVersion(1);
+			int returnInt = msupplierInfoDao.insertSelective(mSupplierInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.SUPPLIER.getTypeName()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
 	}
 
-	@Override
-	public CommonResultInfo<MSupplierInfoEntity> getUserCustomerRelationInfo(String supplierId) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public CommonResultInfo<?> addSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<?> updateSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth) {
-		// TODO Auto-generated method stub
-		return null;
+		CommonResultInfo<?> result = new CommonResultInfo<MSupplierInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			mSupplierInfoEntity.setUpdateUser(principal.getUserName());
+			mSupplierInfoEntity.setVersion(mSupplierInfoEntity.getVersion()+1);
+			int returnInt = msupplierInfoDao.updateByPrimaryKey(mSupplierInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.SUPPLIER.getTypeName()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
 	}
 
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<?> deleteSupplierInfo(String supplierId, Authentication auth) {
-		// TODO Auto-generated method stub
-		return null;
+		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			MSupplierInfoEntity mSupplierInfoEntity = new MSupplierInfoEntity();
+			mSupplierInfoEntity.setSupplierId(supplierId);
+			mSupplierInfoEntity.setUpdateUser(principal.getUserName());
+			mSupplierInfoEntity.setIsDelete(1);
+			int returnInt = msupplierInfoDao.updateByPrimaryKey(mSupplierInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.SUPPLIER.getTypeName()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
 	}
 
 }

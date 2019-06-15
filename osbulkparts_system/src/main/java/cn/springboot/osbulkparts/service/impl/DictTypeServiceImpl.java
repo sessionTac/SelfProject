@@ -1,15 +1,13 @@
 package cn.springboot.osbulkparts.service.impl;
 
-import java.beans.Transient;
 import java.util.List;
 
-import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
-import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -24,7 +22,6 @@ import cn.springboot.osbulkparts.dao.system.TDictTypeDao;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.entity.TDictTypeEntity;
 import cn.springboot.osbulkparts.service.DictTypeSettingService;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class DictTypeServiceImpl implements DictTypeSettingService {

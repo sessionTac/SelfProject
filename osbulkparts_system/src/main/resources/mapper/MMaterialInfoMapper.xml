@@ -41,6 +41,7 @@
     <result column="user_defined8" jdbcType="VARCHAR" property="userDefined8" />
     <result column="user_defined9" jdbcType="VARCHAR" property="userDefined9" />
     <result column="user_defined10" jdbcType="VARCHAR" property="userDefined10" />
+    <result column="is_locked" jdbcType="INTEGER" property="isLocked" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
@@ -85,7 +86,7 @@
     material_tax_price, material_vat_price, material_rate, material_currency, material_price, 
     level_bom_code, material_supply_mode, factory_code, data_role_at, user_defined1, 
     user_defined2, user_defined3, user_defined4, user_defined5, user_defined6, user_defined7, 
-    user_defined8, user_defined9, user_defined10, create_user, create_time, update_user, 
+    user_defined8, user_defined9, user_defined10, is_locked,create_user, create_time, update_user, 
     update_time, is_delete, version
   </sql>
   <select id="selectByPrimaryKey" parameterType="cn.springboot.osbulkparts.entity.MMaterialInfoEntity" resultMap="BaseResultMap">
@@ -134,6 +135,7 @@
 			material.user_defined8,
 			material.user_defined9,
 			material.user_defined10,
+			material.is_locked,
 			material.create_user,
 			material.create_time,
 			material.update_user,
@@ -266,6 +268,9 @@
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined10)">
     	AND user_defined10 = #{userDefined10,jdbcType=VARCHAR}
     </if>
+    <if test="isLocked != null">
+    	AND is_locked = #{isLocked,jdbcType=INTEGER}
+    </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createUser)">
     	AND create_user = #{createUser,jdbcType=VARCHAR}
     </if>
@@ -308,7 +313,7 @@
       factory_code, data_role_at, user_defined1, 
       user_defined2, user_defined3, user_defined4, 
       user_defined5, user_defined6, user_defined7, 
-      user_defined8, user_defined9, user_defined10, 
+      user_defined8, user_defined9, user_defined10, is_locked
       create_user, create_time, update_user, 
       update_time, is_delete, version
       )
@@ -323,7 +328,7 @@
       #{factoryCode,jdbcType=VARCHAR}, #{dataRoleAt,jdbcType=VARCHAR}, #{userDefined1,jdbcType=VARCHAR}, 
       #{userDefined2,jdbcType=VARCHAR}, #{userDefined3,jdbcType=VARCHAR}, #{userDefined4,jdbcType=VARCHAR}, 
       #{userDefined5,jdbcType=VARCHAR}, #{userDefined6,jdbcType=VARCHAR}, #{userDefined7,jdbcType=VARCHAR}, 
-      #{userDefined8,jdbcType=VARCHAR}, #{userDefined9,jdbcType=VARCHAR}, #{userDefined10,jdbcType=VARCHAR}, 
+      #{userDefined8,jdbcType=VARCHAR}, #{userDefined9,jdbcType=VARCHAR}, #{userDefined10,jdbcType=VARCHAR}, #{isLocked,jdbcType=INTEGER},
       #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, 
       #{updateTime,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, #{version,jdbcType=INTEGER}
       )
@@ -437,6 +442,9 @@
       </if>
       <if test="userDefined10 != null">
         user_defined10,
+      </if>
+      <if test="isLocked != null">
+      	is_locked,
       </if>
       <if test="createUser != null">
         create_user,
@@ -560,6 +568,9 @@
       <if test="userDefined10 != null">
         #{userDefined10,jdbcType=VARCHAR},
       </if>
+      <if test="isLocked != null">
+        #{isLocked,jdbcType=INTEGER},
+      </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
@@ -620,6 +631,7 @@
         user_defined8,
         user_defined9,
         user_defined10,
+        is_locked,
         create_user,
         create_time,
         update_user,
@@ -663,6 +675,7 @@
         #{item.userDefined8,jdbcType=VARCHAR},
         #{item.userDefined9,jdbcType=VARCHAR},
         #{item.userDefined10,jdbcType=VARCHAR},
+        #{item.isLocked,jdbcType=INTEGER},
         #{item.createUser,jdbcType=VARCHAR},
       	DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
         #{item.updateUser,jdbcType=VARCHAR},
@@ -774,6 +787,9 @@
       <if test="userDefined10 != null">
         user_defined10 = #{item.userDefined10,jdbcType=VARCHAR},
       </if>
+      <if test="isLocked != null">
+      	is_locked = #{item.isLocked,jdbcType=INTEGER},
+      </if>
       <if test="updateUser != null">
         update_user = #{item.updateUser,jdbcType=VARCHAR},
       </if>
@@ -829,10 +845,11 @@
       user_defined8 = #{userDefined8,jdbcType=VARCHAR},
       user_defined9 = #{userDefined9,jdbcType=VARCHAR},
       user_defined10 = #{userDefined10,jdbcType=VARCHAR},
+      is_locked = #{isLocked,jdbcType=INTEGER},
       create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
       update_user = #{updateUser,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=VARCHAR},
+      update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
       is_delete = #{isDelete,jdbcType=INTEGER},
       version = #{version,jdbcType=INTEGER}
     where material_info_id = #{materialInfoId,jdbcType=VARCHAR}

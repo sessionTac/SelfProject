@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,5 +47,29 @@ public class SupplierInfoController {
             @RequestParam(defaultValue="10") int pageSize){
 		CommonResultInfo<MSupplierInfoEntity> result = supplierInfoService.getSupplierInfoList(msupplierInfoEntity, pageNum, pageSize);
 		return result;
+	}
+	
+    @ApiOperation(value="添加供应商信息", notes="添加一条新的供应商信息")
+    @ApiImplicitParam(name = "mSupplierInfoEntity", value = "供应商信息实体对象", required = true, dataType = "body", paramType = "body")
+    @PostMapping("/addSupplierInfo")
+	public CommonResultInfo<?> addSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity,Authentication auth){
+    	CommonResultInfo<?> result = supplierInfoService.insertSupplierInfo(mSupplierInfoEntity, auth);
+    	return result;
+	}
+    
+    @ApiOperation(value="更新供应商信息", notes="更新一条新的供应商信息")
+    @ApiImplicitParam(name = "mSupplierInfoEntity", value = "供应商信息实体对象", required = true, dataType = "body", paramType = "body")
+    @PostMapping("/updateSupplierInfo")
+	public CommonResultInfo<?> updateSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity,Authentication auth){
+    	CommonResultInfo<?> result = supplierInfoService.updateSupplierInfo(mSupplierInfoEntity, auth);
+    	return result;
+	}
+    
+    @ApiOperation(value="删除供应商信息", notes="删除一条新的供应商信息")
+    @ApiImplicitParam(name = "mSupplierInfoEntity", value = "供应商信息实体对象", required = true, dataType = "body", paramType = "body")
+    @PostMapping("/deleteSupplierInfo/{SupplierId}")
+	public CommonResultInfo<?> deleteSupplierInfo(@PathVariable String SupplierId,Authentication auth){
+    	CommonResultInfo<?> result = supplierInfoService.deleteSupplierInfo(SupplierId, auth);
+    	return result;
 	}
 }

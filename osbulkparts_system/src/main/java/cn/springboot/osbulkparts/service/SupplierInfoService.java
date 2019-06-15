@@ -17,11 +17,7 @@ public interface SupplierInfoService {
 	
 	CommonResultInfo<MSupplierInfoEntity> getSupplierInfo(String supplierId);
 
-	CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions();
-	
-	CommonResultInfo<MSupplierInfoEntity> getUserCustomerRelationInfo(String supplierId);
-
-	CommonResultInfo<?> addSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth);
+	CommonResultInfo<?> insertSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth);
 	
 	CommonResultInfo<?> updateSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth);
 	

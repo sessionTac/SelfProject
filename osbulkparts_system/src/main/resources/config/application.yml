@@ -43,7 +43,7 @@ logging:
 #======BASE CONFIG AREA END=====#
 
 #======PLUGIN AREA START=====#
-mybatis:
+mybatis-plus:
   mapper-locations: classpath:/mapper/*.xml
   type-aliases-package: cn.springboot.osbulkparts.entity
 #pagehelper分页插件

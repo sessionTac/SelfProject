@@ -175,6 +175,11 @@ public class MMaterialInfoEntity implements Serializable {
      * 用户自定义10
      */
     private String userDefined10;
+    
+    /**
+     * 用户自定义10
+     */
+    private Integer is_locked;
 
     /**
      * 创建者

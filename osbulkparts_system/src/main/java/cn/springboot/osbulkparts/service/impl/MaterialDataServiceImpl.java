@@ -18,6 +18,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import cn.springboot.osbulkparts.common.CommonConstantEnum;
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.utils.CommonMethods;
@@ -140,16 +141,87 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	@Override
 	public CommonResultInfo<MMaterialInfoEntity> selectMaterialInfo(MMaterialInfoEntity materialInfoEntity){
 		CommonResultInfo<MMaterialInfoEntity> result = new CommonResultInfo<MMaterialInfoEntity>();
-		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		try {
 			List<MMaterialInfoEntity> resultList = mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity);
-			if (resultList.size()>0){
-				result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-				result.setResult(resultList.get(0));
-			}else {
-				result.setMessage(messageBean.getMessage("common.select.failed"));
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			result.setResultList(resultList);
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+	
+	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<?> insertMaterialInfo(MMaterialInfoEntity materialInfoEntity,Authentication auth){
+		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			String dictUUID = CommonSqlUtils.getUUID32();
+			materialInfoEntity.setMaterialInfoId(dictUUID);
+			materialInfoEntity.setCreateUser(principal.getUserName());
+			materialInfoEntity.setIsDelete(0);
+			materialInfoEntity.setVersion(1);
+			int returnInt = mmaterialInfoDao.insertSelective(materialInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
 			}
-
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+	
+	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<?> updateMaterialInfo(MMaterialInfoEntity materialInfoEntity,Authentication auth){
+		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			materialInfoEntity.setUpdateUser(principal.getUserName());
+			materialInfoEntity.setVersion(materialInfoEntity.getVersion()+1);
+			int returnInt = mmaterialInfoDao.updateByPrimaryKey(materialInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+	
+	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<?> deleteMaterialInfo(String materialId,Authentication auth){
+		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			MMaterialInfoEntity materialInfoEntity = new MMaterialInfoEntity();
+			materialInfoEntity.setMaterialInfoId(materialId);
+			materialInfoEntity.setUpdateUser(principal.getUserName());
+			materialInfoEntity.setIsDelete(1);
+			int returnInt = mmaterialInfoDao.updateByPrimaryKey(materialInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -255,16 +327,18 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				mmaterialInfoEntity.setFactoryCode((String)mapData.get("工厂号"));
 				// 数据所属
 				mmaterialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
-				// 创建者
-				mmaterialInfoEntity.setCreateUser(principal.getUserName());
-				mmaterialInfoEntity.setIsDelete(0);
-				mmaterialInfoEntity.setVersion(1);
 				// 成品型号和子件型号组合判定是否存在，存在时更新，不存在时插入
 				if(isExist(mmaterialInfoEntity.getMaterialOrderCode(),mmaterialInfoEntity.getMaterialCode())) {
+					// 更新者
 					mmaterialInfoEntity.setUpdateUser(principal.getUserName());
+					mmaterialInfoEntity.setVersion(mmaterialInfoEntity.getVersion()+1);
 					updateResultLst.add(mmaterialInfoEntity);
 				}
 				else {
+					// 创建者
+					mmaterialInfoEntity.setCreateUser(principal.getUserName());
+					mmaterialInfoEntity.setIsDelete(0);
+					mmaterialInfoEntity.setVersion(1);
 					insertResultLst.add(mmaterialInfoEntity);
 				}
 			}

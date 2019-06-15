@@ -72,6 +72,11 @@
                     </el-collapse-item>
                 </el-collapse>
                 <el-form-item style="float: right">
+                    <el-button  @click="" icon="el-icon-s-check" >
+                        锁定
+                    </el-button>
+                </el-form-item>
+                <el-form-item style="float: right">
                     <import-button target = "MATTER"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">

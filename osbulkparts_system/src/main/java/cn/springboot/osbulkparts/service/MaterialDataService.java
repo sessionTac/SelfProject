@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
@@ -21,4 +22,10 @@ public interface MaterialDataService {
 	CommonResultInfo<MMaterialInfoEntity> selectMaterialInfoList(MMaterialInfoEntity materialInfoEntity, int pageNumber, int pageSize);
 	
 	CommonResultInfo<MMaterialInfoEntity> selectMaterialInfo(MMaterialInfoEntity materialInfoEntity);
+	
+	CommonResultInfo<?> insertMaterialInfo(MMaterialInfoEntity materialInfoEntity,Authentication auth);
+	
+	CommonResultInfo<?> updateMaterialInfo(MMaterialInfoEntity materialInfoEntity,Authentication auth);
+	
+	CommonResultInfo<?> deleteMaterialInfo(String materialId,Authentication auth);
 }

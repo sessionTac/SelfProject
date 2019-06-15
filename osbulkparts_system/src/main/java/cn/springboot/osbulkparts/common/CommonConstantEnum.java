@@ -8,7 +8,9 @@ public enum CommonConstantEnum {
     ROLE("角色"),
     POWER("权限"),
     USER("用户"),
-	USER_NAME("用户名");
+	USER_NAME("用户名"),
+	SUPPLIER("供应商"),
+	MATERIAL_DATA("物料数据");
 	
 	private String typeName;  
 	  
