@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
@@ -29,5 +28,5 @@ public interface MaterialDataService {
 	
 	CommonResultInfo<?> deleteMaterialInfo(String materialId,Authentication auth);
 	
-	CommonResultInfo<?> lockMaterialInfo(String materialId,Authentication auth);
+	CommonResultInfo<?> lockMaterialInfo(String materialId,String toLocked,Authentication auth);
 }

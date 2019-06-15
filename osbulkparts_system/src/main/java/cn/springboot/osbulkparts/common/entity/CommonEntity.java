@@ -8,4 +8,6 @@ public class CommonEntity {
 	private int[] idsInt;
 	
 	private String[] idsStr;
+	
+	private boolean toLocked;
 }
