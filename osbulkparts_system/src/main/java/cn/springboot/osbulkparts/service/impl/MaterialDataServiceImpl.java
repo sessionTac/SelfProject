@@ -144,7 +144,13 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		try {
 			List<MMaterialInfoEntity> resultList = mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-			result.setResultList(resultList);
+			if(resultList.size()>0) {
+				result.setResult(resultList.get(0));
+			}
+			else {
+				result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.info.empty"));
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -221,6 +227,31 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+	
+	@Override
+	public CommonResultInfo<?> lockMaterialInfo(String materialId,Authentication auth){
+		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			MMaterialInfoEntity materialInfoEntity = new MMaterialInfoEntity();
+			materialInfoEntity.setMaterialInfoId(materialId);
+			materialInfoEntity.setUpdateUser(principal.getUserName());
+			materialInfoEntity.setIsLocked(1);
+			int returnInt = mmaterialInfoDao.updateByPrimaryKey(materialInfoEntity);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.locked.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

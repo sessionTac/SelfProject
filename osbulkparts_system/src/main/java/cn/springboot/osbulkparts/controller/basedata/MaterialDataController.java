@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -72,7 +73,7 @@ public class MaterialDataController {
     
     @ApiOperation(value="更新物料数据", notes="更新一条新的物料数据")
     @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
-    @PostMapping("/updateMaterialInfo")
+    @PutMapping("/updateMaterialInfo")
 	public CommonResultInfo<?> updateMaterialInfo(MMaterialInfoEntity mmaterialInfoEntity,Authentication auth){
     	CommonResultInfo<?> result = materialDataService.updateMaterialInfo(mmaterialInfoEntity, auth);
     	return result;
@@ -94,5 +95,13 @@ public class MaterialDataController {
         log.info("导入Excel");
         materialDataService.importExcel(excleFile, request, auth);
         return "";
+    }
+    
+    @ApiOperation(value="锁定物料数据", notes="锁定一条新的物料数据")
+    @ApiImplicitParam(name = "materialId", value = "物料数据ID", required = true, dataType = "Stirng", paramType = "path")
+    @PutMapping("/lockMaterialInfo")
+    public CommonResultInfo<?> lockMaterialInfo(@PathVariable String materialId,Authentication auth){
+    	CommonResultInfo<?> result = materialDataService.lockMaterialInfo(materialId, auth);
+    	return result;
     }
 }

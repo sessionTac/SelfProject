@@ -28,4 +28,6 @@ public interface MaterialDataService {
 	CommonResultInfo<?> updateMaterialInfo(MMaterialInfoEntity materialInfoEntity,Authentication auth);
 	
 	CommonResultInfo<?> deleteMaterialInfo(String materialId,Authentication auth);
+	
+	CommonResultInfo<?> lockMaterialInfo(String materialId,Authentication auth);
 }
