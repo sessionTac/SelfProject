@@ -170,9 +170,9 @@
       <if test="createUser != null">
         create_user,
       </if>
-      <if test="createTime != null">
-        create_time,
-      </if>
+
+      create_time,
+
       <if test="updateUser != null">
         update_user,
       </if>
@@ -238,9 +238,9 @@
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
-      </if>
+
+      DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
+
       <if test="updateUser != null">
         #{updateUser,jdbcType=VARCHAR},
       </if>

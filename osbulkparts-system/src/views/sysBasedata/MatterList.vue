@@ -17,9 +17,9 @@
                         <el-option
                                 size="mini" knx
                                 v-for="item in materialCategorys"
-                                :key="item.code"
+                                :key="item.value"
                                 :label="item.name"
-                                :value="item.code">
+                                :value="item.value">
                         </el-option>
                     </el-select>
                 </el-form-item>
@@ -50,9 +50,9 @@
                                     <el-option
                                             size="mini"
                                             v-for="item in currencys"
-                                            :key="item.code"
+                                            :key="item.value"
                                             :label="item.name"
-                                            :value="item.code">
+                                            :value="item.value">
                                     </el-option>
                                 </el-select>
                             </el-form-item>

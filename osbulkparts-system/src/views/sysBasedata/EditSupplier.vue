@@ -1,60 +1,101 @@
 <template>
     <div>
-        <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)" width="600px">
-            <el-form ref="form" :model="form" label-width="200px"  size="mini">
-                <el-form-item label="供应商编号" prop="matterHNRNo">
-                    <el-input v-model="form.matterHNRNo" class="search-form-item-input"  style="width: 200px"size="mini" :maxlength="500" ></el-input>
-                </el-form-item>
-                <el-form-item label="供应商代码" prop="matterNo">
-                    <el-input v-model="form.matterNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
-                </el-form-item>
-                <el-form-item label="供应商名称" prop="matterNo">
-                    <el-input v-model="form.matterNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
-                </el-form-item>
-                <el-form-item label="供应商说明" prop="matterNo">
-                    <el-input v-model="form.matterNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
-                </el-form-item>
-                <el-form-item label="地址" prop="matterNo">
-                    <el-input v-model="form.matterNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
-                </el-form-item>
-                <el-form-item label="联系人" prop="matterNo">
-                    <el-input v-model="form.matterNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
-                </el-form-item>
-                <el-form-item label="联系方式" prop="matterNo">
-                    <el-input v-model="form.matterNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
-                </el-form-item>
-                <el-form-item label="共饮上分类" prop="matterNo">
-                    <el-input v-model="form.matterNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
-                </el-form-item>
-                <el-form-item label="物料类别" prop="matterType">
-                    <el-select v-model="form.matterType"  size="mini">
-                        <el-option value=""></el-option>
-                        <el-option
-                                size="mini"
-                                v-for="item in matterTypes"
-                                :key="item.code"
-                                :label="item.name"
-                                :value="item.code">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-            </el-form>
-            <span slot="footer">
-                <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
-                <el-button size="mini" @click=" cancel">取消</el-button>
-            </span>
+        <el-dialog  :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)" width="800px">
+            <div class="dialogStyle" style="display: flex;flex-direction: column">
+                <el-form ref="form" style="flex: 5"  :model="form" label-width="200px"  size="mini">
+                    <el-form-item label="供应商代码" prop="supplierCode">
+                        <el-input v-model="form.supplierCode" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="供应商中文名称" prop="supplierNameCn">
+                        <el-input v-model="form.supplierNameCn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="供应商英文名称" prop="supplierNameEn">
+                        <el-input v-model="form.supplierNameEn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="供应商中文说明" prop="supplierDescCn">
+                        <el-input v-model="form.supplierDescCn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="供应商英文说明" prop="supplierDescEn">
+                        <el-input v-model="form.supplierDescEn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="地址" prop="address">
+                        <el-input v-model="form.address" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="联系人" prop="contact">
+                        <el-input v-model="form.contact" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="开户银行" prop="accountBank">
+                        <el-input v-model="form.accountBank" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="开户银行地址" prop="bankAddress">
+                        <el-input v-model="form.bankAddress" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="帐号信息" prop="accountNo">
+                        <el-input v-model="form.accountNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="账户人" prop="accountant">
+                        <el-input v-model="form.accountant" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="联系方式" prop="contactWays">
+                        <el-input v-model="form.contactWays" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                    </el-form-item>
+                    <el-form-item label="供应商分类" prop="supplierCata">
+                        <el-select v-model="form.supplierCata"  size="mini" knx>
+                            <el-option value=""></el-option>
+                            <el-option
+                              size="mini"
+                              v-for="item in supplierCatas"
+                              :key="item.value"
+                              :label="item.name"
+                              :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="供应商等级" prop="supplierLevel">
+                        <el-select v-model="form.supplierLevel"  size="mini" knx>
+                            <el-option value=""></el-option>
+                            <el-option
+                              size="mini"
+                              v-for="item in supplierLevels"
+                              :key="item.value"
+                              :label="item.name"
+                              :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                    <el-form-item label="供应商所属" prop="supplierAt">
+                        <el-select v-model="form.supplierAt"  size="mini" knx>
+                            <el-option value=""></el-option>
+                            <el-option
+                              size="mini"
+                              v-for="item in supplierAts"
+                              :key="item.value"
+                              :label="item.name"
+                              :value="item.value">
+                            </el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
+                <div class="dialogButton">
+                    <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
+                    <el-button size="mini" @click=" cancel">取消</el-button>
+                </div>
+            </div>
         </el-dialog>
     </div>
 </template>
 
 <script>
-    import activityService from '@/api/basedata/matter.js'
+    import activityService from '@/api/basedata/supplier.js'
     import ui_config from '@/config/ui_config'
 
     export default {
         name: "EditMatter",
+        components: {},
+
         props:{
-            id: {}
+            id: {},
+            mode:"",
         },
         data() {
             return {
@@ -63,6 +104,9 @@
                 search_keys:{},
                 currencys:[],
                 units:[],
+                supplierCatas:[],
+                supplierLevels:[],
+                supplierAts:[],
                 matterTypes:[],
                 form: {
                     matterHNRNo: '',
@@ -107,53 +151,65 @@
         },
         methods: {
             async init(){
-                await activityService.init().then(resp =>{
-                    this.currencys = resp.data.currencys;
-                    this.units = resp.data.units;
-                    this.matterTypes = resp.data.matterTypes;
+                await activityService.initData().then(resp =>{
+                    this.supplierCatas = resp.data.result.supplierCatas;
+                    this.supplierLevels = resp.data.result.supplierLevels;
+                    this.supplierAts = resp.data.result.supplierAts;
                 }, err => {
                     console.error(err);
-                });
-                await activityService.init().then(resp =>{
-                    this.form = resp.data.list[0];
-                }, err => {
-                    console.error(err);
-                });
+                })
+                if (this.mode=="EDIT"){
+                    await activityService.findSupplierInfo({supplierId: this.id}).then(resp => {
+                        this.form = resp.data.result;
+                    }, err => {
+                        console.error(err);
+                    });
+                }
             },
             /*确定*/
             submit(formName){
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         let data={
-                            id       : this.id            || undefined,
-                            userName : this.form.userName || undefined,
-                            trueName : this.form.trueName || undefined,
-                            password : this.form.password || undefined,
-                            tel      : this.form.tel      || undefined,
-                            email    : this.form.email    || undefined,
-                            memo     : this.form.memo     || undefined,
-                            transferorNo : this.form.transferorEntity && this.form.transferorEntity.transferorNo || undefined,
-                            orgNo    : this.form.orgEntity && this.form.orgEntity.orgNo  || undefined,
-                            cityAreaCode   : this.form.region && this.form.region[0]   || undefined,
-                            countyAreaCode : this.form.region && this.form.region[1]   || undefined,
+                            supplierId          : this.id                   || undefined,
+                            supplierCode        : this.form.supplierCode    || undefined,
+                            supplierNameCn      : this.form.supplierNameCn  || undefined,
+                            supplierNameEn      : this.form.supplierNameEn  || undefined,
+                            supplierDescCn      : this.form.supplierDescCn  || undefined,
+                            supplierDescEn      : this.form.supplierDescEn  || undefined,
+                            address             : this.form.address         || undefined,
+                            contact             : this.form.contact         || undefined,
+                            accountBank         : this.form.accountBank     || undefined,
+                            bankAddress         : this.form.bankAddress     || undefined,
+                            accountNo           : this.form.accountNo       || undefined,
+                            accountant          : this.form.accountant      || undefined,
+                            contactWays         : this.form.contactWays     || undefined,
+                            supplierCata        : this.form.supplierCata    || undefined,
+                            supplierLevel       : this.form.supplierLevel   || undefined,
+                            supplierAt          : this.form.supplierAt      || undefined,
+                            version             : this.form.version       || undefined,
                         }
-                        // if(this.mode == 'EDIT'){  //编辑
-                        //     service.updateUser({...data}).then(resp=>{
-                        //         this.$notify({message: resp.data.msg, type: resp.data.type});
-                        //         if(resp.data.type == "success"){
-                        //             this.$emit("success");
-                        //             this.dialogFormVisible = false
-                        //         }
-                        //     })
-                        // }else{
-                        //     service.addUser({...data}).then(resp=>{  //添加
-                        //         this.$notify({message: resp.data.msg, type: resp.data.type});
-                        //         if(resp.data.type == "success"){
-                        //             this.$emit("success");
-                        //             this.dialogFormVisible = false
-                        //         }
-                        //     })
-                        // }
+                        if(this.mode == 'EDIT'){  //编辑
+                            activityService.updateSupplier({...data}).then(resp=>{
+                                if (resp.data.code=="201"){
+                                    this.$notify({message: resp.data.message, type: "success"});
+                                    this.$emit("success");
+                                    this.dialogFormVisible = false
+                                } else {
+                                    this.$notify({message: resp.data.message, type: "error"});
+                                }
+                            })
+                        }else{
+                            activityService.addSupplier({...data}).then(resp=>{  //添加
+                                if (resp.data.code=="201"){
+                                    this.$notify({message: resp.data.message, type: "success"});
+                                    this.$emit("success");
+                                    this.dialogFormVisible = false
+                                } else {
+                                    this.$notify({message: resp.data.message, type: "error"});
+                                }
+                            })
+                        }
 
                     } else {
                         console.log('error submit!!');

@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)"
-               width="900px">
+               width="800px">
       <div class="dialogStyle" style="display: flex;flex-direction: column">
         <el-form ref="form" style="flex: 5" :model="form" label-width="200px" size="mini">
           <el-form-item label="成品型号" prop="materialOrderCode">

@@ -103,7 +103,7 @@ public class MaterialDataController {
     	CommonResultInfo<?> result = materialDataService.lockMaterialInfo(materialId, auth);
     	return result;
     }
-	@ApiOperation(value="删除一条物料数据", notes="删除一条新的物料数据")
+	@ApiOperation(value="删除物料数据", notes="删除新的物料数据")
 	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "Stirng", paramType = "query")
 	@PutMapping("/deleteMater")
 	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
