@@ -12,7 +12,7 @@
                     <el-input placeholder="物料CKD号" v-model="search_keys.materialCkdCode" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-form-item label="物料类别">
-                    <el-select v-model="search_keys.materialCategory"  size="mini" knx>
+                    <el-select v-model="search_keys.materialCategory"  size="mini" class="search-form-item-input">
                         <el-option value=""></el-option>
                         <el-option
                                 size="mini" knx
@@ -45,7 +45,7 @@
                                 <el-input placeholder="供应商编号" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
                             </el-form-item>
                             <el-form-item label="币种">
-                                <el-select v-model="search_keys.materialCurrency"  size="mini" >
+                                <el-select v-model="search_keys.materialCurrency"  size="mini" class="search-form-item-input">
                                     <el-option value=""></el-option>
                                     <el-option
                                             size="mini"
@@ -90,7 +90,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="" icon="el-icon-error" >
+                    <el-button  @click="reset" icon="el-icon-error" >
                         清空
                     </el-button>
                 </el-form-item>
@@ -142,7 +142,7 @@
 
             <el-table-column fixed="right" width="80" label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
+                    <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt smallButton" plain @click="edit(scope.row.materialInfoId)">
                         <i class="el-icon-news"></i></el-button>
 <!--                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">-->
 <!--                        <i class="el-icon-delete"></i></el-button>-->
@@ -211,6 +211,25 @@
             this.exec_search({search_keys:this.search_keys, pageNumber:1});
         },
         methods: {
+            reset(){
+                console.log("11");
+                this.search_keys   = {
+                    materialOrderCode:'',
+                      materialCode:'',
+                      materialCkdCode:'',
+                      materialCategory:'',
+                      materialDescCn:'',
+                      materialDescEn:'',
+                      materialDescRn:'',
+                      hsNo:'',
+                      supplierCode:'',
+                      materialCurrency:'',
+                      createUser:'',
+                      createTime:'',
+                      updateUser:'',
+                      updateTime:'',
+                }
+            },
             init(){
                 activityService.initData().then(resp =>{
                     this.currencys = resp.data.result.currencys;

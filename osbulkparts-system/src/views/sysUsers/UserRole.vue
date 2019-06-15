@@ -9,7 +9,7 @@
                     <el-input placeholder="角色说明" v-model="search_keys.roleDesc" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-form-item label="角色所属" >
-                    <el-select v-model="search_keys.roleAt" placeholder="请选择">
+                    <el-select v-model="search_keys.roleAt" placeholder="请选择" class="search-form-item-input">
                         <el-option
                           v-for="item in options.roleAt"
                           :key="item.value"
@@ -46,7 +46,7 @@
 
             <el-table-column label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="权限设置" type="primary" size="mini" class="btn-opt" @click="setFunction(scope.row.roleId)">
+                    <el-button title="权限设置" type="primary" size="mini" class="btn-opt smallButton" @click="setFunction(scope.row.roleId)">
                         权限设置</el-button>
                     <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.roleId)">
                         <i class="el-icon-news"></i></el-button>

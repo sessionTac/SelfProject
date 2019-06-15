@@ -18,7 +18,7 @@
           <el-input placeholder="供应商英文说明" v-model="search_keys.supplierDescEn" class="search-form-item-input"></el-input>
         </el-form-item>
         <el-form-item label="供应商分类">
-          <el-select v-model="search_keys.supplierCata"  size="mini" knx>
+          <el-select v-model="search_keys.supplierCata"  size="mini" class="search-form-item-input">
             <el-option value=""></el-option>
             <el-option
                     size="mini" knx
@@ -30,7 +30,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="供应商等级">
-          <el-select v-model="search_keys.supplierLevel"  size="mini" knx>
+          <el-select v-model="search_keys.supplierLevel"  size="mini" class="search-form-item-input">
             <el-option value=""></el-option>
             <el-option
               size="mini" knx
@@ -42,7 +42,7 @@
           </el-select>
         </el-form-item>
         <el-form-item label="供应商所属">
-          <el-select v-model="search_keys.supplierAt"  size="mini" knx>
+          <el-select v-model="search_keys.supplierAt"  size="mini" class="search-form-item-input">
             <el-option value=""></el-option>
             <el-option
                     size="mini"
@@ -59,7 +59,7 @@
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button  @click="" icon="el-icon-error" >
+          <el-button  @click="reset" icon="el-icon-error" >
             清空
           </el-button>
         </el-form-item>
@@ -110,7 +110,7 @@
 
       <el-table-column fixed="right" width="120" label="操作" >
         <template slot-scope="scope" >
-          <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.supplierId)">
+          <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt smallButton" plain @click="edit(scope.row.supplierId)">
             <i class="el-icon-news"></i></el-button>
         </template>
       </el-table-column>
@@ -171,6 +171,18 @@
       this.exec_search({search_keys:this.search_keys, pageNumber:1});
     },
     methods: {
+      reset(){
+        this.search_keys   = {
+          supplierCode:'',
+            supplierNameCn:'',
+            supplierNameEn:'',
+            supplierDescCn:'',
+            supplierDescEn:'',
+            supplierCata:'',
+            supplierLevel:'',
+            supplierAt:'',
+        }
+      },
       init(){
         activityService.initData().then(resp =>{
           this.supplierCatas = resp.data.result.supplierCatas;

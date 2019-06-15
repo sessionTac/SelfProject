@@ -2,31 +2,34 @@
   <div>
     <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)"
                width="600px">
-      <div class="dialogStyle" style="display: flex;flex-direction: column">
-        <el-form ref="form" style="flex: 5" :model="form" label-width="200px" :rules="rules" size="mini">
-          <el-form-item label="角色名" prop="roleName">
-            <el-input v-model="form.roleName" class="search-form-item-input" style="width: 200px" size="mini"
-                      :maxlength="500"></el-input>
-          </el-form-item>
-          <el-form-item label="角色说明" prop="roleDesc">
-            <el-input v-model="form.roleDesc" class="search-form-item-input" style="width: 200px" size="mini"
-                      :maxlength="30"></el-input>
-          </el-form-item>
-          <el-form-item label="角色所属">
-            <el-select v-model="form.roleAt" placeholder="请选择">
-              <el-option
-                v-for="item in options.roleAt"
-                :key="item.value"
-                :label="item.name"
-                :value="item.value">
-              </el-option>
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div class="dialogButton">
-          <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
-          <el-button size="mini" @click=" cancel">取消</el-button>
+      <el-card>
+        <div class="dialogStyle" style="display: flex;flex-direction: column">
+          <el-form ref="form" style="flex: 5" class="search-form search-form-normal" :model="form" label-width="200px" :rules="rules" size="mini">
+            <el-form-item label="角色名" prop="roleName">
+              <el-input v-model="form.roleName" class="search-form-item-input" style="width: 200px" size="mini"
+                        :maxlength="500"></el-input>
+            </el-form-item>
+            <el-form-item label="角色说明" prop="roleDesc">
+              <el-input v-model="form.roleDesc" class="search-form-item-input" style="width: 200px" size="mini"
+                        :maxlength="30"></el-input>
+            </el-form-item>
+            <el-form-item label="角色所属">
+              <el-select v-model="form.roleAt" placeholder="请选择" class="">
+                <el-option
+                  v-for="item in options.roleAt"
+                  :key="item.value"
+                  :label="item.name"
+                  :value="item.value">
+                </el-option>
+              </el-select>
+            </el-form-item>
+          </el-form>
+
         </div>
+      </el-card>
+      <div class="dialogButton">
+        <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
+        <el-button size="mini" @click=" cancel">取消</el-button>
       </div>
     </el-dialog>
   </div>
@@ -152,14 +155,5 @@
 </script>
 
 <style scoped>
-  >>> .el-dialog__body {
-    padding: 0px 0px;
-    color: #606266;
-    font-size: 14px;
-  }
 
-  >>> .el-dialog__footer {
-    /*margin-top: -30px;*/
-    text-align: center;
-  }
 </style>
