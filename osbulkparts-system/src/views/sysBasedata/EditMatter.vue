@@ -1,24 +1,24 @@
 <template>
   <div>
     <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)"
-               width="600px">
+               width="600px" >
       <el-card>
         <div class="dialogStyle" style="display: flex;flex-direction: column">
           <el-form class="search-form search-form-normal" ref="form" style="flex: 5" :model="form" label-width="200px" size="mini">
             <el-form-item label="成品型号" prop="materialOrderCode">
               <el-input v-model="form.materialOrderCode" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="64" autocomplete="new-password"></el-input>
+                        :maxlength="64" autocomplete="new-password" clearable></el-input>
             </el-form-item>
             <el-form-item label="子件型号" prop="materialCode">
               <el-input v-model="form.materialCode" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="64" autocomplete="new-password"></el-input>
+                        :maxlength="64" autocomplete="new-password" clearable></el-input>
             </el-form-item>
             <el-form-item label="物料CKD号" prop="materialCkdCode">
               <el-input v-model="form.materialCkdCode" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="500"></el-input>
+                        :maxlength="500" clearable></el-input>
             </el-form-item>
             <el-form-item label="物料类别" prop="materialCategory">
-              <el-select v-model="form.materialCategory" size="mini">
+              <el-select v-model="form.materialCategory" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -30,27 +30,27 @@
               </el-select>
             </el-form-item>
             <el-form-item label="物料中文描述" prop="materialDescCn">
-              <el-input v-model="form.materialDescCn" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="200"></el-input>
+              <el-input type="textarea" v-model="form.materialDescCn" class="search-form-item-input" style="width: 200px" size="mini"
+                        :maxlength="200" clearable></el-input>
             </el-form-item>
             <el-form-item label="物料英文描述" prop="materialDescEn">
-              <el-input v-model="form.materialDescEn" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="200"></el-input>
+              <el-input type="textarea" v-model="form.materialDescEn" class="search-form-item-input" style="width: 200px" size="mini"
+                        :maxlength="200" clearable></el-input>
             </el-form-item>
             <el-form-item label="物料俄文描述" prop="materialDescRn">
-              <el-input v-model="form.materialDescRn" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="200"></el-input>
+              <el-input type="textarea" v-model="form.materialDescRn" class="search-form-item-input" style="width: 200px" size="mini"
+                        :maxlength="200" clearable></el-input>
             </el-form-item>
             <el-form-item label="HS海关编码" prop="hsNo">
               <el-input v-model="form.hsNo" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="50"></el-input>
+                        :maxlength="50" clearable></el-input>
             </el-form-item>
             <el-form-item label="供应商编号" prop="supplierCode">
               <el-input v-model="form.supplierCode" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="50"></el-input>
+                        :maxlength="50" clearable></el-input>
             </el-form-item>
             <el-form-item label="单位" prop="materialUnit">
-              <el-select v-model="form.materialUnit" size="mini">
+              <el-select v-model="form.materialUnit" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -63,10 +63,10 @@
             </el-form-item>
             <el-form-item label="换算关系" prop="materialRelation">
               <el-input v-model="form.materialRelation" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="50"></el-input>
+                        :maxlength="50" clearable></el-input>
             </el-form-item>
             <el-form-item label="换算后单位" prop="materialRelationUnit">
-              <el-select v-model="form.materialRelationUnit" size="mini">
+              <el-select v-model="form.materialRelationUnit" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -79,26 +79,26 @@
             </el-form-item>
             <el-form-item label="最小包装数量" prop="materialMinpackageAmt">
               <el-input v-model="form.materialMinpackageAmt" class="search-form-item-input" style="width: 200px"
-                        size="mini" :maxlength="50"></el-input>
+                        size="mini" :maxlength="50" clearable></el-input>
             </el-form-item>
             <el-form-item label="未税单价" prop="materialTaxPrice">
               <el-input v-model="form.materialTaxPrice" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="50"></el-input>
+                        :maxlength="50" clearable></el-input>
             </el-form-item>
             <el-form-item label="含税单价" prop="materialVatPrice">
               <el-input class="search-form-item-input" style="width: 200px" v-model="form.materialVatPrice" size="mini"
-                        :maxlength="10"></el-input>
+                        :maxlength="10" clearable></el-input>
             </el-form-item>
             <el-form-item label="单价" prop="materialPrice">
               <el-input v-model="form.materialPrice" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="50"></el-input>
+                        :maxlength="50" clearable></el-input>
             </el-form-item>
             <el-form-item label="代理费率" prop="materialRate">
               <el-input v-model="form.materialRate" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="50"></el-input>
+                        :maxlength="50" clearable></el-input>
             </el-form-item>
             <el-form-item label="币种" prop="materialCurrency">
-              <el-select v-model="form.materialCurrency" size="mini">
+              <el-select v-model="form.materialCurrency" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -111,14 +111,14 @@
             </el-form-item>
             <el-form-item label="工厂号" prop="factoryCode">
               <el-input v-model="form.factoryCode" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="50"></el-input>
+                        :maxlength="50" clearable></el-input>
             </el-form-item>
             <el-form-item label="分级BOM编码" prop="levelBomCode">
               <el-input v-model="form.levelBomCode" class="search-form-item-input" style="width: 200px" size="mini"
-                        :maxlength="50"></el-input>
+                        :maxlength="50" clearable></el-input>
             </el-form-item>
             <el-form-item label="物料供货模式分类标识" prop="materialSupplyMode">
-              <el-select v-model="form.materialSupplyMode" size="mini">
+              <el-select v-model="form.materialSupplyMode" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"

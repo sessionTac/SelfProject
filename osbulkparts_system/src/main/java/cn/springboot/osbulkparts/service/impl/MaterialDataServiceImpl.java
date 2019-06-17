@@ -254,10 +254,32 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				}
 			}
 			else {
-				int returnInt = mmaterialInfoDao.lockedData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.LOCK_TRUE.getTypeName());
+				int returnInt = mmaterialInfoDao.lockedData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.LOCK_FALSE.getTypeName());
 				if (returnInt > 0) {
 					result.setMessage(messageBean.getMessage("common.unlocked.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
 				}
+			}
+			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+	
+	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity,Authentication auth){
+		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			int returnInt = mmaterialInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName());
+			if (returnInt > 0) {
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
 			}
 			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 		} catch (Exception e) {

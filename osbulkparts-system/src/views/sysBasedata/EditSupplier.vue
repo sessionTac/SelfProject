@@ -5,43 +5,43 @@
                 <div class="dialogStyle" style="display: flex;flex-direction: column">
                     <el-form class="search-form search-form-normal" ref="form" style="flex: 5"  :model="form" label-width="200px"  size="mini">
                         <el-form-item label="供应商代码" prop="supplierCode">
-                            <el-input v-model="form.supplierCode" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input v-model="form.supplierCode" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="供应商中文名称" prop="supplierNameCn">
-                            <el-input v-model="form.supplierNameCn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input type="textarea" v-model="form.supplierNameCn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="供应商英文名称" prop="supplierNameEn">
-                            <el-input v-model="form.supplierNameEn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input type="textarea" v-model="form.supplierNameEn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="供应商中文说明" prop="supplierDescCn">
-                            <el-input v-model="form.supplierDescCn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input type="textarea" v-model="form.supplierDescCn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="供应商英文说明" prop="supplierDescEn">
-                            <el-input v-model="form.supplierDescEn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input type="textarea" v-model="form.supplierDescEn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="地址" prop="address">
-                            <el-input v-model="form.address" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input type="textarea" v-model="form.address" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="联系人" prop="contact">
-                            <el-input v-model="form.contact" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input v-model="form.contact" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="开户银行" prop="accountBank">
-                            <el-input v-model="form.accountBank" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input v-model="form.accountBank" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="开户银行地址" prop="bankAddress">
-                            <el-input v-model="form.bankAddress" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input type="textarea" v-model="form.bankAddress" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="帐号信息" prop="accountNo">
-                            <el-input v-model="form.accountNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input v-model="form.accountNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="账户人" prop="accountant">
-                            <el-input v-model="form.accountant" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input v-model="form.accountant" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                         </el-form-item>
                         <el-form-item label="联系方式" prop="contactWays">
-                            <el-input v-model="form.contactWays" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
+                            <el-input v-model="form.contactWays" placeholder="联系人手机号码" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="11" autocomplete="new-password"></el-input>
                         </el-form-item>
                         <el-form-item label="供应商分类" prop="supplierCata">
-                            <el-select v-model="form.supplierCata"  size="mini" knx>
+                            <el-select v-model="form.supplierCata"  size="mini" clearable>
                                 <el-option value=""></el-option>
                                 <el-option
                                   size="mini"
@@ -53,7 +53,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="供应商等级" prop="supplierLevel">
-                            <el-select v-model="form.supplierLevel"  size="mini" knx>
+                            <el-select v-model="form.supplierLevel"  size="mini" clearable>
                                 <el-option value=""></el-option>
                                 <el-option
                                   size="mini"
@@ -65,7 +65,7 @@
                             </el-select>
                         </el-form-item>
                         <el-form-item label="供应商所属" prop="supplierAt">
-                            <el-select v-model="form.supplierAt"  size="mini" knx>
+                            <el-select v-model="form.supplierAt"  size="mini" clearable>
                                 <el-option value=""></el-option>
                                 <el-option
                                   size="mini"

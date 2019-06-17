@@ -25,6 +25,12 @@ import '@/styles/index.scss' // global css
 import '@/assets/css/commen.css'
 import '@/assets/css/flex-box.css'
 
+import moment from 'moment'
+import momentDurationFormatSetup from "moment-duration-format";
+momentDurationFormatSetup(moment);
+moment.locale('zh-cn');
+Vue.prototype.$moment = moment; //全局$moment
+
 import Subject from "@/utils/Subject"
 Vue.config.productionTip = false
 

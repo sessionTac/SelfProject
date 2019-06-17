@@ -64,7 +64,7 @@ public class MaterialDataController {
 	@ApiOperation(value="获取物料数据信息", notes="根据条件查询物料数据的详细数据")
 	@ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
 	@GetMapping("/getMaterialInfo")
-	public CommonResultInfo<MMaterialInfoEntity> getMaterialInfo(@RequestBody MMaterialInfoEntity mmaterialInfoEntity){
+	public CommonResultInfo<MMaterialInfoEntity> getMaterialInfo(MMaterialInfoEntity mmaterialInfoEntity){
 		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfo(mmaterialInfoEntity);
 		return result;
 	}
@@ -103,10 +103,7 @@ public class MaterialDataController {
     }
     
     @ApiOperation(value="锁定或解锁物料数据", notes="锁定或解锁一条新的物料数据")
-	@ApiImplicitParams({
-		@ApiImplicitParam(name = "materialId", value = "物料数据ID", required = true, dataType = "String", paramType = "path"),
-		@ApiImplicitParam(name = "toLocked", value = "锁定/解锁(true/false)", required = true, dataType = "String", paramType = "body")
-	})
+	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/lockMaterialInfo")
     public CommonResultInfo<?> lockMaterialInfo(@RequestBody CommonEntity commonEntity, Authentication auth){
     	CommonResultInfo<?> result = materialDataService.lockMaterialInfo(commonEntity,auth);
@@ -114,18 +111,15 @@ public class MaterialDataController {
     }
     
 	@ApiOperation(value="删除物料数据", notes="删除新的物料数据")
-	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "Stirng", paramType = "query")
+	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
 	@PutMapping("/deleteMater")
 	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
-		return null;
+    	CommonResultInfo<?> result = materialDataService.deleteBatchMaterialInfo(commonEntity,auth);
+    	return result;
 	}
 
-	/**
-	 * 导出excel
-	 * @param name
-	 * @param body
-	 * @return
-	 */
+	@ApiOperation(value="物料数据导出", notes="物料数据导出")
+	@ApiImplicitParam(name = "body", value = "请求参数体", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/excel")
 	public Object downExcel(@RequestBody Map<String, String> body) {
 		//获取excel导出的流

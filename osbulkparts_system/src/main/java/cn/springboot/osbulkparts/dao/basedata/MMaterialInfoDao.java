@@ -26,4 +26,6 @@ public interface MMaterialInfoDao {
     int updateByPrimaryKey(MMaterialInfoEntity record);
     
     int lockedData(@Param("ids") String[] ids,@Param("updateUser") String updateUser,@Param("isLocked") String isLocked);
+    
+    int deleteBatchData(@Param("ids") String[] ids,@Param("updateUser") String updateUser,@Param("isDelete") String isDelete);
 }

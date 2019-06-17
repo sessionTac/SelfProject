@@ -72,7 +72,12 @@
                     </el-collapse-item>
                 </el-collapse>
                 <el-form-item style="float: right">
-                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" @click="lockData" icon="el-icon-s-check" >
+                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:unlocked')" @click="lockData(false)" icon="el-icon-s-check" >
+                        解锁
+                    </el-button>
+                </el-form-item>
+                <el-form-item style="float: right">
+                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" @click="lockData(true)" icon="el-icon-s-check" >
                         锁定
                     </el-button>
                 </el-form-item>
@@ -110,16 +115,18 @@
         <el-table size="mini"
                   style="flex: 1"
                   :height="600"
+                  ref="tb"
                   class="search-result-table"
                   :data="search_result.list" row-key="id"
                   :stripe="true"
+                  @row-click="clickRow"
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
             <el-table-column prop="materialOrderCode" fixed width="100" align="center" label="成品型号"  />
             <el-table-column prop="materialCkdCode" fixed width="100" align="center" label="物料CKD号"  />
             <el-table-column prop="materialCode" fixed width="100" align="center" label="子件型号"/>
-            <el-table-column prop="dictMaterialCategory.name" fixed width="100" align="center" label="物料类别" />
+            <el-table-column prop="dictMaterialCategory.name" width="100" align="center" label="物料类别" />
             <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
             <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
             <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
@@ -136,13 +143,23 @@
             <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />
             <el-table-column prop="factoryCode" align="center" label="工厂号"  />
             <el-table-column prop="createUser" align="center" label="创建人"  />
-            <el-table-column prop="createTime" align="center" label="创建时间"  />
+<!--            <el-table-column prop="createTime" align="center" label="创建时间"  />-->
+            <el-table-column label="创建时间" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    {{scope.row.createTime != null ?$moment(scope.row.createTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
+                </template>
+            </el-table-column>
             <el-table-column prop="updateUser" align="center" label="最后修改人"  />
-            <el-table-column prop="updateTime" align="center" label="最后修改时间"  />
+<!--            <el-table-column prop="updateTime" align="center" label="最后修改时间"  />-->
+            <el-table-column label="最后修改时间" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
+                </template>
+            </el-table-column>
             <el-table-column fixed="right" prop="dictLockStatus.name" align="center" label="是否锁定"  />
             <el-table-column fixed="right"  width="80" label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')" :disabled="toLocked(isLocked)" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
+                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')" :disabled="toLocked(scope.row.isLocked)" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
                         <i class="el-icon-news"></i></el-button>
 <!--                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">-->
 <!--                        <i class="el-icon-delete"></i></el-button>-->
@@ -220,12 +237,15 @@
                 })
             },
             toLocked(isLocked){
-                if(isLocked  == "0"){
-                    return true;
-                }
-                else{
+                if(isLocked  == 0){
                     return false;
                 }
+                else{
+                    return true;
+                }
+            },
+            clickRow(row){
+                this.$refs.tb.toggleRowSelection(row);
             },
             exec_search({
                             search_keys = JSON.parse(this.search_keys_snap),
@@ -293,8 +313,8 @@
                     this.internal_activated = true;
                 })//删除
             },
-            lockData(){
-                this.$confirm("确定锁定吗？", "提示", {
+            lockData(toLocked){
+                this.$confirm("确定对数据进行锁定/解锁吗？", "提示", {
                     confirmButtonText: "是",
                     cancelButtonText: "否",
                     type: 'warning',
@@ -304,7 +324,7 @@
                         this.multipleSelection.forEach(item=>{
                             this.idsStr.push(item.materialInfoId)
                         })
-                        activityService.deleteById({idsStr:this.idsStr}).then(resp => {
+                        activityService.lockedById({idsStr:this.idsStr,toLocked:toLocked}).then(resp => {
                             if (resp.data.code=="201"){
                                 this.$notify({message: resp.data.message, type: "success"});
                             } else {

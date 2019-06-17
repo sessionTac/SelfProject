@@ -870,4 +870,12 @@
         #{item}
     </foreach>
   </update>
+  <update id="deleteBatchData">
+  	update m_material_info
+  	set update_user = #{updateUser,jdbcType=VARCHAR},update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),is_delete = #{isDelete,jdbcType=INTEGER} 
+  	where material_info_id IN
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+  </update>
 </mapper>

@@ -104,7 +104,7 @@ export const constantRoutes = [
         name:'basicsData',
         component: Layout,
         redirect: {name: 'basicsDataMatter'},
-        meta: { title: 'basicsData',requiresPermission: 'maintenance:basis:data',breadcrumb: true},
+        meta: { title: 'basicsData',requiresPermission: 'maintenance:basis:matter:info',breadcrumb: true},
         children: [
             {
                 path: 'basicsDataMatter',

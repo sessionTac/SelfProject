@@ -11,48 +11,57 @@
         <el-form-item label="供应商英文名称">
           <el-input placeholder="供应商英文名称" v-model="search_keys.supplierNameEn" class="search-form-item-input"></el-input>
         </el-form-item>
-        <el-form-item label="供应商中文说明">
-          <el-input placeholder="供应商中文说明" v-model="search_keys.supplierDescCn" class="search-form-item-input"></el-input>
-        </el-form-item>
-        <el-form-item label="供应商英文说明">
-          <el-input placeholder="供应商英文说明" v-model="search_keys.supplierDescEn" class="search-form-item-input"></el-input>
-        </el-form-item>
-        <el-form-item label="供应商分类">
-          <el-select v-model="search_keys.supplierCata"  size="mini" class="search-form-item-input">
-            <el-option value=""></el-option>
-            <el-option
+        <el-collapse accordion>
+          <el-collapse-item>
+            <template slot="title">
+              <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
+            </template>
+            <div>
+              <el-form-item label="供应商中文说明">
+                <el-input placeholder="供应商中文说明" v-model="search_keys.supplierDescCn" class="search-form-item-input"></el-input>
+              </el-form-item>
+              <el-form-item label="供应商英文说明">
+                <el-input placeholder="供应商英文说明" v-model="search_keys.supplierDescEn" class="search-form-item-input"></el-input>
+              </el-form-item>
+              <el-form-item label="供应商分类">
+                <el-select v-model="search_keys.supplierCata"  size="mini" class="search-form-item-input">
+                  <el-option value=""></el-option>
+                  <el-option
+                          size="mini" knx
+                          v-for="item in supplierCatas"
+                          :key="item.value"
+                          :label="item.name"
+                          :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="供应商等级">
+                <el-select v-model="search_keys.supplierLevel"  size="mini" class="search-form-item-input">
+                  <el-option value=""></el-option>
+                  <el-option
                     size="mini" knx
-                    v-for="item in supplierCatas"
+                    v-for="item in supplierLevels"
                     :key="item.value"
                     :label="item.name"
                     :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="供应商等级">
-          <el-select v-model="search_keys.supplierLevel"  size="mini" class="search-form-item-input">
-            <el-option value=""></el-option>
-            <el-option
-              size="mini" knx
-              v-for="item in supplierLevels"
-              :key="item.value"
-              :label="item.name"
-              :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
-        <el-form-item label="供应商所属">
-          <el-select v-model="search_keys.supplierAt"  size="mini" class="search-form-item-input">
-            <el-option value=""></el-option>
-            <el-option
-                    size="mini"
-                    v-for="item in supplierAts"
-                    :key="item.value"
-                    :label="item.name"
-                    :value="item.value">
-            </el-option>
-          </el-select>
-        </el-form-item>
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="供应商所属">
+                <el-select v-model="search_keys.supplierAt"  size="mini" class="search-form-item-input">
+                  <el-option value=""></el-option>
+                  <el-option
+                          size="mini"
+                          v-for="item in supplierAts"
+                          :key="item.value"
+                          :label="item.name"
+                          :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+            </div>
+          </el-collapse-item>
+        </el-collapse>
         <el-form-item style="float: right">
           <el-button  @click="deleteMatter" icon="el-icon-delete" >
             删除

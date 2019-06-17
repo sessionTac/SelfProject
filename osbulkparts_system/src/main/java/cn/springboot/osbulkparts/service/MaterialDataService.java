@@ -29,5 +29,7 @@ public interface MaterialDataService {
 	
 	CommonResultInfo<?> deleteMaterialInfo(String materialId,Authentication auth);
 	
+	CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity,Authentication auth);
+	
 	CommonResultInfo<?> lockMaterialInfo(CommonEntity commonEntity,Authentication auth);
 }
