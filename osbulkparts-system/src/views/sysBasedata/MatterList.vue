@@ -45,7 +45,7 @@
                                 <el-input placeholder="供应商编号" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
                             </el-form-item>
                             <el-form-item label="币种">
-                                <el-select v-model="search_keys.materialCurrency"  size="mini" >
+                                <el-select v-model="search_keys.materialCurrency"  size="mini" class="search-form-item-input">
                                     <el-option value=""></el-option>
                                     <el-option
                                             size="mini"
@@ -60,24 +60,38 @@
                                 <el-input placeholder="创建人" v-model="search_keys.createUser" class="search-form-item-input"></el-input>
                             </el-form-item>
                             <el-form-item label="创建时间">
-                                <el-input placeholder="创建时间" v-model="search_keys.createTime" class="search-form-item-input"></el-input>
+                                    <el-date-picker
+                                      class="search-form-item-input"
+                                      v-model="search_keys.createTime"
+                                      type="date"
+                                      value-format="yyyyMMddHHmmss"
+                                      placeholder="选择日期">
+                                    </el-date-picker>
+                                <!--<el-input placeholder="创建时间" v-model="search_keys.createTime" class="search-form-item-input"></el-input>-->
                             </el-form-item>
                             <el-form-item label="最后修改人">
                                 <el-input placeholder="最后修改人" v-model="search_keys.updateUser" class="search-form-item-input"></el-input>
                             </el-form-item>
                             <el-form-item label="最后修改时间">
-                                <el-input placeholder="最后修改时间" v-model="search_keys.updateTime" class="search-form-item-input"></el-input>
+                                <el-date-picker
+                                  class="search-form-item-input"
+                                  v-model="search_keys.updateTime"
+                                  type="date"
+                                  value-format="yyyyMMddHHmmss"
+                                  placeholder="选择日期">
+                                </el-date-picker>
+                                <!--<el-input placeholder="最后修改时间" v-model="search_keys.updateTime" class="search-form-item-input"></el-input>-->
                             </el-form-item>
                         </div>
                     </el-collapse-item>
                 </el-collapse>
                 <el-form-item style="float: right">
-                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:unlocked')" @click="lockData(false)" icon="el-icon-s-check" >
+                    <el-button :disabled="unlockFlag " v-if="subject.hasPermissions('maintenance:basis:matter:info:unlocked')" @click="lockData(false)" icon="el-icon-s-check" >
                         解锁
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" @click="lockData(true)" icon="el-icon-s-check" >
+                    <el-button :disabled="lockFlag " v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" @click="lockData(true)" icon="el-icon-s-check" >
                         锁定
                     </el-button>
                 </el-form-item>
@@ -85,7 +99,7 @@
                     <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" target = "MATTER"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="downloadTemp" size="mini" >
+                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
@@ -119,6 +133,7 @@
                   class="search-result-table"
                   :data="search_result.list" row-key="id"
                   :stripe="true"
+                  :row-class-name="({row,rowIndex}) => { return row.isLocked ? 'locked-row' : null; }"
                   @row-click="clickRow"
                   @selection-change="handleSelectionChange"
         >
@@ -136,9 +151,9 @@
             <el-table-column prop="materialRelation" align="center" label="换算关系"  />
             <el-table-column prop="dictMaterialRelationUnit.name" align="center" label="换算后单位"  />
             <el-table-column prop="materialMinpackageAmt" align="center" label="最小包装数量"  />
-            <el-table-column prop="materialTaxPrice" align="center" label="未税单价"  />
-            <el-table-column prop="materialVatPrice" align="center" label="含税单价"  />
-            <el-table-column prop="materialPrice" align="center" label="单价"  />
+            <el-table-column prop="materialTaxPrice" align="center" :formatter="price" label="未税单价"  />
+            <el-table-column prop="materialVatPrice" align="center" :formatter="price" label="含税单价"  />
+            <el-table-column prop="materialPrice" align="center" :formatter="price" label="单价"  />
             <el-table-column prop="materialRate" align="center" label="代理费率"  />
             <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />
             <el-table-column prop="factoryCode" align="center" label="工厂号"  />
@@ -159,7 +174,7 @@
             <el-table-column fixed="right" prop="dictLockStatus.name" align="center" label="是否锁定"  />
             <el-table-column fixed="right"  width="80" label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')" :disabled="toLocked(scope.row.isLocked)" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
+                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
                         <i class="el-icon-news"></i></el-button>
 <!--                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">-->
 <!--                        <i class="el-icon-delete"></i></el-button>-->
@@ -227,7 +242,26 @@
             this.init();
             this.exec_search({search_keys:this.search_keys, pageNumber:1});
         },
+        computed:{
+            lockFlag(){
+                return (this.multipleSelection.some(item=>{
+                    return item.isLocked===1
+                }) || (this.multipleSelection.length===0))
+            },
+            unlockFlag(){
+                return (this.multipleSelection.some(item=>{
+                    return item.isLocked===0
+                }) || (this.multipleSelection.length===0))
+            }
+        },
         methods: {
+            price(row, column, cellValue, index){
+                if (cellValue) {
+                    return cellValue.toFixed(2)
+                }else {
+                    return ""
+                }
+            },
             init(){
                 activityService.initData().then(resp =>{
                     this.currencys = resp.data.result.currencys;
@@ -236,14 +270,14 @@
                     console.error(err);
                 })
             },
-            toLocked(isLocked){
-                if(isLocked  == 0){
-                    return false;
-                }
-                else{
-                    return true;
-                }
-            },
+            // toLocked(isLocked){
+            //     if(isLocked  == 0){
+            //         return false;
+            //     }
+            //     else{
+            //         return true;
+            //     }
+            // },
             clickRow(row){
                 this.$refs.tb.toggleRowSelection(row);
             },
@@ -327,6 +361,7 @@
                         activityService.lockedById({idsStr:this.idsStr,toLocked:toLocked}).then(resp => {
                             if (resp.data.code=="201"){
                                 this.$notify({message: resp.data.message, type: "success"});
+                                this.exec_search({search_keys:this.search_keys, pageNum:1})
                             } else {
                                 this.$notify({message: resp.data.message, type: "error"});
                             }
@@ -362,5 +397,7 @@
         background-color: #a1a3a9;
         border-radius: 3px;
     }
+
+
 
 </style>

@@ -3,15 +3,20 @@
 
 .search-form.search-form-normal {}
 .search-form.search-form-normal .el-form-item__label { font-size: 10px;padding-right:6px; width:100px; line-height: 30px; }
+.search-form.search-form-normal .el-input--mini {font-size: 10px}
 .search-form.search-form-normal .el-input--mini .el-input__inner{  height: 24px; }
 .search-form.search-form-normal .search-form-item-input { width: 120px; }
 .search-form.search-form-normal .search-form-item-input { width: 120px; }
+
 .search-result-table {
     font-size: 10px;
 }
 .smallButton {
     font-size: 10px;
 }
+
+.search-result-table .locked-row td { background: #f7f1ca !important;}
+
 
 .search-form.search-form-wide {}
 .search-form.search-form-wide .el-form-item__label {font-size: 10px;padding-right:6px; width:100px; line-height: 10px; }

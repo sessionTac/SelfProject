@@ -18,7 +18,7 @@ export default [
           },
           {
               title: '角色权限',
-              requiresPermission: 'maintenance:system:users:role',
+              requiresPermission: 'maintenance:system:users:role:view',
               index: 'roleFunction',
           },
       ]
@@ -37,17 +37,17 @@ export default [
   },
   {
     title: '基础数据',
-    requiresPermission: 'maintenance:basis:data',
+    requiresPermission: 'maintenance:basis:matter:info',
     index: 'basicsData',
     children: [
       {
         title: '物料主数据',
-        requiresPermission: 'maintenance:basis:matter',
+        requiresPermission: 'maintenance:basis:matter:info:view',
         index: 'basicsDataMatter',
       },
       {
         title: '供应商信息',
-        requiresPermission: 'maintenance:basis:supplier',
+        requiresPermission: 'maintenance:basis:supplier:info:view',
         index: 'basicsDataSupplier',
       },
     ]

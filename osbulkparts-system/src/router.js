@@ -38,7 +38,8 @@ export const constantRoutes = [
                 path: 'dashboard',
                 component: () => import('@/views/About.vue'),
                 name: 'dashboard',
-                meta: { title: 'dashboard', icon: 'dashboard',affix: true}
+                meta: { title: 'dashboard', icon: 'dashboard',affix: true,
+                    requiresPermission: 'maintenance:dashboard',}
             }
         ]
     },

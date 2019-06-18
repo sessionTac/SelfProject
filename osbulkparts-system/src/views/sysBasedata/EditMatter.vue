@@ -4,7 +4,7 @@
                width="600px" >
       <el-card>
         <div class="dialogStyle" style="display: flex;flex-direction: column">
-          <el-form class="search-form search-form-normal" ref="form" style="flex: 5" :model="form" label-width="200px" size="mini">
+          <el-form :disabled="form.isLocked==1" class="search-form search-form-normal" ref="form" style="flex: 5" :model="form" label-width="200px" size="mini">
             <el-form-item label="成品型号" prop="materialOrderCode">
               <el-input v-model="form.materialOrderCode" class="search-form-item-input" style="width: 200px" size="mini"
                         :maxlength="64" autocomplete="new-password" clearable></el-input>
@@ -135,7 +135,7 @@
 
       </el-card>
       <div class="dialogButton">
-        <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
+        <el-button type="primary" size="mini" :disabled="form.isLocked==1" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
         <el-button size="mini" @click=" cancel">取消</el-button>
       </div>
 
