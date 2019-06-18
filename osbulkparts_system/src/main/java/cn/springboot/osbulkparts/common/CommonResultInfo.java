@@ -3,6 +3,9 @@ package cn.springboot.osbulkparts.common;
 import java.io.Serializable;
 import java.util.List;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
+
 import com.github.pagehelper.PageInfo;
 
 import lombok.Data;
@@ -26,6 +29,8 @@ public class CommonResultInfo<T> implements Serializable{
 	private List<T> resultList;
 	
 	private T result; 
+	
+	private ResponseEntity<InputStreamResource> response;
 	
 	public CommonResultInfo() {
 	}

@@ -9,6 +9,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -55,6 +56,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
     @Autowired
     private I18nMessageBean messageBean;
     
+    private int version;
+    
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(){
@@ -96,19 +99,21 @@ public class MaterialDataServiceImpl implements MaterialDataService{
         		List<MMaterialInfoEntity> paramList = new ArrayList<MMaterialInfoEntity>();
         		if(materialInfoParams.containsKey("insertList")) {
         			paramList = materialInfoParams.get("insertList");
-        			resultInt = resultInt + mmaterialInfoDao.insertList(paramList);
+        			if(paramList.size()>0) {resultInt = resultInt + mmaterialInfoDao.insertList(paramList);}
         		}
         		if(materialInfoParams.containsKey("updateList")) {
         			paramList = materialInfoParams.get("updateList");
-        			resultInt = resultInt + mmaterialInfoDao.updateList(paramList);
+        			if(paramList.size()>0) {resultInt = resultInt + mmaterialInfoDao.updateList(paramList);}
         		}
             	if(resultInt >0) {
             		result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
             		result.setMessage(messageBean.getMessage("common.excel.success"));
             	}
         	}
+        } catch (NullPointerException se) {
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(se.getMessage().toString());
         } catch (Exception e) {
-            e.printStackTrace();
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
             result.setMessage(messageBean.getMessage("common.server.error"));
             result.setException(e.getMessage().toString());
@@ -292,12 +297,18 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		}
 	}
 	
+	@Override
+	public ResponseEntity<InputStreamResource> downloadExcel() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
 	/****Private Methods****/
 	/***
 	 * Excel文件解析
 	 * @throws Exception 
 	 */
-	private Map<String,List<MMaterialInfoEntity>> resolvExcelToDb(MultipartFile excleFile,Authentication auth) throws Exception{
+	private Map<String,List<MMaterialInfoEntity>> resolvExcelToDb(MultipartFile excleFile,Authentication auth) throws NullPointerException,Exception{
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
@@ -334,7 +345,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				// 物料专用号，子件型号
 				mmaterialInfoEntity.setMaterialCode((String)mapData.get("子件型号"));
 				// 物料类别
-				String materCateVle = CommonMethods.getFromDictDataByName(
+				String materCateVle = getFromDictDataByName(
 						(String)mapData.get("物料类别"),"mattertype","物料类别");
 				mmaterialInfoEntity.setMaterialCategory(materCateVle);
 				// 物料中文描述
@@ -352,13 +363,13 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				}
 				mmaterialInfoEntity.setSupplierCode((String)mapData.get("供应商编码"));
 				// 单位
-				String unitVle = CommonMethods.getFromDictDataByName(
+				String unitVle = getFromDictDataByName(
 						(String)mapData.get("单位"),"unit","单位");
 				mmaterialInfoEntity.setMaterialUnit(unitVle);
 				// 换算关系
 				mmaterialInfoEntity.setMaterialRelation((String)mapData.get("换算关系"));
 				// 换算后单位
-				String relationUnitVle = CommonMethods.getFromDictDataByName(
+				String relationUnitVle = getFromDictDataByName(
 						(String)mapData.get("换算后单位"),"unit","换算后单位");
 				mmaterialInfoEntity.setMaterialRelationUnit(relationUnitVle);
 				// 最小包装数量
@@ -374,7 +385,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				mmaterialInfoEntity.setMaterialRate(
 						CommonMethods.changeToBigdecimal((String)mapData.get("代理费率")));
 				// 币种
-				String currencyVle = CommonMethods.getFromDictDataByName(
+				String currencyVle = getFromDictDataByName(
 						(String)mapData.get("币种"),"currency","币种");
 				mmaterialInfoEntity.setMaterialCurrency(currencyVle);
 				// 单价
@@ -391,7 +402,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				if(isExist(mmaterialInfoEntity.getMaterialOrderCode(),mmaterialInfoEntity.getMaterialCode())) {
 					// 更新者
 					mmaterialInfoEntity.setUpdateUser(principal.getUserName());
-					mmaterialInfoEntity.setVersion(mmaterialInfoEntity.getVersion()+1);
+					mmaterialInfoEntity.setVersion(version+1);
+					mmaterialInfoEntity.setIsLocked(0);
 					updateResultLst.add(mmaterialInfoEntity);
 				}
 				else {
@@ -399,6 +411,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 					mmaterialInfoEntity.setCreateUser(principal.getUserName());
 					mmaterialInfoEntity.setIsDelete(0);
 					mmaterialInfoEntity.setVersion(1);
+					mmaterialInfoEntity.setIsLocked(0);
 					insertResultLst.add(mmaterialInfoEntity);
 				}
 			}
@@ -406,7 +419,9 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			returnMap.put("updateList", updateResultLst);
 			return returnMap;
 		}
-		catch(Exception e) {
+		catch(NullPointerException se) {
+			throw se;
+		}catch(Exception e) {
 			throw e;
 		}
 	}
@@ -423,8 +438,32 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		materialInfoEntity.setMaterialCode(materialCode);
 		List<MMaterialInfoEntity> resultList = mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity);
 		if(resultList.size()>0) {
+			version = resultList.get(0).getVersion();
 			return true;
 		}
 		return false;
+	}
+	
+	/***
+	 * 根据Excel中的文字内容匹配字典数据，取得对应的值
+	 * @param nameValue
+	 * @param dictType
+	 * @return
+	 */
+	private String getFromDictDataByName(String nameValue,String dictType,String dictTypeCn) {
+		TDictDataEntity dictDataParam = new TDictDataEntity();
+		try {
+			dictDataParam.setName(nameValue);
+			dictDataParam.setDictTypeCode(dictType);
+			List<TDictDataEntity> dictDataLst = tDictDataDao.selectByPrimaryKey(dictDataParam);
+			if(dictDataLst.size()>0) {
+				return dictDataLst.get(0).getValue();
+			}else {
+				throw new NullPointerException(messageBean.getMessage("common.dict.emptyerror", dictTypeCn));
+			}
+		}
+		catch(Exception e) {
+			throw e;
+		}
 	}
 }

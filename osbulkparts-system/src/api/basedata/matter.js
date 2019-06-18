@@ -38,5 +38,5 @@ export default {
 
   /**文件下载**/
   installdownloadExcel:(data) =>
-    postRequest(`~/material/excel`,{data,responseType:'blob'}),
+    postRequest(`~/material/downloadexcel`,{responseType:'blob'}),
 }

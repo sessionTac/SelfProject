@@ -6,6 +6,7 @@ export default {
 
     postFormData('~'+url,{params,data,onUploadProgress}),
 
-
+  downloadExcelTemp:(name) =>
+      postRequest(`~/common/downloadTemp/`+name,{responseType:'blob'}),
 
 }

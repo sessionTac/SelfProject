@@ -85,7 +85,7 @@
                     <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" target = "MATTER"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="excel" size="mini" >
+                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="downloadTemp" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>

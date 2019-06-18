@@ -13,6 +13,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.transaction.SystemException;
+
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.CellType;
@@ -90,7 +92,7 @@ public class CommonPoiReadUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static File MultipartFileToFile(MultipartFile multiFile) throws Exception {
+	public static File MultipartFileToFile(MultipartFile multiFile) throws IOException {
 		try {
 	        // 获取文件名
 			String fileName = multiFile.getOriginalFilename();
@@ -101,7 +103,7 @@ public class CommonPoiReadUtil {
 	        multiFile.transferTo(file);
 	        return file;
 		}
-		catch(Exception e) {
+		catch(IOException e) {
 			throw e;
 		}
 	}

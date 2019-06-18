@@ -5,7 +5,10 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
@@ -17,6 +20,7 @@ public interface MaterialDataService {
 
 	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews();
 	
+	@Transactional
 	CommonResultInfo<?> importExcel(MultipartFile excleFile,HttpServletRequest request,Authentication auth);
 	
 	CommonResultInfo<MMaterialInfoEntity> selectMaterialInfoList(MMaterialInfoEntity materialInfoEntity, int pageNumber, int pageSize);
@@ -32,4 +36,6 @@ public interface MaterialDataService {
 	CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity,Authentication auth);
 	
 	CommonResultInfo<?> lockMaterialInfo(CommonEntity commonEntity,Authentication auth);
+	
+	ResponseEntity<InputStreamResource> downloadExcel();
 }

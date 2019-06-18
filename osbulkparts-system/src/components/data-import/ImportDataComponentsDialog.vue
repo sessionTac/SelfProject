@@ -40,20 +40,20 @@
 
         <el-form-item label=" " v-if="!!entity || !!message">
           <div style="width: 350px">
-            <div v-if="message" style="font-size: 12px">{{message}}</div>
-            <div v-if="entity" style=""><el-button @click="downloadFile" type="text" style="color: red"> 插入失败，请<u>下载附件</u>检查出错原因</el-button></div>
+            <div v-if="message" style="font-size: 12px;color:red">{{message}}</div>
+<!--            <div v-if="entity" style=""><el-button @click="downloadFile" type="text" style="color: red"> 插入失败，请<u>下载附件</u>检查出错原因</el-button></div>-->
           </div>
         </el-form-item>
         <el-form-item label="下载模板">
           <div>
-            <el-link type="primary">点击这里下载模板</el-link>
+            <el-link type="primary" @click="downloadTemp">点击这里下载模板</el-link>
           </div>
         </el-form-item>
       </el-form>
       <span slot="footer">
           <el-button type="primary" size="mini" @click="submit(form)" :disabled="!currentFile">
             <i class="fa fa-check"></i> 确定</el-button>
-          <!--<el-button  size="mini" @click="cancel()">取消</el-button>-->
+          <el-button  size="mini" @click="cancel()">取消</el-button>
       </span>
     </el-dialog>
   </div>
@@ -61,14 +61,14 @@
 
 <script>
   import service from '@/api/import'
-  // import download from 'downloadjs'
+  import {downloadBlobResponse} from '@/utils/request_utils'
 
   export default {
     name: "ImportDataComponents",
     components:{},
     computed:{
       title() {
-        return this.targetName+this.target + "信息导入"
+        return this.targetName + "信息导入"
       }
     },
 
@@ -82,16 +82,6 @@
         dialogFormVisible  : true,
         regions            : [],
         form:{
-          deviceVender:null,
-          categoryNo       : null,
-          higherAuthoritie : '',
-          transferor       : null,
-          powerStation     : null,
-          Manufactor       : '',
-          powerStationType : '',
-          resourceType     : '',
-          powerType        : '',
-          region           : null,
         },
         loading: true,
         internal_activated : true,
@@ -106,29 +96,10 @@
         fileName: '', //上传的文件名
         currentFile: null, //当前选择的文件
         fileNameErr:"",
-        // projectsTypeOptions:'',//项目类型下拉框
-        // search_keys: {
-        //   projectType: null,//项目类型
-        // },
         value:'',
         entity:"",
         message:"",
         timeOut:'',
-        //上级机构
-        classification:[],
-        //转出方
-        transferors:[],
-        //电站
-        powerStations:[],
-        //厂家
-        Manufactors:[],
-        //电站类型
-        powerStationTypes:[],
-        //能源类型
-        resourceTypes:[],
-        //类型
-        powerTypes:[],
-
         rules:{
           document:[
             {required: true, message: '请上传文件'},
@@ -165,15 +136,11 @@
       },
 
       handleChange(file) {
-        // console.log("fileName:"+file.name)
         this.cleanUploadErrorMessage();
         this.currentFile = file;
         this.fileName = file.name;
       },
 
-      handleExceed(files, fileList) {
-        this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`);
-      },
       beforeRemove(file, fileList) {
         return this.$confirm(`确定移除 ${ file.name }？`);
       },
@@ -183,7 +150,6 @@
       },
 
       onUploadProgress(evt) {
-        // console.log('onUploadProgress', evt);
 
         if (evt.lengthComputable) {
 
@@ -203,17 +169,20 @@
               percentage: 80,
               stateMessage: '服务器处理中...',
             };
-
           }
-
-
-
+        }
+      },
+      downloadTemp(){
+        switch(this.target) {
+          case 'MATTER' :
+            return service.downloadExcelTemp('materialDataTemp').then(resp=>{
+              debugger
+              downloadBlobResponse(resp); // 文件下载
+            });
         }
       },
 
-
       doPost() {
-
         switch(this.target) {
           case 'MATTER' : return service.importData('/material/importExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
 
@@ -300,8 +269,6 @@
         if (!fileSize) {
           this.$message.error('上传文件大小不能超过 10MB!');
         }
-        console.log("transferorNo:"+this.form.transferorNo)
-        console.log("powerStation:"+this.form.powerStation)
         this.isUploading = !this.isUploading
         this.doPost().then(resp => {
           this.isUploading = !this.isUploading
@@ -315,7 +282,6 @@
               this.dialogFormVisible = false;
             }, 5000);
 
-
             this.uploadState = {
               state: 'uploading',
               progressStatus: 'success',
@@ -325,14 +291,12 @@
 
           } else {
 
-
             this.uploadState = {
               state: 'uploading',
               progressStatus: 'exception',
               percentage: 100,
               stateMessage: undefined,
             };
-
             this.message = resp.data.message;
             this.entity = resp.data.entity;
             this.fileNameErr = resp.data.fileName;
@@ -342,7 +306,6 @@
             this.fileName = '';
           }
         }, err => {
-
           this.uploadState.progressStatus = 'exception';
           this.uploadState.stateMessage   = '服务器端异常';
 

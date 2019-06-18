@@ -120,7 +120,7 @@ public class MaterialDataController {
 
 	@ApiOperation(value="物料数据导出", notes="物料数据导出")
 	@ApiImplicitParam(name = "body", value = "请求参数体", required = true, dataType = "body", paramType = "body")
-	@PostMapping("/excel")
+	@PostMapping("/downloadexcel")
 	public Object downExcel(@RequestBody Map<String, String> body) {
 		//获取excel导出的流
 		//之后修改 将service 写在这里
@@ -133,7 +133,6 @@ public class MaterialDataController {
 				.header("Content-Disposition", "attachment; filename*=UTF-8''" + filename_enc)
 				.body(fileblob);
 		return response;
-
 	}
 
 }

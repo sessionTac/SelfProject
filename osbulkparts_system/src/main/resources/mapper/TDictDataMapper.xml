@@ -80,7 +80,7 @@
     <if test="version != null">
         AND version = #{version,jdbcType=INTEGER}
     </if>
-  </select>
+  </select> 
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
       WARNING - @mbg.generated

@@ -1,23 +1,24 @@
 package cn.springboot.osbulkparts.common.utils;
 
+import java.io.File;
+import java.io.InputStream;
 import java.math.BigDecimal;
-import java.util.List;
+import java.net.URLEncoder;
 
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 
 import com.github.pagehelper.util.StringUtil;
 
-import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
-import cn.springboot.osbulkparts.dao.system.TDictDataDao;
-import cn.springboot.osbulkparts.entity.TDictDataEntity;
-
 public class CommonMethods {
-	
-	@Autowired
-	private static TDictDataDao tdictDataDao;
-	
-    @Autowired
-    private static I18nMessageBean messageBean;
+    
+    public static final String separator = File.separator;
+    
+    public static final String extension_excel = ".xlsx";
+    
+    public static final String route = "template";
 	
 	/***
 	 * 将excel中的文字转为Bigdecimal格式数据
@@ -49,27 +50,32 @@ public class CommonMethods {
 		}
 	}
 	
-	/***
-	 * 根据Excel中的文字内容匹配字典数据，取得对应的值
-	 * @param nameValue
-	 * @param dictType
-	 * @return
-	 */
-	public static String getFromDictDataByName(String nameValue,String dictType,String dictTypeCn) {
-		TDictDataEntity dictDataParam = new TDictDataEntity();
-		try {
-			dictDataParam.setName(nameValue);
-			dictDataParam.setDictTypeCode(dictType);
-			List<TDictDataEntity> dictDataLst = tdictDataDao.selectByPrimaryKey(dictDataParam);
-			if(dictDataLst.size()>0) {
-				return dictDataLst.get(0).getValue();
-			}else {
-				throw new NullPointerException(messageBean.getMessage("common.dict.emptyerror", dictTypeCn));
-			}
-		}
-		catch(Exception e) {
-			throw e;
-		}
-	}
+    /**
+     * 下载样表
+     * @param filePath 文件上级目录
+     * @param fileName 文件名
+     * @param newName  下载的展示文件名
+     * @return 响应
+     * @throws Exception 
+     */
+    public static ResponseEntity<InputStreamResource> download(String filePath, String fileName, String newName) throws Exception {
+        String path = null;
+        ResponseEntity<InputStreamResource> response = null;
+        try {
+            path = route + separator  + filePath + separator + fileName + extension_excel;
+            ClassPathResource classPathResource = new ClassPathResource(path);
+            InputStream inputStream = classPathResource.getInputStream();
 
+            response = ResponseEntity.ok()
+            		.header("Access-Control-Expose-Headers", "Content-Disposition")
+            		.header("Cache-Control", "no-cache, no-store, must-revalidate")
+            		.header("Content-Disposition", "attachment; filename*=UTF-8''" + URLEncoder.encode(newName, "UTF-8"))
+                    .contentType(MediaType.parseMediaType("application/octet-stream"))
+                    .body(new InputStreamResource(inputStream));
+            
+        } catch (Exception e) {
+        	e.printStackTrace();
+        }
+        return response;
+    }
 }
