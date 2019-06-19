@@ -1,5 +1,6 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,17 +9,28 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.DataFormat;
+import org.apache.poi.ss.usermodel.FillPatternType;
+import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.util.UriUtils;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 
+import cn.springboot.osbulkparts.common.CommonBusinessException;
 import cn.springboot.osbulkparts.common.CommonConstantEnum;
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
@@ -74,6 +86,9 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			map.put("materialRelationUnits",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			tDictDataEntity.setDictTypeCode("supplyMode");
 			map.put("materialSupplyModes",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			tDictDataEntity.setDictTypeCode("minpackageType");
+			map.put("materialMinpackageTypes",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(map);
 		} catch (Exception e) {
@@ -298,12 +313,107 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	}
 	
 	@Override
-	public ResponseEntity<InputStreamResource> downloadExcel() {
-		// TODO Auto-generated method stub
-		return null;
+	public ResponseEntity<byte[]> downloadExcel(MMaterialInfoEntity materialInfoEntity) {
+		String[] title = messageBean.getMessage("file.title.material").split(",");
+		List<MMaterialInfoEntity> resultList = mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity);
+		ResponseEntity<byte[]> result = educeExcel(title,resultList);
+		return result;
 	}
 	
 	/****Private Methods****/
+	/**
+	 * 
+	 * @param titles 第一列名
+	 * @param list 向单元格插入数据
+	 * @return
+	 */
+	private ResponseEntity<byte[]> educeExcel(String[] titles,List<MMaterialInfoEntity> list){
+		ResponseEntity<byte[]> response = null;
+		//创建Excel对象
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		//输出Excel文件  
+		try {
+			//创建工作表单
+			HSSFSheet sheet = workbook.createSheet(messageBean.getMessage("file.name.material"));  
+			//创建HSSFRow对象 （行）第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+			HSSFRow row = sheet.createRow(0); 	
+			row.setHeightInPoints(20);// 设备标题的高度
+			//创建HSSFCell对象  （单元格）
+			HSSFCell cell=null; 
+			//设置第一列单元格的列
+			for(int i = 0; i < titles.length; i++){
+				cell = row.createCell(i);//列索引从0开始
+				cell.setCellValue(titles[i]);//列名1
+			};
+			CellStyle  style =  workbook.createCellStyle();
+			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);  
+			style.setFillForegroundColor(IndexedColors.RED.getIndex());     
+			CellStyle textStyle = workbook.createCellStyle();
+			DataFormat format = workbook.createDataFormat();
+			textStyle.setDataFormat(format.getFormat("@"));
+			//设置单元格的值  
+			for (int i = 0; i < list.size(); i++) {
+				row = sheet.createRow(i+1);
+				MMaterialInfoEntity example = list.get(i);
+				// 第六步，创建单元格，并设置值
+				//成品型号
+				row.createCell(0).setCellValue(example.getMaterialOrderCode());
+				//成品型号描述
+				row.createCell(1).setCellValue(example.getMaterialOrderCodeDesc());
+				//子件型号
+				row.createCell(2).setCellValue(example.getMaterialCode());
+				//物料CKD号
+				row.createCell(3).setCellValue(example.getMaterialCkdCode());
+				//物料类别
+				row.createCell(4).setCellValue(example.getDictMaterialCategory().getName());
+				//物料中文描述
+				row.createCell(5).setCellValue(example.getMaterialDescCn());
+				//物料英文描述
+				row.createCell(6).setCellValue(example.getMaterialDescEn());
+				//物料俄文描述
+				row.createCell(7).setCellValue(example.getMaterialDescRn());
+				//单位
+				row.createCell(8).setCellValue(example.getDictMaterialUnit().getName());
+				//币种
+				row.createCell(9).setCellValue(example.getDictMaterialCurrency().getName());
+				//换算关系
+				row.createCell(10).setCellValue(example.getMaterialRelation());
+				//换算后单位
+				row.createCell(11).setCellValue(example.getDictMaterialRelationUnit().getName());
+				//含税单价
+				row.createCell(12).setCellValue(
+						example.getMaterialTaxPrice() != null?example.getMaterialVatPrice().toString():"");
+				//不含税单价
+				row.createCell(13).setCellValue(
+						example.getMaterialVatPrice()!=null?example.getMaterialVatPrice().toString():"");
+				//最小包装数量
+				row.createCell(14).setCellValue(
+						example.getMaterialMinpackageAmt() != null?example.getMaterialMinpackageAmt().toString():"");
+				//代理费率
+				row.createCell(15).setCellValue(
+						example.getMaterialRate() != null?example.getMaterialRate().toString():"");
+				//HS海关编码
+				row.createCell(16).setCellValue(example.getHsNo());
+				//供应商编码
+				row.createCell(17).setCellValue(example.getSupplierCode());
+				//工厂号
+				row.createCell(18).setCellValue(example.getFactoryCode());
+			}
+			workbook.write(os);
+			workbook.close();
+			String filename_enc = UriUtils.encode(messageBean.getMessage("file.name.material"), "UTF-8");
+			response = ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType("application/octet-stream"))
+				.header("Access-Control-Expose-Headers","Content-Disposition")
+				.header("Content-Disposition","attachment; filename*=UTF-8''" + filename_enc)
+				.body(os.toByteArray());
+			return response;
+		} catch (Exception e) {
+			throw new CommonBusinessException(e.getMessage().toString());
+		}
+	}
+	
 	/***
 	 * Excel文件解析
 	 * @throws Exception 

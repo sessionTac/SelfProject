@@ -119,20 +119,10 @@ public class MaterialDataController {
 	}
 
 	@ApiOperation(value="物料数据导出", notes="物料数据导出")
-	@ApiImplicitParam(name = "body", value = "请求参数体", required = true, dataType = "body", paramType = "body")
-	@PostMapping("/downloadexcel")
-	public Object downExcel(@RequestBody Map<String, String> body) {
-		//获取excel导出的流
-		//之后修改 将service 写在这里
-		byte[] fileblob = null;
-		String filename_enc = UriUtils.encode("散件物料数据.xls", "UTF-8");
-		ResponseEntity<byte[]> response = ResponseEntity
-				.ok()
-				.contentType( MediaType.parseMediaType("application/octet-stream"))
-				.header("Access-Control-Expose-Headers", "Content-Disposition")
-				.header("Content-Disposition", "attachment; filename*=UTF-8''" + filename_enc)
-				.body(fileblob);
+	@ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
+	@PostMapping("/exportData")
+	public Object downExcel(@RequestBody MMaterialInfoEntity mmaterialInfoEntity) {
+		ResponseEntity<byte[]> response = materialDataService.downloadExcel(mmaterialInfoEntity);
 		return response;
 	}
-
 }

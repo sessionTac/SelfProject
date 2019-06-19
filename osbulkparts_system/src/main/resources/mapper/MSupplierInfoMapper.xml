@@ -23,6 +23,7 @@
     <result column="supplier_cata" jdbcType="VARCHAR" property="supplierCata" />
     <result column="supplier_level" jdbcType="VARCHAR" property="supplierLevel" />
     <result column="supplier_at" jdbcType="VARCHAR" property="supplierAt" />
+    <result column="supplier_quo" jdbcType="DECIMAL" property="supplierQuo" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
@@ -53,7 +54,7 @@
     -->
     supplier_id, supplier_code, supplier_name_cn, supplier_name_en, supplier_desc_cn, 
     supplier_desc_en, address, contact, account_bank, bank_address, account_no, accountant, 
-    contact_ways, supplier_cata, supplier_level, supplier_at, create_user, create_time, 
+    contact_ways, supplier_cata, supplier_level, supplier_at, supplier_quo, create_user, create_time, 
     update_user, update_time, is_delete, version
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -99,7 +100,7 @@
       address, contact, account_bank, 
       bank_address, account_no, accountant, 
       contact_ways, supplier_cata, supplier_level, 
-      supplier_at, create_user, create_time, 
+      supplier_at, supplier_quo, create_user, create_time, 
       update_user, update_time, is_delete, 
       version)
     values (#{supplierId,jdbcType=VARCHAR}, #{supplierCode,jdbcType=VARCHAR}, #{supplierNameCn,jdbcType=VARCHAR}, 
@@ -107,7 +108,7 @@
       #{address,jdbcType=VARCHAR}, #{contact,jdbcType=VARCHAR}, #{accountBank,jdbcType=VARCHAR}, 
       #{bankAddress,jdbcType=VARCHAR}, #{accountNo,jdbcType=VARCHAR}, #{accountant,jdbcType=VARCHAR}, 
       #{contactWays,jdbcType=VARCHAR}, #{supplierCata,jdbcType=VARCHAR}, #{supplierLevel,jdbcType=VARCHAR}, 
-      #{supplierAt,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{supplierAt,jdbcType=VARCHAR}, #{supplierQuo,jdbcType=DECIMAL}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
       #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
       #{version,jdbcType=INTEGER})
   </insert>
@@ -166,6 +167,9 @@
       </if>
       <if test="supplierAt != null">
         supplier_at,
+      </if>
+      <if test="supplierQuo != null">
+        supplier_quo,
       </if>
       <if test="createUser != null">
         create_user,
@@ -234,6 +238,9 @@
       </if>
       <if test="supplierAt != null">
         #{supplierAt,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierQuo != null">
+        #{supplierQuo,jdbcType=DECIMAL},
       </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
@@ -308,6 +315,9 @@
       <if test="supplierAt != null">
         supplier_at = #{supplierAt,jdbcType=VARCHAR},
       </if>
+      <if test="supplierQuo != null">
+        supplier_quo = #{supplierQuo,jdbcType=DECIMAL},
+      </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
@@ -351,6 +361,7 @@
       supplier_cata = #{supplierCata,jdbcType=VARCHAR},
       supplier_level = #{supplierLevel,jdbcType=VARCHAR},
       supplier_at = #{supplierAt,jdbcType=VARCHAR},
+      supplier_quo = #{supplierQuo,jdbcType=DECIMAL},
       create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
       update_user = #{updateUser,jdbcType=VARCHAR},
@@ -378,6 +389,7 @@
 		msupplier.supplier_cata,
 		msupplier.supplier_level,
 		msupplier.supplier_at,
+		msupplier.supplier_quo,
 		msupplier.create_user,
 		msupplier.create_time,
 		msupplier.update_user,
@@ -464,6 +476,9 @@
   	  <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(supplierAt)">
 	      AND msupplier.supplier_at = #{supplierAt}
 	  </if>
+      <if test="supplierQuo != null">
+        AND msupplier.supplier_quo = #{supplierQuo},
+      </if>
   	  <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createUser)">
 	      <bind name="createUser_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(createUser)"/>
 	      AND msupplier.create_user LIKE #{createUser_like}

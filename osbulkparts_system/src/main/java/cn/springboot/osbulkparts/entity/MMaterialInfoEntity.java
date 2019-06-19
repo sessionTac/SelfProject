@@ -15,6 +15,11 @@ public class MMaterialInfoEntity implements Serializable {
      * 订单号(订单型号，成品型号)
      */
     private String materialOrderCode;
+    
+    /**
+     * 订单型号描述，成品型号描述
+     */
+    private String materialOrderCodeDesc;
 
     /**
      * 物料HNR号
@@ -80,6 +85,11 @@ public class MMaterialInfoEntity implements Serializable {
      * 最小包装数量
      */
     private Double materialMinpackageAmt;
+    
+    /**
+     * 最小包装类型
+     */
+    private String materialMinpackageType;
 
     /**
      * 未税单价
@@ -235,6 +245,11 @@ public class MMaterialInfoEntity implements Serializable {
 	 * 数据锁定状态
 	 */
 	private TDictDataEntity dictLockStatus;
+	
+	/**
+	 * 包装类型
+	 */
+	private TDictDataEntity dictMinpackageType;
 	
 	/**
 	 * 物料供货模式分类标识

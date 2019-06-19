@@ -37,5 +37,5 @@ public interface MaterialDataService {
 	
 	CommonResultInfo<?> lockMaterialInfo(CommonEntity commonEntity,Authentication auth);
 	
-	ResponseEntity<InputStreamResource> downloadExcel();
+	ResponseEntity<byte[]> downloadExcel(MMaterialInfoEntity materialInfoEntity);
 }

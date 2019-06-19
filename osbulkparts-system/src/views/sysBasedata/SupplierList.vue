@@ -112,11 +112,19 @@
       <el-table-column prop="dictSupplierCata.name" align="center" label="供应商分类"  />
       <el-table-column prop="dictSupplierLevel.name" align="center" label="供应商等级"  />
       <el-table-column prop="dictSupplierAt.name" align="center" label="供应商所属"  />
+      <el-table-column prop="supplierQuo" align="center" label="供应商配额"  />
       <el-table-column prop="createUser" align="center" label="创建人"  />
-      <el-table-column prop="createTime" align="center" label="创建时间"  />
+      <el-table-column align="center" label="创建时间"  >
+        <template slot-scope="scope">
+            {{scope.row.createTime != null ?$moment(scope.row.createTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
+        </template>
+      </el-table-column>
       <el-table-column prop="updateUser" align="center" label="最后修改人"  />
-      <el-table-column prop="updateTime" align="center" label="最后修改时间"  />
-
+      <el-table-column align="center" label="最后修改时间" >
+        <template slot-scope="scope">
+            {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" width="120" label="操作" >
         <template slot-scope="scope" >
           <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt smallButton" plain @click="edit(scope.row.supplierId)">

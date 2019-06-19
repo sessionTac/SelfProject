@@ -29,19 +29,9 @@ import org.apache.poi.xssf.usermodel.XSSFShape;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFSimpleShape;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-//import org.springframework.web.multipart.MultipartFile;
-
-//import com.knx.pojo.InterestTestExclePojo;
-
-//import lombok.extern.slf4j.Slf4j;
-
 /**
  * poi读取Excel表的工具类
- * 
- * @author 齐义峰
- *
  */
-
 public class CommonExcelUtil {
 	/**
 	 * 把一个表格数据取出取出到一个ListMap里面，直接以第一列做key
@@ -457,5 +447,4 @@ public class CommonExcelUtil {
 		fos.close();
 		return i;
 	}
-
 }

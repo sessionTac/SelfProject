@@ -176,7 +176,6 @@
         switch(this.target) {
           case 'MATTER' :
             return service.downloadExcelTemp('materialDataTemp').then(resp=>{
-              debugger
               downloadBlobResponse(resp); // 文件下载
             });
         }

@@ -2,8 +2,8 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="成品型号">
-                    <el-input placeholder="成品型号" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
+                <el-form-item label="订单型号">
+                    <el-input placeholder="订单型号" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-form-item label="子件型号">
                     <el-input placeholder="子件型号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
@@ -29,6 +29,9 @@
                             <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
                         </template>
                         <div>
+                            <el-form-item label="订单型号描述">
+                                <el-input placeholder="订单型号描述" v-model="search_keys.materialOrderCodeDesc" class="search-form-item-input"></el-input>
+                            </el-form-item>
                             <el-form-item label="物料中文描述">
                                 <el-input placeholder="物料中文描述" v-model="search_keys.materialDescCn" class="search-form-item-input"></el-input>
                             </el-form-item>
@@ -99,7 +102,7 @@
                     <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" target = "MATTER"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="" size="mini" >
+                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(search_keys)" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
@@ -138,7 +141,8 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="materialOrderCode" fixed width="100" align="center" label="成品型号"  />
+            <el-table-column prop="materialOrderCode" fixed width="100" align="center" label="订单型号"  />
+            <el-table-column prop="materialOrderCodeDesc" fixed width="100" align="center" label="订单型号描述"  />
             <el-table-column prop="materialCkdCode" fixed width="100" align="center" label="物料CKD号"  />
             <el-table-column prop="materialCode" fixed width="100" align="center" label="子件型号"/>
             <el-table-column prop="dictMaterialCategory.name" width="100" align="center" label="物料类别" />
@@ -151,6 +155,7 @@
             <el-table-column prop="materialRelation" align="center" label="换算关系"  />
             <el-table-column prop="dictMaterialRelationUnit.name" align="center" label="换算后单位"  />
             <el-table-column prop="materialMinpackageAmt" align="center" label="最小包装数量"  />
+	    <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />
             <el-table-column prop="materialTaxPrice" align="center" :formatter="price" label="未税单价"  />
             <el-table-column prop="materialVatPrice" align="center" :formatter="price" label="含税单价"  />
             <el-table-column prop="materialPrice" align="center" :formatter="price" label="单价"  />
@@ -217,6 +222,7 @@
                 currencys:[],
                 search_keys   : {
                     materialOrderCode:'',
+                    materialOrderCodeDesc:'',
                     materialCode:'',
                     materialCkdCode:'',
                     materialCategory:'',
@@ -309,8 +315,19 @@
                     console.error(err);
                 })
             },
-            exportData() {
-                console("excel export")
+            exportData(search_keys) {
+                this.$confirm("确定导出数据吗？", "提示", {
+                    confirmButtonText: "是",
+                    cancelButtonText: "否",
+                    type: 'info',
+                    center: true
+                }).then(() => {
+                    activityService.exportData({...search_keys}).then(resp=>{
+                        downloadBlobResponse(resp); // 文件下载
+                    });
+                }).catch(() => {
+                    this.internal_activated = true;
+                })//删除
             },
             handleSelectionChange(val) {
                 this.multipleSelection = val;

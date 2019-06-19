@@ -1,6 +1,8 @@
 package cn.springboot.osbulkparts.entity;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+
 import lombok.Data;
 
 @Data
@@ -84,6 +86,11 @@ public class MSupplierInfoEntity implements Serializable {
      * 供应商所属
      */
     private String supplierAt;
+    
+    /**
+     * 供应商配额
+     */
+    private BigDecimal supplierQuo;
 
     /**
      * 创建者
