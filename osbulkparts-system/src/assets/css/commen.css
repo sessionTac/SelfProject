@@ -1,12 +1,20 @@
 /** 查询条件表单 */
 .search-form {}
-
+/*查询表单 input select*/
 .search-form.search-form-normal {}
 .search-form.search-form-normal .el-form-item__label { font-size: 10px;padding-right:6px; width:100px; line-height: 30px; }
 .search-form.search-form-normal .el-input--mini {font-size: 10px}
 .search-form.search-form-normal .el-input--mini .el-input__inner{  height: 24px; }
 .search-form.search-form-normal .search-form-item-input { width: 120px; }
 .search-form.search-form-normal .search-form-item-input { width: 120px; }
+/*查询表单 时间选择区间*/
+.search-form.search-form-normal .el-range__icon {font-size: 10px;height: 18px;}
+.search-form.search-form-normal .el-range-input{  font-size: 10px }
+.search-form.search-form-normal .el-range-editor--mini{ height: 24px;width:200px; }
+.search-form.search-form-normal .el-range-separator{    line-height: 17px;font-size: 8px;padding: 0}
+
+
+
 
 .search-result-table {
     font-size: 10px;

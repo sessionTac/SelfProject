@@ -41,6 +41,6 @@ export default {
     postRequest(`~/material/downloadexcel`,{responseType:'blob'}),
 
   /**数据导出**/
-  exportData:(param) =>
-    postRequest(`~/material/exportData`,{param,responseType:'blob'}),
+  exportData:(data) =>
+    postRequest(`~/material/exportData`,{data,responseType:'blob'}),
 }
