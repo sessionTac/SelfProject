@@ -922,4 +922,21 @@
         #{item}
     </foreach>
   </update>
+    <!--排他字段比较   luka-->
+    <select id="checkingAndVersion" resultMap="BaseResultMap"
+            parameterType="cn.springboot.osbulkparts.entity.MMaterialInfoEntity">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        m_material_info
+        WHERE
+        is_delete = 0
+        <if test="version != null ">
+            AND version = #{version,jdbcType=INTEGER}
+        </if>
+        <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialInfoId)">
+            AND material_info_id = #{materialInfoId,jdbcType=VARCHAR}
+        </if>
+    </select>
+
 </mapper>

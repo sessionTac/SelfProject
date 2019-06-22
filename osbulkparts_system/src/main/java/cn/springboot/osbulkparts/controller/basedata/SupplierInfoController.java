@@ -72,7 +72,8 @@ public class SupplierInfoController {
 	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "Stirng", paramType = "query")
 	@PutMapping("/deleteSupplier")
 	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
-		return null;
+		CommonResultInfo<?> result = supplierInfoService.deleteBatchMaterialInfo(commonEntity,auth);
+		return result;
 	}
 
 	@ApiOperation(value="获取供应商信息", notes="根据查询供应商的列表")

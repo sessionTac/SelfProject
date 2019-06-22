@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -166,6 +167,27 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.SUPPLIER.getTypeName()));
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+
+	@Override
+	public CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity, Authentication auth) {
+		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			int returnInt = msupplierInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName());
+			if (returnInt > 0) {
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.SUPPLIER.getTypeName()));
+			}
+			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());

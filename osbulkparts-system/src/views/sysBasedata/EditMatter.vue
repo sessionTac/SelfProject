@@ -8,21 +8,21 @@
                    style="flex: 5" :model="form" size="mini" :rules="rules">
             <el-form-item label="订单号" prop="materialOrderCode">
               <el-input v-model="form.materialOrderCode" class="search-form-item-input" style="width: 160px" size="mini"
-                        :maxlength="64" autocomplete="new-password" clearable></el-input>
+                        autocomplete="new-password" clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="物料号" prop="materialCode">
               <el-input v-model="form.materialCode" class="search-form-item-input" style="width: 160px" size="mini"
-                        :maxlength="64" autocomplete="new-password" clearable></el-input>
+                         autocomplete="new-password" clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="物料CKD号" prop="materialCkdCode">
               <el-input v-model="form.materialCkdCode" class="search-form-item-input" style="width:160px" size="mini"
-                        :maxlength="500" clearable></el-input>
+                         clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -45,7 +45,7 @@
             <el-form-item label="物料中文描述" prop="materialDescCn">
               <el-input type="textarea" v-model="form.materialDescCn" class="search-form-item-input"
                         style="width: 160px" size="mini"
-                        :maxlength="200" clearable></el-input>
+                         clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -53,7 +53,7 @@
             <el-form-item label="物料英文描述" prop="materialDescEn">
               <el-input type="textarea" v-model="form.materialDescEn" class="search-form-item-input"
                         style="width: 160px" size="mini"
-                        :maxlength="200" clearable></el-input>
+                         clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -61,21 +61,21 @@
             <el-form-item label="物料俄文描述" prop="materialDescRn">
               <el-input type="textarea" v-model="form.materialDescRn" class="search-form-item-input"
                         style="width: 160px" size="mini"
-                        :maxlength="200" clearable></el-input>
+                         clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="HS海关编码" prop="hsNo">
               <el-input v-model="form.hsNo" class="search-form-item-input" style="width: 160px" size="mini"
-                        :maxlength="50" clearable></el-input>
+                         clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="供应商编号" prop="supplierCode">
               <el-input v-model="form.supplierCode" class="search-form-item-input" style="width: 160px" size="mini"
-                        :maxlength="50" clearable></el-input>
+                         clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -97,7 +97,7 @@
             </el-form-item>
             <el-form-item label="换算关系" prop="materialRelation">
               <el-input v-model="form.materialRelation" class="search-form-item-input" style="width: 160px" size="mini"
-                        :maxlength="50" clearable></el-input>
+                         clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -119,35 +119,35 @@
             </el-form-item>
             <el-form-item label="最小包装数量" prop="materialMinpackageAmt">
               <el-input v-model="form.materialMinpackageAmt" class="search-form-item-input" style="width: 160px"
-                        size="mini" :maxlength="50" clearable></el-input>
+                       :maxlength="30" size="mini"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="未税单价" prop="materialTaxPrice">
               <el-input v-model="form.materialTaxPrice" class="search-form-item-input" style="width: 160px" size="mini"
-                        :maxlength="50" clearable></el-input>
+                        :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="含税单价" prop="materialVatPrice">
-              <el-input class="search-form-item-input" style="width: 160px" v-model="form.materialVatPrice" size="mini"
-                        :maxlength="10" clearable></el-input>
+              <el-input v-model="form.materialVatPrice" class="search-form-item-input" style="width: 160px"  size="mini"
+                        :maxlength="18"   clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="单价" prop="materialPrice">
               <el-input v-model="form.materialPrice" class="search-form-item-input" style="width: 160px" size="mini"
-                        :maxlength="50" clearable></el-input>
+                        :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="代理费率" prop="materialRate">
               <el-input v-model="form.materialRate" class="search-form-item-input" style="width: 160px" size="mini"
-                        :maxlength="50" clearable></el-input>
+                        :maxlength="18" clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -169,14 +169,14 @@
             </el-form-item>
             <el-form-item label="工厂号" prop="factoryCode">
               <el-input v-model="form.factoryCode" class="search-form-item-input" style="width: 160px" size="mini"
-                        :maxlength="50" clearable></el-input>
+                         clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="分级BOM编码" prop="levelBomCode">
               <el-input v-model="form.levelBomCode" class="search-form-item-input" style="width: 160px" size="mini"
-                        :maxlength="50" clearable></el-input>
+                        :maxlength="10"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -314,22 +314,17 @@
             // {required: true, message: '请选择单位', trigger: 'change'}
           ],
           materialMinpackageAmt: [
-            {max: 30, message: '长度不超过30个字符', trigger: 'blur'},
           ],
           materialTaxPrice: [
-            {max: 18, message: '长度不超过18个字符', trigger: 'blur'},
             {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
           materialVatPrice: [
-            {max: 18, message: '长度不超过18个字符', trigger: 'blur'},
             {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
           materialPrice: [
-            {max: 18, message: '长度不超过18个字符', trigger: 'blur'},
             {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
           materialRate: [
-            {max: 18, message: '长度不超过18个字符', trigger: 'blur'},
             {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/, trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
           materialCurrency: [
@@ -339,7 +334,6 @@
             {max: 32, message: '长度不超过32个字符', trigger: 'blur'},
           ],
           levelBomCode: [
-            {max: 10, message: '长度不超过10个字符', trigger: 'blur'},
             {pattern: /^[0-9]*$/ , trigger: 'blur', message: '请输入数字',}
           ],
 

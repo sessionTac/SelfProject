@@ -216,13 +216,22 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			materialInfoEntity.setUpdateUser(principal.getUserName());
-			materialInfoEntity.setVersion(materialInfoEntity.getVersion()+1);
-			materialInfoEntity.setIsDelete(0);
-			int returnInt = mmaterialInfoDao.updateByPrimaryKey(materialInfoEntity);
-			if (returnInt > 0) {
-				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+			MMaterialInfoEntity materialInfoEntityVersion= new MMaterialInfoEntity();
+			materialInfoEntityVersion.setVersion(materialInfoEntity.getVersion());
+			materialInfoEntityVersion.setMaterialInfoId(materialInfoEntity.getMaterialInfoId());
+			//校验 version 排他  (根据id和version)
+			List<MMaterialInfoEntity> checkListVersion=mmaterialInfoDao.checkingAndVersion(materialInfoEntityVersion);
+			if(checkListVersion.size()==1){
+				materialInfoEntity.setUpdateUser(principal.getUserName());
+				materialInfoEntity.setVersion(materialInfoEntity.getVersion()+1);
+				materialInfoEntity.setIsDelete(0);
+				int returnInt = mmaterialInfoDao.updateByPrimaryKey(materialInfoEntity);
+				if (returnInt > 0) {
+					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+				}
+			}else {
+				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

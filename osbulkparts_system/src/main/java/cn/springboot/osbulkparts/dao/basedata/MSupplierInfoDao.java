@@ -5,6 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 
 import cn.springboot.osbulkparts.entity.MSupplierInfoEntity;
+import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface MSupplierInfoDao {
@@ -23,4 +24,6 @@ public interface MSupplierInfoDao {
     int updateByPrimaryKey(MSupplierInfoEntity record);
     
     List<MSupplierInfoEntity> selectSupplierInfoList(MSupplierInfoEntity record);
+
+    int deleteBatchData(@Param("ids") String[] ids, @Param("updateUser") String updateUser, @Param("isDelete") String isDelete);
 }

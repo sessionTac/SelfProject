@@ -28,4 +28,9 @@ public interface MMaterialInfoDao {
     int lockedData(@Param("ids") String[] ids,@Param("updateUser") String updateUser,@Param("isLocked") String isLocked);
     
     int deleteBatchData(@Param("ids") String[] ids,@Param("updateUser") String updateUser,@Param("isDelete") String isDelete);
+
+    /**
+     * 查重（用户名）和排他字段比较   luka
+     */
+    List<MMaterialInfoEntity> checkingAndVersion(MMaterialInfoEntity record);
 }

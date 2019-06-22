@@ -3,6 +3,7 @@ package cn.springboot.osbulkparts.service;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import org.springframework.security.core.Authentication;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
@@ -22,5 +23,6 @@ public interface SupplierInfoService {
 	CommonResultInfo<?> updateSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth);
 	
 	CommonResultInfo<?> deleteSupplierInfo(String supplierId, Authentication auth);
-	
+
+	CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity, Authentication auth);
 }

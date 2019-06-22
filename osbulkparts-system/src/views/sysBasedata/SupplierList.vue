@@ -252,7 +252,7 @@
             activityService.deleteById({idsStr:this.idsStr}).then(resp => {
               if (resp.data.code=="201"){
                 this.$notify({message: resp.data.message, type: "success"});
-                this.exec_search({search_keys, pageNum:1})
+                this.exec_search({search_keys:this.search_keys, pageNum:1})
               } else {
                 this.$notify({message: resp.data.message, type: "error"});
               }
