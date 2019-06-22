@@ -44,7 +44,7 @@
                                 <el-option value=""></el-option>
                                 <el-option
                                   size="mini"
-                                  v-for="item in orderUnit"
+                                  v-for="item in orderUnits"
                                   :key="item.value"
                                   :label="item.name"
                                   :value="item.value">
@@ -88,7 +88,7 @@
 </template>
 
 <script>
-    import activityService from '@/api/basedata/matter.js'
+    import activityService from '@/api/warehouse/orderInfo'
     import ui_config from '@/config/ui_config'
 
     export default {
@@ -111,8 +111,9 @@
             return {
                 dialogFormVisible: true,
                 search_keys: {},
-                currencys: [],
                 materialUnits: [],
+                orderUnits:[],
+                orderStatus:[],
                 materialRelationUnits: [],
                 materialCategorys: [],
                 materialSupplyModes: [],
@@ -158,11 +159,11 @@
         methods: {
             async init() {
                 await activityService.initData().then(resp => {
-                    this.materialRelationUnits = resp.data.result.materialRelationUnits;
-                    this.materialUnits = resp.data.result.materialUnits;
-                    this.currencys = resp.data.result.currencys;
-                    this.materialCategorys = resp.data.result.materialCategorys;
-                    this.materialSupplyModes = resp.data.result.materialSupplyModes;
+                    this.orderUnits = resp.data.result.orderUnits;
+                    this.orderStatus = resp.data.result.orderStatus;
+                    // this.currencys = resp.data.result.currencys;
+                    // this.materialCategorys = resp.data.result.materialCategorys;
+                    // this.materialSupplyModes = resp.data.result.materialSupplyModes;
                 }, err => {
                     console.error(err);
                 });
@@ -200,7 +201,7 @@
                                 }
                             })
                         } else {
-                            activityService.addMatter({...data}).then(resp => {  //添加
+                            activityService.addOrderInfo({...data}).then(resp => {  //添加
                                 if (resp.data.code == "201") {
                                     this.$notify({message: resp.data.message, type: "success"});
                                     this.$emit("success");

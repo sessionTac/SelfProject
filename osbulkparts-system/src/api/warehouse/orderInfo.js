@@ -3,28 +3,28 @@ import {getRequest, postRequest, putRequest,deleteRequest} from "@/utils/request
 export default {
 
 
-
+  /**
+   * 列表初始化
+   */
+  initData: () =>
+        getRequest(`~/orderInfo/init`),
   
-  // /**
-  //  * 查询物料数据列表
-  //  */
-  // findMatterList: (params) =>
-  //   getRequest(`~/material/getMaterialList`, {params}),
-  //
-  // /**
-  //  * 物料数据列表初始化
-  //  */
-  // initData: () =>
-  //       getRequest(`~/material/init`),
+  /**
+   * 查询列表
+   */
+  findOrderInfoList: (params) =>
+    getRequest(`~/orderInfo/getOrderInfoList`, {params}),
+  /**新增一条物料数据*/
+  addOrderInfo:(data)=>
+    postRequest(`~/orderInfo/addOrderInfo`, {data}),
+
   // /**
   //  * 物料数据列表初始化
   //  */
   // findMatterInfo: (params) =>
   //     getRequest(`~/material/getMaterialInfo`, {params}),
   //
-  // /**新增一条物料数据*/
-  // addMatter:(data)=>
-  //   postRequest(`~/material/addMaterialInfo`, {data}),
+
   // /**
   //  * 修改编辑
   //  */
