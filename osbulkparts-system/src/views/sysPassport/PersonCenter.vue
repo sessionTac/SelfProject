@@ -12,23 +12,35 @@
         <!--</el-form>-->
         <!--</el-col>-->
         <!--<el-col :span="20">-->
-        <el-form ref="form" style="flex: 5" :model="form" :rules="rules" label-width="200px" size="mini">
+        <el-form ref="form" style="flex: 5" :model="form" class="search-form search-form-normal" label-width="100px"  :rules="rules"  size="mini">
 
           <el-form-item label="用户名" prop="userName">
             <el-input v-model="form.userName" class="search-form-item-input" style="width: 200px" size="mini"
                       :maxlength="500" disabled></el-input>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
           <el-form-item label="真实姓名" prop="userRealName">
             <el-input v-model="form.userRealName" class="search-form-item-input" style="width: 200px" size="mini"
                       :maxlength="30"></el-input>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
           <el-form-item label="电话号码" prop="userPhone">
             <el-input v-model="form.userPhone" class="search-form-item-input" style="width: 200px" size="mini"
                       :maxlength="11"></el-input>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
-          <el-form-item label="邮箱" prop="userEmail">
+          <el-form-item label="邮箱" prop="userMail">
             <el-input v-model="form.userMail" class="search-form-item-input" style="width: 200px" size="mini"
                       :maxlength="50"></el-input>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
         </el-form>
         <!--</el-col>-->
@@ -129,7 +141,7 @@
             {required: false, pattern: /^1(3|4|5|7|8)\d{9}$/, trigger: 'blur', message: '请输入正确的手机号',}
           ],
           userMail: [
-            {required: false, type: 'email', message: '请输入正确的邮箱', trigger: ['blur']}
+            {required: false, pattern: /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/, message: '请输入正确的邮箱', trigger: ['blur']}
           ]
         },
       }

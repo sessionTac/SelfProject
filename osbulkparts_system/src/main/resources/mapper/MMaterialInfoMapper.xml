@@ -302,16 +302,22 @@
     	AND is_locked = #{isLocked,jdbcType=INTEGER}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createUser)">
-    	AND create_user = #{createUser,jdbcType=VARCHAR}
+    	AND material.create_user = #{createUser,jdbcType=VARCHAR}
     </if>
-    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createTime)">
-    	AND create_time = #{createTime,jdbcType=VARCHAR}
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createTimeStart)">
+    	AND material.create_time &gt;= #{createTimeStart,jdbcType=VARCHAR}
+    </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createTimeEnd)">
+        AND material.create_time &lt;= #{createTimeEnd,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateUser)">
-    	AND update_user = #{updateUser,jdbcType=VARCHAR}
+    	AND material.update_user = #{updateUser,jdbcType=VARCHAR}
     </if>
-    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateTime)">
-    	AND update_time = #{updateTime,jdbcType=VARCHAR}
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateTimeStart)">
+    	AND material.update_time &gt;= #{updateTimeStart,jdbcType=VARCHAR}
+    </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateTimeEnd)">
+        AND material.update_time &lt;= #{updateTimeEnd,jdbcType=VARCHAR}
     </if>
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

@@ -3,42 +3,78 @@
         <el-dialog  :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)" width="600px">
             <el-card>
                 <div class="dialogStyle" style="display: flex;flex-direction: column">
-                    <el-form class="search-form search-form-normal" ref="form" style="flex: 5"  :model="form" label-width="200px"  size="mini">
+                    <el-form class="search-form search-form-normal" ref="form" style="flex: 5"  :model="form"  label-width="110px" :rules="rules"  size="mini">
                         <el-form-item label="供应商代码" prop="supplierCode">
-                            <el-input v-model="form.supplierCode" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input v-model="form.supplierCode" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="供应商中文名称" prop="supplierNameCn">
-                            <el-input type="textarea" v-model="form.supplierNameCn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input type="textarea" v-model="form.supplierNameCn" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="供应商英文名称" prop="supplierNameEn">
-                            <el-input type="textarea" v-model="form.supplierNameEn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input type="textarea" v-model="form.supplierNameEn" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="供应商中文说明" prop="supplierDescCn">
-                            <el-input type="textarea" v-model="form.supplierDescCn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input type="textarea" v-model="form.supplierDescCn" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="供应商英文说明" prop="supplierDescEn">
-                            <el-input type="textarea" v-model="form.supplierDescEn" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input type="textarea" v-model="form.supplierDescEn" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="地址" prop="address">
-                            <el-input type="textarea" v-model="form.address" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input type="textarea" v-model="form.address" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="联系人" prop="contact">
-                            <el-input v-model="form.contact" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input v-model="form.contact" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="开户银行" prop="accountBank">
-                            <el-input v-model="form.accountBank" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input v-model="form.accountBank" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="开户银行地址" prop="bankAddress">
-                            <el-input type="textarea" v-model="form.bankAddress" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input type="textarea" v-model="form.bankAddress" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="帐号信息" prop="accountNo">
-                            <el-input v-model="form.accountNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input v-model="form.accountNo" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="账户人" prop="accountant">
-                            <el-input v-model="form.accountant" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <el-input v-model="form.accountant" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="联系方式" prop="contactWays">
-                            <el-input v-model="form.contactWays" placeholder="联系人手机号码" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="11" autocomplete="new-password"></el-input>
+                            <el-input v-model="form.contactWays" placeholder="联系人手机号码" class="search-form-item-input" style="width: 160px" size="mini"  autocomplete="new-password"></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="供应商分类" prop="supplierCata">
                             <el-select v-model="form.supplierCata"  size="mini" clearable>
@@ -51,6 +87,9 @@
                                   :value="item.value">
                                 </el-option>
                             </el-select>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="供应商等级" prop="supplierLevel">
                             <el-select v-model="form.supplierLevel"  size="mini" clearable>
@@ -63,6 +102,9 @@
                                   :value="item.value">
                                 </el-option>
                             </el-select>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                         <el-form-item label="供应商所属" prop="supplierAt">
                             <el-select v-model="form.supplierAt"  size="mini" clearable>
@@ -75,6 +117,9 @@
                                   :value="item.value">
                                 </el-option>
                             </el-select>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
                         </el-form-item>
                     </el-form>
 
@@ -128,30 +173,61 @@
                     currency:'',
                 },
                 /**表单的验证*/
-                // rules: {
-                //     userName: [
-                //         {  required: true, message: '请填写用户名', trigger: 'blur' },
-                //         {max: 30, message: '长度不超过30个字符', trigger: 'blur' },
-                //         { pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur',message: '请输入英文数字下划线',}
-                //     ],
-                //     trueName: [
-                //         {  required: true, message: '请填写真实姓名', trigger: 'blur' },
-                //         {max: 30, message: '长度不超过30个字符', trigger: 'blur' }
-                //     ],
-                //     password:[
-                //         { validator: validatePass, trigger: 'blur' },
-                //     ],
-                //     checkPass:[
-                //         { validator: validatePass2, trigger: 'blur' },
-                //     ],
-                //     tel:[
-                //         { required: false,pattern: /^1(3|4|5|7|8)\d{9}$/, trigger: 'blur',message: '请输入正确的手机号',}
-                //     ],
-                //     email: [
-                //         { required: false, type: 'email', message: '请输入正确的邮箱', trigger: ['blur'] }
-                //     ]
+                rules: {
+                    supplierCode: [
+                        {required: true, message: '请填写供应商代码', trigger: 'blur'},
+                        {max: 50, message: '长度不超过50个字符', trigger: 'blur'},
+                        {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
+                    ],
+                    supplierNameCn: [
+                        {required: true, message: '请填写供应商中文名称', trigger: 'blur'},
+                        {max: 100, message: '长度不超过100个字符', trigger: 'blur'},
+                    ],
+                    supplierNameEn: [
+                        {required: true, message: '请填写供应商英文名称', trigger: 'blur'},
+                        {max: 100, message: '长度不超过100个字符', trigger: 'blur'},
+                    ],
+                    supplierDescCn: [
+                        {required: true, message: '请填写供应商中文说明', trigger: 'blur'},
+                        {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
+                    ],
+                    supplierDescEn: [
+                        {required: true, message: '请填写供应商英文说明', trigger: 'blur'},
+                        {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
+                    ],
+                    address: [
+                        {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
+                    ],
+                    contact: [
+                        {max: 30, message: '长度不超过30个字符', trigger: 'blur'},
+                    ],
+                    accountBank: [
+                        {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
+                    ],
+                    bankAddress: [
+                        {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
+                    ],
+                    accountNo: [
+                        {max: 30, message: '长度不超过30个字符', trigger: 'blur'},
+                    ],
+                    accountant: [
+                        {max: 30, message: '长度不超过30个字符', trigger: 'blur'},
+                    ],
+                    contactWays:[
+                        {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
+                        { required: false,pattern: /^\+?-?[1-9][0-9]*$/, trigger: 'blur',message: '请输入正确的联系方式',}
+                    ],
+                    supplierCata: [
+                        {required: true, message: '请选择供应商分类', trigger: 'change'}
+                    ],
+                    supplierLevel: [
+                        {required: true, message: '请选择供应商等级', trigger: 'change'}
+                    ],
+                    supplierAt: [
+                        {required: true, message: '请选择供应商所属', trigger: 'change'}
+                    ],
 
-                // },
+                },
             }
         },
         mounted(){

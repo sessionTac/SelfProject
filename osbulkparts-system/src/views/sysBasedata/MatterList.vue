@@ -2,20 +2,20 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="订单型号">
-                    <el-input placeholder="订单型号" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
+                <el-form-item label="订单号">
+                    <el-input placeholder="订单号" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="子件型号">
-                    <el-input placeholder="子件型号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
+                <el-form-item label="物料号">
+                    <el-input placeholder="物料号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-form-item label="物料CKD号">
                     <el-input placeholder="物料CKD号" v-model="search_keys.materialCkdCode" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-form-item label="物料类别">
-                    <el-select v-model="search_keys.materialCategory"  size="mini" knx>
+                    <el-select v-model="search_keys.materialCategory" class="search-form-item-input" size="mini" knx>
                         <el-option value=""></el-option>
                         <el-option
-                                size="mini" knx
+                                size="mini"
                                 v-for="item in materialCategorys"
                                 :key="item.value"
                                 :label="item.name"
@@ -63,12 +63,21 @@
                                 <el-input placeholder="创建人" v-model="search_keys.createUser" class="search-form-item-input"></el-input>
                             </el-form-item>
                             <el-form-item label="创建时间">
+                                    <!--<el-date-picker-->
+                                      <!--class="search-form-item-input"-->
+                                      <!--v-model="search_keys.createTime"-->
+                                      <!--type="date"-->
+                                      <!--value-format="yyyyMMddHHmmss"-->
+                                      <!--placeholder="选择日期">-->
+                                    <!--</el-date-picker>-->
                                     <el-date-picker
-                                      class="search-form-item-input"
-                                      v-model="search_keys.createTime"
-                                      type="date"
+                                      class=""
+                                      v-model="search_keys.createTimeArray"
+                                      type="daterange"
+                                      range-separator="至"
                                       value-format="yyyyMMddHHmmss"
-                                      placeholder="选择日期">
+                                      start-placeholder="开始日期"
+                                      end-placeholder="结束日期">
                                     </el-date-picker>
                                 <!--<el-input placeholder="创建时间" v-model="search_keys.createTime" class="search-form-item-input"></el-input>-->
                             </el-form-item>
@@ -76,12 +85,21 @@
                                 <el-input placeholder="最后修改人" v-model="search_keys.updateUser" class="search-form-item-input"></el-input>
                             </el-form-item>
                             <el-form-item label="最后修改时间">
+                                <!--<el-date-picker-->
+                                  <!--class="search-form-item-input"-->
+                                  <!--v-model="search_keys.updateTime"-->
+                                  <!--type="date"-->
+                                  <!--value-format="yyyyMMddHHmmss"-->
+                                  <!--placeholder="选择日期">-->
+                                <!--</el-date-picker>-->
                                 <el-date-picker
-                                  class="search-form-item-input"
-                                  v-model="search_keys.updateTime"
-                                  type="date"
+                                  class=""
+                                  v-model="search_keys.updateTimeArray"
+                                  type="daterange"
+                                  range-separator="至"
                                   value-format="yyyyMMddHHmmss"
-                                  placeholder="选择日期">
+                                  start-placeholder="开始日期"
+                                  end-placeholder="结束日期">
                                 </el-date-picker>
                                 <!--<el-input placeholder="最后修改时间" v-model="search_keys.updateTime" class="search-form-item-input"></el-input>-->
                             </el-form-item>
@@ -99,7 +117,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" target = "MATTER"></import-button>
+                    <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "MATTER"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(search_keys)" size="mini" >
@@ -186,7 +204,7 @@
                 </template>
             </el-table-column>
         </el-table>
-        <edit-matter v-bind.sync="link_modal_state" @success="reSearch" v-if="link_modal_state.activated"></edit-matter>
+        <edit-matter v-bind.sync="link_modal_state" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state.activated"></edit-matter>
         <!--分页-->
         <div style="text-align: center">
             <el-pagination @current-change="exec_search({pageNum:$event})"
@@ -234,7 +252,9 @@
                     materialCurrency:'',
                     createUser:'',
                     createTime:'',
+                    createTimeArray:[],
                     updateUser:'',
+                    updateTimeArray:[],
                     updateTime:'',
                 },
                 search_keys_snap      : null,
@@ -293,21 +313,14 @@
                             pageSize = this.search_result.pageSize,
                         }) {
                 let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
-                activityService.findMatterList({...search_keys, pageNum, pageSize}).then(resp => {
-                    this.search_result = resp.data.resultInfo;                //视图展示查询结果
-                    this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
-                    this.search_keys_snap = search_keys_snap;             //存储查询条件快照
-                }, err => {
-                    console.error(err);
-                })
-            },
-            reSearch({
-                            search_keys = JSON.parse(this.search_keys_snap),
-                            pageNum = this.search_result.pageNum,
-                            pageSize = this.search_result.pageSize,
-                        }) {
-                let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
-                activityService.findMatterList({...search_keys, pageNum, pageSize}).then(resp => {
+                let data={
+                    ...search_keys,
+                    createTimeStart     :   search_keys.createTimeArray && search_keys.createTimeArray[0] || "",
+                    createTimeEnd       :   search_keys.createTimeArray && search_keys.createTimeArray[1] || "",
+                    updateTimeStart     :   search_keys.updateTimeArray && search_keys.updateTimeArray[0] || "",
+                    updateTimeEnd       :   search_keys.updateTimeArray && search_keys.updateTimeArray[1] || "",
+                };
+                activityService.findMatterList({...data, pageNum, pageSize}).then(resp => {
                     this.search_result = resp.data.resultInfo;                //视图展示查询结果
                     this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
                     this.search_keys_snap = search_keys_snap;             //存储查询条件快照
@@ -351,10 +364,11 @@
                         this.idsStr=[];
                         this.multipleSelection.forEach(item=>{
                             this.idsStr.push(item.materialInfoId)
-                        })
+                        });
                         activityService.deleteById({idsStr:this.idsStr}).then(resp => {
-                            if (resp.data.code=="201"){
+                            if (resp.data.code==="201"){
                                 this.$notify({message: resp.data.message, type: "success"});
+                                this.exec_search({search_keys, pageNum:1})
                             } else {
                                 this.$notify({message: resp.data.message, type: "error"});
                             }

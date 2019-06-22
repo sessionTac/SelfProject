@@ -200,6 +200,14 @@ public class MMaterialInfoEntity implements Serializable {
      * 创建时间
      */
     private String createTime;
+    /**
+     * 创建时间开始
+     */
+    private String createTimeStart;
+    /**
+     * 创建时间结束
+     */
+    private String createTimeEnd;
 
     /**
      * 更新者
@@ -210,6 +218,14 @@ public class MMaterialInfoEntity implements Serializable {
      * 更新时间
      */
     private String updateTime;
+    /**
+     * 更新时间开始
+     */
+    private String updateTimeStart;
+    /**
+     * 更新时间结束
+     */
+    private String updateTimeEnd;
 
     /**
      * 逻辑删除

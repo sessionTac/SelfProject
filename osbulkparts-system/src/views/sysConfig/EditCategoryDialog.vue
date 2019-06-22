@@ -8,24 +8,33 @@
 
       <el-card>
         <div class="dialogStyle" >
-          <el-form ref="form" :model="form" size="mini" label-width="200px" style="width:400px" :rules="rules" class="search-form search-form-normal">
+          <el-form ref="form" :model="form" size="mini" label-width="100px"  :rules="rules" class="search-form search-form-normal">
 
-            <el-form-item label="父级"  >
-              <el-select  :disabled="true" v-model="form.parentId"   size="mini" >
+            <el-form-item label="父级"  prop="">
+              <el-select  style="width: 200px" :disabled="true" v-model="form.parentId"  class=""  size="" >
                 <el-option v-for="item in parentUuid" :key="item.value" :label="item.label" :value="item.value"></el-option>
               </el-select>
+              <template slot="error" slot-scope="scope"  >
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
             </el-form-item>
 
             <el-form-item label="名称" prop="name">
-              <el-input v-model="form.name"  clearable knx size="mini" :maxlength="50"></el-input>
+              <el-input v-model="form.name"  class="search-form-item-input" style="width: 200px" clearable knx size="mini" :maxlength="50"></el-input>
+              <template slot="error" slot-scope="scope"  >
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
             </el-form-item>
 
             <el-form-item label="编号" prop="code">
-              <el-input v-model="form.code" clearable knx size="mini" :maxlength="30"></el-input>
+              <el-input v-model="form.code" class="search-form-item-input" style="width: 200px" clearable knx size="mini" :maxlength="30"></el-input>
+              <template slot="error" slot-scope="scope"  >
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
             </el-form-item>
 
-            <el-form-item label="排序" prop="sortCode">
-              <el-input v-model="form.sortCode" clearable knx size="mini" :maxlength="11"></el-input>
+            <el-form-item label="排序" class="search-form-item-input"  prop="sortCode">
+              <el-input v-model="form.sortCode" clearable knx size="mini" style="width: 200px" :maxlength="11"></el-input>
             </el-form-item>
 
             <el-form-item label="是否有效" prop="sort">
@@ -33,7 +42,7 @@
             </el-form-item>
 
             <el-form-item label="备注">
-              <el-input v-model="form.remark"  type="textarea" :rows="2" placeholder="请输入内容" size="mini" :maxlength="200"></el-input>
+              <el-input v-model="form.remark" class="search-form-item-input" style="width: 200px"  type="textarea" :rows="2" placeholder="请输入内容" size="mini" :maxlength="200"></el-input>
             </el-form-item>
 
           </el-form>
@@ -98,11 +107,8 @@
 
         /*表单验证*/
         rules: {
-          classification: [
-            {required: true, message: '请选择所属分类'},
-          ],
-          subordinate: [
-            {required: true, message: '请选择数据字典所属上级'}
+          parentId: [
+            {required: true, message: '请选择父级'},
           ],
           name: [
             {required: true, message: '请填写数据字典名称'}

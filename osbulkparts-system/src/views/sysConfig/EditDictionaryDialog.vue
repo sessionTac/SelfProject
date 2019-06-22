@@ -7,10 +7,11 @@
       width="600px" >
       <el-card>
         <div class="dialogStyle" style="display: flex;flex-direction: column">
-        <el-form ref="form" size="mini" :model="form" label-width="200px" style="width:400px;" :rules="rules" class="search-form search-form-normal">
+        <el-form ref="form" size="mini" :model="form" label-width="100px" :rules="rules" class="search-form search-form-normal">
           <!--     {{id}}-->
           <el-form-item label="所属分类">
             <el-input
+              class="search-form-item-input" style="width: 200px"
               :placeholder="name"
               v-model="form.dictTypeName"
               :disabled="true" size="mini" knx>
@@ -18,19 +19,19 @@
           </el-form-item>
 
           <el-form-item label="名称" prop="name">
-            <el-input v-model="form.name"   size="mini" :maxlength="50"></el-input>
+            <el-input  class="search-form-item-input" style="width: 200px" v-model="form.name"   size="mini" :maxlength="50"></el-input>
           </el-form-item>
 
           <el-form-item label="编号" prop="value">
-            <el-input v-model="form.value" size="mini" :maxlength="30"></el-input>
+            <el-input  class="search-form-item-input" style="width: 200px" v-model="form.value" size="mini" :maxlength="30"></el-input>
           </el-form-item>
 
           <el-form-item label="排序" prop="sort">
-            <el-input v-model="form.sortCode" clearable :maxlength="11" size="mini" knx></el-input>
+            <el-input  class="search-form-item-input" style="width: 200px" v-model="form.sortCode" clearable :maxlength="11" size="mini" knx></el-input>
           </el-form-item>
 
           <el-form-item label="是否有效" >
-            <el-checkbox v-model="form.isEnable"></el-checkbox>
+            <el-checkbox  v-model="form.isEnable"></el-checkbox>
           </el-form-item>
 
           <el-form-item label="是否默认" >
@@ -38,7 +39,7 @@
           </el-form-item>
 
           <el-form-item label="备注">
-            <el-input v-model="form.remark"  clearable type="textarea" :rows="2" placeholder="请输入内容" size="mini" :maxlength="200"></el-input>
+            <el-input  class="search-form-item-input" style="width: 200px" v-model="form.remark"  clearable type="textarea" :rows="2" placeholder="请输入内容" size="mini" :maxlength="200"></el-input>
           </el-form-item>
 
         </el-form>

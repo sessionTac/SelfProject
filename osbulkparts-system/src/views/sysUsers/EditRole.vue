@@ -4,17 +4,23 @@
                width="600px">
       <el-card>
         <div class="dialogStyle" style="display: flex;flex-direction: column">
-          <el-form ref="form" style="flex: 5" class="search-form search-form-normal" :model="form" label-width="200px" :rules="rules" size="mini">
+          <el-form ref="form" style="flex: 5" class="search-form search-form-normal" :model="form" label-width="100px" :rules="rules" size="mini">
             <el-form-item label="角色名" prop="roleName">
               <el-input v-model="form.roleName" class="search-form-item-input" style="width: 200px" size="mini"
                         :maxlength="500"></el-input>
+              <template slot="error" slot-scope="scope"  >
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
             </el-form-item>
             <el-form-item label="角色说明" prop="roleDesc">
               <el-input v-model="form.roleDesc" class="search-form-item-input" style="width: 200px" size="mini"
                         :maxlength="30"></el-input>
+              <template slot="error" slot-scope="scope"  >
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
             </el-form-item>
-            <el-form-item label="角色所属">
-              <el-select v-model="form.roleAt" placeholder="请选择" class="">
+            <el-form-item label="角色所属" prop="roleAt">
+              <el-select v-model="form.roleAt" placeholder="请选择" style="width: 200px" class="">
                 <el-option
                   v-for="item in options.roleAt"
                   :key="item.value"
@@ -22,6 +28,9 @@
                   :value="item.value">
                 </el-option>
               </el-select>
+              <template slot="error" slot-scope="scope"  >
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
             </el-form-item>
           </el-form>
 
@@ -71,9 +80,12 @@
             {max: 30, message: '长度不超过30个字符', trigger: 'blur'},
             {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
           ],
-          userRealName: [
-            {required: true, message: '请填写真实姓名', trigger: 'blur'},
+          roleDesc: [
+            {required: false, message: '请填写真实姓名', trigger: 'blur'},
             {max: 30, message: '长度不超过30个字符', trigger: 'blur'}
+          ],
+          roleAt: [
+            { required: true, message: '用户状态', trigger: 'change' }
           ],
         },
       }
