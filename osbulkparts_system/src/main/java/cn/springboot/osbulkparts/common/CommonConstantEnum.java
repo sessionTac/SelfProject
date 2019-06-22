@@ -13,7 +13,8 @@ public enum CommonConstantEnum {
 	USER_NAME("用户名"),
 	SUPPLIER("供应商"),
 	TO_DELETE("1"),
-	MATERIAL_DATA("物料数据");
+	MATERIAL_DATA("物料数据"),
+	ORDERINFO_DATA("订单计划信息");
 	
 	private String typeName;  
 	  
