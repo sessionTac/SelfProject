@@ -61,7 +61,7 @@ export default [
 
           {
               title: '订单计划',
-              requiresPermission: 'maintenance:warehouse:orderplan',
+              requiresPermission: 'maintenance:warehouse:order:info:view',
               index: 'warehouseOrderplan',
           },
           {

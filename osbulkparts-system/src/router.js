@@ -129,13 +129,15 @@ export const constantRoutes = [
         path: '/warehouse',
         name:'warehouse',
         component: Layout,
+        redirect: {name: 'warehouseOrderplan'},
         meta: { title: 'Warehouse',breadcrumb: true},
         children: [
             {
-                path: 'warehouseOrderplan',
+                path: 'warehouseOrderInfo',
                 component: () => import('@/views/sysWarehouse/OrderPlanManagement/OrderPlanList.vue'),
                 name: 'warehouseOrderplan',
-                meta: { title: 'warehouseOrderplan',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false  }
+                meta: { title: 'warehouseOrderplan',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
+                    requiresPermission: 'maintenance:warehouse:order:info:view',}
             },
             {
                 path: 'warehouseCollection',

@@ -2,101 +2,117 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="HOPE号">
-                    <el-input placeholder="HOPE号" v-model="search_keys.matterHNRNo" class="search-form-item-input"></el-input>
+                <el-form-item label="订单产品型号">
+                    <el-input placeholder="订单产品型号" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="订单号">
-                    <el-input placeholder="订单号" v-model="search_keys.matterNo" class="search-form-item-input"></el-input>
+                <el-form-item label="订单产品型号描述">
+                    <el-input placeholder="订单产品型号描述" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="订单日期">
-                    <el-date-picker
-                      v-model="search_keys.date"
-                      type="date"
-                      placeholder="选择日期">
-                    </el-date-picker>
-                </el-form-item>
-                <el-form-item label="行项目">
-                    <el-input placeholder="行项目" v-model="search_keys.matterCnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="物料专用号">
-                    <el-input placeholder="物料专用号" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="物料中文描述">
-                    <el-input placeholder="物料中文描述" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="物料英文描述">
-                    <el-input placeholder="物料英文描述" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="物料俄文描述">
-                    <el-input placeholder="物料俄文描述" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="供应商编号">
-                    <el-input placeholder="供应商编号" v-model="search_keys.matterEnDec" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="供应商名称">
-                    <el-input placeholder="供应商名称" v-model="search_keys.scalerRela" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="单位">
-                    <el-input placeholder="单位" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="计划数量">
-                    <el-input placeholder="计划数量" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="确认数量">
-                    <el-input placeholder="确认数量" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="国家标志">
-                    <el-input placeholder="国家标志" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="收货数量">
-                    <el-input placeholder="收货数量" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="发货数量">
-                    <el-input placeholder="发货数量" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="差异数量">
-                    <el-input placeholder="差异数量" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="剩余数量">
-                    <el-input placeholder="剩余数量" v-model="search_keys.scalerUnit" class="search-form-item-input"></el-input>
+                <el-collapse accordion>
+                    <el-collapse-item>
+                        <template slot="title">
+                            <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
+                        </template>
+                        <div>
+                            <el-form-item label="订单数量">
+                                <el-input placeholder="订单数量" v-model="search_keys.orderAmount" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="订单日期">
+                                <el-date-picker
+                                  class=""
+                                  v-model="search_keys.orderDateArray"
+                                  type="daterange"
+                                  range-separator="至"
+                                  value-format="yyyyMMddHHmmss"
+                                  start-placeholder="开始日期"
+                                  end-placeholder="结束日期">
+                                </el-date-picker>                            </el-form-item>
+                            <el-form-item label="订单型号单位">
+                                <el-select v-model="search_keys.orderUnit"  size="mini" class="search-form-item-input">
+                                    <el-option value=""></el-option>
+                                    <el-option
+                                      size="mini"
+                                      v-for="item in orderUnits"
+                                      :key="item.value"
+                                      :label="item.name"
+                                      :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="计划状态">
+                                <el-select v-model="search_keys.orderStatus"  size="mini" class="search-form-item-input">
+                                    <el-option value=""></el-option>
+                                    <el-option
+                                      size="mini"
+                                      v-for="item in orderStatus"
+                                      :key="item.value"
+                                      :label="item.name"
+                                      :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="创建人">
+                                <el-input placeholder="创建人" v-model="search_keys.createUser" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="创建时间">
+                                <el-date-picker
+                                  class=""
+                                  v-model="search_keys.createTimeArray"
+                                  type="daterange"
+                                  range-separator="至"
+                                  value-format="yyyyMMddHHmmss"
+                                  start-placeholder="开始日期"
+                                  end-placeholder="结束日期">
+                                </el-date-picker>
+                            </el-form-item>
+                            <el-form-item label="最后修改人">
+                                <el-input placeholder="最后修改人" v-model="search_keys.updateUser" class="search-form-item-input"></el-input>
+                            </el-form-item>
+                            <el-form-item label="最后修改时间">
+                                <el-date-picker
+                                  class=""
+                                  v-model="search_keys.updateTimeArray"
+                                  type="daterange"
+                                  range-separator="至"
+                                  value-format="yyyyMMddHHmmss"
+                                  start-placeholder="开始日期"
+                                  end-placeholder="结束日期">
+                                </el-date-picker>
+                            </el-form-item>
+                        </div>
+                    </el-collapse-item>
+                </el-collapse>
+                <el-form-item style="float: right">
+                    <el-button  v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" @click="generate()" icon="el-icon-s-check" >
+                        生成
+                    </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <import-button target = "ORDER_PLAN"></import-button>
+                    <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "MATTER"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="" @click="exportData" size="mini" >
+                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(search_keys)" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
-
                 <el-form-item style="float: right">
-                    <el-button type="primary" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
-                        <i class="fa fa-search" aria-hidden="true"></i> 查询
+                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" @click="deleteMatter" icon="el-icon-delete" >
+                        删除
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="" icon="el-icon-download" >
-                        模板下载
-                    </el-button>
-                </el-form-item>
-                <el-form-item style="float: right">
-                    <el-button  @click="edit(multipleSelection)" icon="el-icon-download" >
-                        修改
-                    </el-button>
-                </el-form-item>
-                <el-form-item style="float: right">
-                    <el-button  @click="receive(multipleSelection)" icon="el-icon-download" >
-                        收货
-                    </el-button>
-                </el-form-item>
-                <el-form-item style="float: right">
-                    <el-button  @click="alert('发货')" icon="el-icon-download" >
-                        发货
-                    </el-button>
-                </el-form-item>
-                <el-form-item style="float: right">
-                    <el-button  @click="" icon="el-icon-delete" >
+                    <el-button  @click="" icon="el-icon-error" >
                         清空
+                    </el-button>
+                </el-form-item>
+                <el-form-item style="float: right">
+                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:add')" @click="add()" icon="el-icon-plus" >
+                        添加
+                    </el-button>
+                </el-form-item>
+                <el-form-item style="float: right">
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:select')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
+                        <i class="fa fa-search" aria-hidden="true"></i> 查询
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -105,42 +121,47 @@
         <el-table size="mini"
                   style="flex: 1"
                   :height="600"
+                  ref="tb"
                   class="search-result-table"
                   :data="search_result.list" row-key="id"
                   :stripe="true"
+                  :row-class-name="({row,rowIndex}) => { return row.isLocked ? 'locked-row' : null; }"
+                  @row-click="clickRow"
                   @selection-change="handleSelectionChange"
         >
-            <el-table-column type="selection" width="55"/>
-            <el-table-column prop="matterHNRNo" fixed width="100" align="center" label="HOPE号"  />
-            <el-table-column prop="matterNo" fixed width="100" align="center" label="订单号"  />
-            <el-table-column prop="matterType" fixed width="100" align="center" label="订单日期" />
-            <el-table-column prop="matterCnDec"  :show-overflow-tooltip="true" align="center" label="行项目"  />
-            <el-table-column prop="matterEnDec"  :show-overflow-tooltip="true" align="center" label="物料专用号"  />
-            <el-table-column prop="matterRuDec"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
-            <el-table-column prop="matterRuDec" align="center" label="物料英文描述"  />
-            <el-table-column prop="matterRuDec" align="center" label="物料俄文描述"  />
-            <el-table-column prop="unit" align="center" label="供应商编号"  />
-            <el-table-column prop="scalerRela" align="center" label="供应商名称"  />
-            <el-table-column prop="scalerUnit" align="center" label="单位"  />
-            <el-table-column prop="scalerUnit" align="center" label="计划数量"  />
-            <el-table-column prop="scalerUnit" align="center" label="确认数量"  />
-            <el-table-column prop="scalerUnit" align="center" label="国家标志"  />
-            <el-table-column prop="scalerUnit" align="center" label="收货数量"  />
-            <el-table-column prop="currency" align="center" label="发货数量"  />
-            <el-table-column prop="currency" align="center" label="差异数量"  />
-            <el-table-column prop="currency" align="center" label="剩余数量"  />
+            <el-table-column type="selection" fixed width="50" align="center"/>
+            <el-table-column prop="orderCode" fixed width="100" align="center" label="订单产品型号"  />
+            <el-table-column prop="orderCodeDesc" fixed width="100" align="center" label="订单产品型号描述"  />
+            <el-table-column prop="orderAmount" fixed width="100" align="center" label="订单数量"  />
+            <el-table-column prop="orderDate" fixed width="100" align="center" label="订单日期">
+                <template slot-scope="scope">
+                    {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
+                </template>
+            </el-table-column>
+            <el-table-column prop="orderUnit" width="100" align="center" label="订单型号单位" />
+            <el-table-column prop="orderStatus"  :show-overflow-tooltip="true" align="center" label="计划状态"  />
 
-            <el-table-column fixed="right" width="120" label="操作" >
+            <el-table-column prop="createUser" align="center" label="创建人"  />
+            <el-table-column label="创建时间" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    {{scope.row.createTime != null ?$moment(scope.row.createTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
+                </template>
+            </el-table-column>
+            <el-table-column prop="updateUser" align="center" label="最后修改人"  />
+            <el-table-column label="最后修改时间" show-overflow-tooltip>
+                <template slot-scope="scope">
+                    {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
+                </template>
+            </el-table-column>
+            <el-table-column fixed="right" prop="dictLockStatus.name" align="center" label="是否生成"  />
+            <el-table-column fixed="right"  width="80" label="操作" >
                 <template slot-scope="scope" >
-                    <!--<el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.uuid)">-->
-                        <!--<i class="el-icon-news"></i></el-button>-->
-                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">
-                        <i class="el-icon-delete"></i></el-button>
+                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
+                        <i class="el-icon-news"></i></el-button>
                 </template>
             </el-table-column>
         </el-table>
-        <edit-order-plan v-bind.sync="link_modal_state" @success="reSearch" v-if="link_modal_state.activated"></edit-order-plan>
-        <receive-goods v-bind.sync="link_modal_state_receive" @success="reSearch" v-if="link_modal_state_receive.activated"></receive-goods>
+        <edit-order-plan v-bind.sync="link_modal_state" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state.activated"></edit-order-plan>
         <!--分页-->
         <div style="text-align: center">
             <el-pagination @current-change="exec_search({pageNum:$event})"
@@ -159,81 +180,133 @@
 </template>
 
 <script>
-    import activityService from '@/api/basedata/matter.js'
+    import activityService from '@/api/warehouse/orderInfo'
     import ui_config from '@/config/ui_config'
     import ImportButton from '@/components/data-import/ImportButton'
     import EditOrderPlan from './EditOrderPlan'
-    import ReceiveGoods from './ReceiveGoods'
+    import {downloadBlobResponse} from '@/utils/request_utils'
 
     export default {
         data() {
             return {
                 PAGE_SIZES : ui_config.PAGE_SIZES,
                 link_modal_state      : {},
-                link_modal_state_receive:{},
                 //单位下拉框数据
                 is_searching : true,
-                matterTypes:[],
-                units:[],
+                materialCategorys:[],
                 currencys:[],
                 search_keys   : {
-                    matterHNRNo:'',
-                    matterNo:'',
-                    matterType:'',
-                    matterCnDec:'',
-                    matterEnDec:'',
-                    unit:'',
-                    scalerRela:'',
-                    scalerUnit:'',
-                    currency:'',
+                    orderCode:"",
+                    orderCodeDesc:"",
+                    orderAmount:"",
+                    orderDate:"",
+                    orderDateArray:[],
+                    orderUnit:"",
+                    orderStatus:"",
+                    createUser:'',
+                    createTime:'',
+                    createTimeArray:[],
+                    updateUser:'',
+                    updateTimeArray:[],
+                    updateTime:'',
                 },
-                multipleSelection: [],
                 search_keys_snap      : null,
                 search_result         : {},
+                multipleSelection:[],
+                idsStr:[],
             };
         },
-        components:{ImportButton,EditOrderPlan,ReceiveGoods},
+        components:{ImportButton,EditOrderPlan},
         mounted() {
             this.init();
             this.exec_search({search_keys:this.search_keys, pageNumber:1});
         },
+        computed:{
+            lockFlag(){
+                return (this.multipleSelection.some(item=>{
+                    return item.isLocked===1
+                }) || (this.multipleSelection.length===0))
+            },
+            unlockFlag(){
+                return (this.multipleSelection.some(item=>{
+                    return item.isLocked===0
+                }) || (this.multipleSelection.length===0))
+            }
+        },
         methods: {
-            handleSelectionChange(val) {
-                this.multipleSelection = val;
+            price(row, column, cellValue, index){
+                if (cellValue) {
+                    return cellValue.toFixed(2)
+                }else {
+                    return ""
+                }
             },
             init(){
-                activityService.init().then(resp =>{
-                    this.currencys = resp.data.currencys;
-                    this.units = resp.data.units;
-                    this.matterTypes = resp.data.matterTypes;
-                }, err => {
-                    console.error(err);
-                })
+                // activityService.initData().then(resp =>{
+                //     this.currencys = resp.data.result.currencys;
+                //     this.materialCategorys = resp.data.result.materialCategorys;
+                // }, err => {
+                //     console.error(err);
+                // })
+            },
+            // toLocked(isLocked){
+            //     if(isLocked  == 0){
+            //         return false;
+            //     }
+            //     else{
+            //         return true;
+            //     }
+            // },
+            clickRow(row){
+                this.$refs.tb.toggleRowSelection(row);
             },
             exec_search({
                             search_keys = JSON.parse(this.search_keys_snap),
-                            pageNumber = this.search_result.pageNum,
+                            pageNum = this.search_result.pageNum,
                             pageSize = this.search_result.pageSize,
                         }) {
                 let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
-                activityService.findMatterList({search_keys, pageNumber, pageSize}).then(resp => {
-                    this.search_result = resp.data;                //视图展示查询结果
-                    this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
-                    this.search_keys_snap = search_keys_snap;             //存储查询条件快照
-                }, err => {
-                    console.error(err);
-                })
+                let data={
+                    ...search_keys,
+                    orderDateStart      :   search_keys.orderDateArray && search_keys.orderDateArray[0] || "",
+                    orderDateEnd        :   search_keys.orderDateArray && search_keys.orderDateArray[1] || "",
+                    createTimeStart     :   search_keys.createTimeArray && search_keys.createTimeArray[0] || "",
+                    createTimeEnd       :   search_keys.createTimeArray && search_keys.createTimeArray[1] || "",
+                    updateTimeStart     :   search_keys.updateTimeArray && search_keys.updateTimeArray[0] || "",
+                    updateTimeEnd       :   search_keys.updateTimeArray && search_keys.updateTimeArray[1] || "",
+                };
+                // activityService.findMatterList({...data, pageNum, pageSize}).then(resp => {
+                //     this.search_result = resp.data.resultInfo;                //视图展示查询结果
+                //     this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
+                //     this.search_keys_snap = search_keys_snap;             //存储查询条件快照
+                // }, err => {
+                //     console.error(err);
+                // })
             },
-            exportData() {
-                console("excel export")
+            exportData(search_keys) {
+                this.$confirm("确定导出数据吗？", "提示", {
+                    confirmButtonText: "是",
+                    cancelButtonText: "否",
+                    type: 'info',
+                    center: true
+                }).then(() => {
+                    activityService.exportData({...search_keys}).then(resp=>{
+                        downloadBlobResponse(resp); // 文件下载
+                    });
+                }).catch(() => {
+                    this.internal_activated = true;
+                })//删除
+            },
+            handleSelectionChange(val) {
+                this.multipleSelection = val;
+            },
+            //添加
+            add() {
+                this.link_modal_state={activated:true,mode:"ADD"};
             },
             //编辑
-            edit(multipleSelection) {
-                this.link_modal_state={activated:true,multipleSelection};
-            },
-            //收货
-            receive(multipleSelection) {
-                this.link_modal_state_receive={activated:true,multipleSelection};
+            edit(id) {
+                this.link_modal_state={activated:true,id,mode:"EDIT"};
             },
             //删除
             deleteMatter(uuid) {
@@ -243,17 +316,60 @@
                     type: 'warning',
                     center: true
                 }).then(() => {
-                      activityService.deleteById(uuid).then(resp => {
-                          if (resp.data == 1) {
-                              this.$notify({message: "删除成功", type: 'success'});
+                      this.idsStr=[];
+                      this.multipleSelection.forEach(item=>{
+                          this.idsStr.push(item.materialInfoId)
+                      });
+                      activityService.deleteById({idsStr:this.idsStr}).then(resp => {
+                          if (resp.data.code==="201"){
+                              this.$notify({message: resp.data.message, type: "success"});
+                              this.exec_search({search_keys, pageNum:1})
                           } else {
-                              this.$notify({message: "删除失败", type: 'error'});
+                              this.$notify({message: resp.data.message, type: "error"});
                           }
                       })
                   }
                 ).catch(() => {
                     this.internal_activated = true;
                 })//删除
+            },
+            generate(toLocked){
+                this.$confirm("确定对数据进行生成吗？", "提示", {
+                    confirmButtonText: "是",
+                    cancelButtonText: "否",
+                    type: 'warning',
+                    center: true
+                }).then(() => {
+                      this.idsStr=[];
+                      this.multipleSelection.forEach(item=>{
+                          this.idsStr.push(item.materialInfoId)
+                      });
+                      activityService.lockedById({idsStr:this.idsStr,toLocked:toLocked}).then(resp => {
+                          if (resp.data.code=="201"){
+                              this.$notify({message: resp.data.message, type: "success"});
+                              this.exec_search({search_keys:this.search_keys, pageNum:1})
+                          } else {
+                              this.$notify({message: resp.data.message, type: "error"});
+                          }
+                      })
+                  }
+                ).catch(() => {
+                    this.internal_activated = true;
+                })//删除
+            },
+            //导出
+            excel(){
+                // let data={
+                //   deviceTypeNo : search_keys.deviceType || undefined,
+                //   powerStationNo : search_keys.powerStationEntity && search_keys.powerStationEntity.no || undefined ,
+                //   powerStationName:search_keys.powerStationName  || "",
+                //   name: search_keys.name || undefined,
+                // }
+
+                // let data={name:"123"}
+                // activityService.installdownloadExcel({...data}).then(resp=>{
+                //     downloadBlobResponse(resp); // 文件下载
+                // })
             },
         },
     }
@@ -268,5 +384,7 @@
         background-color: #a1a3a9;
         border-radius: 3px;
     }
+
+
 
 </style>
