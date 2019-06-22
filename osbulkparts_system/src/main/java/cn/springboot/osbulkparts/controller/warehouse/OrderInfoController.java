@@ -83,8 +83,9 @@ public class OrderInfoController {
     @ApiImplicitParam(name = "excleFile", value = "订单计划文件", required = true, dataType = "body", paramType = "body")
     @PostMapping("/importExcel")
     public CommonResultInfo<?> ImportExcelData(
+            int importType,
             @RequestParam("file") MultipartFile excleFile, HttpServletRequest request, Authentication auth) {
-        return null;
+        return orderInfoService.importExcel(excleFile,request,auth,importType);
     }
 
     @ApiOperation(value="生成订单", notes="生成订单")
@@ -105,6 +106,6 @@ public class OrderInfoController {
     @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/exportData")
     public Object downExcel(@RequestBody TOrderInfoEntity tOrderInfoEntity) {
-        return null;
+        return orderInfoService.downloadExcel(tOrderInfoEntity);
     }
 }

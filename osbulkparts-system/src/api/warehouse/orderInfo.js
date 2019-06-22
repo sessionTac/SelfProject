@@ -34,6 +34,9 @@ export default {
   /***根据id删除本条数据*/
   deleteById:(data)=>
     putRequest(`~/orderInfo/deleteOrderInfo` ,{data}),
+  /**数据导出**/
+  exportData:(data) =>
+    postRequest(`~/orderInfo/exportData`,{data,responseType:'blob'}),
 
   // /***根据id锁定本条数据*/
   // lockedById:(data)=>

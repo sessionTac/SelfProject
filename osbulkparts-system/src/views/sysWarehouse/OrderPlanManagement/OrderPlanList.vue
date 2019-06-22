@@ -339,9 +339,9 @@
                           this.idsStr.push(item.id)
                       });
                       activityService.deleteById({idsStr:this.idsStr}).then(resp => {
-                          if (resp.data.code==="201"){
+                          if (resp.data.code=="201"){
                               this.$notify({message: resp.data.message, type: "success"});
-                              this.exec_search({search_keys, pageNum:1})
+                              this.exec_search({search_keys:this.search_keys, pageNum:1})
                           } else {
                               this.$notify({message: resp.data.message, type: "error"});
                           }
@@ -384,10 +384,10 @@
                 //   name: search_keys.name || undefined,
                 // }
 
-                // let data={name:"123"}
-                // activityService.installdownloadExcel({...data}).then(resp=>{
-                //     downloadBlobResponse(resp); // 文件下载
-                // })
+                let data={name:"123"}
+                activityService.installdownloadExcel({...data}).then(resp=>{
+                    downloadBlobResponse(resp); // 文件下载
+                })
             },
         },
     }
