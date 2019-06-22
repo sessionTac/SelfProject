@@ -412,7 +412,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 						example.getLength()!=null?example.getLength().toString():"");
 				//宽
 				row.createCell(20).setCellValue(
-						example.getWide()!=null?example.getWide().toString():"");
+						example.getWidth()!=null?example.getWidth().toString():"");
 				//高
 				row.createCell(21).setCellValue(
 						example.getHeight()!=null?example.getHeight().toString():"");

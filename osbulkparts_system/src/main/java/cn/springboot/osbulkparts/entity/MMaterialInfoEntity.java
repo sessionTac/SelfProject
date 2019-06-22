@@ -137,7 +137,7 @@ public class MMaterialInfoEntity implements Serializable {
     /**
      * 宽
      */
-    private BigDecimal wide;
+    private BigDecimal width;
     /**
      * 高
      */

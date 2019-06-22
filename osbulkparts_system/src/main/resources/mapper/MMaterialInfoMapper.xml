@@ -33,7 +33,7 @@
     <result column="material_supply_mode" jdbcType="VARCHAR" property="materialSupplyMode" />
     <result column="factory_code" jdbcType="VARCHAR" property="factoryCode" />
     <result column="length" jdbcType="DECIMAL" property="length" />
-    <result column="wide" jdbcType="DECIMAL" property="wide" />
+    <result column="width" jdbcType="DECIMAL" property="width" />
     <result column="height" jdbcType="DECIMAL" property="height" />
     <result column="data_role_at" jdbcType="VARCHAR" property="dataRoleAt" />
     <result column="user_defined1" jdbcType="VARCHAR" property="userDefined1" />
@@ -99,7 +99,7 @@
     material_category, material_desc_cn, material_desc_en, material_desc_rn, hs_no, supplier_code, 
     material_unit, material_relation, material_relation_unit, material_minpackage_amt, material_minpackage_type,
     material_tax_price, material_vat_price, material_rate, material_currency, material_price, 
-    level_bom_code, material_supply_mode, factory_code,`length`,wide,height,data_role_at, user_defined1,
+    level_bom_code, material_supply_mode, factory_code,`length`,width,height,data_role_at, user_defined1,
     user_defined2, user_defined3, user_defined4, user_defined5, user_defined6, user_defined7, 
     user_defined8, user_defined9, user_defined10, is_locked,create_user, create_time, update_user, 
     update_time, is_delete, version
@@ -143,7 +143,7 @@
 			dictSupplyMode.`name` AS dictMaterialSupplyMode,
 			material.factory_code,
 			material.`length`,
-			material.wide,
+			material.width,
 			material.height,
 			material.data_role_at,
 			material.user_defined1,
@@ -274,8 +274,8 @@
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(length)">
         AND `length` = #{length,jdbcType=DECIMAL}
     </if>
-    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(wide)">
-        AND wide = #{wide,jdbcType=DECIMAL}
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(width)">
+        AND width = #{width,jdbcType=DECIMAL}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(height)">
         AND height = #{height,jdbcType=DECIMAL}
@@ -467,8 +467,8 @@
         <if test="length != null">
             `length`,
         </if>
-        <if test="wide != null">
-            wide,
+        <if test="width != null">
+            width,
         </if>
         <if test="height != null">
             height,
@@ -605,8 +605,8 @@
         <if test="length != null">
             #{length,jdbcType=DECIMAL},
         </if>
-        <if test="wide != null">
-            #{wide,jdbcType=DECIMAL},
+        <if test="width != null">
+            #{width,jdbcType=DECIMAL},
         </if>
         <if test="height != null">
             #{height,jdbcType=DECIMAL},
@@ -699,7 +699,7 @@
         material_supply_mode,
         factory_code,
         `length`,
-        wide,
+        width,
         height,
         data_role_at,
         user_defined1,
@@ -748,7 +748,7 @@
         #{item.materialSupplyMode,jdbcType=VARCHAR},
         #{item.factoryCode,jdbcType=VARCHAR},
         #{item.length,jdbcType=DECIMAL},
-        #{item.wide,jdbcType=DECIMAL},
+        #{item.width,jdbcType=DECIMAL},
         #{item.height,jdbcType=DECIMAL},
         #{item.dataRoleAt,jdbcType=VARCHAR},
         #{item.userDefined1,jdbcType=VARCHAR},
@@ -849,8 +849,8 @@
         <if test="item.length != null">
             `length` = #{item.length,jdbcType=DECIMAL},
         </if>
-        <if test="item.wide != null">
-            wide = #{item.wide,jdbcType=DECIMAL},
+        <if test="item.width != null">
+            width = #{item.width,jdbcType=DECIMAL},
         </if>
         <if test="item.height != null">
             height = #{item.height,jdbcType=DECIMAL},
@@ -935,7 +935,7 @@
       material_supply_mode = #{materialSupplyMode,jdbcType=VARCHAR},
       factory_code = #{factoryCode,jdbcType=VARCHAR},
       `length` = #{length,jdbcType=DECIMAL},
-      wide = #{wide,jdbcType=DECIMAL},
+      width = #{width,jdbcType=DECIMAL},
       height = #{height,jdbcType=DECIMAL},
       data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
       user_defined1 = #{userDefined1,jdbcType=VARCHAR},
