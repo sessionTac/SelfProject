@@ -197,79 +197,79 @@
 		WHERE
 			material.is_delete = 0
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialInfoId)">
-    	AND material_info_id = #{materialInfoId,jdbcType=VARCHAR}
+    	AND material.material_info_id = #{materialInfoId,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialOrderCode)">
-    	AND material_order_code = #{materialOrderCode,jdbcType=VARCHAR}
+    	AND material.material_order_code = #{materialOrderCode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialOrderCodeDesc)">
-    	AND material_order_code_desc = #{materialOrderCodeDesc,jdbcType=VARCHAR}
+    	AND material.material_order_code_desc = #{materialOrderCodeDesc,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCkdCode)">
-    	AND material_ckd_code = #{materialCkdCode,jdbcType=VARCHAR}
+    	AND material.material_ckd_code = #{materialCkdCode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCode)">
-    	AND material_code = #{materialCode,jdbcType=VARCHAR}
+    	AND material.material_code = #{materialCode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCategory)">
-    	AND material_category = #{materialCategory,jdbcType=VARCHAR}
+    	AND material.material_category = #{materialCategory,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialDescCn)">
     	<bind name="materialDescCn_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialDescCn)"/>
-    	AND material_desc_cn LIKE #{materialDescCn_like,jdbcType=VARCHAR}
+    	AND material.material_desc_cn LIKE #{materialDescCn_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialDescEn)">
     	<bind name="materialDescEn_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialDescEn)"/>
-    	AND material_desc_en LIKE #{materialDescEn_like,jdbcType=VARCHAR}
+    	AND material.material_desc_en LIKE #{materialDescEn_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialDescRn)">
     	<bind name="materialDescRn_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialDescRn)"/>
-    	AND material_desc_rn LIKE #{materialDescRn_like,jdbcType=VARCHAR}
+    	AND material.material_desc_rn LIKE #{materialDescRn_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(hsNo)">
-    	AND hs_no = #{hsNo,jdbcType=VARCHAR}
+    	AND material.hs_no = #{hsNo,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(supplierCode)">
-    	AND supplier_code = #{supplierCode,jdbcType=VARCHAR}
+    	AND material.supplier_code = #{supplierCode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialUnit)">
-    	AND material_unit = #{materialUnit,jdbcType=VARCHAR}
+    	AND material.material_unit = #{materialUnit,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialRelation)">
-    	AND material_relation = #{materialRelation,jdbcType=VARCHAR}
+    	AND material.material_relation = #{materialRelation,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialRelationUnit)">
-    	AND material_relation_unit = #{materialRelationUnit,jdbcType=VARCHAR}
+    	AND material.material_relation_unit = #{materialRelationUnit,jdbcType=VARCHAR}
     </if>
     <if test="materialMinpackageAmt != null">
-    	AND material_minpackage_amt = #{materialMinpackageAmt,jdbcType=DOUBLE}
+    	AND material.material_minpackage_amt = #{materialMinpackageAmt,jdbcType=DOUBLE}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialMinpackageType)">
-    	AND material_minpackage_type = #{materialMinpackageType,jdbcType=VARCHAR}
+    	AND material.material_minpackage_type = #{materialMinpackageType,jdbcType=VARCHAR}
     </if>
     <if test="materialTaxPrice != null">
-    	AND material_tax_price = #{materialTaxPrice,jdbcType=DECIMAL}
+    	AND material.material_tax_price = #{materialTaxPrice,jdbcType=DECIMAL}
     </if>
     <if test="materialVatPrice != null">
-    	AND material_vat_price = #{materialVatPrice,jdbcType=DECIMAL}
+    	AND material.material_vat_price = #{materialVatPrice,jdbcType=DECIMAL}
     </if>
     <if test="materialRate != null">
-    	AND material_rate = #{materialRate,jdbcType=DECIMAL}
+    	AND material.material_rate = #{materialRate,jdbcType=DECIMAL}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCurrency)">
-    	AND material_currency = #{materialCurrency,jdbcType=VARCHAR}
+    	AND material.material_currency = #{materialCurrency,jdbcType=VARCHAR}
     </if>
     <if test="materialPrice != null">
-    	AND material_price = #{materialPrice,jdbcType=DECIMAL}
+    	AND material.material_price = #{materialPrice,jdbcType=DECIMAL}
     </if>
     <if test="levelBomCode != null">
-    	AND level_bom_code = #{levelBomCode,jdbcType=INTEGER}
+    	AND material.level_bom_code = #{levelBomCode,jdbcType=INTEGER}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialSupplyMode)">
-    	AND material_supply_mode = #{materialSupplyMode,jdbcType=VARCHAR}
+    	AND material.material_supply_mode = #{materialSupplyMode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(factoryCode)">
-    	AND factory_code = #{factoryCode,jdbcType=VARCHAR}
+    	AND material.factory_code = #{factoryCode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(length)">
         AND `length` = #{length,jdbcType=DECIMAL}
@@ -281,40 +281,40 @@
         AND height = #{height,jdbcType=DECIMAL}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
-    	AND data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
+    	AND material.data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined1)">
-    	AND user_defined1 = #{userDefined1,jdbcType=VARCHAR}
+    	AND material.user_defined1 = #{userDefined1,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined2)">
-    	AND user_defined2 = #{userDefined2,jdbcType=VARCHAR}
+    	AND material.user_defined2 = #{userDefined2,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined3)">
-    	AND user_defined3 = #{userDefined3,jdbcType=VARCHAR}
+    	AND material.user_defined3 = #{userDefined3,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined4)">
-    	AND user_defined4 = #{userDefined4,jdbcType=VARCHAR}
+    	AND material.user_defined4 = #{userDefined4,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined5)">
-    	AND user_defined5 = #{userDefined5,jdbcType=VARCHAR}
+    	AND material.user_defined5 = #{userDefined5,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined6)">
-    	AND user_defined6 = #{userDefined6,jdbcType=VARCHAR}
+    	AND material.user_defined6 = #{userDefined6,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined7)">
-    	AND user_defined7 = #{userDefined7,jdbcType=VARCHAR}
+    	AND material.user_defined7 = #{userDefined7,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined8)">
-    	AND user_defined8 = #{userDefined8,jdbcType=VARCHAR}
+    	AND material.user_defined8 = #{userDefined8,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined9)">
-    	AND user_defined9 = #{userDefined9,jdbcType=VARCHAR}
+    	AND material.user_defined9 = #{userDefined9,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined10)">
-    	AND user_defined10 = #{userDefined10,jdbcType=VARCHAR}
+    	AND material.user_defined10 = #{userDefined10,jdbcType=VARCHAR}
     </if>
     <if test="isLocked != null">
-    	AND is_locked = #{isLocked,jdbcType=INTEGER}
+    	AND material.is_locked = #{isLocked,jdbcType=INTEGER}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createUser)">
     	AND material.create_user = #{createUser,jdbcType=VARCHAR}

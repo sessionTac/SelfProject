@@ -72,7 +72,12 @@
 			enableDeleteByExample="false">
 		</table> -->
 		<!-- 散件物料表  -->
-  		<table tableName="m_material_info" domainObjectName="MMaterialInfoEntity" 
+<!--   		<table tableName="m_material_info" domainObjectName="MMaterialInfoEntity" 
+			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false">
+		</table> -->
+		<!-- 订单信息表  -->
+  		<table tableName="t_order_info" domainObjectName="TOrderInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
 		</table>
