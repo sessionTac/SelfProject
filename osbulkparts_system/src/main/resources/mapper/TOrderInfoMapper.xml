@@ -21,6 +21,16 @@
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="version" jdbcType="INTEGER" property="version" />
+    <association property="dictOrderUnit"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+        <result property="value" column="order_unit"/>
+        <result property="name" column="dictOrderUnit"/>
+    </association>
+    <association property="dictOrderStatus"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+        <result property="value" column="order_status"/>
+        <result property="name" column="dictOrderStatus"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--

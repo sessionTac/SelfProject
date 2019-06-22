@@ -105,6 +105,16 @@ public class TOrderInfoEntity implements Serializable {
      * 版本
      */
     private Integer version;
+    
+    /**
+     * 订单型号单位
+     */
+    private TDictDataEntity dictOrderStatus;
+    
+    /**
+     * 订单状态
+     */
+    private TDictDataEntity dictOrderUnit;
 
     private static final long serialVersionUID = 1L;
 }

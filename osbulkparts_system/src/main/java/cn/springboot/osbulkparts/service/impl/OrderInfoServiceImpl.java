@@ -238,13 +238,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 
 	@Override
 	public ResponseEntity<byte[]> downloadExcel(TOrderInfoEntity torderInfoEntity,int exportType) {
-		String[] title = null;
-		if(exportType == 1) {
-			title = messageBean.getMessage("file.title.material.month").split(",");
-		}
-		else {
-			title = messageBean.getMessage("file.title.material.week").split(",");
-		}
+		String[] title = messageBean.getMessage("file.title.orderinfo").split(",");
 		List<TOrderInfoEntity> resultList = torderInfoDao.selectOrderInfoListByKeys(torderInfoEntity);
 		ResponseEntity<byte[]> result = educeExcel(title,resultList);
 		return result;
@@ -277,7 +271,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 		//输出Excel文件  
 		try {
 			//创建工作表单
-			HSSFSheet sheet = workbook.createSheet(messageBean.getMessage("file.name.material"));  
+			HSSFSheet sheet = workbook.createSheet(messageBean.getMessage("file.name.orderinfo"));  
 			//创建HSSFRow对象 （行）第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
 			HSSFRow row = sheet.createRow(0); 	
 			row.setHeightInPoints(20);// 设备标题的高度
@@ -297,11 +291,13 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			//设置单元格的值  
 			for (int i = 0; i < list.size(); i++) {
 				row = sheet.createRow(i+1);
-//				TOrderInfoEntity example = list.get(i);
-				//成品型号
-//				row.createCell(0).setCellValue(example.getMaterialOrderCode());
-//				//成品型号描述
-//				row.createCell(1).setCellValue(example.getMaterialOrderCodeDesc());
+				TOrderInfoEntity example = list.get(i);
+				//订单型号
+				row.createCell(0).setCellValue(example.getOrderCode());
+//				//订单型号描述
+				row.createCell(1).setCellValue(example.getOrderCodeDesc());
+				//订单型号单位
+				row.createCell(2).setCellValue(example.getDictOrderUnit().getName());
 //				//子件型号
 //				row.createCell(2).setCellValue(example.getMaterialCode());
 //				//物料CKD号
