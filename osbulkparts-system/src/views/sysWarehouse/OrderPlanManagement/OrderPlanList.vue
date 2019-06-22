@@ -88,7 +88,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "MATTER"></import-button>
+                    <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "ORDER_PLAN"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(search_keys)" size="mini" >
@@ -101,7 +101,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="" icon="el-icon-error" >
+                    <el-button  @click="reset" icon="el-icon-error" >
                         清空
                     </el-button>
                 </el-form-item>
@@ -194,7 +194,8 @@
                 //单位下拉框数据
                 is_searching : true,
                 materialCategorys:[],
-                currencys:[],
+                orderUnits:[],
+                orderStatus:[],
                 search_keys   : {
                     orderCode:"",
                     orderCodeDesc:"",
@@ -234,6 +235,23 @@
             }
         },
         methods: {
+            reset(){
+             this.search_keys= {
+                    orderCode:"",
+                      orderCodeDesc:"",
+                      orderAmount:"",
+                      orderDate:"",
+                      orderDateArray:[],
+                      orderUnit:"",
+                      orderStatus:"",
+                      createUser:'',
+                      createTime:'',
+                      createTimeArray:[],
+                      updateUser:'',
+                      updateTimeArray:[],
+                      updateTime:'',
+                };
+            },
             price(row, column, cellValue, index){
                 if (cellValue) {
                     return cellValue.toFixed(2)
@@ -242,12 +260,12 @@
                 }
             },
             init(){
-                // activityService.initData().then(resp =>{
-                //     this.currencys = resp.data.result.currencys;
-                //     this.materialCategorys = resp.data.result.materialCategorys;
-                // }, err => {
-                //     console.error(err);
-                // })
+                activityService.initData().then(resp =>{
+                    this.orderUnits = resp.data.result.orderUnits;
+                    this.orderStatus = resp.data.result.orderStatus;
+                }, err => {
+                    console.error(err);
+                })
             },
             // toLocked(isLocked){
             //     if(isLocked  == 0){
@@ -275,13 +293,13 @@
                     updateTimeStart     :   search_keys.updateTimeArray && search_keys.updateTimeArray[0] || "",
                     updateTimeEnd       :   search_keys.updateTimeArray && search_keys.updateTimeArray[1] || "",
                 };
-                // activityService.findMatterList({...data, pageNum, pageSize}).then(resp => {
-                //     this.search_result = resp.data.resultInfo;                //视图展示查询结果
-                //     this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
-                //     this.search_keys_snap = search_keys_snap;             //存储查询条件快照
-                // }, err => {
-                //     console.error(err);
-                // })
+                activityService.findOrderInfoList({...data, pageNum, pageSize}).then(resp => {
+                    this.search_result = resp.data.resultInfo;                //视图展示查询结果
+                    this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
+                    this.search_keys_snap = search_keys_snap;             //存储查询条件快照
+                }, err => {
+                    console.error(err);
+                })
             },
             exportData(search_keys) {
                 this.$confirm("确定导出数据吗？", "提示", {
