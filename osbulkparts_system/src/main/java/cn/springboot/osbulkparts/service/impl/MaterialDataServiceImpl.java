@@ -356,7 +356,6 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			for (int i = 0; i < list.size(); i++) {
 				row = sheet.createRow(i+1);
 				MMaterialInfoEntity example = list.get(i);
-				// 第六步，创建单元格，并设置值
 				//成品型号
 				row.createCell(0).setCellValue(example.getMaterialOrderCode());
 				//成品型号描述
@@ -406,7 +405,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			response = ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType("application/octet-stream"))
 				.header("Access-Control-Expose-Headers","Content-Disposition")
-				.header("Content-Disposition","attachment; filename*=UTF-8''" + filename_enc)
+				.header("Content-Disposition","attachment; filename*=UTF-8''" + filename_enc+".xlsx")
 				.body(os.toByteArray());
 			return response;
 		} catch (Exception e) {
