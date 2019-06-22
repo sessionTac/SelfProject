@@ -74,6 +74,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			TDictDataEntity tDictDataEntity = new TDictDataEntity();
 			tDictDataEntity.setDictTypeCode("unit");
 			map.put("orderUnits",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+			tDictDataEntity.setDictTypeCode("planStatus");
+			map.put("orderStatus",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			result.setResult(map);
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -294,18 +296,18 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				TOrderInfoEntity example = list.get(i);
 				//订单型号
 				row.createCell(0).setCellValue(example.getOrderCode());
-//				//订单型号描述
+				//订单型号描述
 				row.createCell(1).setCellValue(example.getOrderCodeDesc());
 				//订单型号单位
 				row.createCell(2).setCellValue(example.getDictOrderUnit().getName());
-//				//子件型号
-//				row.createCell(2).setCellValue(example.getMaterialCode());
-//				//物料CKD号
-//				row.createCell(3).setCellValue(example.getMaterialCkdCode());
+				//日期
+				row.createCell(3).setCellValue(parseDate(example.getOrderDate(),"yyyy/MM/dd"));
+				//订单数量
+				row.createCell(4).setCellValue(example.getOrderAmount().toString());
 			}
 			workbook.write(os);
 			workbook.close();
-			String filename_enc = UriUtils.encode(messageBean.getMessage("file.name.material"), "UTF-8");
+			String filename_enc = UriUtils.encode(messageBean.getMessage("file.name.orderinfo"), "UTF-8");
 			response = ResponseEntity.ok()
 				.contentType(MediaType.parseMediaType("application/octet-stream"))
 				.header("Access-Control-Expose-Headers","Content-Disposition")

@@ -119,6 +119,7 @@
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateTimeEnd)">
         AND orderInfo.update_time &lt;= #{updateTimeEnd,jdbcType=VARCHAR}
     </if>
+    order by orderInfo.order_date desc,orderInfo.order_code
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
     <!--
