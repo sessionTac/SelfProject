@@ -49,7 +49,7 @@ public class TOrderInfoEntity implements Serializable {
     /**
      * 计划状态 0已导入未生成，1已生成关联数据字典中计划状态
      */
-    private Integer orderStatus;
+    private String orderStatus;
 
     /**
      * 数据所属

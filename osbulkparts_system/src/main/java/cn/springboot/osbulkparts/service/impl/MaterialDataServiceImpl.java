@@ -139,9 +139,12 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MMaterialInfoEntity> selectMaterialInfoList(
-			MMaterialInfoEntity materialInfoEntity, int pageNumber, int pageSize) {
+			MMaterialInfoEntity materialInfoEntity, int pageNumber, int pageSize,Authentication auth) {
 		CommonResultInfo<MMaterialInfoEntity> result = new CommonResultInfo<MMaterialInfoEntity>();
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 		try {
+			materialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 			PageHelper.startPage(pageNumber, pageSize);
 			PageInfo<MMaterialInfoEntity> pageInfo = new PageInfo<>(
 					mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity));
@@ -187,12 +190,15 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 		try {
 			String dictUUID = CommonSqlUtils.getUUID32();
 			materialInfoEntity.setMaterialInfoId(dictUUID);
 			materialInfoEntity.setCreateUser(principal.getUserName());
 			materialInfoEntity.setIsDelete(0);
+			materialInfoEntity.setIsLocked(0);
 			materialInfoEntity.setVersion(1);
+			materialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 			int returnInt = mmaterialInfoDao.insertSelective(materialInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());

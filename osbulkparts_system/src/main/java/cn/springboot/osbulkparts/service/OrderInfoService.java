@@ -22,7 +22,9 @@ public interface OrderInfoService {
 	@Transactional
 	CommonResultInfo<?> importExcel(MultipartFile excleFile,HttpServletRequest request,Authentication auth,int type);
 	
-	CommonResultInfo<TOrderInfoEntity> selectOrderInfoList(TOrderInfoEntity torderInfoEntity, int pageNumber, int pageSize);
+	CommonResultInfo<TOrderInfoEntity> selectOrderInfoList(TOrderInfoEntity torderInfoEntity, int pageNumber, int pageSize, Authentication auth);
+	
+	CommonResultInfo<?> checkOrderInfo(TOrderInfoEntity torderInfoEntity);
 	
 	CommonResultInfo<TOrderInfoEntity> selectOrderInfo(TOrderInfoEntity torderInfoEntity);
 

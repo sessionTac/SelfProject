@@ -22,7 +22,7 @@ public interface MaterialDataService {
 	@Transactional
 	CommonResultInfo<?> importExcel(MultipartFile excleFile,HttpServletRequest request,Authentication auth);
 	
-	CommonResultInfo<MMaterialInfoEntity> selectMaterialInfoList(MMaterialInfoEntity materialInfoEntity, int pageNumber, int pageSize);
+	CommonResultInfo<MMaterialInfoEntity> selectMaterialInfoList(MMaterialInfoEntity materialInfoEntity, int pageNumber, int pageSize,Authentication auth);
 	
 	CommonResultInfo<MMaterialInfoEntity> selectMaterialInfo(MMaterialInfoEntity materialInfoEntity);
 	

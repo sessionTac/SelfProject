@@ -118,9 +118,12 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<TOrderInfoEntity> selectOrderInfoList(TOrderInfoEntity torderInfoEntity, int pageNumber,
-			int pageSize) {
+			int pageSize, Authentication auth) {
 		CommonResultInfo<TOrderInfoEntity> result = new CommonResultInfo<TOrderInfoEntity>();
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 		try {
+			torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 			PageHelper.startPage(pageNumber, pageSize);
 			PageInfo<TOrderInfoEntity> pageInfo = new PageInfo<>(
 					torderInfoDao.selectOrderInfoListByKeys(torderInfoEntity));
@@ -136,6 +139,26 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 		}
 	}
 
+	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<?> checkOrderInfo(TOrderInfoEntity torderInfoEntity) {
+		CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
+		try {
+			List<TOrderInfoEntity> resultList = torderInfoDao.selectOrderInfoListByKeys(torderInfoEntity);
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			if(resultList.size()>0) {
+				result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+	
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<TOrderInfoEntity> selectOrderInfo(TOrderInfoEntity torderInfoEntity) {
@@ -166,7 +189,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 		CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 		try {
+			torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 			torderInfoEntity.setId(CommonSqlUtils.getUUID32());
 			torderInfoEntity.setCreateUser(principal.getUserName());
 			torderInfoEntity.setIsDelete(0);
@@ -479,7 +504,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 		torderInfoEntity.setOrderCode(OrderCode);
 		List<TOrderInfoEntity> resultList = torderInfoDao.selectOrderInfoListByKeys(torderInfoEntity);
 		if(resultList.size()>0) {
-			if(resultList.get(0).getOrderStatus() == 0) {
+			if(resultList.get(0).getOrderStatus().equals("0")) {
 				// 已存在但未生成
 				return 1;
 			}else {

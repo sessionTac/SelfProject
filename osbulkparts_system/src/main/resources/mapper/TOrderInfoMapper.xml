@@ -13,7 +13,7 @@
     <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
     <result column="order_date" jdbcType="VARCHAR" property="orderDate" />
     <result column="order_unit" jdbcType="VARCHAR" property="orderUnit" />
-    <result column="order_status" jdbcType="INTEGER" property="orderStatus" />
+    <result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
     <result column="data_role_at" jdbcType="VARCHAR" property="dataRoleAt" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
@@ -147,7 +147,7 @@
       version)
     values (#{id,jdbcType=VARCHAR}, #{orderCode,jdbcType=VARCHAR}, #{orderCodeDesc,jdbcType=VARCHAR}, 
       #{orderAmount,jdbcType=DECIMAL}, #{orderDate,jdbcType=VARCHAR}, #{orderUnit,jdbcType=VARCHAR}, 
-      #{orderStatus,jdbcType=INTEGER}, #{dataRoleAt,jdbcType=VARCHAR},#{createUser,jdbcType=VARCHAR}, DATE_FORMAT(now(),'%Y%m%d%H%m%S'), 
+      #{orderStatus,jdbcType=VARCHAR}, #{dataRoleAt,jdbcType=VARCHAR},#{createUser,jdbcType=VARCHAR}, DATE_FORMAT(now(),'%Y%m%d%H%m%S'), 
       #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
       #{version,jdbcType=INTEGER})
   </insert>
@@ -175,7 +175,7 @@
       #{item.orderAmount,jdbcType=DECIMAL}, 
       #{item.orderDate,jdbcType=VARCHAR}, 
       #{item.orderUnit,jdbcType=VARCHAR}, 
-      #{item.orderStatus,jdbcType=INTEGER}, 
+      #{item.orderStatus,jdbcType=VARCHAR}, 
       #{item.dataRoleAt,jdbcType=VARCHAR}
       #{item.createUser,jdbcType=VARCHAR}, 
       DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
@@ -255,7 +255,7 @@
         #{orderUnit,jdbcType=VARCHAR},
       </if>
       <if test="orderStatus != null">
-        #{orderStatus,jdbcType=INTEGER},
+        #{orderStatus,jdbcType=VARCHAR},
       </if>
       <if test="dataRoleAt != null">
         #{dataRoleAt,jdbcType=VARCHAR},
@@ -302,9 +302,9 @@
         order_unit = #{orderUnit,jdbcType=VARCHAR},
       </if>
       <if test="orderStatus != null">
-        order_status = #{orderStatus,jdbcType=INTEGER},
+        order_status = #{orderStatus,jdbcType=VARCHAR},
       </if>
-      <if test="orderStatus != null">
+      <if test="dataRoleAt != null">
         data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null">
@@ -340,7 +340,7 @@
       order_amount = #{orderAmount,jdbcType=DECIMAL},
       order_date = #{orderDate,jdbcType=VARCHAR},
       order_unit = #{orderUnit,jdbcType=VARCHAR},
-      order_status = #{orderStatus,jdbcType=INTEGER},
+      order_status = #{orderStatus,jdbcType=VARCHAR},
       data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
