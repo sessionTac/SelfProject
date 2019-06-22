@@ -38,15 +38,14 @@ export default {
   exportData:(data) =>
     postRequest(`~/orderInfo/exportData`,{data,responseType:'blob'}),
 
-  // /***根据id锁定本条数据*/
-  // lockedById:(data)=>
-  //     putRequest(`~/material/lockMaterialInfo` ,{data}),
-  //
+
   // /**文件下载**/
   // installdownloadExcel:(data) =>
   //   postRequest(`~/material/downloadexcel`,{responseType:'blob'}),
   //
-  // /**数据导出**/
-  // exportData:(data) =>
-  //   postRequest(`~/material/exportData`,{data,responseType:'blob'}),
+  // /***根据id锁定本条数据*/
+  // lockedById:(data)=>
+  //     putRequest(`~/material/lockMaterialInfo` ,{data}),
+  //
+
 }

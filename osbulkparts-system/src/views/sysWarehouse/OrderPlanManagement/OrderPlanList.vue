@@ -211,6 +211,7 @@
                     updateTimeArray:[],
                     updateTime:'',
                 },
+                old_search_keys:{},
                 search_keys_snap      : null,
                 search_result         : {},
                 multipleSelection:[],
@@ -295,6 +296,7 @@
                 };
                 activityService.findOrderInfoList({...data, pageNum, pageSize}).then(resp => {
                     this.search_result = resp.data.resultInfo;                //视图展示查询结果
+                    this.old_search_keys=JSON.stringify(data);
                     this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
                     this.search_keys_snap = search_keys_snap;             //存储查询条件快照
                 }, err => {
@@ -308,7 +310,8 @@
                     type: 'info',
                     center: true
                 }).then(() => {
-                    activityService.exportData({...search_keys}).then(resp=>{
+                    let data=JSON.parse(this.old_search_keys);
+                    activityService.exportData({...data}).then(resp=>{
                         downloadBlobResponse(resp); // 文件下载
                     });
                 }).catch(() => {
@@ -375,20 +378,7 @@
                     this.internal_activated = true;
                 })//删除
             },
-            //导出
-            excel(){
-                // let data={
-                //   deviceTypeNo : search_keys.deviceType || undefined,
-                //   powerStationNo : search_keys.powerStationEntity && search_keys.powerStationEntity.no || undefined ,
-                //   powerStationName:search_keys.powerStationName  || "",
-                //   name: search_keys.name || undefined,
-                // }
 
-                let data={name:"123"}
-                activityService.installdownloadExcel({...data}).then(resp=>{
-                    downloadBlobResponse(resp); // 文件下载
-                })
-            },
         },
     }
 </script>
