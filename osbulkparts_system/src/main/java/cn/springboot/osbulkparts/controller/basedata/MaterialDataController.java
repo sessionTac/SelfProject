@@ -56,8 +56,9 @@ public class MaterialDataController {
 	public CommonResultInfo<MMaterialInfoEntity> getMaterialList(
 			MMaterialInfoEntity mmaterialInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue="10") int pageSize){
-		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfoList(mmaterialInfoEntity, pageNum, pageSize);
+            @RequestParam(defaultValue="10") int pageSize,
+			HttpServletRequest request, Authentication auth){
+		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfoList(mmaterialInfoEntity, pageNum, pageSize,auth);
 		return result;
 	}
 	

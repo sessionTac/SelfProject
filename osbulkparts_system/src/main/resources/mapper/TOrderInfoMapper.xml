@@ -52,7 +52,7 @@
     from t_order_info
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectOrderInfoListByKeys" parameterType="cn.springboot.osbulkparts.entity.TOrderInfoEntity">
+  <select id="selectOrderInfoListByKeys" resultMap="BaseResultMap" parameterType="cn.springboot.osbulkparts.entity.TOrderInfoEntity">
 	SELECT
 		orderInfo.id,
 		orderInfo.order_code,
@@ -82,7 +82,9 @@
 	AND dictPlanStatus.delete_flg = 0
 	WHERE
 		orderInfo.is_delete = 0
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
 		AND data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
+    </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCode)">
     	AND orderInfo.order_code = #{orderCode,jdbcType=VARCHAR}
     </if>

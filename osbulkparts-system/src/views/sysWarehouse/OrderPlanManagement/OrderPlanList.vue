@@ -336,7 +336,7 @@
                 }).then(() => {
                       this.idsStr=[];
                       this.multipleSelection.forEach(item=>{
-                          this.idsStr.push(item.materialInfoId)
+                          this.idsStr.push(item.id)
                       });
                       activityService.deleteById({idsStr:this.idsStr}).then(resp => {
                           if (resp.data.code==="201"){
@@ -360,7 +360,7 @@
                 }).then(() => {
                       this.idsStr=[];
                       this.multipleSelection.forEach(item=>{
-                          this.idsStr.push(item.materialInfoId)
+                          this.idsStr.push(item.id)
                       });
                       activityService.lockedById({idsStr:this.idsStr,toLocked:toLocked}).then(resp => {
                           if (resp.data.code=="201"){

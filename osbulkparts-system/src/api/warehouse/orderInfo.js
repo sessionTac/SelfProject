@@ -18,23 +18,23 @@ export default {
   addOrderInfo:(data)=>
     postRequest(`~/orderInfo/addOrderInfo`, {data}),
 
-  // /**
-  //  * 物料数据列表初始化
-  //  */
-  // findMatterInfo: (params) =>
-  //     getRequest(`~/material/getMaterialInfo`, {params}),
-  //
+  /**
+   * 物料数据列表初始化
+   */
+  findOrderInfo: (params) =>
+      getRequest(`~/orderInfo/getOrderInfo`, {params}),
 
-  // /**
-  //  * 修改编辑
-  //  */
-  // updateMatter:(data)=>
-  //   putRequest(`~/material/updateMaterialInfo`, {data}),
-  //
-  // /***根据id删除本条数据*/
-  // deleteById:(data)=>
-  //   putRequest(`~/material/deleteMater` ,{data}),
-  //
+
+  /**
+   * 修改编辑
+   */
+  updateMatter:(data)=>
+    putRequest(`~/orderInfo/updateOrderInfo`, {data}),
+
+  /***根据id删除本条数据*/
+  deleteById:(data)=>
+    putRequest(`~/orderInfo/deleteOrderInfo` ,{data}),
+
   // /***根据id锁定本条数据*/
   // lockedById:(data)=>
   //     putRequest(`~/material/lockMaterialInfo` ,{data}),

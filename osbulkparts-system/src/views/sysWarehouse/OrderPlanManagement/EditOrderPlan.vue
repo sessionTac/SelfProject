@@ -168,7 +168,7 @@
                     console.error(err);
                 });
                 if (this.mode == "EDIT") {
-                    await activityService.findMatterInfo({materialInfoId: this.id}).then(resp => {
+                    await activityService.findOrderInfo({id: this.id}).then(resp => {
                         this.form = resp.data.result;
                     }, err => {
                         console.error(err);
@@ -188,6 +188,7 @@
                             orderDate: this.form.orderDate || undefined,
                             orderUnit: this.form.orderUnit || undefined,
                             orderStatus: this.form.orderStatus || undefined,
+                            dataRoleAt:this.form.dataRoleAt || undefined,
                             version: this.form.version || undefined,
                         }
                         if (this.mode == 'EDIT') {  //编辑
