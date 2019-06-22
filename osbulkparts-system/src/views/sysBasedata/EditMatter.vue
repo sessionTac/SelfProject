@@ -174,6 +174,27 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
+            <el-form-item label="长" prop="length">
+              <el-input v-model="form.length" class="search-form-item-input" style="width: 160px" size="mini"
+                        :maxlength="18" clearable></el-input>
+              <template slot="error" slot-scope="scope">
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
+            </el-form-item>
+            <el-form-item label="宽" prop="wide">
+              <el-input v-model="form.wide" class="search-form-item-input" style="width: 160px" size="mini"
+                        :maxlength="18"  clearable></el-input>
+              <template slot="error" slot-scope="scope">
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
+            </el-form-item>
+            <el-form-item label="高" prop="height">
+              <el-input v-model="form.height" class="search-form-item-input" style="width: 160px" size="mini"
+                        :maxlength="18"  clearable></el-input>
+              <template slot="error" slot-scope="scope">
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
+            </el-form-item>
             <el-form-item label="分级BOM编码" prop="levelBomCode">
               <el-input v-model="form.levelBomCode" class="search-form-item-input" style="width: 160px" size="mini"
                         :maxlength="10"  clearable></el-input>
@@ -262,6 +283,9 @@
           levelBomCode: '',
           materialSupplyMode: '',
           factoryCode: '',
+          length:"",
+          wide:"",
+          height:""
 
         },
         /**表单的验证*/
@@ -333,6 +357,15 @@
           factoryCode: [
             {max: 32, message: '长度不超过32个字符', trigger: 'blur'},
           ],
+          length:[
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          ],
+          wide:[
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          ],
+          height:[
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          ],
           levelBomCode: [
             {pattern: /^[0-9]*$/ , trigger: 'blur', message: '请输入数字',}
           ],
@@ -395,6 +428,9 @@
               levelBomCode: this.form.levelBomCode || undefined,
               materialSupplyMode: this.form.materialSupplyMode || undefined,
               factoryCode: this.form.factoryCode || undefined,
+              length:this.form.length || undefined,
+              wide:this.form.wide  || undefined,
+              height:this.form.height || undefined,
               version: this.form.version || undefined,
             }
             if (this.mode == 'EDIT') {  //编辑

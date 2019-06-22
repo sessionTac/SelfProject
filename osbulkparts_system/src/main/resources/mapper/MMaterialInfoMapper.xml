@@ -32,6 +32,9 @@
     <result column="level_bom_code" jdbcType="INTEGER" property="levelBomCode" />
     <result column="material_supply_mode" jdbcType="VARCHAR" property="materialSupplyMode" />
     <result column="factory_code" jdbcType="VARCHAR" property="factoryCode" />
+    <result column="length" jdbcType="DECIMAL" property="length" />
+    <result column="wide" jdbcType="DECIMAL" property="wide" />
+    <result column="height" jdbcType="DECIMAL" property="height" />
     <result column="data_role_at" jdbcType="VARCHAR" property="dataRoleAt" />
     <result column="user_defined1" jdbcType="VARCHAR" property="userDefined1" />
     <result column="user_defined2" jdbcType="VARCHAR" property="userDefined2" />
@@ -96,7 +99,7 @@
     material_category, material_desc_cn, material_desc_en, material_desc_rn, hs_no, supplier_code, 
     material_unit, material_relation, material_relation_unit, material_minpackage_amt, material_minpackage_type,
     material_tax_price, material_vat_price, material_rate, material_currency, material_price, 
-    level_bom_code, material_supply_mode, factory_code, data_role_at, user_defined1, 
+    level_bom_code, material_supply_mode, factory_code,`length`,wide,height,data_role_at, user_defined1,
     user_defined2, user_defined3, user_defined4, user_defined5, user_defined6, user_defined7, 
     user_defined8, user_defined9, user_defined10, is_locked,create_user, create_time, update_user, 
     update_time, is_delete, version
@@ -139,6 +142,9 @@
 			material.material_supply_mode,
 			dictSupplyMode.`name` AS dictMaterialSupplyMode,
 			material.factory_code,
+			material.`length`,
+			material.wide,
+			material.height,
 			material.data_role_at,
 			material.user_defined1,
 			material.user_defined2,
@@ -264,6 +270,15 @@
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(factoryCode)">
     	AND factory_code = #{factoryCode,jdbcType=VARCHAR}
+    </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(length)">
+        AND `length` = #{length,jdbcType=DECIMAL}
+    </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(wide)">
+        AND wide = #{wide,jdbcType=DECIMAL}
+    </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(height)">
+        AND height = #{height,jdbcType=DECIMAL}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
     	AND data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
@@ -449,6 +464,15 @@
       <if test="factoryCode != null">
         factory_code,
       </if>
+        <if test="length != null">
+            `length`,
+        </if>
+        <if test="wide != null">
+            wide,
+        </if>
+        <if test="height != null">
+            height,
+        </if>
       <if test="dataRoleAt != null">
         data_role_at,
       </if>
@@ -578,6 +602,15 @@
       <if test="factoryCode != null">
         #{factoryCode,jdbcType=VARCHAR},
       </if>
+        <if test="length != null">
+            #{length,jdbcType=DECIMAL},
+        </if>
+        <if test="wide != null">
+            #{wide,jdbcType=DECIMAL},
+        </if>
+        <if test="height != null">
+            #{height,jdbcType=DECIMAL},
+        </if>
       <if test="dataRoleAt != null">
         #{dataRoleAt,jdbcType=VARCHAR},
       </if>
@@ -665,6 +698,9 @@
         level_bom_code,
         material_supply_mode,
         factory_code,
+        `length`,
+        wide,
+        height,
         data_role_at,
         user_defined1,
         user_defined2,
@@ -711,6 +747,9 @@
         #{item.levelBomCode,jdbcType=INTEGER},
         #{item.materialSupplyMode,jdbcType=VARCHAR},
         #{item.factoryCode,jdbcType=VARCHAR},
+        #{item.length,jdbcType=DECIMAL},
+        #{item.wide,jdbcType=DECIMAL},
+        #{item.height,jdbcType=DECIMAL},
         #{item.dataRoleAt,jdbcType=VARCHAR},
         #{item.userDefined1,jdbcType=VARCHAR},
         #{item.userDefined2,jdbcType=VARCHAR},
@@ -807,6 +846,15 @@
       <if test="item.factoryCode != null">
         factory_code = #{item.factoryCode,jdbcType=VARCHAR},
       </if>
+        <if test="item.length != null">
+            `length` = #{item.length,jdbcType=DECIMAL},
+        </if>
+        <if test="item.wide != null">
+            wide = #{item.wide,jdbcType=DECIMAL},
+        </if>
+        <if test="item.height != null">
+            height = #{item.height,jdbcType=DECIMAL},
+        </if>
       <if test="item.dataRoleAt != null">
         data_role_at = #{item.dataRoleAt,jdbcType=VARCHAR},
       </if>
@@ -886,6 +934,9 @@
       level_bom_code = #{levelBomCode,jdbcType=INTEGER},
       material_supply_mode = #{materialSupplyMode,jdbcType=VARCHAR},
       factory_code = #{factoryCode,jdbcType=VARCHAR},
+      `length` = #{length,jdbcType=DECIMAL},
+      wide = #{wide,jdbcType=DECIMAL},
+      height = #{height,jdbcType=DECIMAL},
       data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
       user_defined1 = #{userDefined1,jdbcType=VARCHAR},
       user_defined2 = #{userDefined2,jdbcType=VARCHAR},

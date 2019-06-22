@@ -180,6 +180,9 @@
             <el-table-column prop="materialRate" align="center" label="代理费率"  />
             <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />
             <el-table-column prop="factoryCode" align="center" label="工厂号"  />
+            <el-table-column prop="length" align="center" label="长"  />
+            <el-table-column prop="wide" align="center" label="宽"  />
+            <el-table-column prop="height" align="center" label="高"  />
             <el-table-column prop="createUser" align="center" label="创建人"  />
 <!--            <el-table-column prop="createTime" align="center" label="创建时间"  />-->
             <el-table-column label="创建时间" show-overflow-tooltip>

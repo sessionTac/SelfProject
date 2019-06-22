@@ -130,6 +130,18 @@ public class MMaterialInfoEntity implements Serializable {
      * 工厂号
      */
     private String factoryCode;
+    /**
+     * 长
+     */
+    private BigDecimal length;
+    /**
+     * 宽
+     */
+    private BigDecimal wide;
+    /**
+     * 高
+     */
+    private BigDecimal height;
 
     /**
      * 数据所属

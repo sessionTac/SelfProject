@@ -407,6 +407,16 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				row.createCell(17).setCellValue(example.getSupplierCode());
 				//工厂号
 				row.createCell(18).setCellValue(example.getFactoryCode());
+				//长
+				row.createCell(19).setCellValue(
+						example.getLength()!=null?example.getLength().toString():"");
+				//宽
+				row.createCell(20).setCellValue(
+						example.getWide()!=null?example.getWide().toString():"");
+				//高
+				row.createCell(21).setCellValue(
+						example.getHeight()!=null?example.getHeight().toString():"");
+
 			}
 			workbook.write(os);
 			workbook.close();
@@ -514,6 +524,15 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 //				mmaterialInfoEntity.setMaterialSupplyMode();
 				// 工厂号
 				mmaterialInfoEntity.setFactoryCode((String)mapData.get("工厂号"));
+				// 长
+				mmaterialInfoEntity.setMaterialRate(
+						CommonMethods.changeToBigdecimal((String)mapData.get("长")));
+				// 宽
+				mmaterialInfoEntity.setMaterialRate(
+						CommonMethods.changeToBigdecimal((String)mapData.get("宽")));
+				// 高
+				mmaterialInfoEntity.setMaterialRate(
+						CommonMethods.changeToBigdecimal((String)mapData.get("高")));
 				// 数据所属
 				mmaterialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 				// 成品型号和子件型号组合判定是否存在，存在时更新，不存在时插入
