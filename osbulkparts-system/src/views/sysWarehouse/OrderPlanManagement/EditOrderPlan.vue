@@ -1,79 +1,88 @@
 <template>
     <div>
-        <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)" width="600px">
-            {{multipleSelection}}
-            <el-form ref="form" :model="form" label-width="200px"  size="mini">
-                <el-form-item label="物料HNR号" prop="matterHNRNo">
-                    <el-input v-model="form.matterHNRNo" class="search-form-item-input"  style="width: 200px"size="mini" :maxlength="500" ></el-input>
-                </el-form-item>
-                <el-form-item label="物料号" prop="matterNo">
-                    <el-input v-model="form.matterNo" class="search-form-item-input" style="width: 200px" size="mini" :maxlength="64" autocomplete="new-password"></el-input>
-                </el-form-item>
-                <el-form-item label="物料类别" prop="matterType">
-                    <el-select v-model="form.matterType"  size="mini">
-                        <el-option value=""></el-option>
-                        <el-option
-                                size="mini"
-                                v-for="item in matterTypes"
-                                :key="item.code"
-                                :label="item.name"
-                                :value="item.code">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="物料中文描述" prop="matterCnDec">
-                    <el-input v-model="form.matterCnDec" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="200"></el-input>
-                </el-form-item>
-                <el-form-item label="物料英文描述" prop="matterEnDec">
-                    <el-input v-model="form.matterEnDec" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="200"></el-input>
-                </el-form-item>
-                <el-form-item label="物料俄文描述" prop="matterEnDec">
-                    <el-input v-model="form.matterEnDec" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="200"></el-input>
-                </el-form-item>
-                <el-form-item label="单位" prop="unit">
-                    <el-select v-model="form.unit"  size="mini">
-                        <el-option value=""></el-option>
-                        <el-option
-                                size="mini"
-                                v-for="item in units"
-                                :key="item.code"
-                                :label="item.name"
-                                :value="item.code">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="换算关系" prop="scalerRela">
-                    <el-input v-model="form.scalerRela" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
-                </el-form-item>
-                <el-form-item label="换算后单位">
-                    <el-input class="search-form-item-input"  style="width: 200px" v-model="form.scalerUnit" size="mini" :maxlength="10"></el-input>
-                </el-form-item>
-                <el-form-item label="币种" prop="currency">
-                    <el-select v-model="form.currency"  size="mini">
-                        <el-option value=""></el-option>
-                        <el-option
-                                size="mini"
-                                v-for="item in currencys"
-                                :key="item.code"
-                                :label="item.name"
-                                :value="item.code">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-                <el-form-item label="单价" prop="scalerRela">
-                    <el-input v-model="form.scalerRela" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
-                </el-form-item>
-                <el-form-item label="分级BOM编码" prop="scalerRela">
-                    <el-input v-model="form.scalerRela" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
-                </el-form-item>
-                <el-form-item label="物料供货模式分类标识" prop="scalerRela">
-                    <el-input v-model="form.scalerRela" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="50"></el-input>
-                </el-form-item>
-            </el-form>
-            <span slot="footer">
-                <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
+        <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)"
+                   width="600px">
+            <el-card>
+                <div class="dialogStyle" style="display: flex;flex-direction: column">
+                    <el-form  class="search-form search-form-normal" label-width="110px" ref="form"
+                              style="flex: 5" :model="form" size="mini" :rules="rules">
+                        <el-form-item label="订单产品型号" prop="orderCode">
+                            <el-input v-model="form.orderCode" class="search-form-item-input" style="width: 160px" size="mini"
+                                      clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
+                        </el-form-item>
+                        <el-form-item label="订单产品型号描述" prop="orderCodeDesc">
+                            <el-input v-model="form.orderCodeDesc" class="search-form-item-input" style="width: 160px" size="mini"
+                                      clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
+                        </el-form-item>
+                        <el-form-item label="订单数量" prop="orderAmount">
+                            <el-input v-model="form.orderAmount" class="search-form-item-input" style="width:160px" size="mini"
+                                      clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
+                        </el-form-item>
+                        <el-form-item label="订单日期" prop="orderDate">
+                            <el-date-picker
+                              v-model="form.orderDate"
+                              type="date"
+                              style="width:160px"
+                              value-format="yyyyMMddHHmmss"
+                              placeholder="选择日期">
+                            </el-date-picker>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
+                        </el-form-item>
+                        <el-form-item label="订单型号单位" prop="orderUnit">
+                            <el-select v-model="form.orderUnit" style="width: 160px" size="mini" clearable>
+                                <el-option value=""></el-option>
+                                <el-option
+                                  size="mini"
+                                  v-for="item in orderUnit"
+                                  :key="item.value"
+                                  :label="item.name"
+                                  :value="item.value">
+                                </el-option>
+                            </el-select>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
+                        </el-form-item>
+                        <el-form-item label="计划状态" prop="orderStatus">
+                            <el-select v-model="form.orderStatus" style="width: 160px" size="mini" clearable>
+                                <el-option value=""></el-option>
+                                <el-option
+                                  size="mini"
+                                  v-for="item in orderStatus"
+                                  :key="item.value"
+                                  :label="item.name"
+                                  :value="item.value">
+                                </el-option>
+                            </el-select>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
+                        </el-form-item>
+
+
+                    </el-form>
+
+                </div>
+
+            </el-card>
+            <div class="dialogButton">
+                <el-button type="primary" size="mini" :disabled="form.isLocked==1" @click="submit('form')"><i
+                  class="fa fa-check"></i> 确定
+                </el-button>
                 <el-button size="mini" @click=" cancel">取消</el-button>
-            </span>
+            </div>
+
         </el-dialog>
     </div>
 </template>
@@ -83,108 +92,124 @@
     import ui_config from '@/config/ui_config'
 
     export default {
-        name: "EditMatter",
-        props:{
-            multipleSelection: {}
+        name: "EditOrderPlan",
+        props: {
+            id: {},
+            mode: "",
+        },
+        computed: {
+            title: function () {
+                let entityName = '订单计划'
+                if (this.mode === 'ADD') {
+                    return '新增' + entityName
+                } else if (this.mode === 'EDIT') {
+                    return '编辑' + entityName
+                }
+            }
         },
         data() {
             return {
-                title:"物料主数据信息编辑",
                 dialogFormVisible: true,
-                search_keys:{},
-                currencys:[],
-                units:[],
-                matterTypes:[],
+                search_keys: {},
+                currencys: [],
+                materialUnits: [],
+                materialRelationUnits: [],
+                materialCategorys: [],
+                materialSupplyModes: [],
                 form: {
-                    matterHNRNo: '',
-                    matterNo: '',
-                    matterType: '',
-                    matterCnDec: '',
-                    matterEnDec:'',
-                    unit: '',
-                    scalerRela:'',
-                    scalerUnit:'',
-                    currency:'',
+                    orderCode: '',
+                    orderCodeDesc: '',
+                    orderAmount: '',
+                    orderDate: '',
+                    orderUnit: '',
+                    orderStatus: '',
                 },
                 /**表单的验证*/
-                // rules: {
-                //     userName: [
-                //         {  required: true, message: '请填写用户名', trigger: 'blur' },
-                //         {max: 30, message: '长度不超过30个字符', trigger: 'blur' },
-                //         { pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur',message: '请输入英文数字下划线',}
-                //     ],
-                //     trueName: [
-                //         {  required: true, message: '请填写真实姓名', trigger: 'blur' },
-                //         {max: 30, message: '长度不超过30个字符', trigger: 'blur' }
-                //     ],
-                //     password:[
-                //         { validator: validatePass, trigger: 'blur' },
-                //     ],
-                //     checkPass:[
-                //         { validator: validatePass2, trigger: 'blur' },
-                //     ],
-                //     tel:[
-                //         { required: false,pattern: /^1(3|4|5|7|8)\d{9}$/, trigger: 'blur',message: '请输入正确的手机号',}
-                //     ],
-                //     email: [
-                //         { required: false, type: 'email', message: '请输入正确的邮箱', trigger: ['blur'] }
-                //     ]
-
-                // },
+                rules: {
+                    orderCode: [
+                        {required: true, message: '请填写订单产品型号', trigger: 'blur'},
+                        {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
+                        {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
+                    ],
+                    orderCodeDesc: [
+                        {required: true, message: '请填写订单产品型号描述', trigger: 'blur'},
+                        {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
+                        {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
+                    ],
+                    orderAmount: [
+                        {required: true, message: '请填写订单数量', trigger: 'blur'},
+                        {pattern: /^[0-9]*$/ , trigger: 'blur', message: '请输入数字',}
+                    ],
+                    orderDate:[
+                        {required: true, message: '请填写订单日期', trigger: 'blur'},
+                    ],
+                    orderUnit: [
+                        {required: true, message: '请选择物料类别', trigger: 'change'}
+                    ],
+                    orderStatus: [
+                        {required: true, message: '请选择物料类别', trigger: 'change'}
+                    ],
+                },
             }
         },
-        mounted(){
+        mounted() {
             this.init()
         },
         methods: {
-            async init(){
-                await activityService.init().then(resp =>{
-                    this.currencys = resp.data.currencys;
-                    this.units = resp.data.units;
-                    this.matterTypes = resp.data.matterTypes;
+            async init() {
+                await activityService.initData().then(resp => {
+                    this.materialRelationUnits = resp.data.result.materialRelationUnits;
+                    this.materialUnits = resp.data.result.materialUnits;
+                    this.currencys = resp.data.result.currencys;
+                    this.materialCategorys = resp.data.result.materialCategorys;
+                    this.materialSupplyModes = resp.data.result.materialSupplyModes;
                 }, err => {
                     console.error(err);
                 });
-                await activityService.init().then(resp =>{
-                    this.form = resp.data.list[0];
-                }, err => {
-                    console.error(err);
-                });
+                if (this.mode == "EDIT") {
+                    await activityService.findMatterInfo({materialInfoId: this.id}).then(resp => {
+                        this.form = resp.data.result;
+                    }, err => {
+                        console.error(err);
+                    });
+                }
+
             },
             /*确定*/
-            submit(formName){
+            submit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-                        let data={
-                            // id       : this.id            || undefined,
-                            userName : this.form.userName || undefined,
-                            trueName : this.form.trueName || undefined,
-                            password : this.form.password || undefined,
-                            tel      : this.form.tel      || undefined,
-                            email    : this.form.email    || undefined,
-                            memo     : this.form.memo     || undefined,
-                            transferorNo : this.form.transferorEntity && this.form.transferorEntity.transferorNo || undefined,
-                            orgNo    : this.form.orgEntity && this.form.orgEntity.orgNo  || undefined,
-                            cityAreaCode   : this.form.region && this.form.region[0]   || undefined,
-                            countyAreaCode : this.form.region && this.form.region[1]   || undefined,
+                        let data = {
+                            id: this.id || undefined,
+                            orderCode: this.form.orderCode || undefined,
+                            orderCodeDesc: this.form.orderCodeDesc || undefined,
+                            orderAmount: this.form.orderAmount || undefined,
+                            orderDate: this.form.orderDate || undefined,
+                            orderUnit: this.form.orderUnit || undefined,
+                            orderStatus: this.form.orderStatus || undefined,
+                            version: this.form.version || undefined,
                         }
-                        // if(this.mode == 'EDIT'){  //编辑
-                        //     service.updateUser({...data}).then(resp=>{
-                        //         this.$notify({message: resp.data.msg, type: resp.data.type});
-                        //         if(resp.data.type == "success"){
-                        //             this.$emit("success");
-                        //             this.dialogFormVisible = false
-                        //         }
-                        //     })
-                        // }else{
-                        //     service.addUser({...data}).then(resp=>{  //添加
-                        //         this.$notify({message: resp.data.msg, type: resp.data.type});
-                        //         if(resp.data.type == "success"){
-                        //             this.$emit("success");
-                        //             this.dialogFormVisible = false
-                        //         }
-                        //     })
-                        // }
+                        if (this.mode == 'EDIT') {  //编辑
+                            activityService.updateMatter({...data}).then(resp => {
+                                if (resp.data.code == "201") {
+                                    this.$notify({message: resp.data.message, type: "success"});
+                                    this.$emit("success");
+                                    this.dialogFormVisible = false
+                                } else {
+                                    this.$notify({message: resp.data.message, type: "error"});
+                                }
+                            })
+                        } else {
+                            activityService.addMatter({...data}).then(resp => {  //添加
+                                if (resp.data.code == "201") {
+                                    this.$notify({message: resp.data.message, type: "success"});
+                                    this.$emit("success");
+                                    this.dialogFormVisible = false
+                                } else {
+                                    this.$notify({message: resp.data.message, type: "error"});
+                                }
+                            })
+                        }
 
                     } else {
                         console.log('error submit!!');
@@ -192,7 +217,7 @@
                     }
                 });
             },
-            cancel(){
+            cancel() {
                 this.dialogFormVisible = false
             },
         }
