@@ -38,5 +38,5 @@ public interface OrderInfoService {
 	
 	CommonResultInfo<?> generateOrderDetailInfo(CommonEntity commonEntity,Authentication auth);
 	
-	ResponseEntity<byte[]> downloadExcel(TOrderInfoEntity torderInfoEntity,int exportType);
+	ResponseEntity<byte[]> downloadExcel(TOrderInfoEntity torderInfoEntity);
 }

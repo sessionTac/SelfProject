@@ -136,6 +136,14 @@
     delete from t_order_info
     where order_code = #{orderNo,jdbcType=VARCHAR}
   </delete>
+  <update id="deleteBatchData">
+  	update t_order_info
+  	set update_user = #{updateUser,jdbcType=VARCHAR},update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),is_delete = #{isDelete,jdbcType=INTEGER} 
+  	where id IN
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+  </update>
   <insert id="insert" parameterType="cn.springboot.osbulkparts.entity.TOrderInfoEntity">
     <!--
       WARNING - @mbg.generated

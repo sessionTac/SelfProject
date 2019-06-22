@@ -264,7 +264,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	}
 
 	@Override
-	public ResponseEntity<byte[]> downloadExcel(TOrderInfoEntity torderInfoEntity,int exportType) {
+	public ResponseEntity<byte[]> downloadExcel(TOrderInfoEntity torderInfoEntity) {
 		String[] title = messageBean.getMessage("file.title.orderinfo").split(",");
 		List<TOrderInfoEntity> resultList = torderInfoDao.selectOrderInfoListByKeys(torderInfoEntity);
 		ResponseEntity<byte[]> result = educeExcel(title,resultList);
@@ -273,6 +273,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	
 	@Override
 	public CommonResultInfo<?> generateOrderDetailInfo(CommonEntity commonEntity, Authentication auth) {
+		
+		
 		// TODO Auto-generated method stub
 		return null;
 	}
