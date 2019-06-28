@@ -5,8 +5,19 @@
         <el-form-item label="订单产品型号">
           <el-input placeholder="订单产品型号" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
         </el-form-item>
-        <el-form-item label="订单产品型号描述">
-          <el-input placeholder="订单产品型号描述" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
+        <el-form-item label="订单日期">
+          <el-date-picker
+            class=""
+            v-model="search_keys.orderDateArray"
+            type="daterange"
+            range-separator="至"
+            value-format="yyyyMMddHHmmss"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期">
+          </el-date-picker>
+        </el-form-item>
+        <el-form-item label="物料号">
+          <el-input placeholder="物料号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
         </el-form-item>
         <el-collapse accordion>
           <el-collapse-item>
@@ -14,37 +25,27 @@
               <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
             </template>
             <div>
-              <el-form-item label="订单数量">
-                <el-input placeholder="订单数量" v-model="search_keys.orderAmount" class="search-form-item-input"></el-input>
+              <el-form-item label="订单描述">
+                <el-input placeholder="订单描述" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="订单日期">
-                <el-date-picker
-                  class=""
-                  v-model="search_keys.orderDateArray"
-                  type="daterange"
-                  range-separator="至"
-                  value-format="yyyyMMddHHmmss"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期">
-                </el-date-picker>                            </el-form-item>
-              <el-form-item label="订单型号单位">
-                <el-select v-model="search_keys.orderUnit"  size="mini" class="search-form-item-input">
+              <el-form-item label="订单号">
+                <el-input placeholder="订单号" v-model="search_keys.orderId" class="search-form-item-input"></el-input>
+              </el-form-item>
+              <el-form-item label="物料中文描述">
+                <el-input placeholder="物料中文描述" v-model="search_keys.materialDescCn" class="search-form-item-input"></el-input>
+              </el-form-item>
+              <el-form-item label="物料英文描述">
+                <el-input placeholder="物料英文描述" v-model="search_keys.materialDescEn" class="search-form-item-input"></el-input>
+              </el-form-item>
+              <el-form-item label="物料俄文描述">
+                <el-input placeholder="物料俄文描述" v-model="search_keys.materialDescRn" class="search-form-item-input"></el-input>
+              </el-form-item>
+              <el-form-item label="状态">
+                <el-select v-model="search_keys.confirmStatus"  size="mini" class="search-form-item-input">
                   <el-option value=""></el-option>
                   <el-option
                     size="mini"
-                    v-for="item in orderUnits"
-                    :key="item.value"
-                    :label="item.name"
-                    :value="item.value">
-                  </el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="计划状态">
-                <el-select v-model="search_keys.orderStatus"  size="mini" class="search-form-item-input">
-                  <el-option value=""></el-option>
-                  <el-option
-                    size="mini"
-                    v-for="item in orderStatus"
+                    v-for="item in confirmStatus"
                     :key="item.value"
                     :label="item.name"
                     :value="item.value">
@@ -143,6 +144,8 @@
         </template>
       </el-table-column>
       <el-table-column prop="orderUnit" width="100" align="center" label="订单型号单位" />
+      <el-table-column prop="orderId" width="100" align="center" label="订单号" />
+      <el-table-column prop="orderIdItem" width="100" align="center" label="订单行项目" />
       <el-table-column prop="orderStatus"  :show-overflow-tooltip="true" align="center" label="计划状态"  />
 
       <el-table-column prop="createUser" align="center" label="创建人"  />
@@ -192,7 +195,19 @@
     data(){
       return{
         search_keys:{
-
+          orderCode:"",
+          orderDateArray:[],
+          materialCode:"",
+          orderCodeDesc:"",
+          orderId:"",
+          materialDescCn:"",
+          materialDescEn:"",
+          materialDescRn:"",
+          confirmStatus:"",
+          createUser:"",
+          createTimeArray:[],
+          updateUser:"",
+          updateTimeArray:[],
         },
         options:{
           

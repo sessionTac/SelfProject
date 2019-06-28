@@ -17,14 +17,14 @@ public class TOrderDetailInfoEntity implements Serializable {
     private String orderCode;
 
     /**
-     * 订单数量
+     * 订单产品型号描述
      */
     private String orderCodeDesc;
 
     /**
-     * 订单日期
+     * 订单数量
      */
-    private Long orderAmount;
+    private BigDecimal orderAmount;
 
     /**
      * 订单日期
@@ -221,6 +221,10 @@ public class TOrderDetailInfoEntity implements Serializable {
      */
     private String createTime;
 
+    private String createTimeStart;
+
+    private String createTimeEnd;
+
     /**
      * 更新者
      */
@@ -230,6 +234,10 @@ public class TOrderDetailInfoEntity implements Serializable {
      * 更新时间
      */
     private String updateTime;
+
+    private String updateTimeStart;
+
+    private String updateTimeEnd;
 
     /**
      * 逻辑删除
