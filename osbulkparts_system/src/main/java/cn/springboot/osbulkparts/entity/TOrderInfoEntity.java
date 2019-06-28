@@ -109,12 +109,12 @@ public class TOrderInfoEntity implements Serializable {
     /**
      * 订单型号单位
      */
-    private TDictDataEntity dictOrderStatus;
+    private TDictDataEntity dictOrderUnit;
     
     /**
      * 订单状态
      */
-    private TDictDataEntity dictOrderUnit;
+    private TDictDataEntity dictOrderStatus;
 
     private static final long serialVersionUID = 1L;
 }

@@ -26,6 +26,7 @@
     <result column="material_minpackage_type" jdbcType="VARCHAR" property="materialMinpackageType" />
     <result column="material_tax_price" jdbcType="DECIMAL" property="materialTaxPrice" />
     <result column="material_vat_price" jdbcType="DECIMAL" property="materialVatPrice" />
+    <result column="tax" jdbcType="DECIMAL" property="tax" />
     <result column="material_rate" jdbcType="DECIMAL" property="materialRate" />
     <result column="material_currency" jdbcType="VARCHAR" property="materialCurrency" />
     <result column="material_price" jdbcType="DECIMAL" property="materialPrice" />
@@ -88,6 +89,11 @@
         <result property="value" column="material_minpackage_type"/>
         <result property="name" column="dictMinpackageType"/>
     </association>
+    <association property="dictConvertRelation"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+        <result property="value" column="material_relation"/>
+        <result property="name" column="dictConvertRelation"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -98,7 +104,7 @@
     material_info_id, material_order_code, material_order_code_desc,material_hnr_code, material_ckd_code, material_code, 
     material_category, material_desc_cn, material_desc_en, material_desc_rn, hs_no, supplier_code, 
     material_unit, material_relation, material_relation_unit, material_minpackage_amt, material_minpackage_type,
-    material_tax_price, material_vat_price, material_rate, material_currency, material_price, 
+    material_tax_price, material_vat_price, tax, material_rate, material_currency, material_price, 
     level_bom_code, material_supply_mode, factory_code,`length`,width,height,data_role_at, user_defined1,
     user_defined2, user_defined3, user_defined4, user_defined5, user_defined6, user_defined7, 
     user_defined8, user_defined9, user_defined10, is_locked,create_user, create_time, update_user, 
@@ -127,6 +133,7 @@
 			material.material_unit,
 			dictUnit.`name` AS dictMaterialUnit,
 			material.material_relation,
+			dictConvertRelation.`name` AS dictConvertRelation,
 			material.material_relation_unit,
 			dictRelationUnit.`name` AS dictMaterialRelationUnit,
 			material.material_minpackage_amt,
@@ -134,6 +141,7 @@
 			dictMinpackageType.`name` AS dictMinpackageType,
 			material.material_tax_price,
 			material.material_vat_price,
+			material.tax,
 			material.material_rate,
 			material.material_currency,
 			dictCurrency.`name` AS dictMaterialCurrency,
@@ -194,6 +202,10 @@
 		AND dictMinpackageType.dict_type_code = 'minpackageType'
 		AND dictMinpackageType.is_enable = 1
 		AND dictMinpackageType.delete_flg = 0
+		LEFT JOIN t_dict_data dictConvertRelation ON material.material_relation = dictConvertRelation.`value`
+		AND dictConvertRelation.dict_type_code = 'converRelation'
+		AND dictConvertRelation.is_enable = 1
+		AND dictConvertRelation.delete_flg = 0
 		WHERE
 			material.is_delete = 0
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialInfoId)">
@@ -252,6 +264,9 @@
     </if>
     <if test="materialVatPrice != null">
     	AND material.material_vat_price = #{materialVatPrice,jdbcType=DECIMAL}
+    </if>
+    <if test="tax != null">
+    	AND material.tax = #{tax,jdbcType=DECIMAL}
     </if>
     <if test="materialRate != null">
     	AND material.material_rate = #{materialRate,jdbcType=DECIMAL}
@@ -356,7 +371,7 @@
       material_desc_rn, hs_no, supplier_code, 
       material_unit, material_relation, material_relation_unit, 
       material_minpackage_amt, material_minpackage_type,material_tax_price, 
-      material_vat_price, material_rate, material_currency, 
+      material_vat_price, tax, material_rate, material_currency, 
       material_price, level_bom_code, material_supply_mode, 
       factory_code, data_role_at, user_defined1, 
       user_defined2, user_defined3, user_defined4, 
@@ -371,7 +386,7 @@
       #{materialDescRn,jdbcType=VARCHAR}, #{hsNo,jdbcType=VARCHAR}, #{supplierCode,jdbcType=VARCHAR}, 
       #{materialUnit,jdbcType=VARCHAR}, #{materialRelation,jdbcType=VARCHAR}, #{materialRelationUnit,jdbcType=VARCHAR}, 
       #{materialMinpackageAmt,jdbcType=DOUBLE}, #{materialMinpackageType,jdbcType=VARCHAR}, #{materialTaxPrice,jdbcType=DECIMAL}, 
-      #{materialVatPrice,jdbcType=DECIMAL}, #{materialRate,jdbcType=DECIMAL}, #{materialCurrency,jdbcType=VARCHAR}, 
+      #{materialVatPrice,jdbcType=DECIMAL}, #{tax,jdbcType=DECIMAL}, #{materialRate,jdbcType=DECIMAL}, #{materialCurrency,jdbcType=VARCHAR}, 
       #{materialPrice,jdbcType=DECIMAL}, #{levelBomCode,jdbcType=INTEGER}, #{materialSupplyMode,jdbcType=VARCHAR}, 
       #{factoryCode,jdbcType=VARCHAR}, #{dataRoleAt,jdbcType=VARCHAR}, #{userDefined1,jdbcType=VARCHAR}, 
       #{userDefined2,jdbcType=VARCHAR}, #{userDefined3,jdbcType=VARCHAR}, #{userDefined4,jdbcType=VARCHAR}, 
@@ -446,6 +461,9 @@
       <if test="materialVatPrice != null">
         material_vat_price,
       </if>
+      <if test="tax != null">
+        tax,
+      </if>
       <if test="materialRate != null">
         material_rate,
       </if>
@@ -464,15 +482,15 @@
       <if test="factoryCode != null">
         factory_code,
       </if>
-        <if test="length != null">
-            `length`,
-        </if>
-        <if test="width != null">
-            width,
-        </if>
-        <if test="height != null">
-            height,
-        </if>
+       <if test="length != null">
+           `length`,
+       </if>
+       <if test="width != null">
+           width,
+       </if>
+       <if test="height != null">
+           height,
+       </if>
       <if test="dataRoleAt != null">
         data_role_at,
       </if>
@@ -584,6 +602,9 @@
       <if test="materialVatPrice != null">
         #{materialVatPrice,jdbcType=DECIMAL},
       </if>
+      <if test="tax != null">
+        #{tax,jdbcType=DECIMAL},
+      </if>
       <if test="materialRate != null">
         #{materialRate,jdbcType=DECIMAL},
       </if>
@@ -602,15 +623,15 @@
       <if test="factoryCode != null">
         #{factoryCode,jdbcType=VARCHAR},
       </if>
-        <if test="length != null">
-            #{length,jdbcType=DECIMAL},
-        </if>
-        <if test="width != null">
-            #{width,jdbcType=DECIMAL},
-        </if>
-        <if test="height != null">
-            #{height,jdbcType=DECIMAL},
-        </if>
+       <if test="length != null">
+           #{length,jdbcType=DECIMAL},
+       </if>
+       <if test="width != null">
+           #{width,jdbcType=DECIMAL},
+       </if>
+       <if test="height != null">
+           #{height,jdbcType=DECIMAL},
+       </if>
       <if test="dataRoleAt != null">
         #{dataRoleAt,jdbcType=VARCHAR},
       </if>
@@ -692,6 +713,7 @@
         material_minpackage_type,
         material_tax_price,
         material_vat_price,
+        tax,
         material_rate,
         material_currency,
         material_price,
@@ -741,6 +763,7 @@
         #{item.materialMinpackageType,jdbcType=VARCHAR},
         #{item.materialTaxPrice,jdbcType=DECIMAL},
         #{item.materialVatPrice,jdbcType=DECIMAL},
+        #{item.tax,jdbcType=DECIMAL},
         #{item.materialRate,jdbcType=DECIMAL},
         #{item.materialCurrency,jdbcType=VARCHAR},
         #{item.materialPrice,jdbcType=DECIMAL},
@@ -828,6 +851,9 @@
       <if test="item.materialVatPrice != null">
         material_vat_price = #{item.materialVatPrice,jdbcType=DECIMAL},
       </if>
+      <if test="item.tax != null">
+        tax = #{item.tax,jdbcType=DECIMAL},
+      </if>
       <if test="item.materialRate != null">
         material_rate = #{item.materialRate,jdbcType=DECIMAL},
       </if>
@@ -846,15 +872,15 @@
       <if test="item.factoryCode != null">
         factory_code = #{item.factoryCode,jdbcType=VARCHAR},
       </if>
-        <if test="item.length != null">
-            `length` = #{item.length,jdbcType=DECIMAL},
-        </if>
-        <if test="item.width != null">
-            width = #{item.width,jdbcType=DECIMAL},
-        </if>
-        <if test="item.height != null">
-            height = #{item.height,jdbcType=DECIMAL},
-        </if>
+      <if test="item.length != null">
+          `length` = #{item.length,jdbcType=DECIMAL},
+      </if>
+      <if test="item.width != null">
+          width = #{item.width,jdbcType=DECIMAL},
+      </if>
+      <if test="item.height != null">
+          height = #{item.height,jdbcType=DECIMAL},
+      </if>
       <if test="item.dataRoleAt != null">
         data_role_at = #{item.dataRoleAt,jdbcType=VARCHAR},
       </if>
@@ -928,6 +954,7 @@
       material_minpackage_type = #{materialMinpackageType,jdbcType=VARCHAR},
       material_tax_price = #{materialTaxPrice,jdbcType=DECIMAL},
       material_vat_price = #{materialVatPrice,jdbcType=DECIMAL},
+      tax = #{tax,jdbcType=DECIMAL},
       material_rate = #{materialRate,jdbcType=DECIMAL},
       material_currency = #{materialCurrency,jdbcType=VARCHAR},
       material_price = #{materialPrice,jdbcType=DECIMAL},

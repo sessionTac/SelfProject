@@ -28,13 +28,13 @@ public interface OrderInfoService {
 	
 	CommonResultInfo<TOrderInfoEntity> selectOrderInfo(TOrderInfoEntity torderInfoEntity);
 
-	CommonResultInfo<?> insertMaterialInfo(TOrderInfoEntity torderInfoEntity,Authentication auth);
+	CommonResultInfo<?> insertOrderInfo(TOrderInfoEntity torderInfoEntity,Authentication auth);
 	
-	CommonResultInfo<?> updateMaterialInfo(TOrderInfoEntity torderInfoEntity,Authentication auth);
+	CommonResultInfo<?> updateOrderInfo(TOrderInfoEntity torderInfoEntity,Authentication auth);
 	
-	CommonResultInfo<?> deleteMaterialInfo(String orderNo,Authentication auth);
+	CommonResultInfo<?> deleteOrderInfo(String orderNo,Authentication auth);
 	
-	CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity,Authentication auth);
+	CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity,Authentication auth);
 	
 	CommonResultInfo<?> generateOrderDetailInfo(CommonEntity commonEntity,Authentication auth);
 	

@@ -77,7 +77,12 @@
 			enableDeleteByExample="false">
 		</table> -->
 		<!-- 订单信息表  -->
-  		<table tableName="t_order_info" domainObjectName="TOrderInfoEntity" 
+<!--   		<table tableName="t_order_info" domainObjectName="TOrderInfoEntity" 
+			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false">
+		</table> -->
+		<!-- 订单详细信息表  -->
+  		<table tableName="t_order_detail_info" domainObjectName="TOrderDetailInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
 		</table>

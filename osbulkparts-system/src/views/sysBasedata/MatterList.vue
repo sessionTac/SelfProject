@@ -173,9 +173,10 @@
             <el-table-column prop="materialRelation" align="center" label="换算关系"  />
             <el-table-column prop="dictMaterialRelationUnit.name" align="center" label="换算后单位"  />
             <el-table-column prop="materialMinpackageAmt" align="center" label="最小包装数量"  />
-	    <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />
+	        <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />
             <el-table-column prop="materialTaxPrice" align="center" :formatter="price" label="未税单价"  />
             <el-table-column prop="materialVatPrice" align="center" :formatter="price" label="含税单价"  />
+            <el-table-column prop="tax" align="center" :formatter="price" label="税率"  />
             <el-table-column prop="materialPrice" align="center" :formatter="price" label="单价"  />
             <el-table-column prop="materialRate" align="center" label="代理费率"  />
             <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />

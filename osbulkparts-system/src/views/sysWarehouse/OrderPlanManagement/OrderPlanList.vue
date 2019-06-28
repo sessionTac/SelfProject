@@ -2,11 +2,11 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="订单产品型号">
-                    <el-input placeholder="订单产品型号" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
+                <el-form-item label="订单型号">
+                    <el-input placeholder="订单型号" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="订单产品型号描述">
-                    <el-input placeholder="订单产品型号描述" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
+                <el-form-item label="订单型号描述">
+                    <el-input placeholder="订单型号描述" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-collapse accordion>
                     <el-collapse-item>
@@ -131,15 +131,15 @@
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
             <el-table-column prop="orderCode" fixed width="100" align="center" label="订单产品型号"  />
-            <el-table-column prop="orderCodeDesc" fixed width="100" align="center" label="订单产品型号描述"  />
+            <el-table-column prop="orderCodeDesc" fixed width="300" align="center" label="订单产品型号描述"  />
             <el-table-column prop="orderAmount" fixed width="100" align="center" label="订单数量"  />
-            <el-table-column prop="orderDate" fixed width="100" align="center" label="订单日期">
+            <el-table-column prop="orderDate" fixed width="160" align="center" label="订单日期">
                 <template slot-scope="scope">
-                    {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
+                    {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDD').format('YYYY-MM-DD') : ''}}
                 </template>
             </el-table-column>
-            <el-table-column prop="orderUnit" width="100" align="center" label="订单型号单位" />
-            <el-table-column prop="orderStatus"  :show-overflow-tooltip="true" align="center" label="计划状态"  />
+            <el-table-column prop="dictOrderUnit.name" fixed width="100" align="center" label="订单型号单位" />
+<!--            <el-table-column prop="dictOrderStatus.name"  :show-overflow-tooltip="true" align="center" label="计划状态"  />-->
 
             <el-table-column prop="createUser" align="center" label="创建人"  />
             <el-table-column label="创建时间" show-overflow-tooltip>
@@ -153,7 +153,7 @@
                     {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" prop="dictLockStatus.name" align="center" label="是否生成"  />
+            <el-table-column fixed="right" prop="dictOrderStatus.name" align="center" label="计划状态"  />
             <el-table-column fixed="right"  width="80" label="操作" >
                 <template slot-scope="scope" >
                     <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">

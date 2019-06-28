@@ -6,15 +6,15 @@
                 <div class="dialogStyle" style="display: flex;flex-direction: column">
                     <el-form  class="search-form search-form-normal" label-width="110px" ref="form"
                               style="flex: 5" :model="form" size="mini" :rules="rules">
-                        <el-form-item label="订单产品型号" prop="orderCode">
+                        <el-form-item label="订单型号" prop="orderCode">
                             <el-input v-model="form.orderCode" class="search-form-item-input" style="width: 160px" size="mini"
                                       clearable></el-input>
                             <template slot="error" slot-scope="scope">
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
-                        <el-form-item label="订单产品型号描述" prop="orderCodeDesc">
-                            <el-input v-model="form.orderCodeDesc" class="search-form-item-input" style="width: 160px" size="mini"
+                        <el-form-item label="订单型号描述" prop="orderCodeDesc">
+                            <el-input type="textarea" autosize="" v-model="form.orderCodeDesc" class="search-form-item-input" style="width: 160px" size="mini"
                                       clearable></el-input>
                             <template slot="error" slot-scope="scope">
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
@@ -128,12 +128,12 @@
                 /**表单的验证*/
                 rules: {
                     orderCode: [
-                        {required: true, message: '请填写订单产品型号', trigger: 'blur'},
+                        {required: true, message: '请填写订单型号', trigger: 'blur'},
                         {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
                         {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
                     ],
                     orderCodeDesc: [
-                        {required: true, message: '请填写订单产品型号描述', trigger: 'blur'},
+                        {required: true, message: '请填写订单型号描述', trigger: 'blur'},
                         {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
                         {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
                     ],

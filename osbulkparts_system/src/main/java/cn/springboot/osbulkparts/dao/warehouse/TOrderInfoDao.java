@@ -23,6 +23,8 @@ public interface TOrderInfoDao {
 
     TOrderInfoEntity selectByPrimaryKey(String id);
     
+    List<TOrderInfoEntity> selectByIds(@Param("ids") String[] ids);
+    
     List<TOrderInfoEntity> selectOrderInfoListByKeys(TOrderInfoEntity torderInfoEntity);
 
     int updateByPrimaryKeySelective(TOrderInfoEntity record);

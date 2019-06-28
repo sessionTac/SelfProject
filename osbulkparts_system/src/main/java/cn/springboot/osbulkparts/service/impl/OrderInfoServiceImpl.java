@@ -42,11 +42,16 @@ import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
 import cn.springboot.osbulkparts.common.utils.excel.CommonExcelConfig;
 import cn.springboot.osbulkparts.common.utils.excel.CommonPoiReadUtil;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
+import cn.springboot.osbulkparts.dao.basedata.MMaterialInfoDao;
+import cn.springboot.osbulkparts.dao.basedata.MSupplierInfoDao;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
 import cn.springboot.osbulkparts.dao.warehouse.TOrderInfoDao;
+import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
+import cn.springboot.osbulkparts.entity.MSupplierInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
 import cn.springboot.osbulkparts.service.OrderInfoService;
 
@@ -61,6 +66,12 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	
 	@Autowired
 	private MRoleInfoDao mroleInfoDao;
+	
+	@Autowired
+	private MSupplierInfoDao msupplierInfoDao;
+	
+	@Autowired
+	private MMaterialInfoDao mmaterialInfoDao;
 	
     @Autowired
     private I18nMessageBean messageBean;
@@ -103,7 +114,11 @@ public class OrderInfoServiceImpl implements OrderInfoService{
             		result.setMessage(messageBean.getMessage("common.excel.success"));
             	}
         	}
-        } catch (NullPointerException se) {
+        } catch(ParseException pe) {
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(pe.getMessage().toString());
+        } 
+        catch (NullPointerException se) {
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
             result.setMessage(se.getMessage().toString());
         } catch (Exception e) {
@@ -185,7 +200,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> insertMaterialInfo(TOrderInfoEntity torderInfoEntity, Authentication auth) {
+	public CommonResultInfo<?> insertOrderInfo(TOrderInfoEntity torderInfoEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -213,7 +228,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> updateMaterialInfo(TOrderInfoEntity torderInfoEntity, Authentication auth) {
+	public CommonResultInfo<?> updateOrderInfo(TOrderInfoEntity torderInfoEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -243,7 +258,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity, Authentication auth) {
+	public CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -251,8 +266,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			int returnInt = torderInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName());
 			if (returnInt > 0) {
 				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.ORDERINFO_DATA.getTypeName()));
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 			}
-			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 		} catch (Exception e) {
 			e.printStackTrace();
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -271,16 +286,74 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 		return result;
 	}
 	
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<?> generateOrderDetailInfo(CommonEntity commonEntity, Authentication auth) {
-		
-		
-		// TODO Auto-generated method stub
-		return null;
+		CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		try {
+			// TODO
+			List<TOrderDetailInfoEntity> torderDetailInfoList = new ArrayList<TOrderDetailInfoEntity>();
+			MMaterialInfoEntity mmaterialInfoParam = new MMaterialInfoEntity();
+			List<TOrderInfoEntity> orderInfoList = torderInfoDao.selectByIds(commonEntity.getIdsStr());
+			
+			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			for(TOrderInfoEntity torderInfo:orderInfoList) {
+				TOrderDetailInfoEntity orderDetailParam = new TOrderDetailInfoEntity();
+				// 订单型号+物料号判定详细信息中是否存在
+				mmaterialInfoParam.setMaterialOrderCode(torderInfo.getOrderCode());
+				mmaterialInfoParam.setDataRoleAt(roleInfoEntity.getRoleAt());
+				List<MMaterialInfoEntity> materilInfoLst = mmaterialInfoDao.selectByPrimaryKey(mmaterialInfoParam);
+				if(materilInfoLst.size() == 0) {
+					// 不存在：提示【当前订单型号无物料BOM信息，请确认数据。】
+					result.setMessage(messageBean.getMessage("bussiness.order.material.empty",torderInfo.getOrderCode()));
+					return result;
+				}else {
+					for(MMaterialInfoEntity materialInfo:materilInfoLst) {
+						// 物料号的供应商信息是否存在
+						// 不存在：提示【当前订单型号中物料无供应商信息，请确认数据。】
+						MSupplierInfoEntity msupplierInfo = msupplierInfoDao.selectByCode(materialInfo.getSupplierCode());
+						if(msupplierInfo == null) {
+							result.setMessage(messageBean.getMessage("bussiness.order.supplier.empty",
+									materialInfo.getMaterialOrderCode(),
+									materialInfo.getMaterialCode(),
+									materialInfo.getSupplierCode()));
+							return result;
+						}else {
+							// 判断供应商的配额是否存在
+							// 不存在：提示【当前订单型号的供应商没有设置配额，请确认。】
+							if(msupplierInfo.getSupplierQuo() == null) {
+								result.setMessage(messageBean.getMessage("bussiness.order.supplierQuo.empty",
+										materialInfo.getMaterialOrderCode(),
+										materialInfo.getMaterialCode(),
+										materialInfo.getSupplierCode()));
+								return result;
+							}
+						}
+					}
+					// 按照供应商配额计算数量
+					// 按照数据字典的国家税率计算价格
+					// 按照换算关系计算换算后数量
+					
+					// 自动生成订单号
+					// 生成详细信息数据状态设置为：1：导入已生成
+//					createOrderDetailInfoParam();
+//					torderDetailInfoList
+				}
+			}
+			return result;
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+			return result;
+		} 
 	}
 	
 	@Override
-	public CommonResultInfo<?> deleteMaterialInfo(String orderNo, Authentication auth) {
+	public CommonResultInfo<?> deleteOrderInfo(String orderNo, Authentication auth) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -350,7 +423,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	 * Excel文件解析
 	 * @throws Exception 
 	 */
-	private List<TOrderInfoEntity> resolvExcelToDb(MultipartFile excleFile,Authentication auth,int type) throws NullPointerException,Exception{
+	private List<TOrderInfoEntity> resolvExcelToDb(MultipartFile excleFile,Authentication auth,int type) throws ParseException,NullPointerException,Exception{
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
@@ -397,9 +470,12 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("周"),"yyyyMMddhhmmss"));
 					// 数量
-					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量")));
+					String orderAmount = (String)mapData.get("数量");
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal(orderAmount.trim()));
 					// 数据所属
 					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
 					// 创建者
 					torderInfoEntity.setCreateUser(principal.getUserName());
 					// 删除
@@ -426,6 +502,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量1")));
 					// 数据所属
 					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
 					// 创建者
 					torderInfoEntity.setCreateUser(principal.getUserName());
 					// 删除
@@ -467,6 +545,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			}
 			return insertResultLst;
 		}
+		catch(ParseException pe) {
+			throw pe;
+		}
 		catch(NullPointerException se) {
 			throw se;
 		}catch(Exception e) {
@@ -480,25 +561,26 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	 * @param str
 	 * @param pattern
 	 * @return date
+	 * @throws ParseException 
 	 */
-    private String parseDate(String str, String pattern) {
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+    private String parseDate(String str, String pattern) throws ParseException {
+    	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = null;
         String dateString = null;
         try {
-            date = simpleDateFormat.parse(str);
+    		date = dateFormat.parse(str);
             SimpleDateFormat formatter = new SimpleDateFormat(pattern);
             dateString = formatter.format(date);
         } catch (ParseException e) {
-            e.printStackTrace();
+            throw new ParseException(messageBean.getMessage("common.excel.date.error",CommonConstantEnum.ORDER_DATE.getTypeName()),0);
         }
         return dateString;
     }
 	
 	/***
 	 * 订单型号是否存在
-	 * @param materialOrderCode
-	 * @param materialCode
+	 * @param OrderOrderCode
+	 * @param OrderCode
 	 * @return 1：已存在但未生成；2：已存在且已生成；3：不存在
 	 */
 	private int isExist(String OrderCode) {

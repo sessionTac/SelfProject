@@ -138,6 +138,13 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
+            <el-form-item label="税率" prop="tax">
+              <el-input v-model="form.tax" class="search-form-item-input" style="width: 160px"  size="mini"
+                        :maxlength="18"   clearable></el-input>
+              <template slot="error" slot-scope="scope">
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
+            </el-form-item>
             <el-form-item label="单价" prop="materialPrice">
               <el-input v-model="form.materialPrice" class="search-form-item-input" style="width: 160px" size="mini"
                         :maxlength="18"  clearable></el-input>
@@ -277,6 +284,7 @@
           materialMinpackageAmt: '',
           materialTaxPrice: '',
           materialVatPrice: '',
+          tax:'',
           materialPrice: '',
           materialCurrency: '',
           materialRate: '',
@@ -285,7 +293,9 @@
           factoryCode: '',
           length:"",
           wide:"",
-          height:""
+          height:"",
+          dataRoleAt: "",
+          isLocked:"",
 
         },
         /**表单的验证*/
@@ -343,6 +353,9 @@
             {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
           materialVatPrice: [
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          ],
+          tax: [
             {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
           materialPrice: [
@@ -422,6 +435,7 @@
               materialMinpackageAmt: this.form.materialMinpackageAmt || undefined,
               materialTaxPrice: this.form.materialTaxPrice || undefined,
               materialVatPrice: this.form.materialVatPrice || undefined,
+              tax: this.form.tax || undefined,
               materialPrice: this.form.materialPrice || undefined,
               materialCurrency: this.form.materialCurrency || undefined,
               materialRate: this.form.materialRate || undefined,
@@ -432,9 +446,13 @@
               wide:this.form.wide  || undefined,
               height:this.form.height || undefined,
               version: this.form.version || undefined,
+              dataRoleAt: this.form.dataRoleAt || undefined,
+              isLocked: this.form.isLocked,
             }
             if (this.mode == 'EDIT') {  //编辑
+                // debugger
               activityService.updateMatter({...data}).then(resp => {
+
                 if (resp.data.code == "201") {
                   this.$notify({message: resp.data.message, type: "success"});
                   this.$emit("success");

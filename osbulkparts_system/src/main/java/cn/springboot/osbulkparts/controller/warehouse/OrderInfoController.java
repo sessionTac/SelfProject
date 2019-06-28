@@ -1,26 +1,28 @@
 package cn.springboot.osbulkparts.controller.warehouse;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
-import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
-import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
 import cn.springboot.osbulkparts.service.OrderInfoService;
-import cn.springboot.osbulkparts.service.RoleInfoService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -62,20 +64,20 @@ public class OrderInfoController {
     @ApiImplicitParam(name = "tOrderInfoEntity", value = "订单计划实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/addOrderInfo")
     public CommonResultInfo<?> addOrderInfo(@RequestBody TOrderInfoEntity tOrderInfoEntity,Authentication auth){
-        return orderInfoService.insertMaterialInfo(tOrderInfoEntity,auth);
+        return orderInfoService.insertOrderInfo(tOrderInfoEntity,auth);
     }
 
     @ApiOperation(value="更新订单计划", notes="更新一条新的订单计划")
     @ApiImplicitParam(name = "tOrderInfoEntity", value = "订单计划实体对象", required = true, dataType = "body", paramType = "body")
     @PutMapping("/updateOrderInfo")
     public CommonResultInfo<?> updateOrderInfo(@RequestBody TOrderInfoEntity tOrderInfoEntity,Authentication auth){
-        return orderInfoService.updateMaterialInfo(tOrderInfoEntity,auth);
+        return orderInfoService.updateOrderInfo(tOrderInfoEntity,auth);
     }
 
     @ApiOperation(value="删除订单计划", notes="删除一条新的订单计划")
     @ApiImplicitParam(name = "tOrderInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
-    @DeleteMapping("/deleteMaterialInfo/{materialId}")
-    public CommonResultInfo<?> deleteOrderInfo(@PathVariable String materialId,Authentication auth){
+    @DeleteMapping("/deleteOrderInfo/{OrderId}")
+    public CommonResultInfo<?> deleteOrderInfo(@PathVariable String OrderId,Authentication auth){
         return null;
     }
 
@@ -99,11 +101,11 @@ public class OrderInfoController {
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/deleteOrderInfo")
     public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
-        return orderInfoService.deleteBatchMaterialInfo(commonEntity,auth);
+        return orderInfoService.deleteBatchOrderInfo(commonEntity,auth);
     }
 
     @ApiOperation(value="订单计划导出", notes="订单计划导出")
-    @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
+    @ApiImplicitParam(name = "mOrderInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/exportData")
     public Object downExcel(@RequestBody TOrderInfoEntity tOrderInfoEntity) {
         return orderInfoService.downloadExcel(tOrderInfoEntity);

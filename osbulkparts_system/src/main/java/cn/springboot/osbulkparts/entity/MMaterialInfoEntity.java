@@ -100,6 +100,11 @@ public class MMaterialInfoEntity implements Serializable {
      * 含税单价
      */
     private BigDecimal materialVatPrice;
+    
+    /**
+     * 税率
+     */
+    private BigDecimal tax;
 
     /**
      * 代理费率
@@ -258,6 +263,11 @@ public class MMaterialInfoEntity implements Serializable {
 	     * 单位
 	*/
 	private TDictDataEntity dictMaterialUnit;
+	
+	/**
+	* 换算后单位
+	*/
+	private TDictDataEntity dictConvertRelation;
 	
 	/**
 	* 换算后单位

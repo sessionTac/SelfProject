@@ -89,6 +89,9 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			tDictDataEntity.setDictTypeCode("minpackageType");
 			map.put("materialMinpackageTypes",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			tDictDataEntity.setDictTypeCode("converRelation");
+			map.put("materialConverRelation",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(map);
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -400,26 +403,29 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				//不含税单价
 				row.createCell(13).setCellValue(
 						example.getMaterialVatPrice()!=null?example.getMaterialVatPrice().toString():"");
-				//最小包装数量
+				//不含税单价
 				row.createCell(14).setCellValue(
+						example.getTax()!=null?example.getTax().toString():"");
+				//最小包装数量
+				row.createCell(15).setCellValue(
 						example.getMaterialMinpackageAmt() != null?example.getMaterialMinpackageAmt().toString():"");
 				//代理费率
-				row.createCell(15).setCellValue(
+				row.createCell(16).setCellValue(
 						example.getMaterialRate() != null?example.getMaterialRate().toString():"");
 				//HS海关编码
-				row.createCell(16).setCellValue(example.getHsNo());
+				row.createCell(17).setCellValue(example.getHsNo());
 				//供应商编码
-				row.createCell(17).setCellValue(example.getSupplierCode());
+				row.createCell(18).setCellValue(example.getSupplierCode());
 				//工厂号
-				row.createCell(18).setCellValue(example.getFactoryCode());
+				row.createCell(19).setCellValue(example.getFactoryCode());
 				//长
-				row.createCell(19).setCellValue(
+				row.createCell(20).setCellValue(
 						example.getLength()!=null?example.getLength().toString():"");
 				//宽
-				row.createCell(20).setCellValue(
+				row.createCell(21).setCellValue(
 						example.getWidth()!=null?example.getWidth().toString():"");
 				//高
-				row.createCell(21).setCellValue(
+				row.createCell(22).setCellValue(
 						example.getHeight()!=null?example.getHeight().toString():"");
 
 			}
@@ -506,17 +512,25 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 						(String)mapData.get("换算后单位"),"unit","换算后单位");
 				mmaterialInfoEntity.setMaterialRelationUnit(relationUnitVle);
 				// 最小包装数量
+				String minPackageAmt = (String)mapData.get("最小包装数量");
 				mmaterialInfoEntity.setMaterialMinpackageAmt(
-						CommonMethods.changeToDouble((String)mapData.get("最小包装数量")));
+						CommonMethods.changeToDouble(minPackageAmt.trim()));
 				// 不含税单价
+				String materialTaxPrice = (String)mapData.get("不含税单价");
 				mmaterialInfoEntity.setMaterialTaxPrice(
-						CommonMethods.changeToBigdecimal((String)mapData.get("不含税单价")));
+						CommonMethods.changeToBigdecimal(materialTaxPrice.trim()));
 				// 含税单价
+				String materialVatPrice = (String)mapData.get("含税单价");
 				mmaterialInfoEntity.setMaterialVatPrice(
-						CommonMethods.changeToBigdecimal((String)mapData.get("含税单价")));
+						CommonMethods.changeToBigdecimal(materialVatPrice.trim()));
+				// 含税单价
+				String tax = (String)mapData.get("税率");
+				mmaterialInfoEntity.setMaterialVatPrice(
+						CommonMethods.changeToBigdecimal(tax.trim()));
 				// 代理费率
+				String materialRate = (String)mapData.get("代理费率");
 				mmaterialInfoEntity.setMaterialRate(
-						CommonMethods.changeToBigdecimal((String)mapData.get("代理费率")));
+						CommonMethods.changeToBigdecimal(materialRate.trim()));
 				// 币种
 				String currencyVle = getFromDictDataByName(
 						(String)mapData.get("币种"),"currency","币种");
@@ -530,14 +544,17 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				// 工厂号
 				mmaterialInfoEntity.setFactoryCode((String)mapData.get("工厂号"));
 				// 长
-				mmaterialInfoEntity.setMaterialRate(
-						CommonMethods.changeToBigdecimal((String)mapData.get("长")));
+				String length = (String)mapData.get("长");
+				mmaterialInfoEntity.setLength(
+						CommonMethods.changeToBigdecimal(length.trim()));
 				// 宽
-				mmaterialInfoEntity.setMaterialRate(
-						CommonMethods.changeToBigdecimal((String)mapData.get("宽")));
+				String width = (String)mapData.get("宽");
+				mmaterialInfoEntity.setWidth(
+						CommonMethods.changeToBigdecimal(width.trim()));
 				// 高
+				String height = (String)mapData.get("高");
 				mmaterialInfoEntity.setMaterialRate(
-						CommonMethods.changeToBigdecimal((String)mapData.get("高")));
+						CommonMethods.changeToBigdecimal(height.trim()));
 				// 数据所属
 				mmaterialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 				// 成品型号和子件型号组合判定是否存在，存在时更新，不存在时插入

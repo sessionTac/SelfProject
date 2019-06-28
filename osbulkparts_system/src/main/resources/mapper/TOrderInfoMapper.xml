@@ -52,6 +52,15 @@
     from t_order_info
     where id = #{id,jdbcType=VARCHAR}
   </select>
+  <select id="selectByIds">
+  	select
+    <include refid="Base_Column_List" />
+    from t_order_info
+  	where id IN
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+        #{item}
+    </foreach>
+  </select>
   <select id="selectOrderInfoListByKeys" resultMap="BaseResultMap" parameterType="cn.springboot.osbulkparts.entity.TOrderInfoEntity">
 	SELECT
 		orderInfo.id,
@@ -60,9 +69,9 @@
 		orderInfo.order_amount,
 		orderInfo.order_date,
 		orderInfo.order_unit,
-	    dictUnit.`name` AS dictUnit,
+	    dictUnit.`name` AS dictOrderUnit,
 		orderInfo.order_status,
-	    dictPlanStatus.`name` AS dictPlanStatus,
+	    dictPlanStatus.`name` AS dictOrderStatus,
 	    orderInfo.data_role_at,
 		orderInfo.create_user,
 		orderInfo.create_time,
@@ -85,11 +94,16 @@
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
 		AND data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
     </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(id)">
+		AND orderInfo.id = #{id,jdbcType=VARCHAR}
+    </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCode)">
-    	AND orderInfo.order_code = #{orderCode,jdbcType=VARCHAR}
+    <bind name="orderCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(orderCode)"/>
+    	AND orderInfo.order_code LIKE #{orderCode_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCodeDesc)">
-    	AND orderInfo.order_code_desc LIKE #{orderCodeDesc,jdbcType=VARCHAR}
+    <bind name="orderCodeDesc_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(orderCodeDesc)"/>
+    	AND orderInfo.order_code_desc LIKE #{orderCodeDesc_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderUnit)">
     	AND orderInfo.order_unit = #{orderUnit,jdbcType=VARCHAR}
@@ -106,6 +120,10 @@
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderDateEnd)">
         AND orderInfo.order_date &lt;= #{orderDateEnd,jdbcType=VARCHAR}
     </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createUser)">
+    <bind name="createUser_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(createUser)"/>
+    	AND orderInfo.create_user LIKE #{createUser_like,jdbcType=VARCHAR}
+    </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createTimeStart)">
     	AND orderInfo.create_time &gt;= #{createTimeStart,jdbcType=VARCHAR}
     </if>
@@ -113,7 +131,8 @@
         AND orderInfo.create_time &lt;= #{createTimeEnd,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateUser)">
-    	AND orderInfo.update_user = #{updateUser,jdbcType=VARCHAR}
+    <bind name="updateUser_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(updateUser)"/>
+    	AND orderInfo.update_user LIKE #{updateUser_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateTimeStart)">
     	AND orderInfo.update_time &gt;= #{updateTimeStart,jdbcType=VARCHAR}
@@ -186,7 +205,7 @@
       #{item.orderDate,jdbcType=VARCHAR}, 
       #{item.orderUnit,jdbcType=VARCHAR}, 
       #{item.orderStatus,jdbcType=VARCHAR}, 
-      #{item.dataRoleAt,jdbcType=VARCHAR}
+      #{item.dataRoleAt,jdbcType=VARCHAR},
       #{item.createUser,jdbcType=VARCHAR}, 
       DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
       #{item.updateUser,jdbcType=VARCHAR}, 
