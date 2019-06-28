@@ -30,6 +30,16 @@ public class TOrderDetailInfoEntity implements Serializable {
      * 订单日期
      */
     private String orderDate;
+    
+    /**
+     * 订单日期开始
+     */
+    private String orderDateStart;
+    
+    /**
+     * 订单日期结束
+     */
+    private String orderDateEnd;
 
     /**
      * 订单型号单位

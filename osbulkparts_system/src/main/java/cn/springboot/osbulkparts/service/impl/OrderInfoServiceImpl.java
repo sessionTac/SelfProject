@@ -300,7 +300,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 			for(TOrderInfoEntity torderInfo:orderInfoList) {
-				TOrderDetailInfoEntity orderDetailParam = new TOrderDetailInfoEntity();
+				
 				// 订单型号+物料号判定详细信息中是否存在
 				mmaterialInfoParam.setMaterialOrderCode(torderInfo.getOrderCode());
 				mmaterialInfoParam.setDataRoleAt(roleInfoEntity.getRoleAt());
@@ -330,14 +330,17 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 										materialInfo.getSupplierCode()));
 								return result;
 							}
+							// 按照供应商配额计算数量
+							
+							// 自动生成订单号
+							// 生成详细信息数据状态设置为：1：导入已生成
+							TOrderDetailInfoEntity orderDetailParam = new TOrderDetailInfoEntity();
+							orderDetailParam.setId(CommonSqlUtils.getUUID32());
+							
+							
 						}
 					}
-					// 按照供应商配额计算数量
-					// 按照数据字典的国家税率计算价格
-					// 按照换算关系计算换算后数量
-					
-					// 自动生成订单号
-					// 生成详细信息数据状态设置为：1：导入已生成
+
 //					createOrderDetailInfoParam();
 //					torderDetailInfoList
 				}
