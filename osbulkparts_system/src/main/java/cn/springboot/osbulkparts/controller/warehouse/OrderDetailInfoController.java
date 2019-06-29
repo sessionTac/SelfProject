@@ -4,10 +4,12 @@ import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
+import cn.springboot.osbulkparts.service.OrderDetailInfoService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,10 +21,13 @@ import javax.servlet.http.HttpServletRequest;
 @RequestMapping("/orderDetailInfo")
 public class OrderDetailInfoController {
 
+    @Autowired
+    private OrderDetailInfoService orderDetailInfoService;
+
     @ApiOperation(value="页面初始化", notes="获取页面初始化数据")
     @GetMapping("/init")
     public Object initViews(){
-        return null;
+        return orderDetailInfoService.initViews();
     }
 
     @ApiOperation(value="获取订单详情列表信息", notes="查询所有订单详情的列表")

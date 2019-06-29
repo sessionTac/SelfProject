@@ -52,6 +52,54 @@
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="version" jdbcType="INTEGER" property="version" />
+    <!--订单型号单位-->
+    <association property="dictOrderUnit"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="order_unit"/>
+      <result property="name" column="dictOrderUnit"/>
+    </association>
+    <!--物料单位-->
+    <association property="dictMaterialUnit"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="material_unit"/>
+      <result property="name" column="dictMaterialUnit"/>
+    </association>
+    <!--物料类别-->
+    <association property="dictMaterialCategory"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="material_category"/>
+      <result property="name" column="dictMaterialCategory"/>
+    </association>
+    <!--换算后单位-->
+    <association property="dictRelationUnit"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="material_relation_unit"/>
+      <result property="name" column="dictRelationUnit"/>
+    </association>
+    <!--最小包装类型-->
+    <association property="dictMinPackageType"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="material_minpackage_type"/>
+      <result property="name" column="dictMinPackageType"/>
+    </association>
+    <!--币种-->
+    <association property="dictMaterialCurrency"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="material_currency"/>
+      <result property="name" column="dictMaterialCurrency"/>
+    </association>
+    <!--国家标志-->
+    <association property="dictCountryCode"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="country_code"/>
+      <result property="name" column="dictCountryCode"/>
+    </association>
+    <!--状态-->
+    <association property="dictConfirmStatus"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="confirm_status"/>
+      <result property="name" column="dictConfirmStatus"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--

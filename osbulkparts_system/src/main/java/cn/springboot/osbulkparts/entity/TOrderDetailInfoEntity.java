@@ -248,6 +248,47 @@ public class TOrderDetailInfoEntity implements Serializable {
      * 版本
      */
     private Integer version;
+    /**
+     * 订单型号单位
+     */
+    private TDictDataEntity dictOrderUnit;
+
+    /**
+     * 物料单位
+     */
+    private TDictDataEntity dictMaterialUnit;
+
+    /**
+     * 物料类别
+     */
+    private TDictDataEntity dictMaterialCategory;
+
+    /**
+     * 换算后单位
+     */
+    private TDictDataEntity dictRelationUnit;
+
+    /**
+     * 包装类型
+     */
+    private TDictDataEntity dictMinPackageType;
+
+    /**
+     * 币种
+     */
+    private TDictDataEntity dictMaterialCurrency;
+
+    /**
+     * 国家标志
+     */
+    private TDictDataEntity dictCountryCode;
+
+    /**
+     * 状态
+     */
+    private TDictDataEntity dictConfirmStatus;
+
+
 
     private static final long serialVersionUID = 1L;
 }
