@@ -30,4 +30,15 @@ public interface TOrderInfoDao {
     int updateByPrimaryKeySelective(TOrderInfoEntity record);
 
     int updateByPrimaryKey(TOrderInfoEntity record);
+
+    /**根据dataRoleAt查找对应的所有的订单号*/
+
+    List<TOrderInfoEntity> getAllOrderCode(String dataRoleAt);
+
+    /**根据订单号 将订单信息和所有的物料号找出*/
+    List<TOrderInfoEntity> getOrderInfoByOrderCode(@Param("materialOrderCode")String materialOrderCode,
+                                                   @Param("dataRoleAt")String dataRoleAt);
+    /**查询订单表中是否存在该订单号下的数据*/
+    List<TOrderInfoEntity> checkOrderCodeAndMaterialCode(@Param("orderCode")String orderCode,
+                                                         @Param("dataRoleAt")String dataRoleAt);
 }

@@ -198,7 +198,7 @@
         </template>
       </el-table-column>
     </el-table>
-    <edit-order-plan v-bind.sync="link_modal_state" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state.activated"></edit-order-plan>
+    <edit-plan-detail v-bind.sync="link_modal_state" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state.activated"></edit-plan-detail>
     <!--分页-->
     <div style="text-align: center">
       <el-pagination @current-change="exec_search({pageNum:$event})"
@@ -219,11 +219,13 @@
   import ImportButton from '@/components/data-import/ImportButton'
   import EditPlanDetail from './EditPlanDetail'
   import {downloadBlobResponse} from '@/utils/request_utils'
-
+  import ui_config from '@/config/ui_config'
   export default {
     name: "PlanDetailList",
     data(){
       return{
+        PAGE_SIZES : ui_config.PAGE_SIZES,
+        link_modal_state      : {},
         search_keys:{
           orderCode:"",
           orderDateArray:[],
@@ -250,6 +252,13 @@
     components:{ImportButton,EditPlanDetail},
     computed:{
 
+    },
+    async mounted(){
+      this.search_keys.orderCode=this.$route.query.orderCode;
+      await activityService.initData().then(resp=>{
+        this.confirmStatus=resp.data.result.orderStatus
+      },error=>{})
+      this.exec_search({search_keys:this.search_keys, pageNum:1});
     },
     methods:{
       reset(){
@@ -287,14 +296,14 @@
           updateTimeStart     :   search_keys.updateTimeArray && search_keys.updateTimeArray[0] || "",
           updateTimeEnd       :   search_keys.updateTimeArray && search_keys.updateTimeArray[1] || "",
         };
-        // activityService.findOrderInfoList({...data, pageNum, pageSize}).then(resp => {
-        //   this.search_result = resp.data.resultInfo;                //视图展示查询结果
-        //   this.old_search_keys=JSON.stringify(data);
-        //   this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
-        //   this.search_keys_snap = search_keys_snap;             //存储查询条件快照
-        // }, err => {
-        //   console.error(err);
-        // })
+        activityService.findOrderDetailInfoList({...data, pageNum, pageSize}).then(resp => {
+          this.search_result = resp.data.resultInfo;                //视图展示查询结果
+          this.old_search_keys=JSON.stringify(data);
+          this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
+          this.search_keys_snap = search_keys_snap;             //存储查询条件快照
+        }, err => {
+          console.error(err);
+        })
       },
       clickRow(row){
         this.$refs.tb.toggleRowSelection(row);
@@ -319,11 +328,11 @@
       },
       //添加
       add() {
-        // this.link_modal_state={activated:true,mode:"ADD"};
+        this.link_modal_state={activated:true,mode:"ADD"};
       },
       //编辑
       edit(id) {
-        // this.link_modal_state={activated:true,id,mode:"EDIT"};
+        this.link_modal_state={activated:true,id,mode:"EDIT"};
       },
       //删除
       deleteMatter(uuid) {

@@ -17,6 +17,7 @@ export default {
     basicsDataSupplier:"供应商信息",
     Warehouse: '出入库管理',
     warehouseOrderplan: '订单计划',
+    warehousePlanDetail:"订单详情",
     warehouseCollection: '预配发货',
     warehouseDelivery: '发货明细',
     warehouseRollingplan: '发货综合查询',

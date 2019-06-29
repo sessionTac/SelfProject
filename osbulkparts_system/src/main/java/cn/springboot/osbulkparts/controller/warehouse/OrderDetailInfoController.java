@@ -37,46 +37,46 @@ public class OrderDetailInfoController {
             @ApiImplicitParam(name = "pageSize", value = "分页-总页数(默认10)", required = true, dataType = "String", paramType = "body")
     })
     @GetMapping("/getList")
-    public Object getOrderInfoList(
+    public Object getOrderDetailInfoList(
             TOrderDetailInfoEntity tOrderDetailInfoEntity,
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="10") int pageSize,
             HttpServletRequest request, Authentication auth){
-        return null;
+        return orderDetailInfoService.selectOrderDetailInfoList(tOrderDetailInfoEntity,pageNum,pageSize,auth);
     }
 
     @ApiOperation(value="获取订单详情信息", notes="根据条件查询订单详情的详细数据")
     @ApiImplicitParam(name = "tOrderDetailInfoEntity", value = "订单详情实体对象", required = true, dataType = "body", paramType = "body")
     @GetMapping("/getOrderDetailInfo")
-    public CommonResultInfo<TOrderInfoEntity> getOrderDetailInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity){
-        return null;
+    public CommonResultInfo<TOrderDetailInfoEntity> getOrderDetailInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity){
+        return orderDetailInfoService.selectOrderDetailInfo(tOrderDetailInfoEntity);
     }
 
     @ApiOperation(value="获取所有的订单号", notes="获取所有的订单号")
     @GetMapping("/getAllOrderCode")
-    public Object getAllOrderCode(){
-        return null;
+    public Object getAllOrderCode( Authentication auth){
+        return orderDetailInfoService.getAllOrderCode(auth);
     }
 
     @ApiOperation(value="根据订单号获取该订单的所有信息和所有关联的物料号", notes="根据订单号获取该订单的所有信息和所有关联的物料号")
     @ApiImplicitParam(name = "OrderCode", value = "订单号", required = true, dataType = "body", paramType = "body")
     @GetMapping("/getOrderInfoByOrderCode")
-    public Object getOrderInfoByOrderCode(String OrderCode){
-        return null;
+    public Object getOrderInfoByOrderCode(String orderCode,Authentication auth){
+        return orderDetailInfoService.getOrderInfoByOrderCode(orderCode,auth);
     }
 
     @ApiOperation(value="根据物料号获取该物料的所有信息", notes="根据物料号获取该物料的所有信息")
     @ApiImplicitParam(name = "MaterialCode", value = "物料号", required = true, dataType = "body", paramType = "body")
     @GetMapping("/getMaterialInfoByMaterialCode")
-    public Object getMaterialInfoByMaterialCode(String MaterialCode){
-        return null;
+    public Object getMaterialInfoByMaterialCode(String materialCode,Authentication auth){
+        return orderDetailInfoService.getMaterialInfoByMaterialCode(materialCode,auth);
     }
 
     @ApiOperation(value="校验订单号和物料号是否存在", notes="校验订单号和物料号是否存在")
     @GetMapping("/checkOrderCodeAndMaterialCode")
-    public Object checkOrderCodeAndMaterialCode(@RequestParam(defaultValue="")String OrderCode,
-                                                @RequestParam(defaultValue="")String MaterialCode){
-        return null;
+    public Object checkOrderCodeAndMaterialCode(@RequestParam(defaultValue="")String orderCode,
+                                                @RequestParam(defaultValue="")String materialCode,Authentication auth){
+        return orderDetailInfoService.checkOrderCodeAndMaterialCode(orderCode,materialCode,auth);
     }
 
     @ApiOperation(value="更新订单详情信息", notes="更新一条新的订单详情信息")

@@ -140,6 +140,14 @@ export const constantRoutes = [
                     requiresPermission: 'maintenance:warehouse:order:info:view',}
             },
             {
+              path: 'planDetail',
+              component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
+              name: 'warehousePlanDetail',
+              meta: { title: 'warehousePlanDetail',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
+                requiresPermission: 'maintenance:warehouse:order:info:view',}
+            },
+
+            {
                 path: 'warehouseCollection',
                 component: () => import('@/views/sysWarehouse/CollectionDeliveryManagement/CollectionList.vue'),
                 name: 'warehouseCollection',

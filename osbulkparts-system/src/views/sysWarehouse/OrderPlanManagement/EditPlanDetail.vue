@@ -7,11 +7,12 @@
           <el-form  class="search-form search-form-normal" label-width="110px" ref="form"
                     style="flex: 5" :model="form" size="mini" :rules="rules">
             <el-form-item label="订单产品型号" prop="orderCode">
-              <el-input v-model="form.orderCode" class="search-form-item-input" style="width: 160px" size="mini"
-                        clearable></el-input>
+              <el-autocomplete v-model="form.orderCode" :disabled="mode ==='EDIT'" class="search-form-item-input" style="width: 160px" size="mini"
+                               :fetch-suggestions="searchOrderCode"    clearable></el-autocomplete>
               <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                <div style="float: right;margin-right: 30px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
+              <div style="float: right;margin-right: 40px;"><el-button :disabled="form.orderCode==''" @click="checkOrderCode(form.orderCode)">校验并获取</el-button></div>
             </el-form-item>
             <el-form-item label="订单产品型号描述" prop="orderCodeDesc">
               <el-input type="textarea" autosize="" v-model="form.orderCodeDesc" class="search-form-item-input" style="width: 160px" size="mini"
@@ -72,8 +73,10 @@
               <el-input v-model="form.materialCode" class="search-form-item-input" style="width:160px" size="mini"
                         clearable></el-input>
               <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                <div style="float: right;margin-right: 30px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
+              <div style="float: right;margin-right: 40px;"><el-button :disabled="form.materialCode==''" @click="checkMaterialCode(form.materialCode)">校验并获取</el-button></div>
+
             </el-form-item>
             <el-form-item label="物料中文描述" prop="materialDescCn">
               <el-input v-model="form.materialDescCn" class="search-form-item-input" style="width:160px" size="mini"
@@ -354,7 +357,7 @@
 </template>
 
 <script>
-  import activityService from '@/api/warehouse/orderInfo'
+  import activityService from '@/api/warehouse/planDetail'
   import ui_config from '@/config/ui_config'
 
   export default {
@@ -377,7 +380,7 @@
       return {
         dialogFormVisible: true,
         search_keys: {},
-        orderUnit:[],
+        orderUnits:[],
         materialUnit:[],
         materialCategory:[],
         materialRelationUnit:[],
@@ -386,8 +389,10 @@
         countryCode:[],
         confirmStatus:[],
         form: {
-
+          orderCode:"",
+          materialCode:"",
         },
+        orderCodeList:[],
         /**表单的验证*/
         rules: {
           orderCode: [
@@ -528,24 +533,57 @@
     },
     methods: {
       async init() {
-        // await activityService.initData().then(resp => {
-        //   this.orderUnits = resp.data.result.orderUnits;
-        //   this.orderStatus = resp.data.result.orderStatus;
-        //   // this.currencys = resp.data.result.currencys;
-        //   // this.materialCategorys = resp.data.result.materialCategorys;
-        //   // this.materialSupplyModes = resp.data.result.materialSupplyModes;
-        // }, err => {
-        //   console.error(err);
-        // });
-        // if (this.mode == "EDIT") {
-        //   await activityService.findOrderInfo({id: this.id}).then(resp => {
-        //     this.form = resp.data.result;
-        //   }, err => {
-        //     console.error(err);
-        //   });
-        // }
+        await activityService.initData().then(resp=>{
+          this.orderUnits=resp.data.result.orderUnits
+          this.materialUnit=resp.data.result.orderUnits
+          this.materialCategory=resp.data.result.mattertype
+          this.materialRelationUnit=resp.data.result.orderUnits
+          this.materialMinpackageType=resp.data.result.minpackageType
+          this.materialCurrency=resp.data.result.currency
+          this.countryCode=resp.data.result.countryCode
+          this.confirmStatus=resp.data.result.orderStatus
+        },error=>{});
+        await activityService.getAllOrderCode().then(resp=>{
+          this.orderCodeList=resp.data.resultList
+        });
+        if (this.mode == "EDIT") {
+          await activityService.findOrderDetailInfo({id: this.id}).then(resp => {
+            this.form = resp.data.result;
+          }, err => {
+            console.error(err);
+          });
+        }
 
       },
+      async checkMaterialCode(materialCode){
+        await activityService.checkOrderCodeAndMaterialCode({materialCode:materialCode}).then(resp=>{
+          if (resp.data.code == "201") {
+
+          } else {
+            this.$notify({message: resp.data.message, type: "error"});
+          }
+        })
+      },
+      async checkOrderCode(orderCode){
+        await activityService.checkOrderCodeAndMaterialCode({orderCode:orderCode}).then(resp=>{
+          if (resp.data.code == "201") {
+
+          } else {
+            this.$notify({message: resp.data.message, type: "error"});
+          }
+        })
+      },
+      searchOrderCode(queryString, cb){
+        let result=this.orderCodeList.filter(item=>{
+          return item.orderCode.indexOf(queryString) >= 0
+        }).map(item=>{
+          let data={};
+          data.value=item.orderCode;
+          return data
+        });
+        cb(result);
+      },
+
       /*确定*/
       submit(formName) {
         this.$refs[formName].validate((valid) => {

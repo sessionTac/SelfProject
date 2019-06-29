@@ -130,7 +130,11 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="orderCode" fixed width="100" align="center" label="订单产品型号"  />
+            <el-table-column prop="orderCode"  fixed width="100" align="center" label="订单产品型号"  >
+              <template slot-scope="scope">
+                <div @click="toPlanDetailList(scope.row.orderCode)">{{scope.row.orderCode}}</div>
+              </template>
+            </el-table-column>
             <el-table-column prop="orderCodeDesc" fixed width="300" align="center" label="订单产品型号描述"  />
             <el-table-column prop="orderAmount" fixed width="100" align="center" label="订单数量"  />
             <el-table-column prop="orderDate" fixed width="160" align="center" label="订单日期">
@@ -236,6 +240,9 @@
             }
         },
         methods: {
+          toPlanDetailList(orderCode){
+            this.$router.push({name: 'warehousePlanDetail', query: {orderCode: orderCode}})
+          },
             reset(){
              this.search_keys= {
                     orderCode:"",

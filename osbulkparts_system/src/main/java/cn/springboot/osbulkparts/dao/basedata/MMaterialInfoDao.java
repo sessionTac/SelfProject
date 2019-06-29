@@ -33,4 +33,8 @@ public interface MMaterialInfoDao {
      * 查重（用户名）和排他字段比较   luka
      */
     List<MMaterialInfoEntity> checkingAndVersion(MMaterialInfoEntity record);
+    /**查询物料表中是否存在该物料号的数据*/
+    List<MMaterialInfoEntity> checkOrderCodeAndMaterialCode(@Param("materialCode")String materialCode,
+                                                         @Param("dataRoleAt")String dataRoleAt);
+
 }

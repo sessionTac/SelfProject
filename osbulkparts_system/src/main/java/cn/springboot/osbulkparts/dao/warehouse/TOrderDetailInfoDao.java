@@ -3,6 +3,8 @@ package cn.springboot.osbulkparts.dao.warehouse;
 import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 
+import java.util.List;
+
 @Mapper
 public interface TOrderDetailInfoDao {
     int deleteByPrimaryKey(String id);
@@ -16,4 +18,6 @@ public interface TOrderDetailInfoDao {
     int updateByPrimaryKeySelective(TOrderDetailInfoEntity record);
 
     int updateByPrimaryKey(TOrderDetailInfoEntity record);
+
+    List<TOrderDetailInfoEntity> getOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity);
 }
