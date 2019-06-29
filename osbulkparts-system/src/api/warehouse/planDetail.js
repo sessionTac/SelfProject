@@ -14,12 +14,13 @@ export default {
   getAllOrderCode: () =>
     getRequest(`~/orderDetailInfo/getAllOrderCode`),
   //订单详情 根据订单号获取订单信息和关联的物料号
-
+  getOrderInfoByOrderCode:(params)=>
+    getRequest(`~/orderDetailInfo/getOrderInfoByOrderCode`,{params}),
   //订单详情 根据物料号 获取物料信息的详细信息
 
   //订单详情 check 物料号和订单号是否存在
   checkOrderCodeAndMaterialCode:(params)=>
-    getRequest(`/orderDetailInfo/checkOrderCodeAndMaterialCode`,{params})
+    getRequest(`~/orderDetailInfo/checkOrderCodeAndMaterialCode`,{params})
 
 
   //订单详情 根据主键修改一条数据

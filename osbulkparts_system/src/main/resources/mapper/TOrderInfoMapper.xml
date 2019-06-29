@@ -32,7 +32,8 @@
         <result property="name" column="dictOrderStatus"/>
     </association>
 
-    <collection property="materialList" ofType="cn.springboot.osbulkparts.entity.MMaterialInfoEntity" javaType="java.util.ArrayList"  >
+    <collection property="materialList" ofType="cn.springboot.osbulkparts.entity.MMaterialInfoEntity">
+      <id column="material_info_id" property="materialInfoId"/>
       <result column="material_code" property="materialCode"/>
     </collection>
   </resultMap>
@@ -390,6 +391,7 @@
   <!--根据订单号 将订单信息和所有的物料号找出-->
   <select id="getOrderInfoByOrderCode" resultMap="BaseResultMap">
   SELECT
+      t1.material_info_id,
       t1.material_code,
       t2.order_code,
       t2.order_code_desc,

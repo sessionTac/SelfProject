@@ -136,7 +136,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
         try {
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-            result.setResultList(tOrderInfoDao.getOrderInfoByOrderCode(materialOrderCode,roleInfoEntity.getRoleAt()));
+            result.setResult(tOrderInfoDao.getOrderInfoByOrderCode(materialOrderCode,roleInfoEntity.getRoleAt()));
         } catch (Exception e) {
             e.printStackTrace();
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -176,7 +176,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         if (!("".equals(orderCode))){
             List<TOrderInfoEntity> list = tOrderInfoDao.checkOrderCodeAndMaterialCode(orderCode,roleInfoEntity.getRoleAt());
             if (list.size()>0){
-                result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
             }else {
                 result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
                 result.setMessage(messageBean.getMessage("common.info.empty"));
@@ -184,7 +184,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         }else if(!("".equals(materialCode))){
             List<MMaterialInfoEntity> list = mMaterialInfoDao.checkOrderCodeAndMaterialCode(orderCode,roleInfoEntity.getRoleAt());
             if (list.size()>0){
-                result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+                result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
             }else {
                 result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
                 result.setMessage(messageBean.getMessage("common.info.empty"));

@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.entity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import lombok.Data;
@@ -113,7 +114,7 @@ public class TOrderInfoEntity implements Serializable {
      */
     private TDictDataEntity dictOrderUnit;
 
-    private List<MMaterialInfoEntity> materialList;
+    private ArrayList<MMaterialInfoEntity> materialList;
     
     /**
      * 订单状态

@@ -74,8 +74,8 @@ public class OrderDetailInfoController {
 
     @ApiOperation(value="校验订单号和物料号是否存在", notes="校验订单号和物料号是否存在")
     @GetMapping("/checkOrderCodeAndMaterialCode")
-    public Object checkOrderCodeAndMaterialCode(@RequestParam(defaultValue="")String orderCode,
-                                                @RequestParam(defaultValue="")String materialCode,Authentication auth){
+    public Object checkOrderCodeAndMaterialCode(String orderCode,
+                                                String materialCode,Authentication auth){
         return orderDetailInfoService.checkOrderCodeAndMaterialCode(orderCode,materialCode,auth);
     }
 
