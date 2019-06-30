@@ -194,7 +194,7 @@
 
           case 'ORDER_PLAN' : return service.importData('/orderInfo/importExcel', {importType:this.radio}, {file:this.currentFile.raw}, this.onUploadProgress);
 
-          case 'STOCK_INFO' : return service.importData('', {}, {file:this.currentFile.raw}, this.onUploadProgress);
+          case 'STOCK_INFO' : return service.importData('/stock/importExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
 
           // case 'ORGANIZATION'                : return service.importData('/basis/organization/leadExcel', {categoryNo:this.form.categoryNo && this.form.categoryNo || ""}, {file:this.currentFile.raw}, this.onUploadProgress);
           //

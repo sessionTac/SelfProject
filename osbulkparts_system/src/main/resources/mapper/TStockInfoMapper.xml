@@ -171,9 +171,7 @@
       <if test="createUser != null">
         create_user,
       </if>
-      <if test="createTime != null">
         create_time,
-      </if>
       <if test="updateUser != null">
         update_user,
       </if>
@@ -361,4 +359,12 @@
         )
       </foreach>
   </insert>
+  <update id="deleteBatchData">
+    update t_stock_info
+    set update_user = #{updateUser,jdbcType=VARCHAR},update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),is_delete = #{isDelete,jdbcType=INTEGER}
+    where id IN
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
  </mapper>

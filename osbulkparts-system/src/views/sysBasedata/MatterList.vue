@@ -120,7 +120,7 @@
                     <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "MATTER"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(search_keys)" size="mini" >
+                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(old_search_keys)" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
@@ -130,7 +130,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="" icon="el-icon-error" >
+                    <el-button  @click="reset" icon="el-icon-error" >
                         清空
                     </el-button>
                 </el-form-item>
@@ -242,6 +242,7 @@
                 //单位下拉框数据
                 is_searching : true,
                 materialCategorys:[],
+                old_search_keys:{},
                 currencys:[],
                 search_keys   : {
                     materialOrderCode:'',
@@ -286,6 +287,27 @@
             }
         },
         methods: {
+            reset(){
+                this.search_keys   = {
+                    materialOrderCode:'',
+                      materialOrderCodeDesc:'',
+                      materialCode:'',
+                      materialCkdCode:'',
+                      materialCategory:'',
+                      materialDescCn:'',
+                      materialDescEn:'',
+                      materialDescRn:'',
+                      hsNo:'',
+                      supplierCode:'',
+                      materialCurrency:'',
+                      createUser:'',
+                      createTime:'',
+                      createTimeArray:[],
+                      updateUser:'',
+                      updateTimeArray:[],
+                      updateTime:'',
+                };
+            },
             price(row, column, cellValue, index){
                 if (cellValue) {
                     return cellValue.toFixed(2)
@@ -327,20 +349,21 @@
                 };
                 activityService.findMatterList({...data, pageNum, pageSize}).then(resp => {
                     this.search_result = resp.data.resultInfo;                //视图展示查询结果
+                    this.old_search_keys=data;
                     this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
                     this.search_keys_snap = search_keys_snap;             //存储查询条件快照
                 }, err => {
                     console.error(err);
                 })
             },
-            exportData(search_keys) {
+            exportData(old_search_keys) {
                 this.$confirm("确定导出数据吗？", "提示", {
                     confirmButtonText: "是",
                     cancelButtonText: "否",
                     type: 'info',
                     center: true
                 }).then(() => {
-                    activityService.exportData({...search_keys}).then(resp=>{
+                    activityService.exportData({...old_search_keys}).then(resp=>{
                         downloadBlobResponse(resp); // 文件下载
                     });
                 }).catch(() => {
@@ -407,19 +430,7 @@
                     this.internal_activated = true;
                 })//删除
             },
-            //导出
-            excel(){
-                // let data={
-                //   deviceTypeNo : search_keys.deviceType || undefined,
-                //   powerStationNo : search_keys.powerStationEntity && search_keys.powerStationEntity.no || undefined ,
-                //   powerStationName:search_keys.powerStationName  || "",
-                //   name: search_keys.name || undefined,
-                // }
-                let data={name:"123"}
-                activityService.installdownloadExcel({...data}).then(resp=>{
-                    downloadBlobResponse(resp); // 文件下载
-                })
-            },
+
         },
     }
 </script>

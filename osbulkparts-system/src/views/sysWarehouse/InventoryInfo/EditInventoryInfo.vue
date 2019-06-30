@@ -170,6 +170,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let data = {
+              id: this.id || undefined,
               materialCode: this.form.materialCode || undefined,
               materialCategory: this.form.materialCategory || undefined,
               materialDescCn: this.form.materialDescCn || undefined,
