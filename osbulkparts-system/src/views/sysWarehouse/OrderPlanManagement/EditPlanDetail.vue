@@ -589,6 +589,12 @@
           }, err => {
             console.error(err);
           });
+          await activityService.getOrderInfoByOrderCode({orderCode:this.form.orderCode}).then(resp=>{
+            this.materialCodeList=[];
+            resp.data.resultList.forEach(item=>{
+              this.materialCodeList.push(item.materialInfoEntity)
+            });
+          });
         }
 
       },
