@@ -15,6 +15,7 @@ public enum CommonConstantEnum {
 	TO_DELETE("1"),
     TO_APPROVAL("1"),
 	MATERIAL_DATA("物料数据"),
+	STOCK_DATA("库存数据"),
 	ORDERINFO_DATA("订单计划信息"),
     ORDERDETAILINFO_DATA("订单详情信息"),
 	ORDER_DATE("订单日期");

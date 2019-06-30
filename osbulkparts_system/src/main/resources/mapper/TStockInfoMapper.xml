@@ -215,9 +215,7 @@
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
-      <if test="createTime != null">
-        #{createTime,jdbcType=VARCHAR},
-      </if>
+		 DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
       <if test="updateUser != null">
         #{updateUser,jdbcType=VARCHAR},
       </if>
@@ -304,4 +302,63 @@
       version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
-</mapper>
+  <select id="checkingAndVersion" resultMap="BaseResultMap"
+          parameterType="cn.springboot.osbulkparts.entity.TStockInfoEntity">
+      SELECT
+      <include refid="Base_Column_List"/>
+      FROM
+      t_stock_info
+      WHERE
+      is_delete = 0
+      <if test="version != null ">
+          AND version = #{version,jdbcType=INTEGER}
+      </if>
+      <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(id)">
+          AND id = #{id,jdbcType=VARCHAR}
+      </if>
+  </select>
+  <delete id="deleteBatachByNo" parameterType="java.util.List">
+  	delete from t_stock_info where  materialCode in
+    <foreach collection="list" item="item" index="index" separator=",">
+    	(
+        #{item.materialCode,jdbcType=VARCHAR},
+        )
+      </foreach>
+  </delete>
+  <insert id="importExcelData" parameterType="java.util.List">
+	insert into t_stock_info
+    (
+        id,
+        material_code,
+        material_category,
+        material_desc_cn,
+        material_desc_en,
+        material_desc_rn,
+        stock_amount,
+        data_role_at,
+        create_time,
+        create_user,
+        update_time,
+        update_user,
+        is_delete,
+        version
+    ) values
+    <foreach collection="list" item="item" index="index" separator=",">
+    (
+        #{item.id,jdbcType=VARCHAR},
+        #{item.materialCode,jdbcType=VARCHAR},
+        #{item.materialCategory,jdbcType=VARCHAR},
+        #{item.materialDescCn,jdbcType=VARCHAR},
+        #{item.materialDescEn,jdbcType=VARCHAR},
+        #{item.materialDescRn,jdbcType=VARCHAR},
+        #{item.stockAmount,jdbcType=DECIMAL},
+        #{item.createUser,jdbcType=VARCHAR},
+      	DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
+        #{item.updateUser,jdbcType=VARCHAR},
+        #{item.updateTime,jdbcType=VARCHAR},
+        #{item.isDelete,jdbcType=INTEGER},
+        #{item.version,jdbcType=INTEGER}
+        )
+      </foreach>
+  </insert>
+ </mapper>

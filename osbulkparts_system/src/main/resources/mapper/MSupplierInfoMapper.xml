@@ -245,9 +245,7 @@
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
-
       DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
-
       <if test="updateUser != null">
         #{updateUser,jdbcType=VARCHAR},
       </if>

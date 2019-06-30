@@ -12,8 +12,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
-import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
-import cn.springboot.osbulkparts.entity.MSupplierInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.entity.TStockInfoEntity;
 
@@ -25,16 +23,16 @@ public interface StockInfoService {
 	
 	CommonResultInfo<TStockInfoEntity> getStockInfoInfo(TStockInfoEntity stockInfoEntity); 
 	
-	CommonResultInfo<?> insertSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth);
+	CommonResultInfo<?> insertStockInfo(TStockInfoEntity stockInfoEntity, Authentication auth);
 	
-	CommonResultInfo<?> updateSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth);
+	CommonResultInfo<?> updateStockInfo(TStockInfoEntity stockInfoEntity, Authentication auth);
 	
-	CommonResultInfo<?> deleteSupplierInfo(String supplierId, Authentication auth);
+	CommonResultInfo<?> deleteStockInfo(String stock, Authentication auth);
 
-	CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity, Authentication auth);
+	CommonResultInfo<?> deleteBatchByIds(CommonEntity commonEntity, Authentication auth);
 	
 	@Transactional
 	CommonResultInfo<?> importExcel(MultipartFile excleFile,HttpServletRequest request,Authentication auth);
 	
-	ResponseEntity<byte[]> downloadExcel(MMaterialInfoEntity materialInfoEntity);
+	ResponseEntity<byte[]> downloadExcel(TStockInfoEntity stockInfoEntity);
 }
