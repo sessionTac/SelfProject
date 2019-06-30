@@ -37,4 +37,7 @@ public interface OrderDetailInfoService {
      */
     CommonResultInfo<?> checkOrderCodeAndMaterialCode(String orderCode,String materialCode,Authentication auth);
 
+    CommonResultInfo<?> updateOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth);
+
+    CommonResultInfo<?> insertOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth);
 }

@@ -83,14 +83,14 @@ public class OrderDetailInfoController {
     @ApiImplicitParam(name = "tOrderDetailInfoEntity", value = "订单详情实体对象", required = true, dataType = "body", paramType = "body")
     @PutMapping("/updateOrderDetailInfo")
     public CommonResultInfo<?> updateOrderDetailInfo(@RequestBody TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth){
-        return null;
+        return orderDetailInfoService.updateOrderDetailInfoInfo(tOrderDetailInfoEntity,auth);
     }
 
     @ApiOperation(value="添加订单详情信息", notes="添加一条新的订单详情信息")
     @ApiImplicitParam(name = "tOrderDetailInfoEntity", value = "订单详情实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/addOrderDetailInfo")
     public CommonResultInfo<?> addOrderDetailInfo(@RequestBody TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth){
-        return null;
+        return orderDetailInfoService.insertOrderDetailInfoInfo(tOrderDetailInfoEntity,auth);
     }
 
     @ApiOperation(value="删除订单详情信息", notes="删除订单详情信息")

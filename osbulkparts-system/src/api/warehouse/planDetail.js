@@ -17,16 +17,19 @@ export default {
   getOrderInfoByOrderCode:(params)=>
     getRequest(`~/orderDetailInfo/getOrderInfoByOrderCode`,{params}),
   //订单详情 根据物料号 获取物料信息的详细信息
-
+  getMaterialInfoByMaterialCode:(params)=>
+    getRequest(`~/orderDetailInfo/getMaterialInfoByMaterialCode`,{params}),
   //订单详情 check 物料号和订单号是否存在
   checkOrderCodeAndMaterialCode:(params)=>
-    getRequest(`~/orderDetailInfo/checkOrderCodeAndMaterialCode`,{params})
+    getRequest(`~/orderDetailInfo/checkOrderCodeAndMaterialCode`,{params}),
 
 
   //订单详情 根据主键修改一条数据
-
+  updateOrderDetailInfo:(data)=>
+    putRequest(`~/orderDetailInfo/updateOrderDetailInfo`, {data}),
   //订单详情 添加一条数据
-
+  addOrderDetailInfo:(data)=>
+    postRequest(`~/orderDetailInfo/addOrderDetailInfo`, {data}),
   //订单详情 删除一组数据
 
   //订单详情 审批一组数据

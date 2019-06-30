@@ -32,10 +32,17 @@
         <result property="name" column="dictOrderStatus"/>
     </association>
 
-    <collection property="materialList" ofType="cn.springboot.osbulkparts.entity.MMaterialInfoEntity">
-      <id column="material_info_id" property="materialInfoId"/>
-      <result column="material_code" property="materialCode"/>
-    </collection>
+    <association property="materialInfoEntity"
+                 javaType="cn.springboot.osbulkparts.entity.MMaterialInfoEntity">
+      <result property="materialCode" column="material_code"/>
+      <result property="materialInfoId" column="material_info_id"/>
+    </association>
+
+
+    <!--<collection property="materialList" ofType="cn.springboot.osbulkparts.entity.MMaterialInfoEntity">-->
+      <!--<id column="material_info_id" property="materialInfoId"/>-->
+      <!--<result column="material_code" property="materialCode"/>-->
+    <!--</collection>-->
   </resultMap>
   <sql id="Base_Column_List">
     <!--

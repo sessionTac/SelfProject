@@ -15,6 +15,7 @@ public enum CommonConstantEnum {
 	TO_DELETE("1"),
 	MATERIAL_DATA("物料数据"),
 	ORDERINFO_DATA("订单计划信息"),
+    ORDERDETAILINFO_DATA("订单详情信息"),
 	ORDER_DATE("订单日期");
 	
 	private String typeName;  

@@ -8,7 +8,7 @@
                     style="flex: 5" :model="form" size="mini" :rules="rules">
             <el-form-item label="订单产品型号" prop="orderCode">
               <el-autocomplete v-model="form.orderCode" :disabled="mode ==='EDIT'" class="search-form-item-input" style="width: 160px" size="mini"
-                               :fetch-suggestions="searchOrderCode"    clearable></el-autocomplete>
+                            :fetch-suggestions="searchOrderCode"    clearable></el-autocomplete>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 30px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -16,21 +16,21 @@
             </el-form-item>
             <el-form-item label="订单产品型号描述" prop="orderCodeDesc">
               <el-input type="textarea" autosize="" v-model="form.orderCodeDesc" class="search-form-item-input" style="width: 160px" size="mini"
-                       :disabled="form.orderCode==''" clearable></el-input>
+                       :disabled="true" clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="订单数量" prop="orderAmount">
               <el-input v-model="form.orderAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"  :maxlength="18" clearable></el-input>
+                        :disabled="true"  :maxlength="18" clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="订单日期" prop="orderDate">
               <el-date-picker
-                :disabled="form.orderCode==''"
+                :disabled="true"
                 v-model="form.orderDate"
                 type="date"
                 style="width:160px"
@@ -42,7 +42,7 @@
               </template>
             </el-form-item>
             <el-form-item label="订单型号单位" prop="orderUnit">
-              <el-select :disabled="form.orderCode==''" v-model="form.orderUnit" style="width: 160px" size="mini" clearable>
+              <el-select :disabled="true" v-model="form.orderUnit" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -71,8 +71,8 @@
               </template>
             </el-form-item>
             <el-form-item label="物料号" prop="materialCode">
-              <el-input v-model="form.materialCode" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   clearable></el-input>
+              <el-autocomplete v-model="form.materialCode" class="search-form-item-input" style="width:160px" size="mini"
+                               :fetch-suggestions="searchMaterialCode"  :disabled="form.orderCode==''"   clearable></el-autocomplete>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 30px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -81,28 +81,28 @@
             </el-form-item>
             <el-form-item label="物料中文描述" prop="materialDescCn">
               <el-input v-model="form.materialDescCn" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   clearable></el-input>
+                        :disabled="true"   clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="物料英文描述" prop="materialDescEn">
               <el-input v-model="form.materialDescEn" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   clearable></el-input>
+                        :disabled="true"   clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="物料俄文描述" prop="materialDescRn">
               <el-input v-model="form.materialDescRn" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   clearable></el-input>
+                        :disabled="true"   clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
 
             <el-form-item label="物料单位" prop="materialUnit">
-              <el-select :disabled="form.orderCode==''" v-model="form.materialUnit" style="width: 160px" size="mini" clearable>
+              <el-select :disabled="true" v-model="form.materialUnit" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -124,7 +124,7 @@
               </template>
             </el-form-item>
             <el-form-item label="物料类别" prop="materialCategory">
-              <el-select :disabled="form.orderCode==''" v-model="form.materialCategory" style="width: 160px" size="mini" clearable>
+              <el-select :disabled="true" v-model="form.materialCategory" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -140,13 +140,13 @@
             </el-form-item>
             <el-form-item label="换算关系" prop="materialRelation">
               <el-input v-model="form.materialRelation" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   clearable></el-input>
+                        :disabled="true"   clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="换算后单位" prop="materialRelationUnit">
-              <el-select :disabled="form.orderCode==''" v-model="form.materialRelationUnit" style="width: 160px" size="mini" clearable>
+              <el-select :disabled="true" v-model="form.materialRelationUnit" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -168,7 +168,7 @@
               </template>
             </el-form-item>
             <el-form-item label="最小包装类型" prop="materialMinpackageType">
-              <el-select :disabled="form.orderCode==''" v-model="form.materialMinpackageType" style="width: 160px" size="mini" clearable>
+              <el-select :disabled="true" v-model="form.materialMinpackageType" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -184,7 +184,7 @@
             </el-form-item>
             <el-form-item label="最小包装数量" prop="materialMinpackageAmt">
               <el-input v-model="form.materialMinpackageAmt" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   :maxlength="18"  clearable></el-input>
+                        :disabled="true"   :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -198,7 +198,7 @@
             </el-form-item>
             <el-form-item label="未税单价" prop="materialTaxPrice">
               <el-input v-model="form.materialTaxPrice" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   :maxlength="18"   clearable></el-input>
+                        :disabled="true"   :maxlength="18"   clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -212,7 +212,7 @@
             </el-form-item>
             <el-form-item label="含税单价" prop="materialVatPrice">
               <el-input v-model="form.materialVatPrice" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"    :maxlength="18"  clearable></el-input>
+                        :disabled="true"    :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -226,13 +226,13 @@
             </el-form-item>
             <el-form-item label="代理费率" prop="materialRate">
               <el-input v-model="form.materialRate" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   :maxlength="18"  clearable></el-input>
+                        :disabled="true"   :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="币种" prop="materialCurrency">
-              <el-select :disabled="form.orderCode==''" v-model="form.materialCurrency" style="width: 160px" size="mini" clearable>
+              <el-select :disabled="true" v-model="form.materialCurrency" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -391,9 +391,45 @@
         confirmStatus:[],
         form: {
           orderCode:"",
+          orderCodeDesc:"",
+          orderAmount:"",
+          orderDate:"",
+          orderUnit:"",
+          orderId:"",
+          orderIdItem:"",
           materialCode:"",
+          materialDescCn:"",
+          materialDescEn:"",
+          materialDescRn:"",
+          materialUnit:"",
+          materialAmount:"",
+          materialCategory:"",
+          materialRelation:"",
+          materialRelationUnit:"",
+          materialRelationQuantity:"",
+          materialMinpackageType:"",
+          materialMinpackageAmt:"",
+          materialMinpackageTotalamt:"",
+          materialTaxPrice:"",
+          materialTaxTotalprice:"",
+          materialVatPrice:"",
+          materialVatTotalprice:"",
+          materialRate:"",
+          materialCurrency:"",
+          countryCode:"",
+          confirmStatus:"",
+          orderOutTotalAmount:"",
+          materOutTotalAmount:"",
+          residualAmount:"",
+          trimAmount:"",
+          stockAmount:"",
+          differAmount:"",
+          takeOverAmount:"",
+          deliveryAmount:"",
+          surplusAmount:"",
         },
         orderCodeList:[],
+        materialCodeList:[],
         /**表单的验证*/
         rules: {
           orderCode: [
@@ -559,8 +595,36 @@
       async checkMaterialCode(materialCode){
         await activityService.checkOrderCodeAndMaterialCode({materialCode:materialCode}).then(resp=>{
           if (resp.data.code == "201") {
-            // this.$notify({message: '1', type: "success"});
+            activityService.getMaterialInfoByMaterialCode({materialCode:materialCode}).then(resp=>{
+              this.form.materialCategory=resp.data.result.materialCategory;
+              this.form.materialDescCn=resp.data.result.materialDescCn;
+              this.form.materialDescEn=resp.data.result.materialDescEn;
+              this.form.materialDescRn=resp.data.result.materialDescRn;
+              this.form.materialUnit=resp.data.result.materialUnit;
+              this.form.materialRelation=resp.data.result.materialRelation;
+              this.form.materialRelationUnit=resp.data.result.materialRelationUnit;
+              this.form.materialMinpackageType=resp.data.result.materialMinpackageType;
+              this.form.materialMinpackageAmt=resp.data.result.materialMinpackageAmt;
+              this.form.materialTaxPrice=resp.data.result.materialTaxPrice;
+              this.form.materialVatPrice=resp.data.result.materialVatPrice;
+              this.form.materialRate=resp.data.result.materialRate;
+              this.form.materialCurrency=resp.data.result.materialCurrency;
+
+            });
           } else {
+            this.form.materialCategory="";
+            this.form.materialDescCn="";
+            this.form.materialDescEn="";
+            this.form.materialDescRn="";
+            this.form.materialUnit="";
+            this.form.materialRelation="";
+            this.form.materialRelationUnit="";
+            this.form.materialMinpackageType="";
+            this.form.materialMinpackageAmt="";
+            this.form.materialTaxPrice="";
+            this.form.materialVatPrice="";
+            this.form.materialRate="";
+            this.form.materialCurrency="";
             this.$notify({message: resp.data.message, type: "error"});
           }
         })
@@ -568,11 +632,22 @@
       async checkOrderCode(orderCode){
         await activityService.checkOrderCodeAndMaterialCode({orderCode:orderCode}).then(resp=>{
           if (resp.data.code == "201") {
-            // this.$notify({message: "1", type: "success"});
             activityService.getOrderInfoByOrderCode({orderCode:orderCode}).then(resp=>{
-              resp.data.result
+              this.materialCodeList=[];
+              this.form.orderCodeDesc=resp.data.resultList[0].orderCodeDesc;
+              this.form.orderDate=resp.data.resultList[0].orderDate;
+              this.form.orderUnit=resp.data.resultList[0].orderUnit;
+              this.form.orderAmount=resp.data.resultList[0].orderAmount;
+              resp.data.resultList.forEach(item=>{
+                this.materialCodeList.push(item.materialInfoEntity)
+              });
             });
           } else {
+            this.form.orderCodeDesc="";
+            this.form.orderDate="";
+            this.form.orderUnit="";
+            this.form.orderAmount="";
+            this.materialCodeList=[];
             this.$notify({message: resp.data.message, type: "error"});
           }
         })
@@ -587,44 +662,90 @@
         });
         cb(result);
       },
-
+      searchMaterialCode(queryString, cb){
+        let result=this.materialCodeList.filter(item=>{
+          return item.materialCode.indexOf(queryString) >= 0
+        }).map(item=>{
+          let data={};
+          data.value=item.materialCode;
+          return data
+        });
+        cb(result);
+      },
       /*确定*/
       submit(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
             let data = {
-              id: this.id || undefined,
-              orderCode: this.form.orderCode || undefined,
-              orderCodeDesc: this.form.orderCodeDesc || undefined,
-              orderAmount: this.form.orderAmount || undefined,
-              orderDate: this.form.orderDate || undefined,
-              orderUnit: this.form.orderUnit || undefined,
-              orderStatus: this.form.orderStatus || undefined,
-              dataRoleAt:this.form.dataRoleAt || undefined,
-              version: this.form.version || undefined,
-            }
-            // if (this.mode == 'EDIT') {  //编辑
-            //   activityService.updateMatter({...data}).then(resp => {
-            //     if (resp.data.code == "201") {
-            //       this.$notify({message: resp.data.message, type: "success"});
-            //       this.$emit("success");
-            //       this.dialogFormVisible = false
-            //     } else {
-            //       this.$notify({message: resp.data.message, type: "error"});
-            //     }
-            //   })
-            // } else {
-            //   activityService.addOrderInfo({...data}).then(resp => {  //添加
-            //     if (resp.data.code == "201") {
-            //       this.$notify({message: resp.data.message, type: "success"});
-            //       this.$emit("success");
-            //       this.dialogFormVisible = false
-            //     } else {
-            //       this.$notify({message: resp.data.message, type: "error"});
-            //     }
-            //   })
-            // }
+              id                        :this.id                              || undefined,
+              orderCode                 :this.form.orderCode                  || undefined,
+              orderCodeDesc             :this.form.orderCodeDesc              || undefined,
+              orderAmount               :this.form.orderAmount                || undefined,
+              orderDate                 :this.form.orderDate                  || undefined,
+              orderUnit                 :this.form.orderUnit                  || undefined,
+              orderId                   :this.form.orderId                    || undefined,
+              orderIdItem               :this.form.orderIdItem                || undefined,
+              materialCode              :this.form.materialCode               || undefined,
+              materialDescCn            :this.form.materialDescCn             || undefined,
+              materialDescEn            :this.form.materialDescEn             || undefined,
+              materialDescRn            :this.form.materialDescRn             || undefined,
+              materialUnit              :this.form.materialUnit               || undefined,
+              materialAmount            :this.form.materialAmount             || undefined,
+              materialCategory          :this.form.materialCategory           || undefined,
+              materialRelation          :this.form.materialRelation           || undefined,
+              materialRelationUnit      :this.form.materialRelationUnit       || undefined,
+              materialRelationQuantity  :this.form.materialRelationQuantity   || undefined,
+              materialMinpackageType    :this.form.materialMinpackageType     || undefined,
+              materialMinpackageAmt     :this.form.materialMinpackageAmt      || undefined,
+              materialMinpackageTotalamt:this.form.materialMinpackageTotalamt || undefined,
+              materialTaxPrice          :this.form.materialTaxPrice           || undefined,
+              materialTaxTotalprice     :this.form.materialTaxTotalprice      || undefined,
+              materialVatPrice          :this.form.materialVatPrice           || undefined,
+              materialVatTotalprice     :this.form.materialVatTotalprice      || undefined,
+              materialRate              :this.form.materialRate               || undefined,
+              materialCurrency          :this.form.materialCurrency           || undefined,
+              countryCode               :this.form.countryCode                || undefined,
+              confirmStatus             :this.form.confirmStatus              || undefined,
+              orderOutTotalAmount       :this.form.orderOutTotalAmount        || undefined,
+              materOutTotalAmount       :this.form.materOutTotalAmount        || undefined,
+              residualAmount            :this.form.residualAmount             || undefined,
+              trimAmount                :this.form.trimAmount                 || undefined,
+              stockAmount               :this.form.stockAmount                || undefined,
+              differAmount              :this.form.differAmount               || undefined,
+              takeOverAmount            :this.form.takeOverAmount             || undefined,
+              deliveryAmount            :this.form.deliveryAmount             || undefined,
+              surplusAmount             :this.form.surplusAmount              || undefined,
+              version                   :this.form.version                    || undefined,
+              dataRoleAt                :this.form.dataRoleAt                 || undefined,
 
+            };
+            activityService.checkOrderCodeAndMaterialCode({orderCode:this.form.orderCode,materialCode:this.form.materialCode}).then(resp=>{
+              if (resp.data.code == "201") {
+                if (this.mode == 'EDIT') {  //编辑
+                    activityService.updateOrderDetailInfo({...data}).then(resp => {
+                      if (resp.data.code == "201") {
+                        this.$notify({message: resp.data.message, type: "success"});
+                        this.$emit("success");
+                        this.dialogFormVisible = false
+                      } else {
+                        this.$notify({message: resp.data.message, type: "error"});
+                      }
+                    })
+                } else {
+                    activityService.addOrderDetailInfo({...data}).then(resp => {  //添加
+                      if (resp.data.code == "201") {
+                        this.$notify({message: resp.data.message, type: "success"});
+                        this.$emit("success");
+                        this.dialogFormVisible = false
+                      } else {
+                        this.$notify({message: resp.data.message, type: "error"});
+                      }
+                    })
+                }
+              }else {
+                this.$notify({message: resp.data.message, type: "error"});
+              }
+            });
           } else {
             console.log('error submit!!');
             return false;

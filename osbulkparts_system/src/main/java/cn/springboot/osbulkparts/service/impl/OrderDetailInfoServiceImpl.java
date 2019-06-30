@@ -1,7 +1,9 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import cn.springboot.osbulkparts.common.CommonConstantEnum;
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
+import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.basedata.MMaterialInfoDao;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
@@ -136,7 +138,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
         try {
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-            result.setResult(tOrderInfoDao.getOrderInfoByOrderCode(materialOrderCode,roleInfoEntity.getRoleAt()));
+            result.setResultList(tOrderInfoDao.getOrderInfoByOrderCode(materialOrderCode,roleInfoEntity.getRoleAt()));
         } catch (Exception e) {
             e.printStackTrace();
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -157,7 +159,10 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             mMaterialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
             mMaterialInfoEntity.setMaterialCode(materialCode);
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-            result.setResultList(mMaterialInfoDao.selectByPrimaryKey(mMaterialInfoEntity));
+            List<MMaterialInfoEntity> resultList=mMaterialInfoDao.selectByPrimaryKey(mMaterialInfoEntity);
+            if(resultList.size()>0) {
+                result.setResult(resultList.get(0));
+            }
         } catch (Exception e) {
             e.printStackTrace();
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -173,23 +178,82 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
-        if (!("".equals(orderCode))){
+        if (orderCode != null){
             List<TOrderInfoEntity> list = tOrderInfoDao.checkOrderCodeAndMaterialCode(orderCode,roleInfoEntity.getRoleAt());
             if (list.size()>0){
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
             }else {
                 result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
                 result.setMessage(messageBean.getMessage("common.info.empty"));
+                return result;
             }
-        }else if(!("".equals(materialCode))){
-            List<MMaterialInfoEntity> list = mMaterialInfoDao.checkOrderCodeAndMaterialCode(orderCode,roleInfoEntity.getRoleAt());
+        }
+        if(materialCode != null){
+            List<MMaterialInfoEntity> list = mMaterialInfoDao.checkOrderCodeAndMaterialCode(materialCode,roleInfoEntity.getRoleAt());
             if (list.size()>0){
-                result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
             }else {
                 result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
                 result.setMessage(messageBean.getMessage("common.info.empty"));
+                return result;
             }
         }
         return result;
+    }
+
+    @Override
+    public CommonResultInfo<?> updateOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity, Authentication auth) {
+        CommonResultInfo<?> result = new CommonResultInfo<TOrderDetailInfoEntity>();
+        result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+        try {
+            TOrderDetailInfoEntity orderInfoList = tOrderDetailInfoDao.selectByPrimaryKey(tOrderDetailInfoEntity.getId());
+            if(orderInfoList != null && (orderInfoList.getVersion() != tOrderDetailInfoEntity.getVersion())) {
+                result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName()));
+            }else {
+                tOrderDetailInfoEntity.setUpdateUser(principal.getUserName());
+                tOrderDetailInfoEntity.setVersion(tOrderDetailInfoEntity.getVersion()+1);
+                tOrderDetailInfoEntity.setIsDelete(0);
+                int returnInt = tOrderDetailInfoDao.updateByPrimaryKey(tOrderDetailInfoEntity);
+                if (returnInt > 0) {
+                    result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName()));
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+    }
+
+    @Override
+    public CommonResultInfo<?> insertOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity, Authentication auth) {
+        CommonResultInfo<?> result = new CommonResultInfo<TOrderDetailInfoEntity>();
+        result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+        try {
+            tOrderDetailInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+            tOrderDetailInfoEntity.setId(CommonSqlUtils.getUUID32());
+            tOrderDetailInfoEntity.setCreateUser(principal.getUserName());
+            tOrderDetailInfoEntity.setIsDelete(0);
+            tOrderDetailInfoEntity.setVersion(1);
+            int returnInt = tOrderDetailInfoDao.insertSelective(tOrderDetailInfoEntity);
+            if (returnInt > 0) {
+                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.ORDERINFO_DATA.getTypeName()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
     }
 }

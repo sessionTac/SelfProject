@@ -93,9 +93,7 @@
             发货
           </el-button>
         </el-form-item>
-        <el-form-item style="float: right">
-          <import-button v-if="subject.hasPermissions('*')" @saved="exec_search({search_keys, pageNum:1})" target = "ORDER_PLAN"></import-button>
-        </el-form-item>
+
         <el-form-item style="float: right">
           <el-button type="" v-if="subject.hasPermissions('*')" @click="exportData(search_keys)" size="mini" >
             <i class="fa fa-plus" aria-hidden="true"></i> 导出

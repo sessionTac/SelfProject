@@ -114,7 +114,9 @@ public class TOrderInfoEntity implements Serializable {
      */
     private TDictDataEntity dictOrderUnit;
 
-    private ArrayList<MMaterialInfoEntity> materialList;
+//    private ArrayList<MMaterialInfoEntity> materialList;
+
+    private MMaterialInfoEntity materialInfoEntity;
     
     /**
      * 订单状态
