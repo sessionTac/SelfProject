@@ -37,6 +37,9 @@ export default {
   approvalByIds:(data)=>
     putRequest(`~/orderDetailInfo/approval` ,{data}),
   //订单详情 发货一组数据
-
+  deliverGoodsByIds:(data)=>
+    putRequest(`~/orderDetailInfo/deliverGoods` ,{data}),
   //订单详情 导出功能
+  exportData:(data) =>
+    postRequest(`~/orderDetailInfo/exportData`,{data,responseType:'blob'}),
 }
