@@ -146,7 +146,15 @@ export const constantRoutes = [
               meta: { title: 'warehousePlanDetail',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
                 requiresPermission: 'maintenance:warehouse:order:info:view',}
             },
-
+            {
+                path: 'inventoryInfoList',
+                component: () => import('@/views/sysWarehouse/InventoryInfo/InventoryInfoList.vue'),
+                name: 'warehouseInventoryInfoList',
+                meta: { title: 'warehouseInventoryInfoList',  icon: 'warehouseCollection',
+                    noCache: true,breadcrumb:true,keepAlive: true,
+                    requiresPermission: 'maintenance:warehouse:order:info:view',
+                }
+            },
             {
                 path: 'warehouseCollection',
                 component: () => import('@/views/sysWarehouse/CollectionDeliveryManagement/CollectionList.vue'),

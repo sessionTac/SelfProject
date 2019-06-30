@@ -19,6 +19,7 @@ export default {
     warehouseOrderplan: '订单计划',
     warehousePlanDetail:"订单详情",
     warehouseCollection: '预配发货',
+    warehouseInventoryInfoList:"库存信息",
     warehouseDelivery: '发货明细',
     warehouseRollingplan: '发货综合查询',
     warehouseFinance: '发货统计信息',
