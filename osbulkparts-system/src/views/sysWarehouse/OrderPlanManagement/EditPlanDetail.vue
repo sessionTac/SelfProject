@@ -297,13 +297,13 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="调整后数量" prop="trimAmount">
-              <el-input v-model="form.trimAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   :maxlength="18"   clearable></el-input>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
+            <!--<el-form-item label="调整后数量" prop="trimAmount">-->
+              <!--<el-input v-model="form.trimAmount" class="search-form-item-input" style="width:160px" size="mini"-->
+                        <!--:disabled="form.orderCode==''"   :maxlength="18"   clearable></el-input>-->
+              <!--<template slot="error" slot-scope="scope">-->
+                <!--<div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+              <!--</template>-->
+            <!--</el-form-item>-->
             <el-form-item label="库存数量" prop="stockAmount">
               <el-input v-model="form.stockAmount" class="search-form-item-input" style="width:160px" size="mini"
                         :disabled="form.orderCode==''"  :maxlength="18"  clearable></el-input>

@@ -193,6 +193,9 @@
           case 'MATTER' : return service.importData('/material/importExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
 
           case 'ORDER_PLAN' : return service.importData('/orderInfo/importExcel', {importType:this.radio}, {file:this.currentFile.raw}, this.onUploadProgress);
+
+          case 'STOCK_INFO' : return service.importData('/stock/importExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
+
           // case 'ORGANIZATION'                : return service.importData('/basis/organization/leadExcel', {categoryNo:this.form.categoryNo && this.form.categoryNo || ""}, {file:this.currentFile.raw}, this.onUploadProgress);
           //
           // case 'POWER_STATION'               : return service.importData('/basis/power-station/leadExcel', {transferorNo:this.form.transferor && this.form.transferor.transferorNo ||""}, {file:this.currentFile.raw}, this.onUploadProgress);
