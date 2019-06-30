@@ -753,4 +753,23 @@
     </if>
     order by t1.order_code,t1.order_id_item
   </select>
+<!--根据id数组 批量删除数据  逻辑删除-->
+  <update id="deleteBatchData">
+    update t_order_detail_info
+    set update_user = #{updateUser,jdbcType=VARCHAR},update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),is_delete = #{isDelete,jdbcType=INTEGER}
+    where id IN
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
+
+  <!--根据id数组 批量审批数据  -->
+  <update id="approvalBatchData">
+    update t_order_detail_info
+    set update_user = #{updateUser,jdbcType=VARCHAR},update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),confirm_status = #{confirmStatus,jdbcType=INTEGER}
+    where id IN
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </update>
 </mapper>

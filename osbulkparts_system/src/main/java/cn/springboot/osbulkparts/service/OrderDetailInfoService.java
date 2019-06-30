@@ -1,6 +1,7 @@
 package cn.springboot.osbulkparts.service;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
@@ -40,4 +41,9 @@ public interface OrderDetailInfoService {
     CommonResultInfo<?> updateOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth);
 
     CommonResultInfo<?> insertOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth);
+
+    CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity, Authentication auth);
+
+    CommonResultInfo<?> approvalBatchOrderInfo(CommonEntity commonEntity, Authentication auth);
+
 }

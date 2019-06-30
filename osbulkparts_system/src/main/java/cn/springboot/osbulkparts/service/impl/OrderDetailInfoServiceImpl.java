@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import cn.springboot.osbulkparts.common.CommonConstantEnum;
 import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
@@ -246,6 +247,48 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             if (returnInt > 0) {
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.ORDERINFO_DATA.getTypeName()));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+    }
+
+    @Override
+    public CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity, Authentication auth) {
+        CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
+        result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+        try {
+            int returnInt = tOrderDetailInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName());
+            if (returnInt > 0) {
+                result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName()));
+                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+    }
+
+    @Override
+    public CommonResultInfo<?> approvalBatchOrderInfo(CommonEntity commonEntity, Authentication auth) {
+        CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
+        result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+        try {
+            int returnInt = tOrderDetailInfoDao.approvalBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_APPROVAL.getTypeName());
+            if (returnInt > 0) {
+                result.setMessage(messageBean.getMessage("common.approval.success", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName()));
+                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
             }
         } catch (Exception e) {
             e.printStackTrace();

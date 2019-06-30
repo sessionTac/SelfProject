@@ -97,14 +97,14 @@ public class OrderDetailInfoController {
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/deleteOrderDetailInfo")
     public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
-        return null;
+        return orderDetailInfoService.deleteBatchOrderInfo(commonEntity,auth);
     }
 
     @ApiOperation(value="审批数据", notes="审批a数据")
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/approval")
     public CommonResultInfo<?> approval(@RequestBody CommonEntity commonEntity, Authentication auth){
-        return null;
+        return orderDetailInfoService.approvalBatchOrderInfo(commonEntity,auth);
     }
 
     @ApiOperation(value="发货", notes="发货")

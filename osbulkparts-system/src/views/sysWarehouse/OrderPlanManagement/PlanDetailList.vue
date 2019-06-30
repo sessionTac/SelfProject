@@ -84,7 +84,7 @@
           </el-collapse-item>
         </el-collapse>
         <el-form-item style="float: right">
-          <el-button  v-if="subject.hasPermissions('*')" @click="" icon="el-icon-s-check" >
+          <el-button  v-if="subject.hasPermissions('*')" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >
             审批
           </el-button>
         </el-form-item>
@@ -100,7 +100,7 @@
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button v-if="subject.hasPermissions('*')" @click="deleteMatter" icon="el-icon-delete" >
+          <el-button v-if="subject.hasPermissions('*')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
             删除
           </el-button>
         </el-form-item>
@@ -188,7 +188,7 @@
           {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" prop="dictLockStatus.name" align="center" label="是否生成"  />
+
       <el-table-column fixed="right"  width="80" label="操作" >
         <template slot-scope="scope" >
           <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
@@ -224,6 +224,8 @@
       return{
         PAGE_SIZES : ui_config.PAGE_SIZES,
         link_modal_state      : {},
+        multipleSelection:[],
+        idsStr:[],
         search_keys:{
           orderCode:"",
           orderDateArray:[],
@@ -248,8 +250,18 @@
       }
     },
     components:{ImportButton,EditPlanDetail},
-    computed:{
 
+    computed:{
+      approvalFlag(){
+        return (this.multipleSelection.some(item=>{
+          return item.confirmStatus==1
+        }) || (this.multipleSelection.length===0))
+      },
+      // unlockFlag(){
+      //   return (this.multipleSelection.some(item=>{
+      //     return item.isLocked===0
+      //   }) || (this.multipleSelection.length===0))
+      // }
     },
     async mounted(){
       this.search_keys.orderCode=this.$route.query.orderCode;
@@ -333,31 +345,56 @@
         this.link_modal_state={activated:true,id,mode:"EDIT"};
       },
       //删除
-      deleteMatter(uuid) {
+      deleteMatter() {
         this.$confirm("确定删除吗？", "提示", {
           confirmButtonText: "是",
           cancelButtonText: "否",
           type: 'warning',
           center: true
         }).then(() => {
-            // this.idsStr=[];
-            // this.multipleSelection.forEach(item=>{
-            //   this.idsStr.push(item.id)
-            // });
-            // activityService.deleteById({idsStr:this.idsStr}).then(resp => {
-            //   if (resp.data.code=="201"){
-            //     this.$notify({message: resp.data.message, type: "success"});
-            //     this.exec_search({search_keys:this.search_keys, pageNum:1})
-            //   } else {
-            //     this.$notify({message: resp.data.message, type: "error"});
-            //   }
-            // })
+            this.idsStr=[];
+            this.multipleSelection.forEach(item=>{
+              this.idsStr.push(item.id)
+            });
+            activityService.deleteByIds({idsStr:this.idsStr}).then(resp => {
+              if (resp.data.code=="201"){
+                this.$notify({message: resp.data.message, type: "success"});
+                this.exec_search({search_keys:this.search_keys, pageNum:1})
+              } else {
+                this.$notify({message: resp.data.message, type: "error"});
+              }
+            })
           }
         ).catch(() => {
           this.internal_activated = true;
-        })//删除
+        })
       },
 
+      //审批
+      approval(){
+        this.$confirm("确定审批吗？", "提示", {
+          confirmButtonText: "是",
+          cancelButtonText: "否",
+          type: 'warning',
+          center: true
+        }).then(() => {
+            this.idsStr=[];
+            this.multipleSelection.forEach(item=>{
+              this.idsStr.push(item.id)
+            });
+            activityService.approvalByIds({idsStr:this.idsStr}).then(resp => {
+              if (resp.data.code=="201"){
+                this.$notify({message: resp.data.message, type: "success"});
+                this.exec_search({search_keys:this.search_keys, pageNum:1})
+              } else {
+                this.$notify({message: resp.data.message, type: "error"});
+              }
+            })
+          }
+        ).catch(() => {
+          this.internal_activated = true;
+        })
+      }
     },
 
   }

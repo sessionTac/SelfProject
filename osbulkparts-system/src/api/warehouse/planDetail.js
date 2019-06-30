@@ -31,9 +31,11 @@ export default {
   addOrderDetailInfo:(data)=>
     postRequest(`~/orderDetailInfo/addOrderDetailInfo`, {data}),
   //订单详情 删除一组数据
-
+  deleteByIds:(data)=>
+    putRequest(`~/orderDetailInfo/deleteOrderDetailInfo` ,{data}),
   //订单详情 审批一组数据
-
+  approvalByIds:(data)=>
+    putRequest(`~/orderDetailInfo/approval` ,{data}),
   //订单详情 发货一组数据
 
   //订单详情 导出功能

@@ -83,7 +83,7 @@
                     </el-collapse-item>
                 </el-collapse>
                 <el-form-item style="float: right">
-                    <el-button  v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" @click="generate()" icon="el-icon-s-check" >
+                    <el-button  v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" :disabled="generateFlag" @click="generate()" icon="el-icon-s-check" >
                         生成
                     </el-button>
                 </el-form-item>
@@ -96,7 +96,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" @click="deleteMatter" icon="el-icon-delete" >
+                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" :disabled="generateFlag" @click="deleteMatter" icon="el-icon-delete" >
                         删除
                     </el-button>
                 </el-form-item>
@@ -236,6 +236,11 @@
             unlockFlag(){
                 return (this.multipleSelection.some(item=>{
                     return item.isLocked===0
+                }) || (this.multipleSelection.length===0))
+            },
+            generateFlag(){
+                return (this.multipleSelection.some(item=>{
+                    return item.orderStatus==1
                 }) || (this.multipleSelection.length===0))
             }
         },

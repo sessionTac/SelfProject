@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.dao.warehouse;
 
 import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -20,4 +21,9 @@ public interface TOrderDetailInfoDao {
     int updateByPrimaryKey(TOrderDetailInfoEntity record);
 
     List<TOrderDetailInfoEntity> getOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity);
+
+    int deleteBatchData(@Param("ids") String[] ids, @Param("updateUser") String updateUser, @Param("isDelete") String isDelete);
+
+    int approvalBatchData(@Param("ids") String[] ids, @Param("updateUser") String updateUser, @Param("confirmStatus") String confirmStatus);
+
 }
