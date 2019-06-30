@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.InputStreamResource;
@@ -20,6 +22,18 @@ public class CommonMethods {
     
     public static final String route = "template";
 	
+    /***
+     * 获取当前系统时间
+     * @return
+     */
+    public static String getNowForString() {
+    	String nowStr = null;
+    	Date now = new Date();
+    	SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");//设置日期格式
+    	nowStr = df.format(now);// new Date()为获取当前系统时间
+    	return nowStr;
+    }
+    
 	/***
 	 * 将excel中的文字转为Bigdecimal格式数据
 	 * @param value

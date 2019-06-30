@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -34,6 +35,7 @@ import com.github.pagehelper.PageInfo;
 
 import cn.springboot.osbulkparts.common.CommonBusinessException;
 import cn.springboot.osbulkparts.common.CommonConstantEnum;
+import cn.springboot.osbulkparts.common.CommonDao;
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
@@ -46,6 +48,7 @@ import cn.springboot.osbulkparts.dao.basedata.MMaterialInfoDao;
 import cn.springboot.osbulkparts.dao.basedata.MSupplierInfoDao;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
+import cn.springboot.osbulkparts.dao.warehouse.TOrderDetailInfoDao;
 import cn.springboot.osbulkparts.dao.warehouse.TOrderInfoDao;
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
@@ -62,10 +65,16 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	private TOrderInfoDao torderInfoDao;
 	
 	@Autowired
+	private TOrderDetailInfoDao torderDetailInfoDao;
+	
+	@Autowired
 	private TDictDataDao tDictDataDao;
 	
 	@Autowired
 	private MRoleInfoDao mroleInfoDao;
+	
+	@Autowired
+	private CommonDao commonDao;
 	
 	@Autowired
 	private MSupplierInfoDao msupplierInfoDao;
@@ -286,13 +295,11 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 		return result;
 	}
 	
-	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<?> generateOrderDetailInfo(CommonEntity commonEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		try {
-			// TODO
 			List<TOrderDetailInfoEntity> torderDetailInfoList = new ArrayList<TOrderDetailInfoEntity>();
 			MMaterialInfoEntity mmaterialInfoParam = new MMaterialInfoEntity();
 			List<TOrderInfoEntity> orderInfoList = torderInfoDao.selectByIds(commonEntity.getIdsStr());
@@ -300,7 +307,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 			for(TOrderInfoEntity torderInfo:orderInfoList) {
-				
+				// 系统自动生成订单号：当前日期+000000
+				String orderNo = commonDao.orderNoGenerater();
 				// 订单型号+物料号判定详细信息中是否存在
 				mmaterialInfoParam.setMaterialOrderCode(torderInfo.getOrderCode());
 				mmaterialInfoParam.setDataRoleAt(roleInfoEntity.getRoleAt());
@@ -310,7 +318,14 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					result.setMessage(messageBean.getMessage("bussiness.order.material.empty",torderInfo.getOrderCode()));
 					return result;
 				}else {
+					int itemI = 0;
 					for(MMaterialInfoEntity materialInfo:materilInfoLst) {
+						TOrderDetailInfoEntity orderDetailParam = new TOrderDetailInfoEntity();
+						// 主键ID
+						orderDetailParam.setId(CommonSqlUtils.getUUID32());
+						// 订单号
+						orderDetailParam.setOrderId(orderNo);
+						itemI = itemI + 1;
 						// 物料号的供应商信息是否存在
 						// 不存在：提示【当前订单型号中物料无供应商信息，请确认数据。】
 						MSupplierInfoEntity msupplierInfo = msupplierInfoDao.selectByCode(materialInfo.getSupplierCode());
@@ -330,21 +345,116 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 										materialInfo.getSupplierCode()));
 								return result;
 							}
+							// 订单产品型号
+							orderDetailParam.setOrderCode(torderInfo.getOrderCode());
+							// 订单产品型号描述
+							orderDetailParam.setOrderCodeDesc(torderInfo.getOrderCodeDesc());
+							// 订单数量
+							orderDetailParam.setOrderAmount(torderInfo.getOrderAmount());
+							// 订单日期
+							orderDetailParam.setOrderDate(torderInfo.getOrderDate());
+							// 订单型号单位
+							orderDetailParam.setOrderUnit(torderInfo.getOrderUnit());
+							// 订单行项目
+							String itemNo = String.format("%04d", itemI);
+							orderDetailParam.setOrderIdItem(itemNo);
+							// 物料号
+							orderDetailParam.setMaterialCode(materialInfo.getMaterialCode());
+							// 物料中文描述
+							orderDetailParam.setMaterialDescCn(materialInfo.getMaterialDescCn());
+							// 物料英文描述
+							orderDetailParam.setMaterialDescEn(materialInfo.getMaterialDescEn());
+							// 物料俄文描述
+							orderDetailParam.setMaterialDescRn(materialInfo.getMaterialDescRn());
+							// 物料单位
+							orderDetailParam.setMaterialUnit(materialInfo.getMaterialUnit());
+							// 物料数量
 							// 按照供应商配额计算数量
-							
-							// 自动生成订单号
-							// 生成详细信息数据状态设置为：1：导入已生成
-							TOrderDetailInfoEntity orderDetailParam = new TOrderDetailInfoEntity();
-							orderDetailParam.setId(CommonSqlUtils.getUUID32());
-							
-							
+							BigDecimal orderMaterAmount = torderInfo.getOrderAmount().multiply(
+									materialInfo.getMaterialAmount()).multiply(
+											msupplierInfo.getSupplierQuo()).setScale(2, BigDecimal.ROUND_HALF_UP);
+							// 订单物料数量
+							orderDetailParam.setMaterialAmount(orderMaterAmount);
+							// 物料类别
+							orderDetailParam.setMaterialCategory(materialInfo.getMaterialCategory());
+							// 换算关系
+							orderDetailParam.setMaterialRelation(materialInfo.getMaterialRelation());
+							// 换算后单位
+							orderDetailParam.setMaterialRelationUnit(materialInfo.getMaterialRelationUnit());
+							// 换算后数量
+							BigDecimal relation = new BigDecimal(orderDetailParam.getMaterialRelation().length() > 0 ? orderDetailParam.getMaterialRelation():"1");
+							BigDecimal relationAmount = orderMaterAmount.multiply(relation);
+							orderDetailParam.setMaterialRelationQuantity(relationAmount);
+							// 最小包装类型
+							orderDetailParam.setMaterialMinpackageType(materialInfo.getMaterialMinpackageType());
+							// 最小包装数量
+							orderDetailParam.setMaterialMinpackageAmt(materialInfo.getMaterialMinpackageAmt());
+							// 最小包装总量
+							if(materialInfo.getMaterialMinpackageAmt() == null || materialInfo.getMaterialMinpackageAmt().equals(BigDecimal.ZERO)) {
+								orderDetailParam.setMaterialMinpackageTotalamt(BigDecimal.ZERO);
+							}else {
+								orderDetailParam.setMaterialMinpackageTotalamt(orderMaterAmount.divide(materialInfo.getMaterialMinpackageAmt(), 2, BigDecimal.ROUND_HALF_UP));
+							}
+							if(materialInfo.getMaterialTaxPrice() == null) {
+								orderDetailParam.setMaterialTaxPrice(BigDecimal.ZERO);
+								orderDetailParam.setMaterialTaxTotalprice(BigDecimal.ZERO);
+								orderDetailParam.setMaterialVatPrice(BigDecimal.ZERO);
+								orderDetailParam.setMaterialVatTotalprice(BigDecimal.ZERO);
+							}else {
+								// 未税单价
+								orderDetailParam.setMaterialTaxPrice(materialInfo.getMaterialTaxPrice());
+								// 未税总价
+								orderDetailParam.setMaterialTaxTotalprice(materialInfo.getMaterialTaxPrice().multiply(orderMaterAmount).setScale(2,BigDecimal.ROUND_HALF_UP));
+								// 含税单价
+								BigDecimal vatPrice = materialInfo.getMaterialTaxPrice().add(
+										materialInfo.getMaterialTaxPrice().multiply(materialInfo.getTax()));
+								orderDetailParam.setMaterialVatPrice(vatPrice);
+								// 含税总价
+								orderDetailParam.setMaterialVatTotalprice(vatPrice.multiply(orderMaterAmount).setScale(2,BigDecimal.ROUND_HALF_UP));
+							}
+							// 代理费率
+							orderDetailParam.setMaterialRate(materialInfo.getMaterialRate());
+							// 币种
+							orderDetailParam.setMaterialCurrency(materialInfo.getMaterialCurrency());
+							// 国家标志
+							// 状态
+							orderDetailParam.setConfirmStatus("0");
+							// 型号发货总数量
+							orderDetailParam.setOrderOutTotalAmount(BigDecimal.ZERO);
+							// 子件发货总数量
+							orderDetailParam.setMaterOutTotalAmount(BigDecimal.ZERO);
+							// 订单剩余数量
+							orderDetailParam.setResidualAmount(BigDecimal.ZERO);
+							// 物料剩余数量
+							orderDetailParam.setSurplusAmount(BigDecimal.ZERO);
+							// 库存数量
+							orderDetailParam.setStockAmount(BigDecimal.ZERO);
+							// 差异数量
+							orderDetailParam.setDifferAmount(BigDecimal.ZERO);
+							// 收货数量
+							orderDetailParam.setTakeOverAmount(BigDecimal.ZERO);
+							// 发货数量
+							orderDetailParam.setDeliveryAmount(BigDecimal.ZERO);
+							// 数据所属
+							orderDetailParam.setDataRoleAt(roleInfoEntity.getRoleAt());
+							// 创建者
+							orderDetailParam.setCreateUser(principal.getUserName());
+							// 创建时间
+							// 更新者
+							// 更新时间
+							// 逻辑删除
+							orderDetailParam.setIsDelete(0);
+							// 版本
+							orderDetailParam.setVersion(1);
 						}
+						torderDetailInfoList.add(orderDetailParam);
 					}
-
-//					createOrderDetailInfoParam();
-//					torderDetailInfoList
 				}
+				torderInfo.setOrderStatus("1");
+				torderInfo.setUpdateUser(principal.getUserName());
+				torderInfoDao.updateByPrimaryKeySelective(torderInfo);
 			}
+			torderDetailInfoDao.insertList(torderDetailInfoList);
 			return result;
 		} catch (Exception e) {
 			e.printStackTrace();

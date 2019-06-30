@@ -169,6 +169,7 @@
             <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
             <el-table-column prop="hsNo" align="center" label="HS海关编码"  />
             <el-table-column prop="supplierCode" align="center" label="供应商代码"  />
+            <el-table-column prop="materialAmount" align="center" label="物料数量"  />
             <el-table-column prop="dictMaterialUnit.name" align="center" label="单位"  />
             <el-table-column prop="materialRelation" align="center" label="换算关系"  />
             <el-table-column prop="dictMaterialRelationUnit.name" align="center" label="换算后单位"  />
@@ -182,7 +183,7 @@
             <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />
             <el-table-column prop="factoryCode" align="center" label="工厂号"  />
             <el-table-column prop="length" align="center" label="长"  />
-            <el-table-column prop="wide" align="center" label="宽"  />
+            <el-table-column prop="width" align="center" label="宽"  />
             <el-table-column prop="height" align="center" label="高"  />
             <el-table-column prop="createUser" align="center" label="创建人"  />
 <!--            <el-table-column prop="createTime" align="center" label="创建时间"  />-->

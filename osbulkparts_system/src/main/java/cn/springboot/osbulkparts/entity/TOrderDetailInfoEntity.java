@@ -119,7 +119,7 @@ public class TOrderDetailInfoEntity implements Serializable {
     /**
      * 最小包装总量
      */
-    private Double materialMinpackageTotalamt;
+    private BigDecimal materialMinpackageTotalamt;
 
     /**
      * 未税单价

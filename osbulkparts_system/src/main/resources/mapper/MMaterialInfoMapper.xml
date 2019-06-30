@@ -19,10 +19,11 @@
     <result column="material_desc_rn" jdbcType="VARCHAR" property="materialDescRn" />
     <result column="hs_no" jdbcType="VARCHAR" property="hsNo" />
     <result column="supplier_code" jdbcType="VARCHAR" property="supplierCode" />
+    <result column="material_amount" jdbcType="DECIMAL" property="materialAmount" />
     <result column="material_unit" jdbcType="VARCHAR" property="materialUnit" />
     <result column="material_relation" jdbcType="VARCHAR" property="materialRelation" />
     <result column="material_relation_unit" jdbcType="VARCHAR" property="materialRelationUnit" />
-    <result column="material_minpackage_amt" jdbcType="DOUBLE" property="materialMinpackageAmt" />
+    <result column="material_minpackage_amt" jdbcType="DECIMAL" property="materialMinpackageAmt" />
     <result column="material_minpackage_type" jdbcType="VARCHAR" property="materialMinpackageType" />
     <result column="material_tax_price" jdbcType="DECIMAL" property="materialTaxPrice" />
     <result column="material_vat_price" jdbcType="DECIMAL" property="materialVatPrice" />
@@ -103,7 +104,7 @@
     -->
     material_info_id, material_order_code, material_order_code_desc,material_hnr_code, material_ckd_code, material_code, 
     material_category, material_desc_cn, material_desc_en, material_desc_rn, hs_no, supplier_code, 
-    material_unit, material_relation, material_relation_unit, material_minpackage_amt, material_minpackage_type,
+    material_unit, material_amount,material_relation, material_relation_unit, material_minpackage_amt, material_minpackage_type,
     material_tax_price, material_vat_price, tax, material_rate, material_currency, material_price, 
     level_bom_code, material_supply_mode, factory_code,`length`,width,height,data_role_at, user_defined1,
     user_defined2, user_defined3, user_defined4, user_defined5, user_defined6, user_defined7, 
@@ -131,6 +132,7 @@
 			material.hs_no,
 			material.supplier_code,
 			material.material_unit,
+			material.material_amount,
 			dictUnit.`name` AS dictMaterialUnit,
 			material.material_relation,
 			dictConvertRelation.`name` AS dictConvertRelation,
@@ -212,16 +214,20 @@
     	AND material.material_info_id = #{materialInfoId,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialOrderCode)">
-    	AND material.material_order_code = #{materialOrderCode,jdbcType=VARCHAR}
+    <bind name="materialOrderCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialOrderCode)"/>
+    	AND material.material_order_code LIKE #{materialOrderCode_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialOrderCodeDesc)">
-    	AND material.material_order_code_desc = #{materialOrderCodeDesc,jdbcType=VARCHAR}
+    <bind name="materialOrderCodeDesc_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialOrderCodeDesc)"/>
+    	AND material.material_order_code_desc LIKE #{materialOrderCodeDesc_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCkdCode)">
-    	AND material.material_ckd_code = #{materialCkdCode,jdbcType=VARCHAR}
+    <bind name="materialCkdCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialCkdCode)"/>
+    	AND material.material_ckd_code LIKE #{materialCkdCode_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCode)">
-    	AND material.material_code = #{materialCode,jdbcType=VARCHAR}
+    <bind name="materialCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialCode)"/>
+    	AND material.material_code LIKE #{materialCode_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCategory)">
     	AND material.material_category = #{materialCategory,jdbcType=VARCHAR}
@@ -239,10 +245,15 @@
     	AND material.material_desc_rn LIKE #{materialDescRn_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(hsNo)">
-    	AND material.hs_no = #{hsNo,jdbcType=VARCHAR}
+    <bind name="hsNo_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(hsNo)"/>
+    	AND material.hs_no LIKE #{hsNo_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(supplierCode)">
-    	AND material.supplier_code = #{supplierCode,jdbcType=VARCHAR}
+    <bind name="supplierCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(supplierCode)"/>
+    	AND material.supplier_code LIKE #{supplierCode_like,jdbcType=VARCHAR}
+    </if>
+    <if test="materialAmount != null">
+    	AND material.material_amount = #{materialAmount,jdbcType=DECIMAL}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialUnit)">
     	AND material.material_unit = #{materialUnit,jdbcType=VARCHAR}
@@ -254,7 +265,7 @@
     	AND material.material_relation_unit = #{materialRelationUnit,jdbcType=VARCHAR}
     </if>
     <if test="materialMinpackageAmt != null">
-    	AND material.material_minpackage_amt = #{materialMinpackageAmt,jdbcType=DOUBLE}
+    	AND material.material_minpackage_amt = #{materialMinpackageAmt,jdbcType=DECIMAL}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialMinpackageType)">
     	AND material.material_minpackage_type = #{materialMinpackageType,jdbcType=VARCHAR}
@@ -284,7 +295,8 @@
     	AND material.material_supply_mode = #{materialSupplyMode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(factoryCode)">
-    	AND material.factory_code = #{factoryCode,jdbcType=VARCHAR}
+    <bind name="factoryCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(factoryCode)"/>
+    	AND material.factory_code LIKE #{factoryCode_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(length)">
         AND `length` = #{length,jdbcType=DECIMAL}
@@ -332,7 +344,8 @@
     	AND material.is_locked = #{isLocked,jdbcType=INTEGER}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createUser)">
-    	AND material.create_user = #{createUser,jdbcType=VARCHAR}
+    <bind name="createUser_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(createUser)"/>
+    	AND material.create_user LIKE #{createUser_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createTimeStart)">
     	AND material.create_time &gt;= #{createTimeStart,jdbcType=VARCHAR}
@@ -341,7 +354,8 @@
         AND material.create_time &lt;= #{createTimeEnd,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateUser)">
-    	AND material.update_user = #{updateUser,jdbcType=VARCHAR}
+    <bind name="updateUser_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(updateUser)"/>
+    	AND material.update_user LIKE #{updateUser_like,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateTimeStart)">
     	AND material.update_time &gt;= #{updateTimeStart,jdbcType=VARCHAR}
@@ -369,7 +383,7 @@
       material_hnr_code, material_ckd_code, material_code, 
       material_category, material_desc_cn, material_desc_en, 
       material_desc_rn, hs_no, supplier_code, 
-      material_unit, material_relation, material_relation_unit, 
+      material_unit, material_amount, material_relation, material_relation_unit, 
       material_minpackage_amt, material_minpackage_type,material_tax_price, 
       material_vat_price, tax, material_rate, material_currency, 
       material_price, level_bom_code, material_supply_mode, 
@@ -384,8 +398,9 @@
       #{materialHnrCode,jdbcType=VARCHAR}, #{materialCkdCode,jdbcType=VARCHAR}, #{materialCode,jdbcType=VARCHAR}, 
       #{materialCategory,jdbcType=VARCHAR}, #{materialDescCn,jdbcType=VARCHAR}, #{materialDescEn,jdbcType=VARCHAR}, 
       #{materialDescRn,jdbcType=VARCHAR}, #{hsNo,jdbcType=VARCHAR}, #{supplierCode,jdbcType=VARCHAR}, 
-      #{materialUnit,jdbcType=VARCHAR}, #{materialRelation,jdbcType=VARCHAR}, #{materialRelationUnit,jdbcType=VARCHAR}, 
-      #{materialMinpackageAmt,jdbcType=DOUBLE}, #{materialMinpackageType,jdbcType=VARCHAR}, #{materialTaxPrice,jdbcType=DECIMAL}, 
+      #{materialUnit,jdbcType=VARCHAR}, #{materialAmount,jdbcType=DECIMAL}, #{materialRelation,jdbcType=VARCHAR}, 
+      #{materialRelationUnit,jdbcType=VARCHAR}, 
+      #{materialMinpackageAmt,jdbcType=DECIMAL}, #{materialMinpackageType,jdbcType=VARCHAR}, #{materialTaxPrice,jdbcType=DECIMAL}, 
       #{materialVatPrice,jdbcType=DECIMAL}, #{tax,jdbcType=DECIMAL}, #{materialRate,jdbcType=DECIMAL}, #{materialCurrency,jdbcType=VARCHAR}, 
       #{materialPrice,jdbcType=DECIMAL}, #{levelBomCode,jdbcType=INTEGER}, #{materialSupplyMode,jdbcType=VARCHAR}, 
       #{factoryCode,jdbcType=VARCHAR}, #{dataRoleAt,jdbcType=VARCHAR}, #{userDefined1,jdbcType=VARCHAR}, 
@@ -439,6 +454,9 @@
       </if>
       <if test="supplierCode != null">
         supplier_code,
+      </if>
+      <if test="materialAmount != null">
+        material_amount,
       </if>
       <if test="materialUnit != null">
         material_unit,
@@ -581,6 +599,9 @@
       <if test="supplierCode != null">
         #{supplierCode,jdbcType=VARCHAR},
       </if>
+      <if test="materialAmount != null">
+        #{materialAmount,jdbcType=DECIMAL},
+      </if>
       <if test="materialUnit != null">
         #{materialUnit,jdbcType=VARCHAR},
       </if>
@@ -591,7 +612,7 @@
         #{materialRelationUnit,jdbcType=VARCHAR},
       </if>
       <if test="materialMinpackageAmt != null">
-        #{materialMinpackageAmt,jdbcType=DOUBLE},
+        #{materialMinpackageAmt,jdbcType=DECIMAL},
       </if>
       <if test="materialMinpackageType != null">
         #{materialMinpackageType,jdbcType=VARCHAR},
@@ -706,6 +727,7 @@
         material_desc_rn,
         hs_no,
         supplier_code,
+        material_amount,
         material_unit,
         material_relation,
         material_relation_unit,
@@ -756,10 +778,11 @@
         #{item.materialDescRn,jdbcType=VARCHAR},
         #{item.hsNo,jdbcType=VARCHAR},
         #{item.supplierCode,jdbcType=VARCHAR},
+        #{item.materialAmount,jdbcType=DECIMAL},
         #{item.materialUnit,jdbcType=VARCHAR},
         #{item.materialRelation,jdbcType=VARCHAR},
         #{item.materialRelationUnit,jdbcType=VARCHAR},
-        #{item.materialMinpackageAmt,jdbcType=DOUBLE},
+        #{item.materialMinpackageAmt,jdbcType=DECIMAL},
         #{item.materialMinpackageType,jdbcType=VARCHAR},
         #{item.materialTaxPrice,jdbcType=DECIMAL},
         #{item.materialVatPrice,jdbcType=DECIMAL},
@@ -830,6 +853,9 @@
       <if test="item.supplierCode != null">
         supplier_code = #{item.supplierCode,jdbcType=VARCHAR},
       </if>
+      <if test="item.materialAmount != null">
+        material_amount = #{item.materialAmount,jdbcType=DECIMAL},
+      </if>
       <if test="item.materialUnit != null">
         material_unit = #{item.materialUnit,jdbcType=VARCHAR},
       </if>
@@ -840,7 +866,7 @@
         material_relation_unit = #{item.materialRelationUnit,jdbcType=VARCHAR},
       </if>
       <if test="item.materialMinpackageAmt != null">
-        material_minpackage_amt = #{item.materialMinpackageAmt,jdbcType=DOUBLE},
+        material_minpackage_amt = #{item.materialMinpackageAmt,jdbcType=DECIMAL},
       </if>
       <if test="item.materialMinpackageType != null">
         material_minpackage_type = #{item.materialMinpackageType,jdbcType=VARCHAR},
@@ -947,10 +973,11 @@
       material_desc_rn = #{materialDescRn,jdbcType=VARCHAR},
       hs_no = #{hsNo,jdbcType=VARCHAR},
       supplier_code = #{supplierCode,jdbcType=VARCHAR},
+      material_amount = #{materialAmount,jdbcType=VARCHAR},
       material_unit = #{materialUnit,jdbcType=VARCHAR},
       material_relation = #{materialRelation,jdbcType=VARCHAR},
       material_relation_unit = #{materialRelationUnit,jdbcType=VARCHAR},
-      material_minpackage_amt = #{materialMinpackageAmt,jdbcType=DOUBLE},
+      material_minpackage_amt = #{materialMinpackageAmt,jdbcType=DECIMAL},
       material_minpackage_type = #{materialMinpackageType,jdbcType=VARCHAR},
       material_tax_price = #{materialTaxPrice,jdbcType=DECIMAL},
       material_vat_price = #{materialVatPrice,jdbcType=DECIMAL},

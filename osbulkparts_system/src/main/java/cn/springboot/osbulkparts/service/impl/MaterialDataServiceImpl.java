@@ -501,6 +501,10 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 					throw new NullPointerException(messageBean.getMessage("common.check.isExist", "供应商信息"));
 				}
 				mmaterialInfoEntity.setSupplierCode((String)mapData.get("供应商编码"));
+				// 物料数量
+				String materialAmount = (String)mapData.get("物料数量");
+				mmaterialInfoEntity.setMaterialAmount(
+						CommonMethods.changeToBigdecimal(materialAmount.trim()));
 				// 单位
 				String unitVle = getFromDictDataByName(
 						(String)mapData.get("单位"),"unit","单位");
@@ -514,7 +518,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				// 最小包装数量
 				String minPackageAmt = (String)mapData.get("最小包装数量");
 				mmaterialInfoEntity.setMaterialMinpackageAmt(
-						CommonMethods.changeToDouble(minPackageAmt.trim()));
+						CommonMethods.changeToBigdecimal(minPackageAmt.trim()));
 				// 不含税单价
 				String materialTaxPrice = (String)mapData.get("不含税单价");
 				mmaterialInfoEntity.setMaterialTaxPrice(
@@ -553,7 +557,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 						CommonMethods.changeToBigdecimal(width.trim()));
 				// 高
 				String height = (String)mapData.get("高");
-				mmaterialInfoEntity.setMaterialRate(
+				mmaterialInfoEntity.setHeight(
 						CommonMethods.changeToBigdecimal(height.trim()));
 				// 数据所属
 				mmaterialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());

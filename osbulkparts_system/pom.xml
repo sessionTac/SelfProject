@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>cn.springboot</groupId>
   <artifactId>osbulkpartsSystem</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0-Release</version>
     <properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>

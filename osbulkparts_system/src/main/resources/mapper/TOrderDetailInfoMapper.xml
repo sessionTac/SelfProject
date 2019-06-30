@@ -27,7 +27,7 @@
     <result column="material_relation_quantity" jdbcType="DECIMAL" property="materialRelationQuantity" />
     <result column="material_minpackage_type" jdbcType="VARCHAR" property="materialMinpackageType" />
     <result column="material_minpackage_amt" jdbcType="DECIMAL" property="materialMinpackageAmt" />
-    <result column="material_minpackage_totalamt" jdbcType="DOUBLE" property="materialMinpackageTotalamt" />
+    <result column="material_minpackage_totalamt" jdbcType="DECIMAL" property="materialMinpackageTotalamt" />
     <result column="material_tax_price" jdbcType="DECIMAL" property="materialTaxPrice" />
     <result column="material_tax_totalprice" jdbcType="DECIMAL" property="materialTaxTotalprice" />
     <result column="material_vat_price" jdbcType="DECIMAL" property="materialVatPrice" />
@@ -167,7 +167,7 @@
       #{materialUnit,jdbcType=VARCHAR}, #{materialAmount,jdbcType=DECIMAL}, #{materialCategory,jdbcType=VARCHAR}, 
       #{materialRelation,jdbcType=VARCHAR}, #{materialRelationUnit,jdbcType=VARCHAR}, 
       #{materialRelationQuantity,jdbcType=DECIMAL}, #{materialMinpackageType,jdbcType=VARCHAR}, 
-      #{materialMinpackageAmt,jdbcType=DECIMAL}, #{materialMinpackageTotalamt,jdbcType=DOUBLE}, 
+      #{materialMinpackageAmt,jdbcType=DECIMAL}, #{materialMinpackageTotalamt,jdbcType=DECIMAL}, 
       #{materialTaxPrice,jdbcType=DECIMAL}, #{materialTaxTotalprice,jdbcType=DECIMAL}, 
       #{materialVatPrice,jdbcType=DECIMAL}, #{materialVatTotalprice,jdbcType=DECIMAL}, 
       #{materialRate,jdbcType=DECIMAL}, #{materialCurrency,jdbcType=VARCHAR}, #{countryCode,jdbcType=VARCHAR}, 
@@ -382,7 +382,7 @@
         #{materialMinpackageAmt,jdbcType=DECIMAL},
       </if>
       <if test="materialMinpackageTotalamt != null">
-        #{materialMinpackageTotalamt,jdbcType=DOUBLE},
+        #{materialMinpackageTotalamt,jdbcType=DECIMAL},
       </if>
       <if test="materialTaxPrice != null">
         #{materialTaxPrice,jdbcType=DECIMAL},
@@ -456,6 +456,72 @@
       </if>
     </trim>
   </insert>
+  <insert id="insertList" parameterType="java.util.List">
+    insert into t_order_detail_info (id, order_code, order_code_desc, 
+      order_amount, order_date, order_unit, 
+      order_id, order_id_item, material_code, 
+      material_desc_cn, material_desc_en, material_desc_rn, 
+      material_unit, material_amount, material_category, 
+      material_relation, material_relation_unit, 
+      material_relation_quantity, material_minpackage_type, 
+      material_minpackage_amt, material_minpackage_totalamt, 
+      material_tax_price, material_tax_totalprice, 
+      material_vat_price, material_vat_totalprice, 
+      material_rate, material_currency, country_code, 
+      confirm_status, order_out_total_amount, mater_out_total_amount, 
+      residual_amount, trim_amount, stock_amount, 
+      differ_amount, take_over_amount, delivery_amount, 
+      surplus_amount, data_role_at, create_user, 
+      create_time, update_user, update_time, 
+      is_delete, version) values
+    <foreach collection="list" item="item" index="index" separator=",">
+     (#{item.id,jdbcType=VARCHAR},
+      #{item.orderCode,jdbcType=VARCHAR},
+      #{item.orderCodeDesc,jdbcType=VARCHAR}, 
+      #{item.orderAmount,jdbcType=DECIMAL}, 
+      #{item.orderDate,jdbcType=VARCHAR}, 
+      #{item.orderUnit,jdbcType=VARCHAR}, 
+      #{item.orderId,jdbcType=VARCHAR}, 
+      #{item.orderIdItem,jdbcType=VARCHAR}, 
+      #{item.materialCode,jdbcType=VARCHAR}, 
+      #{item.materialDescCn,jdbcType=VARCHAR}, 
+      #{item.materialDescEn,jdbcType=VARCHAR}, 
+      #{item.materialDescRn,jdbcType=VARCHAR}, 
+      #{item.materialUnit,jdbcType=VARCHAR}, 
+      #{item.materialAmount,jdbcType=DECIMAL}, 
+      #{item.materialCategory,jdbcType=VARCHAR}, 
+      #{item.materialRelation,jdbcType=VARCHAR}, 
+      #{item.materialRelationUnit,jdbcType=VARCHAR}, 
+      #{item.materialRelationQuantity,jdbcType=DECIMAL}, 
+      #{item.materialMinpackageType,jdbcType=VARCHAR}, 
+      #{item.materialMinpackageAmt,jdbcType=DECIMAL}, 
+      #{item.materialMinpackageTotalamt,jdbcType=DECIMAL}, 
+      #{item.materialTaxPrice,jdbcType=DECIMAL}, 
+      #{item.materialTaxTotalprice,jdbcType=DECIMAL}, 
+      #{item.materialVatPrice,jdbcType=DECIMAL}, 
+      #{item.materialVatTotalprice,jdbcType=DECIMAL}, 
+      #{item.materialRate,jdbcType=DECIMAL}, 
+      #{item.materialCurrency,jdbcType=VARCHAR}, 
+      #{item.countryCode,jdbcType=VARCHAR}, 
+      #{item.confirmStatus,jdbcType=VARCHAR}, 
+      #{item.orderOutTotalAmount,jdbcType=DECIMAL}, 
+      #{item.materOutTotalAmount,jdbcType=DECIMAL}, 
+      #{item.residualAmount,jdbcType=DECIMAL}, 
+      #{item.trimAmount,jdbcType=DECIMAL}, 
+      #{item.stockAmount,jdbcType=DECIMAL}, 
+      #{item.differAmount,jdbcType=DECIMAL}, 
+      #{item.takeOverAmount,jdbcType=DECIMAL}, 
+      #{item.deliveryAmount,jdbcType=DECIMAL}, 
+      #{item.surplusAmount,jdbcType=DECIMAL}, 
+      #{item.dataRoleAt,jdbcType=VARCHAR}, 
+      #{item.createUser,jdbcType=VARCHAR}, 
+      DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
+      #{item.updateUser,jdbcType=VARCHAR}, 
+      #{item.updateTime,jdbcType=VARCHAR}, 
+      #{item.isDelete,jdbcType=INTEGER}, 
+      #{item.version,jdbcType=INTEGER})
+    </foreach>
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity">
     <!--
       WARNING - @mbg.generated
@@ -522,7 +588,7 @@
         material_minpackage_amt = #{materialMinpackageAmt,jdbcType=DECIMAL},
       </if>
       <if test="materialMinpackageTotalamt != null">
-        material_minpackage_totalamt = #{materialMinpackageTotalamt,jdbcType=DOUBLE},
+        material_minpackage_totalamt = #{materialMinpackageTotalamt,jdbcType=DECIMAL},
       </if>
       <if test="materialTaxPrice != null">
         material_tax_price = #{materialTaxPrice,jdbcType=DECIMAL},
@@ -625,7 +691,7 @@
       material_relation_quantity = #{materialRelationQuantity,jdbcType=DECIMAL},
       material_minpackage_type = #{materialMinpackageType,jdbcType=VARCHAR},
       material_minpackage_amt = #{materialMinpackageAmt,jdbcType=DECIMAL},
-      material_minpackage_totalamt = #{materialMinpackageTotalamt,jdbcType=DOUBLE},
+      material_minpackage_totalamt = #{materialMinpackageTotalamt,jdbcType=DECIMAL},
       material_tax_price = #{materialTaxPrice,jdbcType=DECIMAL},
       material_tax_totalprice = #{materialTaxTotalprice,jdbcType=DECIMAL},
       material_vat_price = #{materialVatPrice,jdbcType=DECIMAL},

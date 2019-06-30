@@ -11,6 +11,8 @@ public interface TOrderDetailInfoDao {
     int deleteByPrimaryKey(String id);
 
     int insert(TOrderDetailInfoEntity record);
+    
+    int insertList(List<TOrderDetailInfoEntity> records);
 
     int insertSelective(TOrderDetailInfoEntity record);
 

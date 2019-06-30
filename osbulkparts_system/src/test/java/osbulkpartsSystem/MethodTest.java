@@ -14,16 +14,20 @@ public class MethodTest {
 	
 	public static void main(String[] args) {
 		
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-        Date date = null;
-        String dateString = null;
-        try {
-            date = dateFormat.parse("2019-07-01");
-            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHssmm");
-            dateString = formatter.format(date);
-        } catch (ParseException e) {
-        }
-		System.out.println(dateString);
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
+//        Date date = null;
+//        String dateString = null;
+//        try {
+//            date = dateFormat.parse("2019-07-01");
+//            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHssmm");
+//            dateString = formatter.format(date);
+//        } catch (ParseException e) {
+//        }
+        
+    	Date now = new Date();
+    	SimpleDateFormat df = new SimpleDateFormat("yyyyMMdd");//设置日期格式
+        df.format(now);// new Date()为获取当前系统时间
+		System.out.println(String.format("%04d", 1111));
 		
 		
 	}

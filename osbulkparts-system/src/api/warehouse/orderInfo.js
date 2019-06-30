@@ -38,7 +38,9 @@ export default {
   exportData:(data) =>
     postRequest(`~/orderInfo/exportData`,{data,responseType:'blob'}),
 
-
+  /***根据id生成订单详细*/
+  generateById:(data)=>
+      putRequest(`~/orderInfo/generate` ,{data}),
   // /**文件下载**/
   // installdownloadExcel:(data) =>
   //   postRequest(`~/material/downloadexcel`,{responseType:'blob'}),

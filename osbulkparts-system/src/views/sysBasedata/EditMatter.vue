@@ -80,6 +80,13 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
+          <el-form-item label="物料数量" prop="materialAmount">
+              <el-input v-model="form.materialAmount" class="search-form-item-input" style="width: 160px" size="mini"
+                        :maxlength="18"  clearable></el-input>
+              <template slot="error" slot-scope="scope">
+                  <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
+          </el-form-item>
             <el-form-item label="单位" prop="materialUnit">
               <el-select v-model="form.materialUnit" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
@@ -188,8 +195,8 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="宽" prop="wide">
-              <el-input v-model="form.wide" class="search-form-item-input" style="width: 160px" size="mini"
+            <el-form-item label="宽" prop="width">
+              <el-input v-model="form.width" class="search-form-item-input" style="width: 160px" size="mini"
                         :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
@@ -277,6 +284,7 @@
           materialDescEn: '',
           materialDescRn: '',
           materialUnit: '',
+          materialAmount:'',
           hsNo: '',
           supplierCode: '',
           materialRelation: '',
@@ -292,7 +300,7 @@
           materialSupplyMode: '',
           factoryCode: '',
           length:"",
-          wide:"",
+          width:"",
           height:"",
           dataRoleAt: "",
           isLocked:"",
@@ -337,6 +345,9 @@
           supplierCode: [
             {required: true, message: '请填写物供应商编号', trigger: 'blur'},
             {max: 50, message: '长度不超过50个字符', trigger: 'blur'},
+          ],
+          materialAmount: [
+              {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
           materialUnit: [
             {required: true, message: '请选择单位', trigger: 'change'}
@@ -428,6 +439,7 @@
               materialDescEn: this.form.materialDescEn || undefined,
               materialDescRn: this.form.materialDescRn || undefined,
               materialUnit: this.form.materialUnit || undefined,
+              materialAmount: this.form.materialAmount || undefined,
               hsNo: this.form.hsNo || undefined,
               supplierCode: this.form.supplierCode || undefined,
               materialRelation: this.form.materialRelation || undefined,
@@ -443,7 +455,7 @@
               materialSupplyMode: this.form.materialSupplyMode || undefined,
               factoryCode: this.form.factoryCode || undefined,
               length:this.form.length || undefined,
-              wide:this.form.wide  || undefined,
+              width:this.form.width  || undefined,
               height:this.form.height || undefined,
               version: this.form.version || undefined,
               dataRoleAt: this.form.dataRoleAt || undefined,

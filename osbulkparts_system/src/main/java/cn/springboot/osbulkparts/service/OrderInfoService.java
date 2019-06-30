@@ -36,6 +36,7 @@ public interface OrderInfoService {
 	
 	CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity,Authentication auth);
 	
+	@Transactional
 	CommonResultInfo<?> generateOrderDetailInfo(CommonEntity commonEntity,Authentication auth);
 	
 	ResponseEntity<byte[]> downloadExcel(TOrderInfoEntity torderInfoEntity);

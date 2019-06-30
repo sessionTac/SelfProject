@@ -94,7 +94,7 @@ public class OrderInfoController {
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/generate")
     public CommonResultInfo<?> generateInfo(@RequestBody CommonEntity commonEntity, Authentication auth){
-        return null;
+        return orderInfoService.generateOrderDetailInfo(commonEntity,auth);
     }
 
     @ApiOperation(value="订单计划数据", notes="删除订单计划")

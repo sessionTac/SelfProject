@@ -65,6 +65,11 @@ public class MMaterialInfoEntity implements Serializable {
      * 供应商编号
      */
     private String supplierCode;
+    
+    /**
+     * 物料数量
+     */
+    private BigDecimal materialAmount;
 
     /**
      * 单位
@@ -84,7 +89,7 @@ public class MMaterialInfoEntity implements Serializable {
     /**
      * 最小包装数量
      */
-    private Double materialMinpackageAmt;
+    private BigDecimal materialMinpackageAmt;
     
     /**
      * 最小包装类型

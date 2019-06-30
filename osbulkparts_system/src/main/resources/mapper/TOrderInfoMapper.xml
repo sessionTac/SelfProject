@@ -64,7 +64,7 @@
     from t_order_info
     where id = #{id,jdbcType=VARCHAR}
   </select>
-  <select id="selectByIds">
+  <select id="selectByIds" resultMap="BaseResultMap">
   	select
     <include refid="Base_Column_List" />
     from t_order_info
