@@ -13,7 +13,9 @@
 .search-form.search-form-normal .el-range-editor--mini{ height: 24px;width:200px; }
 .search-form.search-form-normal .el-range-separator{    line-height: 17px;font-size: 8px;padding: 0}
 
-
+body .el-table th.gutter{
+    display: table-cell!important;
+}
 
 
 .search-result-table {

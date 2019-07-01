@@ -91,6 +91,7 @@
     <el-table size="mini"
               style="flex: 1"
               :height="600"
+              border
               class="search-result-table"
               :data="search_result.list" row-key="id"
               :stripe="true"

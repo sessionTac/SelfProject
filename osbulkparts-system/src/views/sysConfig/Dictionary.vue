@@ -45,6 +45,7 @@
                     <el-table size="mini"
                               class="search-result-table"
                               style="flex: 1"
+                              border
                               :height="650"
                               :data="search_result.list" row-key="uuId"
                               :cell-class-name="({row,rowIndex,columnIndex}) => { return null; }"

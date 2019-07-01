@@ -40,6 +40,7 @@
     <!--</div>-->
     <el-table size="mini"
               style="flex: 1"
+              border
               :height="600"
               class="search-result-table"
               :data="search_result.list" row-key="id"

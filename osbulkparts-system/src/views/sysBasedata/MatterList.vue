@@ -151,6 +151,7 @@
                   style="flex: 1"
                   :height="600"
                   ref="tb"
+                  border
                   class="search-result-table"
                   :data="search_result.list" row-key="id"
                   :stripe="true"
@@ -164,9 +165,9 @@
             <el-table-column prop="materialCkdCode"  width="100" align="center" label="物料CKD号"  />
             <el-table-column prop="materialCode"  width="100" align="center" label="子件型号"/>
             <el-table-column prop="dictMaterialCategory.name" width="100" align="center" label="物料类别" />
-            <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
-            <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
-            <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
+            <el-table-column prop="materialDescCn" width="150"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
+            <el-table-column prop="materialDescEn"  width="150" :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
+            <el-table-column prop="materialDescRn"  width="150" :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
             <el-table-column prop="hsNo" align="center" label="HS海关编码"  />
             <el-table-column prop="supplierCode" align="center" label="供应商代码"  />
             <el-table-column prop="materialAmount" align="center" label="物料数量"  />

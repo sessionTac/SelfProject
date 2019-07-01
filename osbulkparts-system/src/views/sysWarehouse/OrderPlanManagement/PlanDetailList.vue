@@ -125,6 +125,7 @@
               style="flex: 1"
               :height="600"
               ref="tb"
+              border
               class="search-result-table"
               :data="search_result.list" row-key="id"
               :stripe="true"
