@@ -102,6 +102,7 @@
                   style="flex: 1"
                   :height="600"
                   ref="tb"
+                  border
                   class="search-result-table"
                   :data="search_result.list" row-key="id"
                   :stripe="true"
@@ -128,7 +129,7 @@
                     {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
                 </template>
             </el-table-column>
-            <el-table-column fixed="right"  width="80" label="操作" >
+            <el-table-column   width="80" label="操作" >
                 <template slot-scope="scope" >
                     <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
                         <i class="el-icon-news"></i></el-button>
