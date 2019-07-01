@@ -50,7 +50,6 @@ class Subject {
   login(user_info) {
 
     this.__permission_ver = this.__permission_ver + 1;
-debugger
     this.logged_in = true;
     this.status = user_info.userStatus || undefined;
     this.principal = {
