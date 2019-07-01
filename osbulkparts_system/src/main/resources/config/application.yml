@@ -1,8 +1,8 @@
 #======BASE CONFIG AREA START=====#
 server:
   port: 8081
-  url: '127.0.0.1'
-  #url: '192.168.8.1'
+  #url: '127.0.0.1'
+  url: '192.168.8.1'
 spring:
   application:
     name: osbulkparts

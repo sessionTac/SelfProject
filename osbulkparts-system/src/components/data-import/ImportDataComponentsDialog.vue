@@ -185,6 +185,10 @@
             return service.downloadExcelTemp('orderPlanTemp').then(resp=>{
               downloadBlobResponse(resp); // 文件下载
             });
+          case 'STOCK_INFO':
+            return service.downloadExcelTemp('stockInfoTemp').then(resp=>{
+              downloadBlobResponse(resp); // 文件下载
+            });
         }
       },
 

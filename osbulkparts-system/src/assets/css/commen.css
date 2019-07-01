@@ -19,6 +19,9 @@
 .search-result-table {
     font-size: 10px;
 }
+.search-result-table .el-table__header th{
+    color: black;
+}
 .smallButton {
     font-size: 10px;
 }
