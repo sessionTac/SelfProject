@@ -24,6 +24,10 @@ public class CommonController {
 	
 	private String NAME_ORDER= "订单计划导入模板.xlsx";
 	
+	private String PATH_STOCK="stock";
+	
+	private String NAME_STOCK= "库存信息导入模板.xlsx";
+	
 	private String PATH_SUPPLIER="supplider";
 
 	@ApiOperation(value="模板下载", notes="模板下载")
@@ -36,6 +40,8 @@ public class CommonController {
 		}
 		else if(name.equals("orderPlanTemp")){
 			resultresponse = CommonMethods.download(PATH_ORDER, name, NAME_ORDER);
+		}else if(name.equals("stockInfoTemp")) {
+			resultresponse = CommonMethods.download(PATH_STOCK, name, NAME_STOCK);
 		}
         return resultresponse;
 	}
