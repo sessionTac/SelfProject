@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50724
 File Encoding         : 65001
 
-Date: 2019-06-30 14:44:06
+Date: 2019-07-01 14:09:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -540,6 +540,34 @@ INSERT INTO `t_role_function_relation` VALUES ('e4ff5a4594c511e9915c0a0027000012
 INSERT INTO `t_role_function_relation` VALUES ('e4ff5ac894c511e9915c0a0027000012', '10001', '16', '10001', '20190622160616', null, null, '0', '0');
 INSERT INTO `t_role_function_relation` VALUES ('e4ff5b0794c511e9915c0a0027000012', '10001', '8', '10001', '20190622160616', null, null, '0', '0');
 INSERT INTO `t_role_function_relation` VALUES ('e4ff5b3e94c511e9915c0a0027000012', '10001', '9', '10001', '20190622160616', null, null, '0', '0');
+
+-- ----------------------------
+-- Table structure for t_stock_info
+-- ----------------------------
+DROP TABLE IF EXISTS `t_stock_info`;
+CREATE TABLE `t_stock_info` (
+  `id` varchar(32) NOT NULL COMMENT '主键ID',
+  `material_code` varchar(32) DEFAULT NULL COMMENT '物料号',
+  `material_category` varchar(30) DEFAULT NULL COMMENT '物料类别',
+  `material_desc_cn` varchar(200) DEFAULT NULL COMMENT '物料中文描述',
+  `material_desc_en` varchar(200) DEFAULT NULL COMMENT '物料英文描述',
+  `material_desc_rn` varchar(200) DEFAULT NULL COMMENT '物料俄文描述',
+  `stock_amount` decimal(18,2) DEFAULT NULL COMMENT '库存数量',
+  `data_role_at` varchar(30) DEFAULT NULL COMMENT '数据所属',
+  `create_user` varchar(32) DEFAULT NULL COMMENT '创建者',
+  `create_time` varchar(14) DEFAULT NULL COMMENT '创建时间',
+  `update_user` varchar(32) DEFAULT NULL COMMENT '更新者',
+  `update_time` varchar(14) DEFAULT NULL COMMENT '更新时间',
+  `is_delete` int(1) DEFAULT NULL COMMENT '逻辑删除',
+  `version` int(10) DEFAULT NULL COMMENT '版本',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- ----------------------------
+-- Records of t_stock_info
+-- ----------------------------
+INSERT INTO `t_stock_info` VALUES ('a83eed2232c2451bb96e263dbbee987d', '11111111112', '2', '12', '123', '12333333333333', '12.00', '0', null, null, 'admin', '20190701140725', '1', '4');
+INSERT INTO `t_stock_info` VALUES ('c63010c4715442068f5d44ec8e4f0a49', '1111', '1', '2341234', '23124', '32142', '32142143.00', '0', 'admin', '20190630193055', 'admin', '20190701140725', '1', '1');
 
 -- ----------------------------
 -- Table structure for t_user_role_relation
