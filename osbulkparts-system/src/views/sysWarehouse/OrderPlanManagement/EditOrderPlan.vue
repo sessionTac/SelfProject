@@ -54,21 +54,21 @@
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
-                        <el-form-item label="计划状态" prop="orderStatus">
-                            <el-select v-model="form.orderStatus" style="width: 160px" size="mini" clearable>
-                                <el-option value=""></el-option>
-                                <el-option
-                                  size="mini"
-                                  v-for="item in orderStatus"
-                                  :key="item.value"
-                                  :label="item.name"
-                                  :value="item.value">
-                                </el-option>
-                            </el-select>
-                            <template slot="error" slot-scope="scope">
-                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-                            </template>
-                        </el-form-item>
+                        <!--<el-form-item label="计划状态" prop="orderStatus">-->
+                            <!--<el-select v-model="form.orderStatus" style="width: 160px" size="mini" clearable>-->
+                                <!--<el-option value=""></el-option>-->
+                                <!--<el-option-->
+                                  <!--size="mini"-->
+                                  <!--v-for="item in orderStatus"-->
+                                  <!--:key="item.value"-->
+                                  <!--:label="item.name"-->
+                                  <!--:value="item.value">-->
+                                <!--</el-option>-->
+                            <!--</el-select>-->
+                            <!--<template slot="error" slot-scope="scope">-->
+                                <!--<div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+                            <!--</template>-->
+                        <!--</el-form-item>-->
 
 
                     </el-form>

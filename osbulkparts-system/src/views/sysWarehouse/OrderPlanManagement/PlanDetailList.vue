@@ -133,10 +133,10 @@
               @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" fixed width="50" align="center"/>
-      <el-table-column prop="orderCode" fixed width="100" align="center" label="订单产品型号"  />
-      <el-table-column prop="orderCodeDesc" fixed width="100" align="center" label="订单产品型号描述"  />
-      <el-table-column prop="orderAmount" fixed width="100" align="center" label="订单数量"  />
-      <el-table-column prop="orderDate" fixed width="100" align="center" label="订单日期">
+      <el-table-column prop="orderCode"  width="100" align="center" label="订单产品型号"  />
+      <el-table-column prop="orderCodeDesc"  width="100" align="center" label="订单产品型号描述"  />
+      <el-table-column prop="orderAmount"  width="100" align="center" label="订单数量"  />
+      <el-table-column prop="orderDate"  width="100" align="center" label="订单日期">
         <template slot-scope="scope">
           {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>
@@ -189,7 +189,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column fixed="right"  width="80" label="操作" >
+      <el-table-column   width="80" label="操作" >
         <template slot-scope="scope" >
           <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
             <i class="el-icon-news"></i></el-button>

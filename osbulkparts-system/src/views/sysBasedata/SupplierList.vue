@@ -97,11 +97,12 @@
               @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" fixed width="50" align="center"/>
-      <el-table-column prop="supplierCode" fixed width="100" align="center" label="供应商代码"  />
-      <el-table-column prop="supplierNameCn" fixed width="100" align="center" label="供应商中文名称" />
-      <el-table-column prop="supplierNameEn" fixed width="100" align="center" label="供应商英文名称" />
-      <el-table-column prop="supplierDescCn"  :show-overflow-tooltip="true" align="center" label="供应商中文说明"  />
-      <el-table-column prop="supplierDescEn"  :show-overflow-tooltip="true" align="center" label="供应商英文说明"  />
+      <el-table-column prop="supplierCode"  width="100" align="center" label="供应商代码"  />
+      <el-table-column prop="supplierNameCn"  width="100" align="center" label="供应商中文名称" />
+      <el-table-column prop="supplierNameEn"  width="100" align="center" label="供应商英文名称" />
+      <el-table-column prop="supplierQuo" align="center" label="供应商配额"  />
+      <el-table-column prop="supplierDescCn" width="150" :show-overflow-tooltip="true" align="center" label="供应商中文说明"  />
+      <el-table-column prop="supplierDescEn" width="150" :show-overflow-tooltip="true" align="center" label="供应商英文说明"  />
       <el-table-column prop="address"  :show-overflow-tooltip="true" align="center" label="地址"  />
       <el-table-column prop="contact"  :show-overflow-tooltip="true" align="center" label="联系人"  />
       <el-table-column prop="accountBank" align="center" label="开户银行"  />
@@ -112,7 +113,6 @@
       <el-table-column prop="dictSupplierCata.name" align="center" label="供应商分类"  />
       <el-table-column prop="dictSupplierLevel.name" align="center" label="供应商等级"  />
       <el-table-column prop="dictSupplierAt.name" align="center" label="供应商所属"  />
-      <el-table-column prop="supplierQuo" align="center" label="供应商配额"  />
       <el-table-column prop="createUser" align="center" label="创建人"  />
       <el-table-column align="center" label="创建时间"  >
         <template slot-scope="scope">
@@ -125,7 +125,7 @@
             {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" width="120" label="操作" >
+      <el-table-column  width="120" label="操作" >
         <template slot-scope="scope" >
           <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt smallButton" plain @click="edit(scope.row.supplierId)">
             <i class="el-icon-news"></i></el-button>

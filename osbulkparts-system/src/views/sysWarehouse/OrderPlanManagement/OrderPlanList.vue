@@ -130,19 +130,19 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="orderCode"  fixed width="100" align="center" label="订单产品型号"  >
+            <el-table-column prop="orderCode"   width="100" align="center" label="订单产品型号"  >
               <template slot-scope="scope">
-                <div @click="toPlanDetailList(scope.row.orderCode)">{{scope.row.orderCode}}</div>
+                <a style="text-decoration: underline;" @click="toPlanDetailList(scope.row.orderCode)">{{scope.row.orderCode}}</a>
               </template>
             </el-table-column>
-            <el-table-column prop="orderCodeDesc" fixed width="300" align="center" label="订单产品型号描述"  />
-            <el-table-column prop="orderAmount" fixed width="100" align="center" label="订单数量"  />
-            <el-table-column prop="orderDate" fixed width="160" align="center" label="订单日期">
+            <el-table-column prop="orderCodeDesc"  width="300" align="center" label="订单产品型号描述"  />
+            <el-table-column prop="orderAmount"  width="100" align="center" label="订单数量"  />
+            <el-table-column prop="orderDate"  width="160" align="center" label="订单日期">
                 <template slot-scope="scope">
                     {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDD').format('YYYY-MM-DD') : ''}}
                 </template>
             </el-table-column>
-            <el-table-column prop="dictOrderUnit.name" fixed width="100" align="center" label="订单型号单位" />
+            <el-table-column prop="dictOrderUnit.name"  width="100" align="center" label="订单型号单位" />
 <!--            <el-table-column prop="dictOrderStatus.name"  :show-overflow-tooltip="true" align="center" label="计划状态"  />-->
 
             <el-table-column prop="createUser" align="center" label="创建人"  />
@@ -157,8 +157,8 @@
                     {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" prop="dictOrderStatus.name" align="center" label="计划状态"  />
-            <el-table-column fixed="right"  width="80" label="操作" >
+            <el-table-column  prop="dictOrderStatus.name" align="center" label="计划状态"  />
+            <el-table-column   width="80" label="操作" >
                 <template slot-scope="scope" >
                     <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
                         <i class="el-icon-news"></i></el-button>

@@ -159,10 +159,10 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="materialOrderCode" fixed width="100" align="center" label="订单型号"  />
-            <el-table-column prop="materialOrderCodeDesc" fixed width="100" align="center" label="订单型号描述"  />
-            <el-table-column prop="materialCkdCode" fixed width="100" align="center" label="物料CKD号"  />
-            <el-table-column prop="materialCode" fixed width="100" align="center" label="子件型号"/>
+            <el-table-column prop="materialOrderCode"  width="100" align="center" label="订单型号"  />
+            <el-table-column prop="materialOrderCodeDesc"  width="100" align="center" label="订单型号描述"  />
+            <el-table-column prop="materialCkdCode"  width="100" align="center" label="物料CKD号"  />
+            <el-table-column prop="materialCode"  width="100" align="center" label="子件型号"/>
             <el-table-column prop="dictMaterialCategory.name" width="100" align="center" label="物料类别" />
             <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
             <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
@@ -174,7 +174,7 @@
             <el-table-column prop="materialRelation" align="center" label="换算关系"  />
             <el-table-column prop="dictMaterialRelationUnit.name" align="center" label="换算后单位"  />
             <el-table-column prop="materialMinpackageAmt" align="center" label="最小包装数量"  />
-	        <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />
+	          <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />
             <el-table-column prop="materialTaxPrice" align="center" :formatter="price" label="未税单价"  />
             <el-table-column prop="materialVatPrice" align="center" :formatter="price" label="含税单价"  />
             <el-table-column prop="tax" align="center" :formatter="price" label="税率"  />
@@ -199,8 +199,8 @@
                     {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" prop="dictLockStatus.name" align="center" label="是否锁定"  />
-            <el-table-column fixed="right"  width="80" label="操作" >
+            <el-table-column  prop="dictLockStatus.name" align="center" label="是否锁定"  />
+            <el-table-column   width="80" label="操作" >
                 <template slot-scope="scope" >
                     <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
                         <i class="el-icon-news"></i></el-button>

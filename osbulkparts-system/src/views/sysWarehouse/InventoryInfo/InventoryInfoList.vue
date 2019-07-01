@@ -110,7 +110,7 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="materialCode" fixed width="100" align="center" label="物料号"/>
+            <el-table-column prop="materialCode"  width="100" align="center" label="物料号"/>
             <el-table-column prop="dictMaterialCategory.name" width="100" align="center" label="物料类别" />
             <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
             <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />

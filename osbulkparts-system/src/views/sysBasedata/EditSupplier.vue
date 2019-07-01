@@ -121,6 +121,12 @@
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
+                        <el-form-item label="供应商配额" prop="supplierQuo">
+                            <el-input   v-model="form.supplierQuo" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="18" autocomplete="new-password"clearable></el-input>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
+                        </el-form-item>
                     </el-form>
 
                 </div>
@@ -171,6 +177,7 @@
                     scalerRela:'',
                     scalerUnit:'',
                     currency:'',
+                    supplierQuo:"",
                 },
                 /**表单的验证*/
                 rules: {
@@ -226,6 +233,9 @@
                     supplierAt: [
                         {required: true, message: '请选择供应商所属', trigger: 'change'}
                     ],
+                    supplierQuo:[
+                        {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+                    ]
 
                 },
             }
@@ -271,6 +281,7 @@
                             supplierCata        : this.form.supplierCata    || undefined,
                             supplierLevel       : this.form.supplierLevel   || undefined,
                             supplierAt          : this.form.supplierAt      || undefined,
+                            supplierQuo         : this.form.supplierQuo     || undefined,
                             version             : this.form.version       || undefined,
                         }
                         if(this.mode == 'EDIT'){  //编辑
