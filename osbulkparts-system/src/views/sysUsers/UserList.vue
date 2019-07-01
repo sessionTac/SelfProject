@@ -10,7 +10,7 @@
                 </el-form-item>
 
                 <el-form-item style="float: right">
-                    <el-button type="" @click="add" size="mini" >
+                    <el-button type="primary" @click="add" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 添加
                     </el-button>
                 </el-form-item>

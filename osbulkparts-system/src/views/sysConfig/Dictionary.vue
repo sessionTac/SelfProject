@@ -36,7 +36,7 @@
                 <div style="padding-top: 10px;padding-left: 30px">
                     <el-form :inline="true" size="mini">
                         <el-form-item>
-                            <el-button @click="$router.push({name:'SystemDictionaryCategory'})" style="width: 80px" size="mini">
+                            <el-button type="primary" @click="$router.push({name:'SystemDictionaryCategory'})" style="width: 80px" size="mini">
                                 字典分类
                             </el-button>
                         </el-form-item>

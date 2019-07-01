@@ -84,33 +84,33 @@
           </el-collapse-item>
         </el-collapse>
         <el-form-item style="float: right">
-          <el-button  v-if="subject.hasPermissions('*')" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >
+          <el-button type="primary"  v-if="subject.hasPermissions('*')" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >
             审批
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button  v-if="subject.hasPermissions('*')" @click="deliverGoods" icon="el-icon-s-check" >
+          <el-button type="primary"  v-if="subject.hasPermissions('*')" @click="deliverGoods" icon="el-icon-s-check" >
             发货
           </el-button>
         </el-form-item>
 
         <el-form-item style="float: right">
-          <el-button type="" v-if="subject.hasPermissions('*')" @click="exportData(search_keys)" size="mini" >
+          <el-button type="primary" v-if="subject.hasPermissions('*')" @click="exportData(search_keys)" size="mini" >
             <i class="fa fa-plus" aria-hidden="true"></i> 导出
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button v-if="subject.hasPermissions('*')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
+          <el-button type="primary" v-if="subject.hasPermissions('*')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
             删除
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button  @click="reset" icon="el-icon-error" >
+          <el-button type="primary"  @click="reset" icon="el-icon-error" >
             清空
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button v-if="subject.hasPermissions('*')" @click="add()" icon="el-icon-plus" >
+          <el-button type="primary" v-if="subject.hasPermissions('*')" @click="add()" icon="el-icon-plus" >
             添加
           </el-button>
         </el-form-item>

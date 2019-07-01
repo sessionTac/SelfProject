@@ -107,12 +107,12 @@
                     </el-collapse-item>
                 </el-collapse>
                 <el-form-item style="float: right">
-                    <el-button :disabled="unlockFlag " v-if="subject.hasPermissions('maintenance:basis:matter:info:unlocked')" @click="lockData(false)" icon="el-icon-s-check" >
+                    <el-button type="primary" :disabled="unlockFlag " v-if="subject.hasPermissions('maintenance:basis:matter:info:unlocked')" @click="lockData(false)" icon="el-icon-s-check" >
                         解锁
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button :disabled="lockFlag " v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" @click="lockData(true)" icon="el-icon-s-check" >
+                    <el-button type="primary" :disabled="lockFlag " v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" @click="lockData(true)" icon="el-icon-s-check" >
                         锁定
                     </el-button>
                 </el-form-item>
@@ -120,22 +120,22 @@
                     <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "MATTER"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(old_search_keys)" size="mini" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(old_search_keys)" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" @click="deleteMatter" icon="el-icon-delete" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" @click="deleteMatter" icon="el-icon-delete" >
                         删除
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="reset" icon="el-icon-error" >
+                    <el-button type="primary"  @click="reset" icon="el-icon-error" >
                         清空
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:add')" @click="add()" icon="el-icon-plus" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:add')" @click="add()" icon="el-icon-plus" >
                         添加
                     </el-button>
                 </el-form-item>

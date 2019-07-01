@@ -71,22 +71,22 @@
                     <import-button v-if="subject.hasPermissions('*')" @saved="exec_search({search_keys, pageNum:1})" target = "STOCK_INFO"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="" v-if="subject.hasPermissions('*')" @click="exportData(old_search_keys)" size="mini" >
+                    <el-button type="primary" v-if="subject.hasPermissions('*')" @click="exportData(old_search_keys)" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button v-if="subject.hasPermissions('*')" @click="deleteMatter" icon="el-icon-delete" >
+                    <el-button type="primary" v-if="subject.hasPermissions('*')" @click="deleteMatter" icon="el-icon-delete" >
                         删除
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="reset" icon="el-icon-error" >
+                    <el-button type="primary"  @click="reset" icon="el-icon-error" >
                         清空
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button v-if="subject.hasPermissions('*')" @click="add()" icon="el-icon-plus" >
+                    <el-button type="primary" v-if="subject.hasPermissions('*')" @click="add()" icon="el-icon-plus" >
                         添加
                     </el-button>
                 </el-form-item>

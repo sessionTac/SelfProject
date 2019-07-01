@@ -63,17 +63,17 @@
           </el-collapse-item>
         </el-collapse>
         <el-form-item style="float: right">
-          <el-button  @click="deleteMatter" icon="el-icon-delete" >
+          <el-button type="primary"  @click="deleteMatter" icon="el-icon-delete" >
             删除
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button  @click="reset" icon="el-icon-error" >
+          <el-button type="primary"  @click="reset" icon="el-icon-error" >
             清空
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button  @click="add()" icon="el-icon-plus" >
+          <el-button type="primary"  @click="add()" icon="el-icon-plus" >
             添加
           </el-button>
         </el-form-item>

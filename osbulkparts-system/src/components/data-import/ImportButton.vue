@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <el-button type="" @click="Import()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> 导入</el-button>
+      <el-button type="primary" @click="Import()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> 导入</el-button>
     </div>
     <div>
       <import-data-components-dialog @saved="$emit('saved')" :target="target" :targetName="targetName" v-bind.sync="dialogState" v-if="dialogState.activated"></import-data-components-dialog>

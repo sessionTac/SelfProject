@@ -83,7 +83,7 @@
                     </el-collapse-item>
                 </el-collapse>
                 <el-form-item style="float: right">
-                    <el-button  v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" :disabled="generateFlag" @click="generate()" icon="el-icon-s-check" >
+                    <el-button type="primary"  v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" :disabled="generateFlag" @click="generate()" icon="el-icon-s-check" >
                         生成
                     </el-button>
                 </el-form-item>
@@ -91,22 +91,22 @@
                     <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "ORDER_PLAN"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(search_keys)" size="mini" >
+                    <el-button type="primary"  v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(search_keys)" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" :disabled="generateFlag" @click="deleteMatter" icon="el-icon-delete" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" :disabled="generateFlag" @click="deleteMatter" icon="el-icon-delete" >
                         删除
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button  @click="reset" icon="el-icon-error" >
+                    <el-button type="primary"  @click="reset" icon="el-icon-error" >
                         清空
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button v-if="subject.hasPermissions('maintenance:basis:matter:info:add')" @click="add()" icon="el-icon-plus" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:add')" @click="add()" icon="el-icon-plus" >
                         添加
                     </el-button>
                 </el-form-item>
