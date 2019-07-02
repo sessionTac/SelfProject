@@ -63,7 +63,7 @@
           </el-collapse-item>
         </el-collapse>
         <el-form-item style="float: right">
-          <el-button type="primary"  @click="deleteMatter" icon="el-icon-delete" >
+          <el-button type="primary" :disabled="multipleSelection.length==0"  @click="deleteMatter" icon="el-icon-delete" >
             删除
           </el-button>
         </el-form-item>
@@ -107,7 +107,7 @@
       <el-table-column prop="address"  :show-overflow-tooltip="true" align="center" label="地址"  />
       <el-table-column prop="contact"  :show-overflow-tooltip="true" align="center" label="联系人"  />
       <el-table-column prop="accountBank" align="center" label="开户银行"  />
-      <el-table-column prop="bankAddress" align="center" label="开户银行地址"  />
+      <el-table-column prop="bankAddress" align="center" :show-overflow-tooltip="true" width="150" label="开户银行地址"  />
       <el-table-column prop="accountNo" align="center" label="帐号信息"  />
       <el-table-column prop="accountant" align="center" label="账户人"  />
       <el-table-column prop="contactWays" align="center" label="联系方式"  />
@@ -115,13 +115,13 @@
       <el-table-column prop="dictSupplierLevel.name" align="center" label="供应商等级"  />
       <el-table-column prop="dictSupplierAt.name" align="center" label="供应商所属"  />
       <el-table-column prop="createUser" align="center" label="创建人"  />
-      <el-table-column align="center" label="创建时间"  >
+      <el-table-column align="center" width="150" label="创建时间"  >
         <template slot-scope="scope">
             {{scope.row.createTime != null ?$moment(scope.row.createTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>
       </el-table-column>
       <el-table-column prop="updateUser" align="center" label="最后修改人"  />
-      <el-table-column align="center" label="最后修改时间" >
+      <el-table-column align="center" width="150" label="最后修改时间" >
         <template slot-scope="scope">
             {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>

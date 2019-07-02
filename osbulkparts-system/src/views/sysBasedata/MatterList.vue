@@ -125,7 +125,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" @click="deleteMatter" icon="el-icon-delete" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
                         删除
                     </el-button>
                 </el-form-item>

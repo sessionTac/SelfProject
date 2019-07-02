@@ -21,7 +21,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <import-button target = "USER_INFO"></import-button>
+                    <import-button @saved="exec_search({search_keys, pageNum:1})" target = "USER_INFO"></import-button>
                 </el-form-item>
             </el-form>
         </div>

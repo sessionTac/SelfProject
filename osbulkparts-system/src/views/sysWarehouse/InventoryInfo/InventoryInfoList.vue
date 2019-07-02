@@ -32,9 +32,9 @@
                             <el-form-item label="物料俄文描述">
                                 <el-input placeholder="物料俄文描述" v-model="search_keys.materialDescRn" class="search-form-item-input"></el-input>
                             </el-form-item>
-                            <el-form-item label="库存数量">
-                                <el-input placeholder="HS海关编码" v-model="search_keys.stockAmount" class="search-form-item-input"></el-input>
-                            </el-form-item>
+                            <!--<el-form-item label="库存数量">-->
+                                <!--<el-input placeholder="HS海关编码" v-model="search_keys.stockAmount" class="search-form-item-input"></el-input>-->
+                            <!--</el-form-item>-->
                             <el-form-item label="创建人">
                                 <el-input placeholder="创建人" v-model="search_keys.createUser" class="search-form-item-input"></el-input>
                             </el-form-item>
@@ -76,7 +76,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('*')" @click="deleteMatter" icon="el-icon-delete" >
+                    <el-button type="primary" v-if="subject.hasPermissions('*')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
                         删除
                     </el-button>
                 </el-form-item>
