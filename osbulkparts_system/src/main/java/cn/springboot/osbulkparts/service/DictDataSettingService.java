@@ -10,6 +10,8 @@ public interface DictDataSettingService {
 	CommonResultInfo<TDictDataEntity> getDictDataList(TDictDataEntity tdictTypeEntity,int pageNumber,int pageSize);
 	
 	CommonResultInfo<TDictDataEntity> getDictDataInfo(String dictDataId,int pageNumber,int pageSize);
+
+	CommonResultInfo<TDictDataEntity> getDictDataInfoDetail(String id);
 	
 	CommonResultInfo<?> addDictData(TDictDataEntity tdictDataEntity, Authentication auth);
 	

@@ -18,7 +18,7 @@ export default {
    * 根据typeId 获取该 typeId下的所有data
    */
   findDataByDictTypeId:(params)=>
-    getRequest(`~/dict/getDictDataInfo/`+params.dictTypeId, {params}),
+    getRequest(`~/dict/getDictDataInfo/`+params.dictTypeCode, {params}),
   /**
    * 根据dictTypeId 获取一条type 详细信息
    */
@@ -42,5 +42,11 @@ export default {
    */
   checkCodeRepeat:(params)=>
     getRequest(`~/dict/checkCodeRepeat`, {params}),
+
+  /**
+   * 根据字典数据表主键获取字典数据详细信息
+   */
+  getTDictDataInfo:(params)=>
+    getRequest(`~/dict/getTDictDataInfo/`+params.id),
 
 }

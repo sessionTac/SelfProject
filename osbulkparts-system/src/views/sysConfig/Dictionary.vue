@@ -23,15 +23,15 @@
                 </div>
             </div>
             <div style="flex: 4;display: flex;flex-direction: column;height: 100%;">
-<!--                <div style="padding-left: 30px;margin-top: 5px" >
+                <div style="padding-left: 30px;margin-top: 5px" >
                     <el-form :inline="true" size="mini"  @submit.native.prevent>
                         <el-form-item style="float: right;margin-right: 20px;margin-top: 10px">
-                            <el-button type="" @click="add()" :disabled="disableFlag"  size="mini" >
+                            <el-button type="primary" @click="add()" :disabled="disableFlag"  size="mini" >
                                 <i class="fa fa-plus" aria-hidden="true"></i> 添加
                             </el-button>
                         </el-form-item>
                     </el-form>
-                </div>-->
+                </div>
 
                 <div style="padding-top: 10px;padding-left: 30px">
                     <el-form :inline="true" size="mini">
@@ -114,7 +114,7 @@
                 system_menus : [],
                 openeds:['0','6','12','1'],
                 disableFlag:true,
-                dictTypeId :0,
+                dictTypeCode :0,
                 dictTypeName:'',
                 is_searching : false,
 
@@ -123,7 +123,7 @@
         async mounted() {
             await this.init();
             if(this.system_menus.length != 0){
-                this.screenByMenu(this.system_menus[0].dictTypeId,this.system_menus[0].name)
+                this.screenByMenu(this.system_menus[0].code,this.system_menus[0].name)
             }
         },
         methods: {
@@ -145,7 +145,7 @@
             },
             //刷新
             refresh(){
-                this.screenByMenu(this.dictTypeId,this.dictTypeName);
+                this.screenByMenu(this.dictTypeCode,this.dictTypeName);
             },
             // 分类初始化
             init() {
@@ -156,12 +156,12 @@
             },
             /*新增数据字典*/
             add(){
-                this.dialogState = {activated:true,mode:'ADD',id:this.dictTypeId,name:this.dictTypeName}
+                this.dialogState = {activated:true,mode:'ADD',dictTypeCode:this.dictTypeCode,name:this.dictTypeName}
             },
             /*编辑数据字典*/
             edit(entity){
 
-                this.dialogState = {activated:true,entity,mode:'EDIT',id:this.dictTypeId,name:this.dictTypeName}
+                this.dialogState = {activated:true,entity,mode:'EDIT',dictTypeCode:this.dictTypeCode,name:this.dictTypeName}
             },
 
             /*删除*/
@@ -175,7 +175,7 @@
                     dictionaryService.deleteDict(row.id).then(resp=>{
 
                         this.$notify({title: '成功',type: 'success', message: resp.data.msg});
-                        this.screenByMenu(this.dictTypeId,this.dictTypeName);
+                        this.screenByMenu(this.dictTypeCode,this.dictTypeName);
 
                     })
 
@@ -188,17 +188,17 @@
                 });
             },
             //点击菜单查询对应数据
-            screenByMenu(id,name,
+            screenByMenu(code,name,
                          pageNum = this.search_result.pageNum,
                          pageSize   = this.search_result.pageSize,            
             ){
                 this.is_searching=true;
-                let dictTypeId = id;
-                dictionaryService.findDataByDictTypeId({dictTypeId, pageNum, pageSize}).then(resp=>{
+                let dictTypeCode = code;
+                dictionaryService.findDataByDictTypeId({dictTypeCode, pageNum, pageSize}).then(resp=>{
                     this.search_result = resp.data.resultInfo;
                     this.is_searching=false;
                     this.disableFlag=false;
-                    this.dictTypeId = id;
+                    this.dictTypeCode = dictTypeCode;
                     this.dictTypeName = name;
                 })
             }

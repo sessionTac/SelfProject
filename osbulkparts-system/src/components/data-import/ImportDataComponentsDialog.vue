@@ -288,9 +288,10 @@
         this.doPost().then(resp => {
           this.isUploading = !this.isUploading
           this.currentFile = false
-          let status = resp.data.status
+          // let status = resp.data.status
+          let status = resp.data.code
 
-          if(status){
+          if(status=='201'){
             this.message = resp.data.message;
             this.$emit('saved');
             this.timeOut = setTimeout(() => {

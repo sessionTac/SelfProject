@@ -105,4 +105,11 @@ public class DictSettingController {
 		CommonResultInfo<?> result = dictTypeSettingService.checkCodeRepeat(tdictTypeEntity,checkFlag);
 		return result;
 	}
+
+	@ApiOperation(value="根据id获取tdictdata的详细信息", notes="根据id获取tdictdata的详细信息")
+	@ApiImplicitParam(name = "id", value = "tdictdata表主键", required = true, dataType = "body", paramType = "body")
+	@GetMapping("/getTDictDataInfo/{id}")
+	public CommonResultInfo<?> getTDictDataInfo(@PathVariable String id){
+		return dictDataSettingService.getDictDataInfoDetail(id);
+	}
 }

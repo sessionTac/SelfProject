@@ -59,6 +59,30 @@ public class DictDataServiceImpl implements DictDataSettingService {
 		}
 	}
 
+	@Override
+	public CommonResultInfo<TDictDataEntity> getDictDataInfoDetail(String id) {
+		CommonResultInfo<TDictDataEntity> result = new CommonResultInfo<TDictDataEntity>();
+		try {
+
+			TDictDataEntity tdictDataEntityParam = new TDictDataEntity();
+			tdictDataEntityParam.setId(id);
+			List<TDictDataEntity> resultList = tdictDataDao.selectByPrimaryKey(tdictDataEntityParam);
+			if (resultList.size()>0){
+				result.setResult(resultList.get(0));
+				result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			}else {
+				result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.info.empty"));
+			}
+		} catch (Exception e) {
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<?> addDictData(TDictDataEntity tdictDataEntity, Authentication auth) {

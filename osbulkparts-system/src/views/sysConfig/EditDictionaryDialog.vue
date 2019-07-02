@@ -13,7 +13,7 @@
             <el-input
               class="search-form-item-input" style="width: 200px"
               :placeholder="name"
-              v-model="form.dictTypeName"
+              v-model="form.tDictTypeEntity.name"
               :disabled="true" size="mini" knx>
             </el-input>
           </el-form-item>
@@ -34,9 +34,6 @@
             <el-checkbox  v-model="form.isEnable"></el-checkbox>
           </el-form-item>
 
-          <el-form-item label="是否默认" >
-            <el-checkbox v-model="form.isDefault"></el-checkbox>
-          </el-form-item>
 
           <el-form-item label="备注">
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.remark"  clearable type="textarea" :rows="2" placeholder="请输入内容" size="mini" :maxlength="200"></el-input>
@@ -72,7 +69,7 @@
     props:{
       entity  : Object,
       mode : String,
-      id:Number,
+      dictTypeCode:String,
       name:String,
     },
     data() {
@@ -83,11 +80,11 @@
 
         form: {
           //本条数据id
-          id:0,
+          id:"",
           //字典分类id
-          dictTypeId: this.id,
+          dictTypeCode: "",
           //字典分类名称
-          dictTypeName:this.name,
+          dictTypeName:"",
           subordinate: '',
           //code名称
           name: '',
@@ -136,21 +133,15 @@
     methods: {
       init() {
         if (this.mode === 'EDIT') {
-          if (this.entity.isDefault==='0'){
-            this.form.isDefault = false
-          } else {
-            this.form.isDefault=true
-          }
-          if (this.entity.isEnable==='0'){
-            this.form.isEnable =false
-          } else {
-            this.form.isEnable =true
-          }
-          this.form.id = this.entity.id
-          this.form.name =  this.entity.name
-          this.form.value =  this.entity.value
-          this.form.sortCode = this.entity.sortCode
-          this.form.remark = this.entity.remark
+          service.getTDictDataInfo({id:this.entity.id}).then(resp=>{
+            if (resp.data.code=='201'){
+              this.form=resp.data.result;
+              this.form
+            } else {
+              this.$notify({type: 'error', message: resp.data.message});
+            }
+
+          })
         }
       },
       /*确定*/

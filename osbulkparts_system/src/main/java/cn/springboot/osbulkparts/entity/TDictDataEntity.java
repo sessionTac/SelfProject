@@ -70,6 +70,8 @@ public class TDictDataEntity implements Serializable {
      */
     private Integer deleteFlg;
 
+    private  TDictTypeEntity tDictTypeEntity;
+
     /**
      * 版本号
      */
