@@ -181,10 +181,10 @@ public class TOrderDetailInfoEntity implements Serializable {
      */
     private BigDecimal trimAmount;
 
-    /**
-     * 库存数量
-     */
-    private BigDecimal stockAmount;
+//    /**
+//     * 库存数量
+//     */
+//    private BigDecimal stockAmount;
 
     /**
      * 差异数量
@@ -210,6 +210,11 @@ public class TOrderDetailInfoEntity implements Serializable {
      * 数据所属
      */
     private String dataRoleAt;
+    
+    /**
+     * 是否平衡数据
+     */
+    private String isBalance;
 
     /**
      * 创建者

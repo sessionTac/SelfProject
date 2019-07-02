@@ -46,6 +46,7 @@
     <result column="delivery_amount" jdbcType="DECIMAL" property="deliveryAmount" />
     <result column="surplus_amount" jdbcType="DECIMAL" property="surplusAmount" />
     <result column="data_role_at" jdbcType="VARCHAR" property="dataRoleAt" />
+    <result column="is_balance" jdbcType="INTEGER" property="isBalance" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
@@ -114,7 +115,7 @@
     material_tax_price, material_tax_totalprice, material_vat_price, material_vat_totalprice, 
     material_rate, material_currency, country_code, confirm_status, order_out_total_amount, 
     mater_out_total_amount, residual_amount, trim_amount, stock_amount, differ_amount, 
-    take_over_amount, delivery_amount, surplus_amount, data_role_at, create_user, create_time, 
+    take_over_amount, delivery_amount, surplus_amount, data_role_at, is_balance, create_user, create_time, 
     update_user, update_time, is_delete, version
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -157,7 +158,7 @@
       confirm_status, order_out_total_amount, mater_out_total_amount, 
       residual_amount, trim_amount, stock_amount, 
       differ_amount, take_over_amount, delivery_amount, 
-      surplus_amount, data_role_at, create_user, 
+      surplus_amount, data_role_at, is_balance, create_user, 
       create_time, update_user, update_time, 
       is_delete, version)
     values (#{id,jdbcType=VARCHAR}, #{orderCode,jdbcType=VARCHAR}, #{orderCodeDesc,jdbcType=VARCHAR}, 
@@ -174,7 +175,7 @@
       #{confirmStatus,jdbcType=VARCHAR}, #{orderOutTotalAmount,jdbcType=DECIMAL}, #{materOutTotalAmount,jdbcType=DECIMAL}, 
       #{residualAmount,jdbcType=DECIMAL}, #{trimAmount,jdbcType=DECIMAL}, #{stockAmount,jdbcType=DECIMAL}, 
       #{differAmount,jdbcType=DECIMAL}, #{takeOverAmount,jdbcType=DECIMAL}, #{deliveryAmount,jdbcType=DECIMAL}, 
-      #{surplusAmount,jdbcType=DECIMAL}, #{dataRoleAt,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
+      #{surplusAmount,jdbcType=DECIMAL}, #{dataRoleAt,jdbcType=VARCHAR}, #{isBalance,jdbcType=INTEGER},#{createUser,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, 
       #{isDelete,jdbcType=INTEGER}, #{version,jdbcType=INTEGER})
   </insert>
@@ -302,6 +303,9 @@
       </if>
       <if test="dataRoleAt != null">
         data_role_at,
+      </if>
+      <if test="isBalance != null">
+        is_balance,
       </if>
       <if test="createUser != null">
         create_user,
@@ -438,6 +442,9 @@
       <if test="dataRoleAt != null">
         #{dataRoleAt,jdbcType=VARCHAR},
       </if>
+      <if test="isBalance != null">
+        #{isBalance,jdbcType=INTEGER},
+      </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
@@ -471,7 +478,7 @@
       confirm_status, order_out_total_amount, mater_out_total_amount, 
       residual_amount, trim_amount, stock_amount, 
       differ_amount, take_over_amount, delivery_amount, 
-      surplus_amount, data_role_at, create_user, 
+      surplus_amount, data_role_at, is_balance,create_user, 
       create_time, update_user, update_time, 
       is_delete, version) values
     <foreach collection="list" item="item" index="index" separator=",">
@@ -514,6 +521,7 @@
       #{item.deliveryAmount,jdbcType=DECIMAL}, 
       #{item.surplusAmount,jdbcType=DECIMAL}, 
       #{item.dataRoleAt,jdbcType=VARCHAR}, 
+      #{item.isBalance,jdbcType=INTEGER}, 
       #{item.createUser,jdbcType=VARCHAR}, 
       DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
       #{item.updateUser,jdbcType=VARCHAR}, 
@@ -644,6 +652,9 @@
       <if test="dataRoleAt != null">
         data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
       </if>
+      <if test="isBalance != null">
+        is_balance = #{isBalance,jdbcType=INTEGER},
+      </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
@@ -710,6 +721,7 @@
       delivery_amount = #{deliveryAmount,jdbcType=DECIMAL},
       surplus_amount = #{surplusAmount,jdbcType=DECIMAL},
       data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
+      is_balance = #{isBalance,jdbcType=INTEGER},
       create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
       update_user = #{updateUser,jdbcType=VARCHAR},
@@ -773,6 +785,9 @@
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(confirmStatus)">
       AND t1.confirm_status = #{confirmStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(isBalance)">
+      AND t1.is_balance = #{isBalance,jdbcType=INTEGER}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCodeDesc)">
       <bind name="orderCodeDesc_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(orderCodeDesc)"/>

@@ -304,13 +304,13 @@
                 <!--<div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
               <!--</template>-->
             <!--</el-form-item>-->
-            <el-form-item label="库存数量" prop="stockAmount">
-              <el-input v-model="form.stockAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"  :maxlength="18"  clearable></el-input>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
+<!--            <el-form-item label="库存数量" prop="stockAmount">-->
+<!--              <el-input v-model="form.stockAmount" class="search-form-item-input" style="width:160px" size="mini"-->
+<!--                        :disabled="form.orderCode==''"  :maxlength="18"  clearable></el-input>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
             <el-form-item label="差异数量" prop="differAmount">
               <el-input v-model="form.differAmount" class="search-form-item-input" style="width:160px" size="mini"
                         :disabled="form.orderCode==''"  :maxlength="18"  clearable></el-input>
@@ -422,7 +422,7 @@
           materOutTotalAmount:"",
           residualAmount:"",
           trimAmount:"",
-          stockAmount:"",
+          // stockAmount:"",
           differAmount:"",
           takeOverAmount:"",
           deliveryAmount:"",
@@ -544,9 +544,9 @@
           trimAmount: [
             {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
-          stockAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
-          ],
+          // stockAmount: [
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          // ],
           differAmount: [
             {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
@@ -716,7 +716,7 @@
               materOutTotalAmount       :this.form.materOutTotalAmount        || undefined,
               residualAmount            :this.form.residualAmount             || undefined,
               trimAmount                :this.form.trimAmount                 || undefined,
-              stockAmount               :this.form.stockAmount                || undefined,
+              // stockAmount               :this.form.stockAmount                || undefined,
               differAmount              :this.form.differAmount               || undefined,
               takeOverAmount            :this.form.takeOverAmount             || undefined,
               deliveryAmount            :this.form.deliveryAmount             || undefined,

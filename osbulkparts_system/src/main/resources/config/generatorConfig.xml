@@ -9,8 +9,8 @@
 		<commentGenerator type="cn.springboot.osbulkparts.generator.comment.MyCommentGenerator">
 		</commentGenerator>
 		<jdbcConnection driverClass="com.mysql.jdbc.Driver"
-			connectionURL="jdbc:mysql://localhost:3306/osbulkparts" userId="root"
-			password="123456">
+			connectionURL="jdbc:mysql://118.190.59.142:3306/osbulkparts" userId="root"
+			password="zjgljmz@123">
 		</jdbcConnection>
 
 		<javaTypeResolver>
@@ -87,7 +87,12 @@
 			enableDeleteByExample="false">
 		</table> -->
 		<!-- 库存信息表  -->
-  		<table tableName="t_stock_info" domainObjectName="TStockInfoEntity" 
+<!--   		<table tableName="t_stock_info" domainObjectName="TStockInfoEntity" 
+			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false">
+		</table> -->
+		<!-- 物料记录表  -->
+  		<table tableName="t_material_record_info" domainObjectName="TMaterialRecordInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
 		</table>

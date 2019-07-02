@@ -60,6 +60,11 @@ public class TOrderInfoEntity implements Serializable {
     private String dataRoleAt;
     
     /**
+     * 是否平衡数据
+     */
+    private String isBalance;
+    
+    /**
      * 创建者
      */
     private String createUser;

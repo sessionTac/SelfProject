@@ -41,7 +41,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
     @Autowired
     private I18nMessageBean messageBean;
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews() {
         CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
         try {
@@ -69,12 +70,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         }
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity, int pageNumber, int pageSize, Authentication auth) {
         CommonResultInfo<TOrderDetailInfoEntity> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
         try {
+        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
             tOrderDetailInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
             PageHelper.startPage(pageNumber, pageSize);
             PageInfo<TOrderDetailInfoEntity> pageInfo = new PageInfo<>(
@@ -91,7 +93,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         }
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity) {
         CommonResultInfo<TOrderDetailInfoEntity> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         try {
@@ -114,12 +117,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         }
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<TOrderInfoEntity> getAllOrderCode(Authentication auth) {
         CommonResultInfo<TOrderInfoEntity> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
         try {
+        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
             result.setResultList(tOrderInfoDao.getAllOrderCode(roleInfoEntity.getRoleAt()));
         } catch (Exception e) {
@@ -132,12 +136,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         }
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<TOrderInfoEntity> getOrderInfoByOrderCode(String materialOrderCode,Authentication auth) {
         CommonResultInfo<TOrderInfoEntity> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
         try {
+        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
             result.setResultList(tOrderInfoDao.getOrderInfoByOrderCode(materialOrderCode,roleInfoEntity.getRoleAt()));
         } catch (Exception e) {
@@ -150,12 +155,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         }
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<MMaterialInfoEntity> getMaterialInfoByMaterialCode(String materialCode, Authentication auth) {
         CommonResultInfo<MMaterialInfoEntity> result = new CommonResultInfo<MMaterialInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
         try {
+        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
             MMaterialInfoEntity mMaterialInfoEntity = new MMaterialInfoEntity();
             mMaterialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
             mMaterialInfoEntity.setMaterialCode(materialCode);
@@ -178,31 +184,40 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
     public CommonResultInfo<?> checkOrderCodeAndMaterialCode(String orderCode, String materialCode,Authentication auth) {
         CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
-        if (orderCode != null){
-            List<TOrderInfoEntity> list = tOrderInfoDao.checkOrderCodeAndMaterialCode(orderCode,roleInfoEntity.getRoleAt());
-            if (list.size()>0){
-                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-            }else {
-                result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
-                result.setMessage(messageBean.getMessage("common.info.empty"));
-                return result;
+        try {
+            MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+            if (orderCode != null){
+                List<TOrderInfoEntity> list = tOrderInfoDao.checkOrderCodeAndMaterialCode(orderCode,roleInfoEntity.getRoleAt());
+                if (list.size()>0){
+                    result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                }else {
+                    result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+                    result.setMessage(messageBean.getMessage("common.info.empty"));
+                    return result;
+                }
+            }
+            if(materialCode != null){
+                List<MMaterialInfoEntity> list = mMaterialInfoDao.checkOrderCodeAndMaterialCode(materialCode,roleInfoEntity.getRoleAt());
+                if (list.size()>0){
+                    result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                }else {
+                    result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+                    result.setMessage(messageBean.getMessage("common.info.empty"));
+                    return result;
+                }
             }
         }
-        if(materialCode != null){
-            List<MMaterialInfoEntity> list = mMaterialInfoDao.checkOrderCodeAndMaterialCode(materialCode,roleInfoEntity.getRoleAt());
-            if (list.size()>0){
-                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-            }else {
-                result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
-                result.setMessage(messageBean.getMessage("common.info.empty"));
-                return result;
-            }
+        catch(Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
         }
         return result;
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<?> updateOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity, Authentication auth) {
         CommonResultInfo<?> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
@@ -231,7 +246,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         }
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<?> insertOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity, Authentication auth) {
         CommonResultInfo<?> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
@@ -258,7 +274,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         }
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity, Authentication auth) {
         CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
@@ -279,7 +296,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         }
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<?> approvalBatchOrderInfo(CommonEntity commonEntity, Authentication auth) {
         CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());

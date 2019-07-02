@@ -430,7 +430,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 							// 物料剩余数量
 							orderDetailParam.setSurplusAmount(BigDecimal.ZERO);
 							// 库存数量
-							orderDetailParam.setStockAmount(BigDecimal.ZERO);
+//							orderDetailParam.setStockAmount(BigDecimal.ZERO);
 							// 差异数量
 							orderDetailParam.setDifferAmount(BigDecimal.ZERO);
 							// 收货数量
@@ -557,8 +557,11 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			}
 			else if(type == 2) {
 				//按月导入时：订单型号，型号描述，数量（4）
-				config.setNotNullColumn(new int[]{1,2,3,4,5,6});
+				config.setNotNullColumn(new int[]{1,2,3});
 				config.setSheetNum(1);
+			}
+			else if(type == 3) {
+				config.setNotNullColumn(new int[] {1,2,3});
 			}
 			// 不需要快读
 			config.setBriefRead(false);
@@ -597,7 +600,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setVersion(1);
 					insertResultLst.add(torderInfoEntity);
 				}
-				else {
+				else if(type ==2) {
 					// 按月导入
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
@@ -644,6 +647,110 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("第四周"),"yyyyMMddhhmmss"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量4")));
+					insertResultLst.add(torderInfoEntity);
+				}else if(type ==3) {
+					// 按年导入
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					String ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("1月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量1")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("2月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量2")));
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("3月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量3")));
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("4月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量4")));
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("5月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量5")));
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("6月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量6")));
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("7月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量7")));
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("8月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量8")));
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("9月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量9")));
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("10月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量10")));
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("11月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量11")));
+					insertResultLst.add(torderInfoEntity);
+					// 主键ID
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					// 订单日期
+					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("12月"),"yyyyMMddhhmmss"));
+					// 数量
+					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量12")));
 					insertResultLst.add(torderInfoEntity);
 				}
 				// 成品型号和子件型号组合判定是否存在，存在时更新，不存在时插入

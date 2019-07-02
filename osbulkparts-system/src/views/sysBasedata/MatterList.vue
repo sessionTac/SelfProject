@@ -2,8 +2,8 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="订单号">
-                    <el-input placeholder="订单号" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
+                <el-form-item label="订单型号">
+                    <el-input placeholder="订单型号" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-form-item label="物料号">
                     <el-input placeholder="物料号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
@@ -170,19 +170,19 @@
             <el-table-column prop="materialDescRn"  width="150" :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
             <el-table-column prop="hsNo" align="center" label="HS海关编码"  />
             <el-table-column prop="supplierCode" align="center" label="供应商代码"  />
-            <el-table-column prop="materialAmount" align="center" label="物料数量"  />
+            <el-table-column prop="materialAmount" align="center" label="单耗"  />
             <el-table-column prop="dictMaterialUnit.name" align="center" label="单位"  />
             <el-table-column prop="materialRelation" align="center" label="换算关系"  />
             <el-table-column prop="dictMaterialRelationUnit.name" align="center" label="换算后单位"  />
-            <el-table-column prop="materialMinpackageAmt" align="center" label="最小包装数量"  />
-	          <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />
+<!--            <el-table-column prop="materialMinpackageAmt" align="center" label="最小包装数量"  />-->
+<!--	          <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />-->
             <el-table-column prop="materialTaxPrice" align="center" :formatter="price" label="未税单价"  />
             <el-table-column prop="materialVatPrice" align="center" :formatter="price" label="含税单价"  />
             <el-table-column prop="tax" align="center" :formatter="price" label="税率"  />
             <el-table-column prop="materialPrice" align="center" :formatter="price" label="单价"  />
             <el-table-column prop="materialRate" align="center" label="代理费率"  />
             <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />
-            <el-table-column prop="factoryCode" align="center" label="工厂号"  />
+            <el-table-column prop="factoryCode" align="center" label="代理商"  />
             <el-table-column prop="length" align="center" label="长"  />
             <el-table-column prop="width" align="center" label="宽"  />
             <el-table-column prop="height" align="center" label="高"  />
@@ -200,8 +200,8 @@
                     {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
                 </template>
             </el-table-column>
-            <el-table-column  prop="dictLockStatus.name" align="center" label="是否锁定"  />
-            <el-table-column   width="80" label="操作" >
+            <el-table-column fixed="right" prop="dictLockStatus.name" align="center" label="是否锁定"  />
+            <el-table-column fixed="right"  width="80" label="操作" >
                 <template slot-scope="scope" >
                     <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
                         <i class="el-icon-news"></i></el-button>

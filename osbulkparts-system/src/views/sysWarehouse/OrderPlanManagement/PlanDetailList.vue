@@ -170,7 +170,7 @@
       <el-table-column prop="materOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="子件发货总数量"  />
       <el-table-column prop="residualAmount"  :show-overflow-tooltip="true" align="center" label="订单剩余数量"  />
       <el-table-column prop="trimAmount"  :show-overflow-tooltip="true" align="center" label="调整后数量"  />
-      <el-table-column prop="stockAmount"  :show-overflow-tooltip="true" align="center" label="库存数量"  />
+<!--      <el-table-column prop="stockAmount"  :show-overflow-tooltip="true" align="center" label="库存数量"  />-->
       <el-table-column prop="differAmount"  :show-overflow-tooltip="true" align="center" label="差异数量"  />
       <el-table-column prop="takeOverAmount"  :show-overflow-tooltip="true" align="center" label="收货数量"  />
       <el-table-column prop="deliveryAmount"  :show-overflow-tooltip="true" align="center" label="发货数量"  />
