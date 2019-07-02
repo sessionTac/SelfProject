@@ -156,7 +156,7 @@
             },
             /*新增数据字典*/
             add(){
-                this.dialogState = {activated:true,mode:'ADD',dictTypeCode:this.dictTypeCode}
+                this.dialogState = {activated:true,mode:'ADD',dictTypeCode:this.dictTypeCode,name:this.dictTypeName}
             },
             /*编辑数据字典*/
             edit(entity){

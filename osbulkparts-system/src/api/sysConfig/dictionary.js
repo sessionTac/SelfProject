@@ -49,4 +49,15 @@ export default {
   getTDictDataInfo:(params)=>
     getRequest(`~/dict/getTDictDataInfo/`+params.id),
 
+  /**
+   * 修改一条字典数据
+   */
+
+  updateDictData:(data)=>
+    putRequest(`~/dict/updateDictData`,{data}),
+  /**
+   * 添加一条字典数据
+   */
+  addDictData:(data)=>
+    postRequest(`~/dict/addDictData`, {data}),
 }

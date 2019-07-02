@@ -69,13 +69,11 @@
       entity  : Object,
       mode : String,
       dictTypeCode:String,
+      name:String,
     },
     data() {
       return {
         dialogFormVisible: true,
-        //所属分类是否禁用
-        flage: false,
-
         form: {
           tdictTypeEntity:{
             name:""
@@ -100,17 +98,6 @@
           //备注
           remark: ''
         },
-        classification: [
-          {label: 1, value: "政府机构"},
-          {label: 2, value: "集团企业"},
-          {label: 3, value: "科研机构"},
-        ],
-        subordinate: [
-          {label: 1, value: "根节点"},
-          {label: 2, value: "单位A"},
-          {label: 3, value: "单位B"},
-        ],
-
         /*表单验证*/
         rules: {
 
@@ -143,48 +130,49 @@
             }
 
           })
+        }else {
+          this.form.tdictTypeEntity.name=this.name;
+          this.form.dictTypeCode=this.dictTypeCode
         }
       },
       /*确定*/
       submit(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
+            if (this.form.isEnable==true){
+              this.form.isEnable = 1;
+            }else {
+              this.form.isEnable = 0;
+            }
+            let data  = {
+              id  :  this.form.id || "",
+              dictTypeCode :this.form.dictTypeCode || "",
+              value: this.form.value ||"",
+              name :this.form.name ||"",
+              sortCode:this.form.sortCode ||"",
+              isEnable:this.form.isEnable || "",
+              remark :this.form.remark || "",
+              version:this.form.version || "",
+            };
             if (this.mode === 'ADD'){
-              let  addfrom =this.form.isEnable
-              if (addfrom==true){
-                this.form.isEnable = 1;
-              }else {
-                this.form.isEnable = 0;
-              }
-              let  addfrom1 =this.form.isDefault
-              if (addfrom1 == true){
-                this.form.isDefault = 1
-              } else {
-                this.form.isDefault = 0
-              }
-              let add  = this.form
-              service.addDict(add).then(resp=>{
-                this.$notify({title: '成功',type: 'success', message: resp.data.msg});
-                this.dialogFormVisible = false
+              service.addDictData({...data}).then(resp=>{
+                if (resp.data.code=='201'){
+                  this.$notify({type: 'success', message: resp.data.message});
+                  this.$emit("refresh");
+                  this.dialogFormVisible = false
+                } else {
+                  this.$notify({type: 'error', message: resp.data.message});
+                }
               })
             }else if (this.mode === 'EDIT'){
-
-              let  isEnable =this.form.isEnable
-              if (isEnable==true){
-                this.form.isEnable = 1;
-              }else {
-                this.form.isEnable = 0;
-              }
-              let  isDefault =this.form.isDefault
-              if (isDefault == true){
-                this.form.isDefault = 1
-              } else {
-                this.form.isDefault = 0
-              }
-              let update  = this.form
-              service.updateDict(update).then(resp=>{
-                this.$notify({title: '成功',type: 'success', message: resp.data.msg});
-                this.dialogFormVisible = false
+              service.updateDictData({...data}).then(resp=>{
+                if (resp.data.code=='201'){
+                  this.$notify({type: 'success', message: resp.data.message});
+                  this.$emit("refresh");
+                  this.dialogFormVisible = false
+                } else {
+                  this.$notify({type: 'error', message: resp.data.message});
+                }
               });
             }
           } else {

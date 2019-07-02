@@ -112,4 +112,18 @@ public class DictSettingController {
 	public CommonResultInfo<?> getTDictDataInfo(@PathVariable String id){
 		return dictDataSettingService.getDictDataInfoDetail(id);
 	}
+
+	@ApiOperation(value="添加数据字典", notes="添加数据字典")
+	@ApiImplicitParam(name = "TDictDataEntity", value = "数据字典实体对象", required = true, dataType = "body", paramType = "body")
+	@PostMapping("/addDictData")
+	public CommonResultInfo<?> addDictType(@RequestBody TDictDataEntity tDictDataEntity, Authentication auth){
+		return dictDataSettingService.addDictData(tDictDataEntity,auth);
+	}
+
+	@ApiOperation(value="编辑数据字典", notes="修改数据字典的信息")
+	@ApiImplicitParam(name = "TDictDataEntity", value = "数据字实体对象", required = true, dataType = "body", paramType = "body")
+	@PutMapping("/updateDictData")
+	public CommonResultInfo<?> updateDictType(@RequestBody TDictDataEntity tDictDataEntity,Authentication auth){
+		return dictDataSettingService.updateDictData(tDictDataEntity,auth);
+	}
 }
