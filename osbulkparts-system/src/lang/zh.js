@@ -20,6 +20,8 @@ export default {
     warehousePlanDetail:"订单详情",
     warehouseCollection: '预配发货',
     warehouseInventoryInfoList:"库存信息",
+    warehousePlanningBalanceList:"计划平衡表",
+    warehousePlanningBalanceDetailList:"计划平衡表详细",
     warehouseDelivery: '发货明细',
     warehouseRollingplan: '发货综合查询',
     warehouseFinance: '发货统计信息',

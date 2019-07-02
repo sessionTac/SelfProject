@@ -156,12 +156,12 @@
             },
             /*新增数据字典*/
             add(){
-                this.dialogState = {activated:true,mode:'ADD',dictTypeCode:this.dictTypeCode,name:this.dictTypeName}
+                this.dialogState = {activated:true,mode:'ADD',dictTypeCode:this.dictTypeCode}
             },
             /*编辑数据字典*/
             edit(entity){
 
-                this.dialogState = {activated:true,entity,mode:'EDIT',dictTypeCode:this.dictTypeCode,name:this.dictTypeName}
+                this.dialogState = {activated:true,entity,mode:'EDIT',dictTypeCode:this.dictTypeCode}
             },
 
             /*删除*/

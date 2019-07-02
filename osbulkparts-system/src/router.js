@@ -156,6 +156,27 @@ export const constantRoutes = [
                 }
             },
             {
+                path: 'planningBalanceList',
+                component: () => import('@/views/sysWarehouse/PlanningBalanceTable/PlanningBalanceList'),
+                name: 'warehousePlanningBalanceList',
+                meta: { title: 'warehousePlanningBalanceList',  icon: 'warehouseCollection',
+                    noCache: true,breadcrumb:true,keepAlive: true,
+                    requiresPermission: 'maintenance:warehouse:order:info:view',
+                }
+            },
+            {
+                path: 'planningBalanceDetailList',
+                component: () => import('@/views/sysWarehouse/PlanningBalanceTable/PlanningBalanceList'),
+                name: 'warehousePlanningBalanceDetailList',
+                meta: { title: 'warehousePlanningBalanceDetailList',  icon: 'warehouseCollection',
+                    noCache: true,breadcrumb:true,keepAlive: true,
+                    requiresPermission: 'maintenance:warehouse:order:info:view',
+                }
+            },
+
+
+
+            {
                 path: 'warehouseCollection',
                 component: () => import('@/views/sysWarehouse/CollectionDeliveryManagement/CollectionList.vue'),
                 name: 'warehouseCollection',

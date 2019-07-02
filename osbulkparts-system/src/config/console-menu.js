@@ -69,6 +69,11 @@ export default [
             requiresPermission: 'maintenance:warehouse:order:info:view',
             index: 'warehouseInventoryInfoList',
           },
+          {
+            title: '计划平衡表',
+            requiresPermission: 'maintenance:warehouse:order:info:view',
+            index: 'warehousePlanningBalanceList',
+          },
           // {
           //     title: '预配发货',
           //     requiresPermission: 'maintenance:warehouse:collection',

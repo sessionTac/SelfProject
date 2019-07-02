@@ -12,8 +12,7 @@
           <el-form-item label="所属分类">
             <el-input
               class="search-form-item-input" style="width: 200px"
-              :placeholder="name"
-              v-model="form.tDictTypeEntity.name"
+              v-model="form.tdictTypeEntity.name"
               :disabled="true" size="mini" knx>
             </el-input>
           </el-form-item>
@@ -26,7 +25,7 @@
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.value" size="mini" :maxlength="30"></el-input>
           </el-form-item>
 
-          <el-form-item label="排序" prop="sort">
+          <el-form-item label="排序" prop="sortCode">
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.sortCode" clearable :maxlength="11" size="mini" knx></el-input>
           </el-form-item>
 
@@ -70,7 +69,6 @@
       entity  : Object,
       mode : String,
       dictTypeCode:String,
-      name:String,
     },
     data() {
       return {
@@ -79,6 +77,9 @@
         flage: false,
 
         form: {
+          tdictTypeEntity:{
+            name:""
+          },
           //本条数据id
           id:"",
           //字典分类id
@@ -134,9 +135,9 @@
       init() {
         if (this.mode === 'EDIT') {
           service.getTDictDataInfo({id:this.entity.id}).then(resp=>{
-            if (resp.data.code=='201'){
+            if (resp.data.code=='200'){
               this.form=resp.data.result;
-              this.form
+              this.form.isEnable=this.form.isEnable == 1 ? true:false;
             } else {
               this.$notify({type: 'error', message: resp.data.message});
             }
