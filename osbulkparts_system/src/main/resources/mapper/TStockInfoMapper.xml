@@ -316,11 +316,9 @@
       </if>
   </select>
   <delete id="deleteBatachByNo" parameterType="java.util.List">
-  	delete from t_stock_info where  materialCode in
-    <foreach collection="list" item="item" index="index" separator=",">
-    	(
-        #{item.materialCode,jdbcType=VARCHAR},
-        )
+  	delete from t_stock_info where  material_code in
+    <foreach collection="list" item="item" index="index" open="(" separator="," close=")">
+        #{item.materialCode}
       </foreach>
   </delete>
   <insert id="importExcelData" parameterType="java.util.List">
@@ -334,10 +332,10 @@
         material_desc_rn,
         stock_amount,
         data_role_at,
-        create_time,
         create_user,
-        update_time,
+        create_time,
         update_user,
+        update_time,
         is_delete,
         version
     ) values
@@ -350,6 +348,7 @@
         #{item.materialDescEn,jdbcType=VARCHAR},
         #{item.materialDescRn,jdbcType=VARCHAR},
         #{item.stockAmount,jdbcType=DECIMAL},
+        #{item.dataRoleAt,jdbcType=VARCHAR},
         #{item.createUser,jdbcType=VARCHAR},
       	DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
         #{item.updateUser,jdbcType=VARCHAR},

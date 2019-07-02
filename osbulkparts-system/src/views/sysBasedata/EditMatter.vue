@@ -80,7 +80,7 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-          <el-form-item label="物料数量" prop="materialAmount">
+          <el-form-item label="单耗" prop="materialAmount">
               <el-input v-model="form.materialAmount" class="search-form-item-input" style="width: 160px" size="mini"
                         :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">

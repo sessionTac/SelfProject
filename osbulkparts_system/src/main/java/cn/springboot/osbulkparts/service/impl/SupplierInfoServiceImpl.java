@@ -177,6 +177,7 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 		}
 	}
 
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();

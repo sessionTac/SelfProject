@@ -468,6 +468,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			config.setNotNullColumn(new int[]{1,2});
 			// 不需要快读
 			config.setBriefRead(false);
+			//默认第一行为实例
+			config.setStartRow(2);
 			
 			List<Map<String, Object>> dataLst=poiUtil.readExcel(config);
 			//文件解析后数据放入实体对象List
@@ -502,7 +504,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				}
 				mmaterialInfoEntity.setSupplierCode((String)mapData.get("供应商编码"));
 				// 物料数量
-				String materialAmount = (String)mapData.get("物料数量");
+				String materialAmount = (String)mapData.get("单耗");
 				mmaterialInfoEntity.setMaterialAmount(
 						CommonMethods.changeToBigdecimal(materialAmount.trim()));
 				// 单位
@@ -546,7 +548,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				// 物料供货模式分类标识
 //				mmaterialInfoEntity.setMaterialSupplyMode();
 				// 工厂号
-				mmaterialInfoEntity.setFactoryCode((String)mapData.get("工厂号"));
+				mmaterialInfoEntity.setFactoryCode((String)mapData.get("代理商"));
 				// 长
 				String length = (String)mapData.get("长");
 				mmaterialInfoEntity.setLength(

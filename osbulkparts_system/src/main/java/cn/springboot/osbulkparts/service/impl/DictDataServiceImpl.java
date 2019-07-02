@@ -61,14 +61,14 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> addUserInfo(TDictDataEntity tdictDataEntity, Authentication auth) {
+	public CommonResultInfo<?> addDictData(TDictDataEntity tdictDataEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<TDictDataEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
 			String dictUUID = CommonSqlUtils.getUUID32();
 			tdictDataEntity.setId(dictUUID);
-			tdictDataEntity.setCreateUser(principal.getUserId());
+			tdictDataEntity.setCreateUser(principal.getUserName());
 			tdictDataEntity.setDeleteFlg(0);
 			tdictDataEntity.setVersion(1);
 			int returnInt = tdictDataDao.insertSelective(tdictDataEntity);
@@ -87,7 +87,7 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> updateUserInfo(TDictDataEntity tdictDataEntity, Authentication auth) {
+	public CommonResultInfo<?> updateDictData(TDictDataEntity tdictDataEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -95,7 +95,7 @@ public class DictDataServiceImpl implements DictDataSettingService {
 			// 验证版本号
 			if(checkVersion(tdictDataEntity)) {
 				// 更新处理
-				tdictDataEntity.setUpdateUser(principal.getUserId());
+				tdictDataEntity.setUpdateUser(principal.getUserName());
 				tdictDataEntity.setVersion(tdictDataEntity.getVersion()+1);
 				int returnInt = tdictDataDao.updateByPrimaryKeySelective(tdictDataEntity);
 				if (returnInt > 0) {
@@ -117,7 +117,7 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> deleteUserInfo(TDictDataEntity tdictDataEntity, Authentication auth) {
+	public CommonResultInfo<?> deleteDictData(TDictDataEntity tdictDataEntity, Authentication auth) {
 		CommonResultInfo<?> result = new CommonResultInfo<TDictDataEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -130,7 +130,7 @@ public class DictDataServiceImpl implements DictDataSettingService {
 				result.setMessage(messageBean.getMessage("common.delete.failed", CommonConstantEnum.DICT_DATA.getTypeName()));
 			}else {
 				// 删除处理（逻辑）
-				dictDataParam.setUpdateUser(principal.getUserId());
+				dictDataParam.setUpdateUser(principal.getUserName());
 				dictDataParam.setDeleteFlg(1);
 				int returnInt = tdictDataDao.updateByPrimaryKeySelective(dictDataParam);
 				if (returnInt > 0) {

@@ -362,6 +362,7 @@ public class StockInfoServiceImpl implements StockInfoService {
 			config.setNotNullColumn(new int[]{1,2,3,4,5,6});
 			// 不需要快读
 			config.setBriefRead(false);
+			config.setStartRow(2);
 			
 			List<Map<String, Object>> dataLst=poiUtil.readExcel(config);
 			//文件解析后数据放入实体对象List

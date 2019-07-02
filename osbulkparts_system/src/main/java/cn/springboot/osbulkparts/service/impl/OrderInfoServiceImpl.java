@@ -219,6 +219,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			torderInfoEntity.setId(CommonSqlUtils.getUUID32());
 			torderInfoEntity.setCreateUser(principal.getUserName());
 			torderInfoEntity.setIsDelete(0);
+			torderInfoEntity.setOrderStatus("0");
 			torderInfoEntity.setVersion(1);
 			int returnInt = torderInfoDao.insertSelective(torderInfoEntity);
 			if (returnInt > 0) {
@@ -249,6 +250,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				torderInfoEntity.setUpdateUser(principal.getUserName());
 				torderInfoEntity.setVersion(torderInfoEntity.getVersion()+1);
 				torderInfoEntity.setIsDelete(0);
+				torderInfoEntity.setOrderStatus("0");
 				int returnInt = torderInfoDao.updateByPrimaryKey(torderInfoEntity);
 				if (returnInt > 0) {
 					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
@@ -439,9 +441,6 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 							orderDetailParam.setDataRoleAt(roleInfoEntity.getRoleAt());
 							// 创建者
 							orderDetailParam.setCreateUser(principal.getUserName());
-							// 创建时间
-							// 更新者
-							// 更新时间
 							// 逻辑删除
 							orderDetailParam.setIsDelete(0);
 							// 版本
@@ -563,6 +562,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			}
 			// 不需要快读
 			config.setBriefRead(false);
+			config.setStartRow(2);
 			
 			List<Map<String, Object>> dataLst=poiUtil.readExcel(config);
 			//文件解析后数据放入实体对象List

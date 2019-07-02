@@ -11,10 +11,10 @@ public interface DictDataSettingService {
 	
 	CommonResultInfo<TDictDataEntity> getDictDataInfo(String dictDataId,int pageNumber,int pageSize);
 	
-	CommonResultInfo<?> addUserInfo(TDictDataEntity tdictDataEntity, Authentication auth);
+	CommonResultInfo<?> addDictData(TDictDataEntity tdictDataEntity, Authentication auth);
 	
-	CommonResultInfo<?> updateUserInfo(TDictDataEntity tdictDataEntity, Authentication auth);
+	CommonResultInfo<?> updateDictData(TDictDataEntity tdictDataEntity, Authentication auth);
 	
-	CommonResultInfo<?> deleteUserInfo(TDictDataEntity tdictDataEntity, Authentication auth);
+	CommonResultInfo<?> deleteDictData(TDictDataEntity tdictDataEntity, Authentication auth);
 
 }
