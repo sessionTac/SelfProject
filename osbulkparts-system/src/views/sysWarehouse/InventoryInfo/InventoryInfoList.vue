@@ -239,9 +239,9 @@
                 let data={
                     ...search_keys,
                     createTimeStart     :   search_keys.createTimeArray && search_keys.createTimeArray[0] || "",
-                    createTimeEnd       :   search_keys.createTimeArray && search_keys.createTimeArray[1] || "",
+                    createTimeEnd       :   search_keys.createTimeArray && this.$moment(search_keys.createTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
                     updateTimeStart     :   search_keys.updateTimeArray && search_keys.updateTimeArray[0] || "",
-                    updateTimeEnd       :   search_keys.updateTimeArray && search_keys.updateTimeArray[1] || "",
+                    updateTimeEnd       :   search_keys.updateTimeArray && this.$moment(search_keys.updateTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
                 };
                 activityService.findStockInfoList({...data, pageNum, pageSize}).then(resp => {
                     this.search_result = resp.data.resultInfo;                //视图展示查询结果
