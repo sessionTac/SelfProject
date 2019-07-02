@@ -89,7 +89,7 @@
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary"  v-if="subject.hasPermissions('*')" @click="deliverGoods" icon="el-icon-s-check" >
+          <el-button type="primary"  v-if="subject.hasPermissions('*')" :disabled="multipleSelection.length==0" @click="deliverGoods" icon="el-icon-s-check" >
             发货
           </el-button>
         </el-form-item>
@@ -198,6 +198,7 @@
       </el-table-column>
     </el-table>
     <edit-plan-detail v-bind.sync="link_modal_state" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state.activated"></edit-plan-detail>
+    <receive-goods v-bind.sync="link_modal_state1" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state1.activated"></receive-goods>
     <!--分页-->
     <div style="text-align: center">
       <el-pagination @current-change="exec_search({pageNum:$event})"
@@ -219,12 +220,14 @@
   import EditPlanDetail from './EditPlanDetail'
   import {downloadBlobResponse} from '@/utils/request_utils'
   import ui_config from '@/config/ui_config'
+  import receiveGoods from './ReceiveGoods'
   export default {
     name: "PlanDetailList",
     data(){
       return{
         PAGE_SIZES : ui_config.PAGE_SIZES,
         link_modal_state      : {},
+        link_modal_state1     : {},
         multipleSelection:[],
         idsStr:[],
         search_keys:{
@@ -251,7 +254,7 @@
 
       }
     },
-    components:{ImportButton,EditPlanDetail},
+    components:{ImportButton,EditPlanDetail,receiveGoods},
 
     computed:{
       approvalFlag(){
@@ -383,14 +386,15 @@
             this.multipleSelection.forEach(item=>{
               this.idsStr.push(item.id)
             });
-            activityService.deliverGoodsByIds({idsStr:this.idsStr}).then(resp => {
-              if (resp.data.code=="201"){
-                this.$notify({message: resp.data.message, type: "success"});
-                this.exec_search({search_keys:this.search_keys, pageNum:1})
-              } else {
-                this.$notify({message: resp.data.message, type: "error"});
-              }
-            })
+          this.link_modal_state1={activated:true,multipleSelection:this.idsStr};
+            // activityService.deliverGoodsByIds({idsStr:this.idsStr}).then(resp => {
+            //   if (resp.data.code=="201"){
+            //     this.$notify({message: resp.data.message, type: "success"});
+            //     this.exec_search({search_keys:this.search_keys, pageNum:1})
+            //   } else {
+            //     this.$notify({message: resp.data.message, type: "error"});
+            //   }
+            // })
           }
         ).catch(() => {
           this.internal_activated = true;
