@@ -12,6 +12,7 @@
         <div  v-if="target=='ORDER_PLAN'" style="text-align: center">
           <el-radio v-model="radio" label="1" border>周</el-radio>
           <el-radio  v-model="radio" label="2" border>月</el-radio>
+          <el-radio  v-model="radio" label="3" border>年</el-radio>
         </div>
 
 
