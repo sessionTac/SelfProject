@@ -21,6 +21,26 @@
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="version" jdbcType="INTEGER" property="version" />
+    <association property="orderDetailInfoEntity"
+                 javaType="cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity">
+		<result column="order_code" jdbcType="VARCHAR" property="orderCode" />
+	    <result column="order_code_desc" jdbcType="VARCHAR" property="orderCodeDesc" />
+	    <result column="order_amount" jdbcType="DECIMAL" property="orderAmount" />
+	    <result column="order_date" jdbcType="VARCHAR" property="orderDate" />
+	    <result column="order_unit" jdbcType="VARCHAR" property="orderUnit" />
+	    <result column="order_id" jdbcType="VARCHAR" property="orderId" />
+	    <result column="order_id_item" jdbcType="VARCHAR" property="orderIdItem" />
+	    <result column="material_code" jdbcType="VARCHAR" property="materialCode" />
+	    <result column="material_desc_cn" jdbcType="VARCHAR" property="materialDescCn" />
+	    <result column="material_desc_en" jdbcType="VARCHAR" property="materialDescEn" />
+	    <result column="material_desc_rn" jdbcType="VARCHAR" property="materialDescRn" />
+	    <result column="material_unit" jdbcType="VARCHAR" property="materialUnit" />
+	    <result column="material_amount" jdbcType="DECIMAL" property="materialAmount" />
+	    <result column="material_category" jdbcType="VARCHAR" property="materialCategory" />
+	    <result column="material_relation" jdbcType="VARCHAR" property="materialRelation" />
+	    <result column="material_relation_unit" jdbcType="VARCHAR" property="materialRelationUnit" />
+	    <result column="material_relation_quantity" jdbcType="DECIMAL" property="materialRelationQuantity" />
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--

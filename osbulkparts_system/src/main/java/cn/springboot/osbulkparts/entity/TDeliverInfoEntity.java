@@ -40,6 +40,16 @@ public class TDeliverInfoEntity implements Serializable {
      * 合同号
      */
     private String contractNo;
+    
+    /**
+     * 物料数据信息
+     */
+    private MMaterialInfoEntity materialInfoEntity;
+
+    /**
+     * 订单计划信息信息
+     */
+    private TOrderDetailInfoEntity orderDetailInfo;
 
     /**
      * 数据所属
