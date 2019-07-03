@@ -432,7 +432,6 @@
       t1.is_delete = 0
   AND t1.material_order_code = #{materialOrderCode}
   and t1.data_role_at =#{dataRoleAt}
-  AND t1.is_balance = #{isBalance,jdbcType=INTEGER}
   </select>
   <!--查询订单表中是否存在该订单号下的数据-->
   <select id="checkOrderCodeAndMaterialCode" resultMap="BaseResultMap">

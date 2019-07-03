@@ -166,7 +166,7 @@ export const constantRoutes = [
             },
             {
                 path: 'planningBalanceDetailList',
-                component: () => import('@/views/sysWarehouse/PlanningBalanceTable/PlanningBalanceList'),
+                component: () => import('@/views/sysWarehouse/PlanningBalanceTable/PlanningBalanceDetailList'),
                 name: 'warehousePlanningBalanceDetailList',
                 meta: { title: 'warehousePlanningBalanceDetailList',  icon: 'warehouseCollection',
                     noCache: true,breadcrumb:true,keepAlive: true,

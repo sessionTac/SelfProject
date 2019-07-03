@@ -26,7 +26,7 @@ public interface OrderDetailInfoService {
     /**
      * 根据订单号将所有订单信息和所有物料号取出
      */
-    CommonResultInfo<TOrderInfoEntity> getOrderInfoByOrderCode(String materialOrderCode,Authentication auth);
+    CommonResultInfo<TOrderInfoEntity> getOrderInfoByOrderCode(String materialOrderCode,String isBalance,Authentication auth);
 
     /**
      * 根据物料号找到物料的所有信息
@@ -36,7 +36,7 @@ public interface OrderDetailInfoService {
     /**
      * 校验订单号和物料号是否存在
      */
-    CommonResultInfo<?> checkOrderCodeAndMaterialCode(String orderCode,String materialCode,Authentication auth);
+    CommonResultInfo<?> checkOrderCodeAndMaterialCode(String orderCode,String isBalance,String materialCode,Authentication auth);
 
     CommonResultInfo<?> updateOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth);
 

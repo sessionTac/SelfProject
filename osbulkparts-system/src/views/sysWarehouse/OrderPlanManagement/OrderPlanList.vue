@@ -206,15 +206,16 @@
                     orderCodeDesc:"",
                     orderAmount:"",
                     orderDate:"",
-                    orderDateArray:[],
+                    orderDateArray:'',
                     orderUnit:"",
                     orderStatus:"",
                     createUser:'',
                     createTime:'',
-                    createTimeArray:[],
+                    createTimeArray:'',
                     updateUser:'',
-                    updateTimeArray:[],
+                    updateTimeArray:'',
                     updateTime:'',
+                    isBalance:0
                 },
                 old_search_keys:{},
                 search_keys_snap      : null,
@@ -255,14 +256,14 @@
                       orderCodeDesc:"",
                       orderAmount:"",
                       orderDate:"",
-                      orderDateArray:[],
+                      orderDateArray:'',
                       orderUnit:"",
                       orderStatus:"",
                       createUser:'',
                       createTime:'',
-                      createTimeArray:[],
+                      createTimeArray:'',
                       updateUser:'',
-                      updateTimeArray:[],
+                      updateTimeArray:'',
                       updateTime:'',
                 };
             },
@@ -302,6 +303,7 @@
                     ...search_keys,
                     orderDateStart      :   search_keys.orderDateArray && search_keys.orderDateArray[0] || "",
                     orderDateEnd        :   search_keys.orderDateArray && this.$moment(search_keys.orderDateArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
+
                     createTimeStart     :   search_keys.createTimeArray && search_keys.createTimeArray[0] || "",
                     createTimeEnd       :   search_keys.createTimeArray && this.$moment(search_keys.createTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
                     updateTimeStart     :   search_keys.updateTimeArray && search_keys.updateTimeArray[0] || "",
@@ -367,7 +369,7 @@
                     this.internal_activated = true;
                 })//删除
             },
-            generate(toLocked){
+            generate(){
                 this.$confirm("确定对数据进行生成吗？", "提示", {
                     confirmButtonText: "是",
                     cancelButtonText: "否",
@@ -378,7 +380,7 @@
                       this.multipleSelection.forEach(item=>{
                           this.idsStr.push(item.id)
                       });
-                      activityService.lockedById({idsStr:this.idsStr,toLocked:toLocked}).then(resp => {
+                      activityService.generateById({idsStr:this.idsStr}).then(resp => {
                           if (resp.data.code=="201"){
                               this.$notify({message: resp.data.message, type: "success"});
                               this.exec_search({search_keys:this.search_keys, pageNum:1})

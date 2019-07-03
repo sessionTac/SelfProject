@@ -61,8 +61,8 @@ public class OrderDetailInfoController {
     @ApiOperation(value="根据订单号获取该订单的所有信息和所有关联的物料号", notes="根据订单号获取该订单的所有信息和所有关联的物料号")
     @ApiImplicitParam(name = "OrderCode", value = "订单号", required = true, dataType = "body", paramType = "body")
     @GetMapping("/getOrderInfoByOrderCode")
-    public Object getOrderInfoByOrderCode(String orderCode,Authentication auth){
-        return orderDetailInfoService.getOrderInfoByOrderCode(orderCode,auth);
+    public Object getOrderInfoByOrderCode(String orderCode,String isBalance,Authentication auth){
+        return orderDetailInfoService.getOrderInfoByOrderCode(orderCode,isBalance,auth);
     }
 
     @ApiOperation(value="根据物料号获取该物料的所有信息", notes="根据物料号获取该物料的所有信息")
@@ -75,8 +75,9 @@ public class OrderDetailInfoController {
     @ApiOperation(value="校验订单号和物料号是否存在", notes="校验订单号和物料号是否存在")
     @GetMapping("/checkOrderCodeAndMaterialCode")
     public Object checkOrderCodeAndMaterialCode(String orderCode,
+    											String isBalance,
                                                 String materialCode,Authentication auth){
-        return orderDetailInfoService.checkOrderCodeAndMaterialCode(orderCode,materialCode,auth);
+        return orderDetailInfoService.checkOrderCodeAndMaterialCode(orderCode,isBalance,materialCode,auth);
     }
 
     @ApiOperation(value="更新订单详情信息", notes="更新一条新的订单详情信息")
@@ -100,7 +101,7 @@ public class OrderDetailInfoController {
         return orderDetailInfoService.deleteBatchOrderInfo(commonEntity,auth);
     }
 
-    @ApiOperation(value="审批数据", notes="审批a数据")
+    @ApiOperation(value="审批数据", notes="审批数据")
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/approval")
     public CommonResultInfo<?> approval(@RequestBody CommonEntity commonEntity, Authentication auth){

@@ -88,7 +88,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "ORDER_PLAN"></import-button>
+                    <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "ORDER_PLAN_BALANCE"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="primary"  v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(search_keys)" size="mini" >
@@ -206,15 +206,16 @@
                     orderCodeDesc:"",
                     orderAmount:"",
                     orderDate:"",
-                    orderDateArray:[],
+                    orderDateArray:'',
                     orderUnit:"",
                     orderStatus:"",
                     createUser:'',
                     createTime:'',
-                    createTimeArray:[],
+                    createTimeArray:'',
                     updateUser:'',
-                    updateTimeArray:[],
+                    updateTimeArray:'',
                     updateTime:'',
+                    isBalance:1
                 },
                 old_search_keys:{},
                 search_keys_snap      : null,
@@ -255,15 +256,16 @@
                       orderCodeDesc:"",
                       orderAmount:"",
                       orderDate:"",
-                      orderDateArray:[],
+                      orderDateArray:'',
                       orderUnit:"",
                       orderStatus:"",
                       createUser:'',
                       createTime:'',
-                      createTimeArray:[],
+                      createTimeArray:'',
                       updateUser:'',
-                      updateTimeArray:[],
+                      updateTimeArray:'',
                       updateTime:'',
+                      isBalance:1
                 };
             },
             price(row, column, cellValue, index){

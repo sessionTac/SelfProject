@@ -138,13 +138,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<TOrderInfoEntity> getOrderInfoByOrderCode(String materialOrderCode,Authentication auth) {
+    public CommonResultInfo<TOrderInfoEntity> getOrderInfoByOrderCode(String materialOrderCode,String isBalance,Authentication auth) {
         CommonResultInfo<TOrderInfoEntity> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
         	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-            result.setResultList(tOrderInfoDao.getOrderInfoByOrderCode(materialOrderCode,roleInfoEntity.getRoleAt()));
+            result.setResultList(tOrderInfoDao.getOrderInfoByOrderCode(materialOrderCode,isBalance,roleInfoEntity.getRoleAt()));
         } catch (Exception e) {
             e.printStackTrace();
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -181,13 +181,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
     }
 
     @Override
-    public CommonResultInfo<?> checkOrderCodeAndMaterialCode(String orderCode, String materialCode,Authentication auth) {
-        CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
+    public CommonResultInfo<?> checkOrderCodeAndMaterialCode(String orderCode, String isBalance, String materialCode,Authentication auth) {
+        CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
             MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
             if (orderCode != null){
-                List<TOrderInfoEntity> list = tOrderInfoDao.checkOrderCodeAndMaterialCode(orderCode,roleInfoEntity.getRoleAt());
+                List<TOrderInfoEntity> list = tOrderInfoDao.checkOrderCodeAndMaterialCode(orderCode,isBalance,roleInfoEntity.getRoleAt());
                 if (list.size()>0){
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 }else {

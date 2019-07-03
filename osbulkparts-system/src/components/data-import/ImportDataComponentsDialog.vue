@@ -197,7 +197,9 @@
         switch(this.target) {
           case 'MATTER' : return service.importData('/material/importExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
 
-          case 'ORDER_PLAN' : return service.importData('/orderInfo/importExcel', {importType:this.radio}, {file:this.currentFile.raw}, this.onUploadProgress);
+          case 'ORDER_PLAN' : return service.importData('/orderInfo/importExcel', {importType:this.radio}, {isBalance:0},{file:this.currentFile.raw}, this.onUploadProgress);
+
+          case 'ORDER_PLAN_BALANCE' : return service.importData('/orderInfo/importExcel', {importType:this.radio}, {isBalance:1},{file:this.currentFile.raw}, this.onUploadProgress);
 
           case 'STOCK_INFO' : return service.importData('/stock/importExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
 

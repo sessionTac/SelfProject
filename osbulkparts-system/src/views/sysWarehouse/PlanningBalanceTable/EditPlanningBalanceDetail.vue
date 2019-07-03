@@ -589,7 +589,7 @@
           }, err => {
             console.error(err);
           });
-          await activityService.getOrderInfoByOrderCode({orderCode:this.form.orderCode}).then(resp=>{
+          await activityService.getOrderInfoByOrderCode({orderCode:this.form.orderCode,isBalance:1}).then(resp=>{
             this.materialCodeList=[];
             resp.data.resultList.forEach(item=>{
               this.materialCodeList.push(item.materialInfoEntity)
@@ -636,9 +636,9 @@
         })
       },
       async checkOrderCode(orderCode){
-        await activityService.checkOrderCodeAndMaterialCode({orderCode:orderCode}).then(resp=>{
+        await activityService.checkOrderCodeAndMaterialCode({orderCode:orderCode,isBalance:1}).then(resp=>{
           if (resp.data.code == "201") {
-            activityService.getOrderInfoByOrderCode({orderCode:orderCode}).then(resp=>{
+            activityService.getOrderInfoByOrderCode({orderCode:orderCode,isBalance:1}).then(resp=>{
               this.materialCodeList=[];
               this.form.orderCodeDesc=resp.data.resultList[0].orderCodeDesc;
               this.form.orderDate=resp.data.resultList[0].orderDate;

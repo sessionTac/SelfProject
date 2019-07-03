@@ -3,6 +3,7 @@ package cn.springboot.osbulkparts.service.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -108,12 +109,12 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> importExcel(MultipartFile excleFile, HttpServletRequest request, Authentication auth,int type) {
+	public CommonResultInfo<?> importExcel(MultipartFile excleFile, HttpServletRequest request, Authentication auth,int type,int isBalance) {
         CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         try {
         	int resultInt = 0;
-        	List<TOrderInfoEntity> orderInfoParams = resolvExcelToDb(excleFile,auth,type);
+        	List<TOrderInfoEntity> orderInfoParams = resolvExcelToDb(excleFile,auth,type,isBalance);
         	if(orderInfoParams.size() == 0) {
         		result.setMessage(messageBean.getMessage("common.excel.error"));
         	}else {
@@ -340,12 +341,14 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 						}else {
 							// 判断供应商的配额是否存在
 							// 不存在：提示【当前订单型号的供应商没有设置配额，请确认。】
-							if(msupplierInfo.getSupplierQuo() == null) {
-								result.setMessage(messageBean.getMessage("bussiness.order.supplierQuo.empty",
-										materialInfo.getMaterialOrderCode(),
-										materialInfo.getMaterialCode(),
-										materialInfo.getSupplierCode()));
-								return result;
+							if(torderInfo.getIsBalance().equals("0")) {
+								if(msupplierInfo.getSupplierQuo() == null) {
+									result.setMessage(messageBean.getMessage("bussiness.order.supplierQuo.empty",
+											materialInfo.getMaterialOrderCode(),
+											materialInfo.getMaterialCode(),
+											materialInfo.getSupplierCode()));
+									return result;
+								}
 							}
 							// 订单产品型号
 							orderDetailParam.setOrderCode(torderInfo.getOrderCode());
@@ -371,10 +374,23 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 							// 物料单位
 							orderDetailParam.setMaterialUnit(materialInfo.getMaterialUnit());
 							// 物料数量
-							// 按照供应商配额计算数量
-							BigDecimal orderMaterAmount = torderInfo.getOrderAmount().multiply(
-									materialInfo.getMaterialAmount()).multiply(
-											msupplierInfo.getSupplierQuo()).setScale(2, BigDecimal.ROUND_HALF_UP);
+							BigDecimal orderMaterAmount= new BigDecimal("0");
+							if(materialInfo.getMaterialAmount() == null) {
+								result.setMessage(messageBean.getMessage("bussiness.material.amount.empty",
+										materialInfo.getMaterialOrderCode(),
+										materialInfo.getMaterialCode()));
+								return result;
+							}
+							if(torderInfo.getIsBalance().equals("1")) {
+								// 按照供应商配额计算数量
+								orderMaterAmount = torderInfo.getOrderAmount().multiply(
+										materialInfo.getMaterialAmount()).setScale(2, BigDecimal.ROUND_HALF_UP);
+							}else if(torderInfo.getIsBalance().equals("0")) {
+								// 按照供应商配额计算数量
+								orderMaterAmount = torderInfo.getOrderAmount().multiply(
+										materialInfo.getMaterialAmount()).multiply(
+												msupplierInfo.getSupplierQuo()).setScale(2, BigDecimal.ROUND_HALF_UP);
+							}
 							// 订单物料数量
 							orderDetailParam.setMaterialAmount(orderMaterAmount);
 							// 物料类别
@@ -403,6 +419,12 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 								orderDetailParam.setMaterialVatPrice(BigDecimal.ZERO);
 								orderDetailParam.setMaterialVatTotalprice(BigDecimal.ZERO);
 							}else {
+								if(materialInfo.getTax() == null) {
+									result.setMessage(messageBean.getMessage("bussiness.material.tax.empty",
+											materialInfo.getMaterialOrderCode(),
+											materialInfo.getMaterialCode()));
+									return result;
+								}
 								// 未税单价
 								orderDetailParam.setMaterialTaxPrice(materialInfo.getMaterialTaxPrice());
 								// 未税总价
@@ -430,7 +452,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 							// 物料剩余数量
 							orderDetailParam.setSurplusAmount(BigDecimal.ZERO);
 							// 库存数量
-//							orderDetailParam.setStockAmount(BigDecimal.ZERO);
+							orderDetailParam.setStockAmount(BigDecimal.ZERO);
 							// 差异数量
 							orderDetailParam.setDifferAmount(BigDecimal.ZERO);
 							// 收货数量
@@ -445,6 +467,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 							orderDetailParam.setIsDelete(0);
 							// 版本
 							orderDetailParam.setVersion(1);
+							// 是否平衡表数据
+							orderDetailParam.setIsBalance(torderInfo.getIsBalance());
 						}
 						torderDetailInfoList.add(orderDetailParam);
 					}
@@ -535,7 +559,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	 * Excel文件解析
 	 * @throws Exception 
 	 */
-	private List<TOrderInfoEntity> resolvExcelToDb(MultipartFile excleFile,Authentication auth,int type) throws ParseException,NullPointerException,Exception{
+	private List<TOrderInfoEntity> resolvExcelToDb(MultipartFile excleFile,Authentication auth,int type,int isBalance) throws ParseException,NullPointerException,Exception{
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
@@ -598,6 +622,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setIsDelete(0);
 					// 版本
 					torderInfoEntity.setVersion(1);
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					insertResultLst.add(torderInfoEntity);
 				}
 				else if(type ==2) {
@@ -612,6 +638,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					String ordeUnit = getFromDictDataByName(
 							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
 					torderInfoEntity.setOrderUnit(ordeUnit);
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("第一周"),"yyyyMMddhhmmss"));
 					// 数量
@@ -660,6 +688,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					String ordeUnit = getFromDictDataByName(
 							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
 					torderInfoEntity.setOrderUnit(ordeUnit);
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("1月"),"yyyyMMddhhmmss"));
 					// 数量

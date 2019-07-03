@@ -167,35 +167,35 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="最小包装类型" prop="materialMinpackageType">
-              <el-select :disabled="true" v-model="form.materialMinpackageType" style="width: 160px" size="mini" clearable>
-                <el-option value=""></el-option>
-                <el-option
-                  size="mini"
-                  v-for="item in materialMinpackageType"
-                  :key="item.value"
-                  :label="item.name"
-                  :value="item.value">
-                </el-option>
-              </el-select>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
-            <el-form-item label="最小包装数量" prop="materialMinpackageAmt">
-              <el-input v-model="form.materialMinpackageAmt" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="true"   :maxlength="18"  clearable></el-input>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
-            <el-form-item label="最小包装总量" prop="materialMinpackageTotalamt">
-              <el-input v-model="form.materialMinpackageTotalamt" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   :maxlength="18"  clearable></el-input>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
+<!--            <el-form-item label="最小包装类型" prop="materialMinpackageType">-->
+<!--              <el-select :disabled="true" v-model="form.materialMinpackageType" style="width: 160px" size="mini" clearable>-->
+<!--                <el-option value=""></el-option>-->
+<!--                <el-option-->
+<!--                  size="mini"-->
+<!--                  v-for="item in materialMinpackageType"-->
+<!--                  :key="item.value"-->
+<!--                  :label="item.name"-->
+<!--                  :value="item.value">-->
+<!--                </el-option>-->
+<!--              </el-select>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
+<!--            <el-form-item label="最小包装数量" prop="materialMinpackageAmt">-->
+<!--              <el-input v-model="form.materialMinpackageAmt" class="search-form-item-input" style="width:160px" size="mini"-->
+<!--                        :disabled="true"   :maxlength="18"  clearable></el-input>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
+<!--            <el-form-item label="最小包装总量" prop="materialMinpackageTotalamt">-->
+<!--              <el-input v-model="form.materialMinpackageTotalamt" class="search-form-item-input" style="width:160px" size="mini"-->
+<!--                        :disabled="form.orderCode==''"   :maxlength="18"  clearable></el-input>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
             <el-form-item label="未税单价" prop="materialTaxPrice">
               <el-input v-model="form.materialTaxPrice" class="search-form-item-input" style="width:160px" size="mini"
                         :disabled="true"   :maxlength="18"   clearable></el-input>
@@ -589,7 +589,7 @@
           }, err => {
             console.error(err);
           });
-          await activityService.getOrderInfoByOrderCode({orderCode:this.form.orderCode}).then(resp=>{
+          await activityService.getOrderInfoByOrderCode({orderCode:this.form.orderCode,isBalance:0}).then(resp=>{
             this.materialCodeList=[];
             resp.data.resultList.forEach(item=>{
               this.materialCodeList.push(item.materialInfoEntity)
@@ -636,9 +636,9 @@
         })
       },
       async checkOrderCode(orderCode){
-        await activityService.checkOrderCodeAndMaterialCode({orderCode:orderCode}).then(resp=>{
+        await activityService.checkOrderCodeAndMaterialCode({orderCode:orderCode,isBalance:0}).then(resp=>{
           if (resp.data.code == "201") {
-            activityService.getOrderInfoByOrderCode({orderCode:orderCode}).then(resp=>{
+            activityService.getOrderInfoByOrderCode({orderCode:orderCode,isBalance:0}).then(resp=>{
               this.materialCodeList=[];
               this.form.orderCodeDesc=resp.data.resultList[0].orderCodeDesc;
               this.form.orderDate=resp.data.resultList[0].orderDate;

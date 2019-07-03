@@ -155,9 +155,9 @@
       <el-table-column prop="materialRelation"  :show-overflow-tooltip="true" align="center" label="换算关系"  />
       <el-table-column prop="dictRelationUnit.name"  :show-overflow-tooltip="true" align="center" label="换算后单位"  />
       <el-table-column prop="materialRelationQuantity"  :show-overflow-tooltip="true" align="center" label="换算后数量"  />
-      <el-table-column prop="dictMinPackageType.name"  :show-overflow-tooltip="true" align="center" label="最小包装类型"  />
-      <el-table-column prop="materialMinpackageAmt"  :show-overflow-tooltip="true" align="center" label="最小包装数量"  />
-      <el-table-column prop="materialMinpackageTotalamt"  :show-overflow-tooltip="true" align="center" label="最小包装总量"  />
+<!--      <el-table-column prop="dictMinPackageType.name"  :show-overflow-tooltip="true" align="center" label="最小包装类型"  />-->
+<!--      <el-table-column prop="materialMinpackageAmt"  :show-overflow-tooltip="true" align="center" label="最小包装数量"  />-->
+<!--      <el-table-column prop="materialMinpackageTotalamt"  :show-overflow-tooltip="true" align="center" label="最小包装总量"  />-->
       <el-table-column prop="materialTaxPrice"  :show-overflow-tooltip="true" align="center" label="未税单价"  />
       <el-table-column prop="materialTaxTotalprice"  :show-overflow-tooltip="true" align="center" label="未税总价"  />
       <el-table-column prop="materialVatPrice"  :show-overflow-tooltip="true" align="center" label="含税单价"  />
@@ -232,7 +232,7 @@
         idsStr:[],
         search_keys:{
           orderCode:"",
-          orderDateArray:[],
+          orderDateArray:'',
           materialCode:"",
           orderCodeDesc:"",
           orderId:"",
@@ -241,9 +241,10 @@
           materialDescRn:"",
           confirmStatus:"",
           createUser:"",
-          createTimeArray:[],
+          createTimeArray:'',
           updateUser:"",
-          updateTimeArray:[],
+          updateTimeArray:'',
+          isBalance:0
         },
         confirmStatus:[],
         options:{

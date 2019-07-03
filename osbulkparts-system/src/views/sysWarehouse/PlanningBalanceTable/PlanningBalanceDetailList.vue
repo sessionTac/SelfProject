@@ -139,7 +139,7 @@
       <el-table-column prop="orderAmount"  width="100" align="center" label="订单数量"  />
       <el-table-column prop="orderDate"  width="100" align="center" label="订单日期">
         <template slot-scope="scope">
-          {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
+          {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD') : ''}}
         </template>
       </el-table-column>
       <el-table-column prop="dictOrderUnit.name" width="100" align="center" label="订单型号单位" />
@@ -155,9 +155,9 @@
       <el-table-column prop="materialRelation"  :show-overflow-tooltip="true" align="center" label="换算关系"  />
       <el-table-column prop="dictRelationUnit.name"  :show-overflow-tooltip="true" align="center" label="换算后单位"  />
       <el-table-column prop="materialRelationQuantity"  :show-overflow-tooltip="true" align="center" label="换算后数量"  />
-      <el-table-column prop="dictMinPackageType.name"  :show-overflow-tooltip="true" align="center" label="最小包装类型"  />
-      <el-table-column prop="materialMinpackageAmt"  :show-overflow-tooltip="true" align="center" label="最小包装数量"  />
-      <el-table-column prop="materialMinpackageTotalamt"  :show-overflow-tooltip="true" align="center" label="最小包装总量"  />
+<!--      <el-table-column prop="dictMinPackageType.name"  :show-overflow-tooltip="true" align="center" label="最小包装类型"  />-->
+<!--      <el-table-column prop="materialMinpackageAmt"  :show-overflow-tooltip="true" align="center" label="最小包装数量"  />-->
+<!--      <el-table-column prop="materialMinpackageTotalamt"  :show-overflow-tooltip="true" align="center" label="最小包装总量"  />-->
       <el-table-column prop="materialTaxPrice"  :show-overflow-tooltip="true" align="center" label="未税单价"  />
       <el-table-column prop="materialTaxTotalprice"  :show-overflow-tooltip="true" align="center" label="未税总价"  />
       <el-table-column prop="materialVatPrice"  :show-overflow-tooltip="true" align="center" label="含税单价"  />
@@ -165,7 +165,7 @@
       <el-table-column prop="materialRate"  :show-overflow-tooltip="true" align="center" label="代理费率"  />
       <el-table-column prop="dictMaterialCurrency.name"  :show-overflow-tooltip="true" align="center" label="币种"  />
       <el-table-column prop="dictCountryCode.name"  :show-overflow-tooltip="true" align="center" label="国家标志"  />
-      <el-table-column prop="dictConfirmStatus.name"  :show-overflow-tooltip="true" align="center" label="状态"  />
+
       <el-table-column prop="orderOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="型号发货总数量"  />
       <el-table-column prop="materOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="子件发货总数量"  />
       <el-table-column prop="residualAmount"  :show-overflow-tooltip="true" align="center" label="订单剩余数量"  />
@@ -189,8 +189,8 @@
           {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>
       </el-table-column>
-
-      <el-table-column   width="80" label="操作" >
+        <el-table-column fixed="right" prop="dictConfirmStatus.name"  align="center" label="状态"  />
+      <el-table-column fixed="right"  width="80" label="操作" >
         <template slot-scope="scope" >
           <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
             <i class="el-icon-news"></i></el-button>
@@ -229,7 +229,7 @@
         idsStr:[],
         search_keys:{
           orderCode:"",
-          orderDateArray:[],
+          orderDateArray:'',
           materialCode:"",
           orderCodeDesc:"",
           orderId:"",
@@ -238,9 +238,10 @@
           materialDescRn:"",
           confirmStatus:"",
           createUser:"",
-          createTimeArray:[],
+          createTimeArray:'',
           updateUser:"",
-          updateTimeArray:[],
+          updateTimeArray:'',
+          isBalance:1
         },
         confirmStatus:[],
         options:{
