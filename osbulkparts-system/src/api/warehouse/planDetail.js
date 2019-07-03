@@ -11,8 +11,8 @@ export default {
   findOrderDetailInfo: (params) =>
     getRequest(`~/orderDetailInfo/getOrderDetailInfo`,{params}),
   //订单详情 获取所有的订单号
-  getAllOrderCode: () =>
-    getRequest(`~/orderDetailInfo/getAllOrderCode`),
+  getAllOrderCode: (params) =>
+    getRequest(`~/orderDetailInfo/getAllOrderCode`,{params}),
   //订单详情 根据订单号获取订单信息和关联的物料号
   getOrderInfoByOrderCode:(params)=>
     getRequest(`~/orderDetailInfo/getOrderInfoByOrderCode`,{params}),

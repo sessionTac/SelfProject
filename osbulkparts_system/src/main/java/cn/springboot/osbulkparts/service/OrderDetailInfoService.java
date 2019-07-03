@@ -22,7 +22,7 @@ public interface OrderDetailInfoService {
     /**
      * 获取全部的订单号
      */
-    CommonResultInfo<TOrderInfoEntity> getAllOrderCode(Authentication auth);
+    CommonResultInfo<TOrderInfoEntity> getAllOrderCode(String isBalance,Authentication auth);
     /**
      * 根据订单号将所有订单信息和所有物料号取出
      */

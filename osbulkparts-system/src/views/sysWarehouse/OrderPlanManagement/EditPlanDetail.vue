@@ -580,7 +580,7 @@
           this.countryCode=resp.data.result.countryCode
           this.confirmStatus=resp.data.result.orderStatus
         },error=>{});
-        await activityService.getAllOrderCode().then(resp=>{
+        await activityService.getAllOrderCode({isBalance:0}).then(resp=>{
           this.orderCodeList=resp.data.resultList
         });
         if (this.mode == "EDIT") {
@@ -723,9 +723,10 @@
               surplusAmount             :this.form.surplusAmount              || undefined,
               version                   :this.form.version                    || undefined,
               dataRoleAt                :this.form.dataRoleAt                 || undefined,
+              isBalance                 :0,
 
             };
-            activityService.checkOrderCodeAndMaterialCode({orderCode:this.form.orderCode,materialCode:this.form.materialCode}).then(resp=>{
+            activityService.checkOrderCodeAndMaterialCode({orderCode:this.form.orderCode,materialCode:this.form.materialCode,isBalance:0}).then(resp=>{
               if (resp.data.code == "201") {
                 if (this.mode == 'EDIT') {  //编辑
                     activityService.updateOrderDetailInfo({...data}).then(resp => {

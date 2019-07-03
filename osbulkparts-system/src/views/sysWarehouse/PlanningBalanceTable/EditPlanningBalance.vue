@@ -190,6 +190,7 @@
                             orderStatus: this.form.orderStatus || undefined,
                             dataRoleAt:this.form.dataRoleAt || undefined,
                             version: this.form.version || undefined,
+                            isBalance                 :1,
                         }
                         if (this.mode == 'EDIT') {  //编辑
                             activityService.updateMatter({...data}).then(resp => {

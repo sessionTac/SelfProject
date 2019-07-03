@@ -54,8 +54,8 @@ public class OrderDetailInfoController {
 
     @ApiOperation(value="获取所有的订单号", notes="获取所有的订单号")
     @GetMapping("/getAllOrderCode")
-    public Object getAllOrderCode( Authentication auth){
-        return orderDetailInfoService.getAllOrderCode(auth);
+    public Object getAllOrderCode( String isBalance,Authentication auth){
+        return orderDetailInfoService.getAllOrderCode(isBalance,auth);
     }
 
     @ApiOperation(value="根据订单号获取该订单的所有信息和所有关联的物料号", notes="根据订单号获取该订单的所有信息和所有关联的物料号")

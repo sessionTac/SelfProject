@@ -119,13 +119,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<TOrderInfoEntity> getAllOrderCode(Authentication auth) {
+    public CommonResultInfo<TOrderInfoEntity> getAllOrderCode(String isBalance,Authentication auth) {
         CommonResultInfo<TOrderInfoEntity> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
         	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-            result.setResultList(tOrderInfoDao.getAllOrderCode(roleInfoEntity.getRoleAt()));
+            result.setResultList(tOrderInfoDao.getAllOrderCode(isBalance,roleInfoEntity.getRoleAt()));
         } catch (Exception e) {
             e.printStackTrace();
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());

@@ -33,7 +33,8 @@ public interface TOrderInfoDao {
 
     /**根据dataRoleAt查找对应的所有的订单号*/
 
-    List<TOrderInfoEntity> getAllOrderCode(String dataRoleAt);
+    List<TOrderInfoEntity> getAllOrderCode(@Param("isBalance")String isBalance,
+                                           @Param("dataRoleAt")String dataRoleAt);
 
     /**根据订单号 将订单信息和所有的物料号找出*/
     List<TOrderInfoEntity> getOrderInfoByOrderCode(@Param("materialOrderCode")String materialOrderCode,
