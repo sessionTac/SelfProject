@@ -52,6 +52,26 @@ public class TDeliverInfoEntity implements Serializable {
     private TOrderDetailInfoEntity orderDetailInfo;
 
     /**
+     * 订单型号单位
+     */
+    private TDictDataEntity dictOrderUnit;
+
+    /**
+     * 物料单位
+     */
+    private TDictDataEntity dictMaterialUnit;
+
+    /**
+     * 物料类别
+     */
+    private TDictDataEntity dictMaterialCategory;
+
+    /**
+     * 换算后单位
+     */
+    private TDictDataEntity dictRelationUnit;
+
+    /**
      * 数据所属
      */
     private String dataRoleAt;

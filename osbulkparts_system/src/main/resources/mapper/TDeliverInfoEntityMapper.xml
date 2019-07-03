@@ -21,7 +21,7 @@
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="version" jdbcType="INTEGER" property="version" />
-    <association property="orderDetailInfoEntity"
+    <association property="orderDetailInfo"
                  javaType="cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity">
 		<result column="order_code" jdbcType="VARCHAR" property="orderCode" />
 	    <result column="order_code_desc" jdbcType="VARCHAR" property="orderCodeDesc" />
@@ -40,6 +40,31 @@
 	    <result column="material_relation" jdbcType="VARCHAR" property="materialRelation" />
 	    <result column="material_relation_unit" jdbcType="VARCHAR" property="materialRelationUnit" />
 	    <result column="material_relation_quantity" jdbcType="DECIMAL" property="materialRelationQuantity" />
+
+    </association>
+    <!--订单型号单位-->
+    <association property="dictOrderUnit"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="order_unit"/>
+      <result property="name" column="dictOrderUnit"/>
+    </association>
+    <!--物料单位-->
+    <association property="dictMaterialUnit"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="material_unit"/>
+      <result property="name" column="dictMaterialUnit"/>
+    </association>
+    <!--物料类别-->
+    <association property="dictMaterialCategory"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="material_category"/>
+      <result property="name" column="dictMaterialCategory"/>
+    </association>
+    <!--换算后单位-->
+    <association property="dictRelationUnit"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="material_relation_unit"/>
+      <result property="name" column="dictRelationUnit"/>
     </association>
   </resultMap>
   <sql id="Base_Column_List">
@@ -256,4 +281,53 @@
       version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}
   </update>
+  <select id="selectTDeliverInfoList" resultMap="BaseResultMap" parameterType="cn.springboot.osbulkparts.entity.TDeliverInfoEntity">
+  SELECT
+      t1.*, t2.order_code_desc,
+      t2.order_amount,
+      t2.order_date,
+      t2.order_unit,
+      t2.order_id,
+      t2.order_id_item,
+      t2.material_desc_cn,
+      t2.material_desc_en,
+      t2.material_desc_rn,
+      t2.material_unit,
+      t2.material_amount,
+      t2.material_category,
+      t2.material_relation,
+      t2.material_relation_unit,
+      t2.material_relation_quantity,
+      t3.`name` AS dictOrderUnit,
+      t4.`name` AS dictMaterialUnit,
+      t5.`name` AS dictMaterialCategory,
+      t6.`name` AS dictRelationUnit
+  FROM
+      t_deliver_info AS t1
+  LEFT JOIN t_order_detail_info AS t2 ON t1.order_code = t2.order_code
+  AND t1.material_code = t2.material_code
+  AND t2.is_delete = 0
+  LEFT JOIN t_dict_data AS t3 ON t2.order_unit = t3.`value`
+  AND t3.dict_type_code = 'unit'
+  AND t3.delete_flg = 0
+  LEFT JOIN t_dict_data AS t4 ON t2.material_unit = t4.`value`
+  AND t4.dict_type_code = 'unit'
+  AND t4.delete_flg = 0
+  LEFT JOIN t_dict_data AS t5 ON t2.material_category = t5.`value`
+  AND t5.dict_type_code = 'mattertype'
+  AND t5.delete_flg = 0
+  LEFT JOIN t_dict_data AS t6 ON t2.material_relation_unit = t6.`value`
+  AND t6.dict_type_code = 'unit'
+  AND t6.delete_flg = 0
+  WHERE
+      t1.is_delete = 0
+  <!--<if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCode)">-->
+    <!--<bind name="orderCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(orderCode)"/>-->
+    <!--AND t1.order_code LIKE #{orderCode_like,jdbcType=VARCHAR}-->
+  <!--</if>-->
+  <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
+    AND t1.data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
+  </if>
+  order by t1.order_code,t1.order_id_item
+  </select>
 </mapper>
