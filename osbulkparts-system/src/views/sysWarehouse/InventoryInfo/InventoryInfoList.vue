@@ -207,9 +207,9 @@
                   stockAmount:"",
                   createUser:'',
                   createTime:'',
-                  createTimeArray:'',
+                  createTimeArray:"",
                   updateUser:'',
-                  updateTimeArray:'',
+                  updateTimeArray:"",
                   updateTime:'',
               }
             },
