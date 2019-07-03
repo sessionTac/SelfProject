@@ -80,6 +80,11 @@ export default [
             index: 'warehousePlanDetailWeek',
           },
           {
+            title: '发货信息',
+            requiresPermission: 'maintenance:warehouse:order:info:view',
+            index: 'warehouseGoodsList',
+          },
+          {
             title: '库存信息',
             requiresPermission: 'maintenance:warehouse:order:info:view',
             index: 'warehouseInventoryInfoList',

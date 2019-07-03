@@ -72,6 +72,11 @@ public class TDeliverInfoEntity implements Serializable {
     private TDictDataEntity dictRelationUnit;
 
     /**
+     * 发货状态
+     */
+    private String state;
+
+    /**
      * 数据所属
      */
     private String dataRoleAt;

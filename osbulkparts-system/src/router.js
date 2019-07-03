@@ -150,7 +150,7 @@ export const constantRoutes = [
                 path: 'planDetailYear',
                 component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
                 name: 'warehousePlanDetailYear',
-                meta: { title: 'warehousePlanDetail',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
+                meta: { title: 'warehousePlanDetailYear',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
                     requiresPermission: 'maintenance:warehouse:order:info:view',flag:"year"}
 
             },
@@ -158,7 +158,7 @@ export const constantRoutes = [
                 path: 'planDetailMonth',
                 component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
                 name: 'warehousePlanDetailMonth',
-                meta: { title: 'warehousePlanDetail',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
+                meta: { title: 'warehousePlanDetailMonth',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
                     requiresPermission: 'maintenance:warehouse:order:info:view',flag:"month"}
 
             },
@@ -166,8 +166,16 @@ export const constantRoutes = [
                 path: 'planDetailWeek',
                 component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
                 name: 'warehousePlanDetailWeek',
-                meta: { title: 'warehousePlanDetail',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
+                meta: { title: 'warehousePlanDetailWeek',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
                     requiresPermission: 'maintenance:warehouse:order:info:view',flag:"week"}
+
+            },
+            {
+                path: 'goodsList',
+                component: () => import('@/views/sysWarehouse/GoodsManagement/GoodsList.vue'),
+                name: 'warehouseGoodsList',
+                meta: { title: 'warehouseGoodsList',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
+                    requiresPermission: 'maintenance:warehouse:order:info:view'}
 
             },
             {

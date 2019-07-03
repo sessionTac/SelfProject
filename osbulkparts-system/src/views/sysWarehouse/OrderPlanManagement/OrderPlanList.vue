@@ -132,9 +132,9 @@
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
             <el-table-column prop="orderCode"   width="100" align="center" label="订单产品型号"  >
-              <template slot-scope="scope">
-                <a style="text-decoration: underline;" @click="toPlanDetailList(scope.row.orderCode)">{{scope.row.orderCode}}</a>
-              </template>
+              <!--<template slot-scope="scope">-->
+                <!--<a style="text-decoration: underline;" @click="toPlanDetailList(scope.row.orderCode)">{{scope.row.orderCode}}</a>-->
+              <!--</template>-->
             </el-table-column>
             <el-table-column prop="orderCodeDesc"  width="300" align="center" label="订单产品型号描述"  />
             <el-table-column prop="orderAmount"  width="100" align="center" label="订单数量"  />
