@@ -142,39 +142,39 @@
           {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD') : ''}}
         </template>
       </el-table-column>
-      <el-table-column prop="dictOrderUnit.name" width="100" align="center" label="订单型号单位" />
-      <el-table-column prop="orderId" width="100" align="center" label="订单号" />
-      <el-table-column prop="orderIdItem" width="100" align="center" label="订单行项目" />
+      <!--<el-table-column prop="dictOrderUnit.name" width="100" align="center" label="订单型号单位" />-->
+      <!--<el-table-column prop="orderId" width="100" align="center" label="订单号" />-->
+      <!--<el-table-column prop="orderIdItem" width="100" align="center" label="订单行项目" />-->
       <el-table-column prop="materialCode"  :show-overflow-tooltip="true" align="center" label="物料号"  />
       <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
       <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
       <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
-      <el-table-column prop="dictMaterialUnit.name"  :show-overflow-tooltip="true" align="center" label="物料单位"  />
+      <!--<el-table-column prop="dictMaterialUnit.name"  :show-overflow-tooltip="true" align="center" label="物料单位"  />-->
       <el-table-column prop="materialAmount"  :show-overflow-tooltip="true" align="center" label="物料数量"  />
-      <el-table-column prop="dictMaterialCategory.name"  :show-overflow-tooltip="true" align="center" label="物料类别"  />
-      <el-table-column prop="materialRelation"  :show-overflow-tooltip="true" align="center" label="换算关系"  />
-      <el-table-column prop="dictRelationUnit.name"  :show-overflow-tooltip="true" align="center" label="换算后单位"  />
-      <el-table-column prop="materialRelationQuantity"  :show-overflow-tooltip="true" align="center" label="换算后数量"  />
+      <!--<el-table-column prop="dictMaterialCategory.name"  :show-overflow-tooltip="true" align="center" label="物料类别"  />-->
+      <!--<el-table-column prop="materialRelation"  :show-overflow-tooltip="true" align="center" label="换算关系"  />-->
+      <!--<el-table-column prop="dictRelationUnit.name"  :show-overflow-tooltip="true" align="center" label="换算后单位"  />-->
+      <!--<el-table-column prop="materialRelationQuantity"  :show-overflow-tooltip="true" align="center" label="换算后数量"  />-->
 <!--      <el-table-column prop="dictMinPackageType.name"  :show-overflow-tooltip="true" align="center" label="最小包装类型"  />-->
 <!--      <el-table-column prop="materialMinpackageAmt"  :show-overflow-tooltip="true" align="center" label="最小包装数量"  />-->
 <!--      <el-table-column prop="materialMinpackageTotalamt"  :show-overflow-tooltip="true" align="center" label="最小包装总量"  />-->
-      <el-table-column prop="materialTaxPrice"  :show-overflow-tooltip="true" align="center" label="未税单价"  />
-      <el-table-column prop="materialTaxTotalprice"  :show-overflow-tooltip="true" align="center" label="未税总价"  />
-      <el-table-column prop="materialVatPrice"  :show-overflow-tooltip="true" align="center" label="含税单价"  />
-      <el-table-column prop="materialVatTotalprice"  :show-overflow-tooltip="true" align="center" label="含税总价"  />
-      <el-table-column prop="materialRate"  :show-overflow-tooltip="true" align="center" label="代理费率"  />
-      <el-table-column prop="dictMaterialCurrency.name"  :show-overflow-tooltip="true" align="center" label="币种"  />
-      <el-table-column prop="dictCountryCode.name"  :show-overflow-tooltip="true" align="center" label="国家标志"  />
+      <!--<el-table-column prop="materialTaxPrice"  :show-overflow-tooltip="true" align="center" label="未税单价"  />-->
+      <!--<el-table-column prop="materialTaxTotalprice"  :show-overflow-tooltip="true" align="center" label="未税总价"  />-->
+      <!--<el-table-column prop="materialVatPrice"  :show-overflow-tooltip="true" align="center" label="含税单价"  />-->
+      <!--<el-table-column prop="materialVatTotalprice"  :show-overflow-tooltip="true" align="center" label="含税总价"  />-->
+      <!--<el-table-column prop="materialRate"  :show-overflow-tooltip="true" align="center" label="代理费率"  />-->
+      <!--<el-table-column prop="dictMaterialCurrency.name"  :show-overflow-tooltip="true" align="center" label="币种"  />-->
+      <!--<el-table-column prop="dictCountryCode.name"  :show-overflow-tooltip="true" align="center" label="国家标志"  />-->
 
-      <el-table-column prop="orderOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="型号发货总数量"  />
-      <el-table-column prop="materOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="子件发货总数量"  />
-      <el-table-column prop="residualAmount"  :show-overflow-tooltip="true" align="center" label="订单剩余数量"  />
-      <el-table-column prop="trimAmount"  :show-overflow-tooltip="true" align="center" label="调整后数量"  />
+      <!--<el-table-column prop="orderOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="型号发货总数量"  />-->
+      <!--<el-table-column prop="materOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="子件发货总数量"  />-->
+      <!--<el-table-column prop="residualAmount"  :show-overflow-tooltip="true" align="center" label="订单剩余数量"  />-->
+      <!--<el-table-column prop="trimAmount"  :show-overflow-tooltip="true" align="center" label="调整后数量"  />-->
       <el-table-column prop="stockAmount"  :show-overflow-tooltip="true" align="center" label="库存数量"  />
       <el-table-column prop="differAmount"  :show-overflow-tooltip="true" align="center" label="差异数量"  />
-      <el-table-column prop="takeOverAmount"  :show-overflow-tooltip="true" align="center" label="收货数量"  />
-      <el-table-column prop="deliveryAmount"  :show-overflow-tooltip="true" align="center" label="发货数量"  />
-      <el-table-column prop="surplusAmount"  :show-overflow-tooltip="true" align="center" label="物料剩余数量"  />
+      <!--<el-table-column prop="takeOverAmount"  :show-overflow-tooltip="true" align="center" label="收货数量"  />-->
+      <!--<el-table-column prop="deliveryAmount"  :show-overflow-tooltip="true" align="center" label="发货数量"  />-->
+      <!--<el-table-column prop="surplusAmount"  :show-overflow-tooltip="true" align="center" label="物料剩余数量"  />-->
 
 
       <el-table-column prop="createUser" align="center" label="创建人"  />
