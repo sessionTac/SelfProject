@@ -28,7 +28,9 @@ export default {
       // }
       return {
         is: 'router-link',
-        to: {name:url}
+        to: {name:url},
+        // query:{dateFlag: 'year'},
+        // params:{id:'1'}
       }
     }
   }

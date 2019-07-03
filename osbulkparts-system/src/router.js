@@ -147,6 +147,30 @@ export const constantRoutes = [
                 requiresPermission: 'maintenance:warehouse:order:info:view',}
             },
             {
+                path: 'planDetailYear',
+                component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
+                name: 'warehousePlanDetailYear',
+                meta: { title: 'warehousePlanDetail',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
+                    requiresPermission: 'maintenance:warehouse:order:info:view',flag:"year"}
+
+            },
+            {
+                path: 'planDetailMonth',
+                component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
+                name: 'warehousePlanDetailMonth',
+                meta: { title: 'warehousePlanDetail',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
+                    requiresPermission: 'maintenance:warehouse:order:info:view',flag:"month"}
+
+            },
+            {
+                path: 'planDetailWeek',
+                component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
+                name: 'warehousePlanDetailWeek',
+                meta: { title: 'warehousePlanDetail',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
+                    requiresPermission: 'maintenance:warehouse:order:info:view',flag:"week"}
+
+            },
+            {
                 path: 'inventoryInfoList',
                 component: () => import('@/views/sysWarehouse/InventoryInfo/InventoryInfoList.vue'),
                 name: 'warehouseInventoryInfoList',

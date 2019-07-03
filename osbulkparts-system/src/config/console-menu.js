@@ -65,6 +65,21 @@ export default [
               index: 'warehouseOrderplan',
           },
           {
+            title: '订单详情年',
+            requiresPermission: 'maintenance:warehouse:order:info:view',
+            index: 'warehousePlanDetailYear',
+          },
+          {
+            title: '订单详情月',
+            requiresPermission: 'maintenance:warehouse:order:info:view',
+            index: 'warehousePlanDetailMonth',
+          },
+          {
+            title: '订单详情周',
+            requiresPermission: 'maintenance:warehouse:order:info:view',
+            index: 'warehousePlanDetailWeek',
+          },
+          {
             title: '库存信息',
             requiresPermission: 'maintenance:warehouse:order:info:view',
             index: 'warehouseInventoryInfoList',

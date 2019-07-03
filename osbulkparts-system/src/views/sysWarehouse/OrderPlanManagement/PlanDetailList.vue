@@ -1,6 +1,7 @@
 <template>
   <div style="display: flex;flex-direction: column;height: 100%">
     <div class="el-header">
+      {{$route.meta.flag}}
       <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
         <el-form-item label="订单产品型号">
           <el-input placeholder="订单产品型号" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
@@ -347,11 +348,11 @@
       },
       //添加
       add() {
-        this.link_modal_state={activated:true,mode:"ADD"};
+        this.link_modal_state={activated:true,mode:"ADD",flag:this.$route.meta.flag};
       },
       //编辑
       edit(id) {
-        this.link_modal_state={activated:true,id,mode:"EDIT"};
+        this.link_modal_state={activated:true,id,mode:"EDIT",flag:this.$route.meta.flag};
       },
       //删除
       deleteMatter() {

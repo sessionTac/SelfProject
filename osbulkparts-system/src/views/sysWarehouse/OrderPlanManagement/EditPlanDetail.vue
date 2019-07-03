@@ -3,6 +3,7 @@
     <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)"
                width="600px">
       <el-card>
+        {{flag}}
         <div class="dialogStyle" style="display: flex;flex-direction: column">
           <el-form  class="search-form search-form-normal" label-width="110px" ref="form"
                     style="flex: 5" :model="form" size="mini" :rules="rules">
@@ -366,6 +367,7 @@
     props: {
       id: {},
       mode: "",
+      flag:"",
     },
     computed: {
       title: function () {
