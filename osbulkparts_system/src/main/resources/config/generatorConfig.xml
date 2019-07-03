@@ -92,7 +92,12 @@
 			enableDeleteByExample="false">
 		</table> -->
 		<!-- 物料记录表  -->
-  		<table tableName="t_material_record_info" domainObjectName="TMaterialRecordInfoEntity" 
+<!--   		<table tableName="t_material_record_info" domainObjectName="TMaterialRecordInfoEntity" 
+			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false">
+		</table> -->
+		<!-- 物料记录表  -->
+  		<table tableName="t_deliver_info" domainObjectName="TDeliverInfoEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
 		</table>

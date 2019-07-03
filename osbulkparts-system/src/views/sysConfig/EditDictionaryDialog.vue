@@ -21,10 +21,12 @@
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.name"   size="mini" :maxlength="50"></el-input>
           </el-form-item>
 
-          <el-form-item label="编号" prop="value">
+          <el-form-item label="值" prop="value">
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.value" size="mini" :maxlength="30"></el-input>
           </el-form-item>
-
+          <el-form-item label="描述" prop="desc">
+            <el-input  class="search-form-item-input" style="width: 200px" v-model="form.desc" size="mini" :maxlength="50"></el-input>
+          </el-form-item>
           <el-form-item label="排序" prop="sortCode">
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.sortCode" clearable :maxlength="11" size="mini" knx></el-input>
           </el-form-item>
@@ -34,7 +36,7 @@
           </el-form-item>
 
 
-          <el-form-item label="备注">
+          <el-form-item label="备注" prop="remark">
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.remark"  clearable type="textarea" :rows="2" placeholder="请输入内容" size="mini" :maxlength="200"></el-input>
           </el-form-item>
 
@@ -89,6 +91,8 @@
           name: '',
           //code值
           value: '',
+          //code值
+          desc: '',
           //排序
           sortCode: '',
           //是否有效
@@ -108,7 +112,7 @@
             {required: true, message: '请选择单位名称'}
           ],
           value: [
-            {required: true, message: '请选择编号', trigger: 'blur'}
+            {required: true, message: '请选择值', trigger: 'blur'}
           ],
         }
       }
@@ -149,6 +153,7 @@
               dictTypeCode :this.form.dictTypeCode || "",
               value: this.form.value ||"",
               name :this.form.name ||"",
+              desc :this.form.desc ||"",
               sortCode:this.form.sortCode ||"",
               isEnable:this.form.isEnable || "",
               remark :this.form.remark || "",

@@ -181,10 +181,10 @@ public class TOrderDetailInfoEntity implements Serializable {
      */
     private BigDecimal trimAmount;
 
-//    /**
-//     * 库存数量
-//     */
-//    private BigDecimal stockAmount;
+    /**
+     * 库存数量
+     */
+    private BigDecimal stockAmount;
 
     /**
      * 差异数量

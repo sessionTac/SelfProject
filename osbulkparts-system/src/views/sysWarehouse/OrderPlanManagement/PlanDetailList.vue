@@ -165,7 +165,7 @@
       <el-table-column prop="materialRate"  :show-overflow-tooltip="true" align="center" label="代理费率"  />
       <el-table-column prop="dictMaterialCurrency.name"  :show-overflow-tooltip="true" align="center" label="币种"  />
       <el-table-column prop="dictCountryCode.name"  :show-overflow-tooltip="true" align="center" label="国家标志"  />
-      <el-table-column prop="dictConfirmStatus.name"  :show-overflow-tooltip="true" align="center" label="状态"  />
+
       <el-table-column prop="orderOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="型号发货总数量"  />
       <el-table-column prop="materOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="子件发货总数量"  />
       <el-table-column prop="residualAmount"  :show-overflow-tooltip="true" align="center" label="订单剩余数量"  />
@@ -189,8 +189,8 @@
           {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>
       </el-table-column>
-
-      <el-table-column   width="80" label="操作" >
+      <el-table-column fixed="right" prop="dictConfirmStatus.name"  :show-overflow-tooltip="true" align="center" label="状态"  />
+      <el-table-column fixed="right" width="80" label="操作" >
         <template slot-scope="scope" >
           <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
             <i class="el-icon-news"></i></el-button>
@@ -305,11 +305,14 @@
         let data={
           ...search_keys,
           orderDateStart      :   search_keys.orderDateArray  && search_keys.orderDateArray[0]    || "",
-          orderDateEnd        :   search_keys.orderDateArray  && this.$moment(search_keys.orderDateArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
+          orderDateEnd        :   search_keys.orderDateArray  && search_keys.orderDateArray[1]    || "",
+          // orderDateEnd        :   search_keys.orderDateArray  && this.$moment(search_keys.orderDateArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
           createTimeStart     :   search_keys.createTimeArray && search_keys.createTimeArray[0],
-          createTimeEnd       :   search_keys.createTimeArray && this.$moment(search_keys.createTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
+          // createTimeEnd       :   search_keys.createTimeArray && this.$moment(search_keys.createTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
+          createTimeEnd       :   search_keys.createTimeArray && search_keys.createTimeArray[1]   || "",
           updateTimeStart     :   search_keys.updateTimeArray && search_keys.updateTimeArray[0],
-          updateTimeEnd       :   search_keys.updateTimeArray && this.$moment(search_keys.updateTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
+          // updateTimeEnd       :   search_keys.updateTimeArray && this.$moment(search_keys.updateTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
+          updateTimeEnd       :   search_keys.updateTimeArray && search_keys.updateTimeArray[1]   || "",
         };
         activityService.findOrderDetailInfoList({...data, pageNum, pageSize}).then(resp => {
           this.search_result = resp.data.resultInfo;                //视图展示查询结果

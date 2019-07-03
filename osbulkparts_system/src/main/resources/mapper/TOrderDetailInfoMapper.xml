@@ -740,7 +740,8 @@
         t6.`name` AS dictMinPackageType,
         t7.`name` AS dictMaterialCurrency,
         t8.`name` AS dictCountryCode,
-        t9.`name` AS dictConfirmStatus
+        t9.`name` AS dictConfirmStatus,
+        t10.stock_amount AS stockAmount
     FROM
         t_order_detail_info AS t1
     LEFT JOIN t_dict_data AS t2 ON t1.order_unit = t2.`value`
@@ -767,6 +768,9 @@
     LEFT JOIN t_dict_data AS t9 ON t1.confirm_status = t9.`value`
     AND t9.dict_type_code = 'orderStatus'
     AND t9.delete_flg = 0
+	LEFT JOIN t_stock_info AS t10 ON t1.material_code = t10.material_code
+	AND t10.data_role_at = t1.data_role_at
+	AND t10.is_delete = 0
     WHERE
         t1.is_delete = 0
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCode)">
@@ -786,8 +790,11 @@
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(confirmStatus)">
       AND t1.confirm_status = #{confirmStatus,jdbcType=VARCHAR}
     </if>
-    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(isBalance)">
+    <if test="isBalance != null">
       AND t1.is_balance = #{isBalance,jdbcType=INTEGER}
+    </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
+      AND t1.data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCodeDesc)">
       <bind name="orderCodeDesc_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(orderCodeDesc)"/>
