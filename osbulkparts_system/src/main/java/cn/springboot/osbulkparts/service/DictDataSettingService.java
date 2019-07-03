@@ -19,4 +19,6 @@ public interface DictDataSettingService {
 	
 	CommonResultInfo<?> deleteDictData(TDictDataEntity tdictDataEntity, Authentication auth);
 
+
+	CommonResultInfo<?> checkValue(TDictDataEntity tDictDataEntity);
 }

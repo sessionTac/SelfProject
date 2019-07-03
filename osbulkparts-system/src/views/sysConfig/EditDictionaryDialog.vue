@@ -143,43 +143,49 @@
       submit(formName){
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            if (this.form.isEnable==true){
-              this.form.isEnable = 1;
-            }else {
-              this.form.isEnable = 0;
-            }
-            let data  = {
-              id  :  this.form.id || "",
-              dictTypeCode :this.form.dictTypeCode || "",
-              value: this.form.value ||"",
-              name :this.form.name ||"",
-              desc :this.form.desc ||"",
-              sortCode:this.form.sortCode ||"",
-              isEnable:this.form.isEnable || "",
-              remark :this.form.remark || "",
-              version:this.form.version || "",
-            };
-            if (this.mode === 'ADD'){
-              service.addDictData({...data}).then(resp=>{
-                if (resp.data.code=='201'){
-                  this.$notify({type: 'success', message: resp.data.message});
-                  this.$emit("refresh");
-                  this.dialogFormVisible = false
-                } else {
-                  this.$notify({type: 'error', message: resp.data.message});
+            service.checkValue({id  :  this.form.id || "",dictTypeCode:this.form.dictTypeCode,value:this.form.value}).then(resp=>{
+              if (resp.data.code=='201'){
+                if (this.form.isEnable==true){
+                  this.form.isEnable = 1;
+                }else {
+                  this.form.isEnable = 0;
                 }
-              })
-            }else if (this.mode === 'EDIT'){
-              service.updateDictData({...data}).then(resp=>{
-                if (resp.data.code=='201'){
-                  this.$notify({type: 'success', message: resp.data.message});
-                  this.$emit("refresh");
-                  this.dialogFormVisible = false
-                } else {
-                  this.$notify({type: 'error', message: resp.data.message});
+                let data  = {
+                  id  :  this.form.id || "",
+                  dictTypeCode :this.form.dictTypeCode || "",
+                  value: this.form.value ||"",
+                  name :this.form.name ||"",
+                  desc :this.form.desc ||"",
+                  sortCode:this.form.sortCode ||"",
+                  isEnable:this.form.isEnable ,
+                  remark :this.form.remark || "",
+                  version:this.form.version || "",
+                };
+                if (this.mode === 'ADD'){
+                  service.addDictData({...data}).then(resp=>{
+                    if (resp.data.code=='201'){
+                      this.$notify({type: 'success', message: resp.data.message});
+                      this.$emit("refresh");
+                      this.dialogFormVisible = false
+                    } else {
+                      this.$notify({type: 'error', message: resp.data.message});
+                    }
+                  })
+                }else if (this.mode === 'EDIT'){
+                  service.updateDictData({...data}).then(resp=>{
+                    if (resp.data.code=='201'){
+                      this.$notify({type: 'success', message: resp.data.message});
+                      this.$emit("refresh");
+                      this.dialogFormVisible = false
+                    } else {
+                      this.$notify({type: 'error', message: resp.data.message});
+                    }
+                  });
                 }
-              });
-            }
+              } else {
+                this.$notify({message: resp.data.message, type: "error"});
+              }
+            })
           } else {
             console.log('error submit!!');
             return false;

@@ -170,7 +170,28 @@ public class DictDataServiceImpl implements DictDataSettingService {
 			return result;
 		}
 	}
-	
+
+	@Override
+	public CommonResultInfo<?> checkValue(TDictDataEntity tDictDataEntity) {
+		CommonResultInfo<?> result = new CommonResultInfo<TDictDataEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		try {
+			List<TDictDataEntity> resultList=tdictDataDao.selectByPrimaryKey(tDictDataEntity);
+			if(resultList.size()==0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+			}else if (resultList.size() != 0 && resultList.get(0).getId().equals(tDictDataEntity.getId())){
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+			} else {
+				result.setMessage(messageBean.getMessage("common.info.empty"));
+			}
+		} catch (Exception e) {
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
+	}
+
 	/****Private Method****/
 	/**
 	 * 验证版本号

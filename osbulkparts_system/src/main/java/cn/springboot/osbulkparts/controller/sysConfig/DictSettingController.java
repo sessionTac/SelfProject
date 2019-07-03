@@ -126,4 +126,10 @@ public class DictSettingController {
 	public CommonResultInfo<?> updateDictType(@RequestBody TDictDataEntity tDictDataEntity,Authentication auth){
 		return dictDataSettingService.updateDictData(tDictDataEntity,auth);
 	}
+	@ApiOperation(value="校验字典数据value是否重复", notes="校验字典数据value是否重复")
+	@ApiImplicitParam(name = "TDictDataEntity", value = "数据字实体对象", required = true, dataType = "body", paramType = "body")
+	@GetMapping("/checkValue")
+	public CommonResultInfo<?> checkValue( TDictDataEntity tDictDataEntity,Authentication auth){
+		return dictDataSettingService.checkValue(tDictDataEntity);
+	}
 }

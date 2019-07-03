@@ -60,4 +60,10 @@ export default {
    */
   addDictData:(data)=>
     postRequest(`~/dict/addDictData`, {data}),
+
+  /**
+   *
+   */
+  checkValue:(params)=>
+    getRequest(`~/dict/checkValue`, {params}),
 }
