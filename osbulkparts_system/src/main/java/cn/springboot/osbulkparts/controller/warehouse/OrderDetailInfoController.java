@@ -126,9 +126,9 @@ public class OrderDetailInfoController {
     @ApiOperation(value="执行发货", notes="将选中数据进行发货处理")
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/excuteDeliver")
-    public CommonResultInfo<?> excuteDeliver(@RequestBody List<TDeliverInfoEntity> deliverInfoList, Authentication auth){
+    public CommonResultInfo<?> excuteDeliver(@RequestBody CommonEntity commonEntity, Authentication auth){
 
-        return orderDetailInfoService.excuteDeliveryInfo(deliverInfoList, auth);
+        return null;
     }
 
     @ApiOperation(value="订单计划导出", notes="订单计划导出")

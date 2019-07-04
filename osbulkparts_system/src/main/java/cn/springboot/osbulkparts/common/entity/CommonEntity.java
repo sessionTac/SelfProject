@@ -12,4 +12,10 @@ public class CommonEntity {
 	private boolean toLocked;
 	
 	private String dateFlag;
+
+	private String[] amouts;
+
+	private String contractNo;
+	private String containerNo;
+	private String shipNo;
 }
