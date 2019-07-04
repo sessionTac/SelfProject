@@ -82,7 +82,7 @@
         materialRelationQuantity:"",
         supperAmount:"",
         suggestedAmount:"",
-        search_result         : {},
+        search_result         : [],
       }
     },
     async mounted(){
@@ -92,6 +92,12 @@
       exec_search() {
         activityService.finddeliverGoodsList({idsStr:this.multipleSelection}).then(resp => {
           this.search_result = resp.data.resultList;                //视图展示查询结果
+          this.search_result.forEach(item=>{
+            item.suggestedAmount=item.materialAmount-item.supperAmountQut.supperAmount
+            if (item.suggestedAmount<0) {
+              item.suggestedAmount=0
+            }
+          })
         }, err => {
           console.error(err);
         })

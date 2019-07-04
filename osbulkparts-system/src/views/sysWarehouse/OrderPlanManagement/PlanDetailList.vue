@@ -1,7 +1,6 @@
 <template>
   <div style="display: flex;flex-direction: column;height: 100%">
     <div class="el-header">
-      {{$route.meta.flag}}
       <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
         <el-form-item label="订单产品型号">
           <el-input placeholder="订单产品型号" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
@@ -306,6 +305,7 @@
         let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
         let data={
           ...search_keys,
+          dateFlag            :   this.$route.meta.flag || '',
           orderDateStart      :   search_keys.orderDateArray  && search_keys.orderDateArray[0]    || "",
           orderDateEnd        :   search_keys.orderDateArray  && search_keys.orderDateArray[1]    || "",
           // orderDateEnd        :   search_keys.orderDateArray  && this.$moment(search_keys.orderDateArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
@@ -348,11 +348,11 @@
       },
       //添加
       add() {
-        this.link_modal_state={activated:true,mode:"ADD",flag:this.$route.meta.flag};
+        this.link_modal_state={activated:true,mode:"ADD",dateFlag:this.$route.meta.flag};
       },
       //编辑
       edit(id) {
-        this.link_modal_state={activated:true,id,mode:"EDIT",flag:this.$route.meta.flag};
+        this.link_modal_state={activated:true,id,mode:"EDIT",dateFlag:this.$route.meta.flag};
       },
       //删除
       deleteMatter() {

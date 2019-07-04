@@ -212,6 +212,11 @@ public class TOrderDetailInfoEntity implements Serializable {
     private TMaterialRecordInfoEntity supperAmountQut;
 
     /**
+     * 时间标识
+     */
+    private String dateFlag;
+
+    /**
      * 数据所属
      */
     private String dataRoleAt;

@@ -45,6 +45,7 @@
     <result column="take_over_amount" jdbcType="DECIMAL" property="takeOverAmount" />
     <result column="delivery_amount" jdbcType="DECIMAL" property="deliveryAmount" />
     <result column="surplus_amount" jdbcType="DECIMAL" property="surplusAmount" />
+    <result column="date_flag" jdbcType="VARCHAR" property="dateFlag" />
     <result column="data_role_at" jdbcType="VARCHAR" property="dataRoleAt" />
     <result column="is_balance" jdbcType="INTEGER" property="isBalance" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
@@ -120,7 +121,7 @@
     material_tax_price, material_tax_totalprice, material_vat_price, material_vat_totalprice, 
     material_rate, material_currency, country_code, confirm_status, order_out_total_amount, 
     mater_out_total_amount, residual_amount, trim_amount, stock_amount, differ_amount, 
-    take_over_amount, delivery_amount, surplus_amount, data_role_at, is_balance, create_user, create_time, 
+    take_over_amount, delivery_amount, surplus_amount, date_flag,data_role_at, is_balance, create_user, create_time,
     update_user, update_time, is_delete, version
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -309,6 +310,9 @@
       <if test="dataRoleAt != null">
         data_role_at,
       </if>
+      <if test="dateFlag != null">
+        date_flag,
+      </if>
       <if test="isBalance != null">
         is_balance,
       </if>
@@ -446,6 +450,9 @@
       </if>
       <if test="dataRoleAt != null">
         #{dataRoleAt,jdbcType=VARCHAR},
+      </if>
+      <if test="dateFlag != null">
+        #{dateFlag,jdbcType=VARCHAR},
       </if>
       <if test="isBalance != null">
         #{isBalance,jdbcType=INTEGER},
@@ -726,6 +733,7 @@
       delivery_amount = #{deliveryAmount,jdbcType=DECIMAL},
       surplus_amount = #{surplusAmount,jdbcType=DECIMAL},
       data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
+      date_flag=#{dateFlag,jdbcType=VARCHAR},
       is_balance = #{isBalance,jdbcType=INTEGER},
       create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
@@ -797,6 +805,9 @@
     </if>
     <if test="isBalance != null">
       AND t1.is_balance = #{isBalance,jdbcType=INTEGER}
+    </if>
+    <if test="dateFlag != null">
+      AND t1.date_flag = #{dateFlag,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
       AND t1.data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
@@ -873,8 +884,8 @@
 		t1.order_date,
 		t1.material_code,
 		t1.material_amount,
-		t1.material_relation_quantity,
-		t2.supper_amount
+		IFNULL(t1.material_relation_quantity,0) as material_relation_quantity,
+		ifnull(t2.supper_amount,0) as supper_amount
 	FROM
 		t_order_detail_info t1
 	LEFT JOIN t_material_record_info AS t2 ON t1.material_code = t2.material_code
