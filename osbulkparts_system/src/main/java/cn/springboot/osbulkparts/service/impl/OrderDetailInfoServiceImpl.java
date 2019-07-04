@@ -317,4 +317,34 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             return result;
         }
     }
+
+	@SuppressWarnings("finally")
+	@Override
+	public CommonResultInfo<?> selectDeliveryInfo(CommonEntity commonEntity) {
+        CommonResultInfo<TOrderDetailInfoEntity> result = new CommonResultInfo<TOrderDetailInfoEntity>();
+        try {
+            List<TOrderDetailInfoEntity> resultList = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr());
+            result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+            if(resultList.size()>0) {
+                result.setResultList(resultList);
+            }
+            else {
+                result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+                result.setMessage(messageBean.getMessage("common.info.empty"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+	}
+
+	@Override
+	public CommonResultInfo<?> excuteDeliveryInfo(List<TDeliverInfoEntity> deliverInfoList, Authentication auth) {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

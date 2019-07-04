@@ -7,6 +7,12 @@ export default {
   //订单详情 获得list列表信息 模糊查询
   findOrderDetailInfoList:(params)=>
     getRequest(`~/orderDetailInfo/getList`,{params}),
+  //订单详情 获得list列表信息 模糊查询
+  finddeliverGoodsList:(params)=>
+      getRequest(`~/orderDetailInfo/deliverGoods`,{params}),
+  excuteDeliverInfo:(data)=>
+      postRequest(`~/orderDetailInfo/excuteDeliver`,{params}),
+
   //订单详情 根据主键获得一条数据的详细信息
   findOrderDetailInfo: (params) =>
     getRequest(`~/orderDetailInfo/getOrderDetailInfo`,{params}),

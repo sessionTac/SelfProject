@@ -23,6 +23,8 @@ public interface TOrderDetailInfoDao {
     int updateByPrimaryKey(TOrderDetailInfoEntity record);
 
     List<TOrderDetailInfoEntity> getOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity);
+    
+    List<TOrderDetailInfoEntity> selectDeliveryInfo(@Param("ids") String[] ids);
 
     int deleteBatchData(@Param("ids") String[] ids, @Param("updateUser") String updateUser, @Param("isDelete") String isDelete);
 

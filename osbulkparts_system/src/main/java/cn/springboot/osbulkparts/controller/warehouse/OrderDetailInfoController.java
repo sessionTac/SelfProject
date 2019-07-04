@@ -1,5 +1,7 @@
 package cn.springboot.osbulkparts.controller.warehouse;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
+import cn.springboot.osbulkparts.entity.TDeliverInfoEntity;
 import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 import cn.springboot.osbulkparts.service.OrderDetailInfoService;
 import io.swagger.annotations.ApiImplicitParam;
@@ -113,11 +116,18 @@ public class OrderDetailInfoController {
         return orderDetailInfoService.approvalBatchOrderInfo(commonEntity,auth);
     }
 
-    @ApiOperation(value="发货", notes="发货")
+    @ApiOperation(value="发货信息查询", notes="根据订单号查询需要发货的订单信息")
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
-    @PutMapping("/deliverGoods")
-    public CommonResultInfo<?> deliverGoods(@RequestBody CommonEntity commonEntity, Authentication auth){
-        return null;
+    @GetMapping("/deliverGoods")
+    public CommonResultInfo<?> deliverGoods(CommonEntity commonEntity){
+        return orderDetailInfoService.selectDeliveryInfo(commonEntity);
+    }
+    
+    @ApiOperation(value="执行发货", notes="将选中数据进行发货处理")
+    @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
+    @PutMapping("/excuteDeliver")
+    public CommonResultInfo<?> excuteDeliver(@RequestBody List<TDeliverInfoEntity> deliverInfoList, Authentication auth){
+        return orderDetailInfoService.excuteDeliveryInfo(deliverInfoList, auth);
     }
 
     @ApiOperation(value="订单计划导出", notes="订单计划导出")

@@ -205,6 +205,11 @@ public class TOrderDetailInfoEntity implements Serializable {
      * 剩余数量
      */
     private BigDecimal surplusAmount;
+    
+    /**
+     * 超发数量
+     */
+    private TMaterialRecordInfoEntity supperAmountQut;
 
     /**
      * 数据所属

@@ -19,7 +19,7 @@ public class TMaterialRecordInfoEntity implements Serializable {
     /**
      * 超发数量
      */
-    private BigDecimal materialAmount;
+    private BigDecimal supperAmount;
 
     /**
      * 数据所属

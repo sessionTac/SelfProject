@@ -140,7 +140,7 @@
       <el-table-column prop="orderAmount"  width="100" align="center" label="订单数量"  />
       <el-table-column prop="orderDate"  width="100" align="center" label="订单日期">
         <template slot-scope="scope">
-          {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
+          {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD') : ''}}
         </template>
       </el-table-column>
       <el-table-column prop="dictOrderUnit.name" width="100" align="center" label="订单型号单位" />
@@ -381,29 +381,11 @@
       },
       //发货
       deliverGoods(){
-        this.$confirm("确定发货吗？", "提示", {
-          confirmButtonText: "是",
-          cancelButtonText: "否",
-          type: 'warning',
-          center: true
-        }).then(() => {
-            this.idsStr=[];
-            this.multipleSelection.forEach(item=>{
-              this.idsStr.push(item.id)
-            });
+          this.idsStr=[];
+          this.multipleSelection.forEach(item=>{
+              this.idsStr.push(item.orderCode)
+          });
           this.link_modal_state1={activated:true,multipleSelection:this.idsStr};
-            // activityService.deliverGoodsByIds({idsStr:this.idsStr}).then(resp => {
-            //   if (resp.data.code=="201"){
-            //     this.$notify({message: resp.data.message, type: "success"});
-            //     this.exec_search({search_keys:this.search_keys, pageNum:1})
-            //   } else {
-            //     this.$notify({message: resp.data.message, type: "error"});
-            //   }
-            // })
-          }
-        ).catch(() => {
-          this.internal_activated = true;
-        })
       },
       //审批
       approval(){

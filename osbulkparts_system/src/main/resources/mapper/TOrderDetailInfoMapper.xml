@@ -53,6 +53,11 @@
     <result column="update_time" jdbcType="VARCHAR" property="updateTime" />
     <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     <result column="version" jdbcType="INTEGER" property="version" />
+    <!--超发数量-->
+    <association property="supperAmountQut"
+                 javaType="cn.springboot.osbulkparts.entity.TMaterialRecordInfoEntity">
+      <result property="supperAmount" column="supper_amount"/>
+    </association>
     <!--订单型号单位-->
     <association property="dictOrderUnit"
                  javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
@@ -860,4 +865,25 @@
       #{item}
     </foreach>
   </update>
+  <!-- 按照订单型号，查询需要发货的信息 -->
+  <select id="selectDeliveryInfo" resultMap="BaseResultMap">
+	SELECT
+		t1.order_code,
+		t1.order_amount,
+		t1.order_date,
+		t1.material_code,
+		t1.material_amount,
+		t1.material_relation_quantity,
+		t2.supper_amount
+	FROM
+		t_order_detail_info t1
+	LEFT JOIN t_material_record_info AS t2 ON t1.material_code = t2.material_code
+	WHERE
+	    t1.data_role_at = 0
+	AND t1.is_balance = 0
+	AND t1.order_code IN
+    <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
+      #{item}
+    </foreach>
+  </select>
 </mapper>
