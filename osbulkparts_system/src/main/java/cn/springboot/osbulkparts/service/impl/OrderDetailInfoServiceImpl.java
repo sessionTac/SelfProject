@@ -1,5 +1,6 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,6 +22,7 @@ import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.basedata.MMaterialInfoDao;
+import cn.springboot.osbulkparts.dao.basedata.TMaterialRecordInfoDao;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
 import cn.springboot.osbulkparts.dao.warehouse.TDeliverInfoDao;
@@ -30,6 +32,7 @@ import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.TDeliverInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TMaterialRecordInfoEntity;
 import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
 import cn.springboot.osbulkparts.service.OrderDetailInfoService;
@@ -43,6 +46,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
     private TDictDataDao tDictDataDao;
     @Autowired
     private MRoleInfoDao mroleInfoDao;
+    @Autowired
+    private TMaterialRecordInfoDao materialRecordInfoDao;
     @Autowired
     private TOrderInfoDao tOrderInfoDao;
     @Autowired
@@ -334,7 +339,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	public CommonResultInfo<?> selectDeliveryInfo(CommonEntity commonEntity) {
         CommonResultInfo<TOrderDetailInfoEntity> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         try {
-            List<TOrderDetailInfoEntity> resultList = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr());
+            List<TOrderDetailInfoEntity> resultList = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr(),commonEntity.getDateFlag());
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
             if(resultList.size()>0) {
                 result.setResultList(resultList);
@@ -373,6 +378,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	        		result.setMessage(messageBean.getMessage("bussiness.order.delivery.del.error",deliveryInfo.getOrderCode()));
 	        		return result;
 	        	}
+            	//更新物料记录表的发货数量
+            	TMaterialRecordInfoEntity recordParam = new TMaterialRecordInfoEntity();
+            	recordParam.setMaterialCode(deliveryInfo.getMaterialCode());
+            	recordParam.setDataRoleAt(deliveryInfo.getDataRoleAt());
+            	recordParam.setSupperAmount(deliveryInfo.getSendAmount());
+            	materialRecordInfoDao.updateByPrimaryKeySelective(recordParam);
+            	//
 	        	deliveryInfo.setId(CommonSqlUtils.getUUID32());
 	        	deliveryInfo.setCreateUser(principal.getUserName());
 	        	deliveryInfo.setIsDelete(0);
@@ -383,6 +395,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	        }
             int returnInt = tdeliverInfoDao.insertList(tdeliveryInfoListParam);
             if (returnInt > 0) {
+
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 result.setMessage(messageBean.getMessage("bussiness.order.delivery.success"));
             }

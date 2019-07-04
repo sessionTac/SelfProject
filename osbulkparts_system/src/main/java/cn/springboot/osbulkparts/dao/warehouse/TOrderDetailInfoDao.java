@@ -24,7 +24,7 @@ public interface TOrderDetailInfoDao {
 
     List<TOrderDetailInfoEntity> getOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity);
     
-    List<TOrderDetailInfoEntity> selectDeliveryInfo(@Param("ids") String[] ids);
+    List<TOrderDetailInfoEntity> selectDeliveryInfo(@Param("ids") String[] ids,@Param("dateFlag") String dateFlag);
 
     int deleteBatchData(@Param("ids") String[] ids, @Param("updateUser") String updateUser, @Param("isDelete") String isDelete);
 

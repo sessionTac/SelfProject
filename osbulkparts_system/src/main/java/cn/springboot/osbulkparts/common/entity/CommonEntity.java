@@ -10,4 +10,6 @@ public class CommonEntity {
 	private String[] idsStr;
 	
 	private boolean toLocked;
+	
+	private String dateFlag;
 }

@@ -892,6 +892,7 @@
 	WHERE
 	    t1.data_role_at = 0
 	AND t1.is_balance = 0
+	AND t1.date_flag = #{dateFlag,jdbcType=VARCHAR}
 	AND t1.order_code IN
     <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
       #{item}

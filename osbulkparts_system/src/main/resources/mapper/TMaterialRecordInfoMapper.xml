@@ -106,7 +106,7 @@
         material_code = #{materialCode,jdbcType=VARCHAR},
       </if>
       <if test="supperAmount != null">
-        supper_amount = #{supperAmount,jdbcType=DECIMAL},
+        supper_amount = supper_amount + #{supperAmount,jdbcType=DECIMAL},
       </if>
       <if test="dataRoleAt != null">
         data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
@@ -115,7 +115,7 @@
         factory_code = #{factoryCode,jdbcType=VARCHAR},
       </if>
     </set>
-    where id = #{id,jdbcType=VARCHAR}
+    where material_code = #{materialCode,jdbcType=VARCHAR}
   </update>
   <update id="updateByPrimaryKey" parameterType="cn.springboot.osbulkparts.entity.TMaterialRecordInfoEntity">
     <!--
