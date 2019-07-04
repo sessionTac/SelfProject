@@ -130,13 +130,13 @@
         dict_type_code,
       </if>
       <if test="value != null">
-        value,
+        `value`,
       </if>
       <if test="name != null">
-        name,
+        `name`,
       </if>
       <if test="desc != null">
-        desc,
+        `desc`,
       </if>
       <if test="sortCode != null">
         sort_code,

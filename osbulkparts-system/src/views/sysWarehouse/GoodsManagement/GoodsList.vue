@@ -96,7 +96,7 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="orderCode"  width="100" align="center" label="订单号"/>
+            <el-table-column prop="orderCode"  width="100" align="center" label="订单产品型号"/>
             <el-table-column prop="orderDetailInfo.orderCodeDesc"  width="100" align="center" label="订单产品型号描述"  />
             <el-table-column prop="orderDetailInfo.orderAmount"  width="100" align="center" label="订单数量"  />
             <el-table-column prop="orderDetailInfo.orderDate"  width="100" align="center" label="订单日期">

@@ -166,15 +166,15 @@
       <el-table-column prop="dictMaterialCurrency.name"  :show-overflow-tooltip="true" align="center" label="币种"  />
       <el-table-column prop="dictCountryCode.name"  :show-overflow-tooltip="true" align="center" label="国家标志"  />
 
-      <el-table-column prop="orderOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="型号发货总数量"  />
-      <el-table-column prop="materOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="子件发货总数量"  />
-      <el-table-column prop="residualAmount"  :show-overflow-tooltip="true" align="center" label="订单剩余数量"  />
-      <el-table-column prop="trimAmount"  :show-overflow-tooltip="true" align="center" label="调整后数量"  />
+      <!--<el-table-column prop="orderOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="型号发货总数量"  />-->
+      <!--<el-table-column prop="materOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="子件发货总数量"  />-->
+      <!--<el-table-column prop="residualAmount"  :show-overflow-tooltip="true" align="center" label="订单剩余数量"  />-->
+      <!--<el-table-column prop="trimAmount"  :show-overflow-tooltip="true" align="center" label="调整后数量"  />-->
 <!--      <el-table-column prop="stockAmount"  :show-overflow-tooltip="true" align="center" label="库存数量"  />-->
-      <el-table-column prop="differAmount"  :show-overflow-tooltip="true" align="center" label="差异数量"  />
+      <!--<el-table-column prop="differAmount"  :show-overflow-tooltip="true" align="center" label="差异数量"  />-->
       <el-table-column prop="takeOverAmount"  :show-overflow-tooltip="true" align="center" label="收货数量"  />
       <el-table-column prop="deliveryAmount"  :show-overflow-tooltip="true" align="center" label="发货数量"  />
-      <el-table-column prop="surplusAmount"  :show-overflow-tooltip="true" align="center" label="物料剩余数量"  />
+      <!--<el-table-column prop="surplusAmount"  :show-overflow-tooltip="true" align="center" label="物料剩余数量"  />-->
 
 
       <el-table-column prop="createUser" align="center" label="创建人"  />
