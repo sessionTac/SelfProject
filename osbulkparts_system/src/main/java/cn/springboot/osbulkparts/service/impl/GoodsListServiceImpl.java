@@ -1,5 +1,14 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
@@ -8,15 +17,7 @@ import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
 import cn.springboot.osbulkparts.dao.warehouse.TDeliverInfoDao;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.TDeliverInfoEntity;
-import cn.springboot.osbulkparts.entity.TStockInfoEntity;
 import cn.springboot.osbulkparts.service.GoodsListService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
 
 @Service
 public class GoodsListServiceImpl implements GoodsListService {
@@ -26,7 +27,8 @@ public class GoodsListServiceImpl implements GoodsListService {
     private MRoleInfoDao mroleInfoDao;
     @Autowired
     private I18nMessageBean messageBean;
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<?> getGoodsList(TDeliverInfoEntity tDeliverInfoEntity, int pageNumber, int pageSize, Authentication auth) {
         CommonResultInfo<TDeliverInfoEntity> result = new CommonResultInfo<TDeliverInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -48,9 +50,28 @@ public class GoodsListServiceImpl implements GoodsListService {
         }
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<?> sendGoods(CommonEntity commonEntity, Authentication auth) {
-        return null;
+		CommonResultInfo<?> result = new CommonResultInfo<TDeliverInfoEntity>();
+		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		try {
+			String updateUser = principal.getUserName();
+			String state = "1";//已收货
+			int returnInt = tDeliverInfoDao.updateListForDelivery(commonEntity.getIdsStr(), updateUser, state);
+			if (returnInt > 0) {
+				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("bussiness.order.delivery.take.success"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+			result.setMessage(messageBean.getMessage("common.server.error"));
+			result.setException(e.getMessage().toString());
+		} finally {
+			return result;
+		}
     }
 
     @Override

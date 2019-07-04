@@ -3,7 +3,6 @@ package cn.springboot.osbulkparts.service.impl;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.math.BigDecimal;
-import java.math.BigInteger;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -469,6 +468,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 							orderDetailParam.setVersion(1);
 							// 是否平衡表数据
 							orderDetailParam.setIsBalance(torderInfo.getIsBalance());
+							// 时间表示
+							orderDetailParam.setDateFlag(torderInfo.getDateFlag());
 						}
 						torderDetailInfoList.add(orderDetailParam);
 					}
@@ -599,6 +600,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				if(type == 1) {
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("week");
 					// 订单型号，成品型号
 					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
 					// 型号描述
@@ -630,6 +632,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 按月导入
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("month");
 					// 订单型号，成品型号
 					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
 					// 型号描述
@@ -680,6 +683,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 按年导入
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
 					// 订单型号，成品型号
 					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
 					// 型号描述

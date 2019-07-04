@@ -1,5 +1,19 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import cn.springboot.osbulkparts.common.CommonConstantEnum;
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
@@ -9,21 +23,16 @@ import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.basedata.MMaterialInfoDao;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
+import cn.springboot.osbulkparts.dao.warehouse.TDeliverInfoDao;
 import cn.springboot.osbulkparts.dao.warehouse.TOrderDetailInfoDao;
 import cn.springboot.osbulkparts.dao.warehouse.TOrderInfoDao;
-import cn.springboot.osbulkparts.entity.*;
+import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
+import cn.springboot.osbulkparts.entity.TDeliverInfoEntity;
+import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
+import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
 import cn.springboot.osbulkparts.service.OrderDetailInfoService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.stereotype.Service;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Service
 public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
@@ -36,6 +45,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
     private MRoleInfoDao mroleInfoDao;
     @Autowired
     private TOrderInfoDao tOrderInfoDao;
+    @Autowired
+    private TDeliverInfoDao tdeliverInfoDao;
     @Autowired
     private MMaterialInfoDao mMaterialInfoDao;
     @Autowired
@@ -342,9 +353,46 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         }
 	}
 
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<?> excuteDeliveryInfo(List<TDeliverInfoEntity> deliverInfoList, Authentication auth) {
-		// TODO Auto-generated method stub
-		return null;
+        CommonResultInfo<?> result = new CommonResultInfo<TDeliverInfoEntity>();
+        result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+        try {
+	        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+	        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+	        List<TDeliverInfoEntity> tdeliveryInfoListParam = new ArrayList<TDeliverInfoEntity>();
+	        // 通过订单型号从订单详细表中取得数据
+	        for(TDeliverInfoEntity deliveryInfo:deliverInfoList) {
+	        	TOrderDetailInfoEntity orderDetailParam = new TOrderDetailInfoEntity();
+	        	orderDetailParam.setOrderCode(deliveryInfo.getOrderCode());
+	        	orderDetailParam.setDataRoleAt(deliveryInfo.getDataRoleAt());
+	        	orderDetailParam.setIsBalance("0");
+	        	List<TOrderDetailInfoEntity> orderDetailInfo = tOrderDetailInfoDao.getOrderDetailInfoList(orderDetailParam);
+	        	if(orderDetailInfo.size()==0) {
+	        		result.setMessage(messageBean.getMessage("bussiness.order.delivery.del.error",deliveryInfo.getOrderCode()));
+	        		return result;
+	        	}
+	        	deliveryInfo.setId(CommonSqlUtils.getUUID32());
+	        	deliveryInfo.setCreateUser(principal.getUserName());
+	        	deliveryInfo.setIsDelete(0);
+	        	deliveryInfo.setState("1");
+	        	deliveryInfo.setVersion(1);
+	        	deliveryInfo.setDataRoleAt(roleInfoEntity.getRoleAt());
+	        	tdeliveryInfoListParam.add(deliveryInfo);
+	        }
+            int returnInt = tdeliverInfoDao.insertList(tdeliveryInfoListParam);
+            if (returnInt > 0) {
+                result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+                result.setMessage(messageBean.getMessage("bussiness.order.delivery.success"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
 	}
 }

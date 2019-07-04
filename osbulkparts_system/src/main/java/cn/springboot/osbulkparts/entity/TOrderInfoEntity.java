@@ -65,6 +65,11 @@ public class TOrderInfoEntity implements Serializable {
     private String isBalance;
     
     /**
+     * 时间标识(周：week；月：month；年：year）
+     */
+    private String dateFlag;
+    
+    /**
      * 创建者
      */
     private String createUser;

@@ -16,6 +16,7 @@
     <result column="order_status" jdbcType="VARCHAR" property="orderStatus" />
     <result column="is_balance" jdbcType="INTEGER" property="isBalance" />
     <result column="data_role_at" jdbcType="VARCHAR" property="dataRoleAt" />
+    <result column="date_flag" jdbcType="VARCHAR" property="dateFlag" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
@@ -87,6 +88,7 @@
 	    dictPlanStatus.`name` AS dictOrderStatus,
 	    orderInfo.data_role_at,
 	    orderInfo.is_balance,
+	    orderInfo.date_flag,
 		orderInfo.create_user,
 		orderInfo.create_time,
 		orderInfo.update_user,
@@ -127,6 +129,9 @@
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderStatus)">
     	AND orderInfo.order_status = #{orderStatus,jdbcType=VARCHAR}
+    </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dateFlag)">
+    	AND orderInfo.date_flag = #{dateFlag,jdbcType=VARCHAR}
     </if>
     <if test="orderAmount != null">
     	AND orderInfo.order_amount = #{orderAmount,jdbcType=DECIMAL}
@@ -188,13 +193,13 @@
     -->
     insert into t_order_info (id, order_code, order_code_desc, 
       order_amount, order_date, order_unit, 
-      order_status, data_role_at,is_balance, create_user, create_time, 
+      order_status, data_role_at,is_balance, date_flag create_user, create_time, 
       update_user, update_time, is_delete, 
       version)
     values (#{id,jdbcType=VARCHAR}, #{orderCode,jdbcType=VARCHAR}, #{orderCodeDesc,jdbcType=VARCHAR}, 
       #{orderAmount,jdbcType=DECIMAL}, #{orderDate,jdbcType=VARCHAR}, #{orderUnit,jdbcType=VARCHAR}, 
-      #{orderStatus,jdbcType=VARCHAR}, #{dataRoleAt,jdbcType=VARCHAR},#{isBalance,jdbcType=INTEGER},
-      #{createUser,jdbcType=VARCHAR}, DATE_FORMAT(now(),'%Y%m%d%H%m%S'), 
+      #{orderStatus,jdbcType=VARCHAR}, #{dataRoleAt,jdbcType=VARCHAR},#{dataRoleAt,jdbcType=VARCHAR},
+      #{dateFlag,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, DATE_FORMAT(now(),'%Y%m%d%H%m%S'), 
       #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, #{isDelete,jdbcType=INTEGER}, 
       #{version,jdbcType=INTEGER})
   </insert>
@@ -209,6 +214,7 @@
        order_status, 
        data_role_at,
        is_balance,
+       date_flag,
        create_user, 
        create_time, 
        update_user, 
@@ -226,6 +232,7 @@
       #{item.orderStatus,jdbcType=VARCHAR}, 
       #{item.dataRoleAt,jdbcType=VARCHAR},
       #{item.isBalance,jdbcType=INTEGER},
+      #{item.dateFlag,jdbcType=VARCHAR},
       #{item.createUser,jdbcType=VARCHAR}, 
       DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
       #{item.updateUser,jdbcType=VARCHAR}, 
@@ -269,6 +276,9 @@
       </if>
       <if test="isBalance != null">
         is_balance,
+      </if>
+      <if test="dateFLag != null">
+        date_flag,
       </if>
       <if test="createUser != null">
         create_user,
@@ -314,6 +324,9 @@
       </if>
       <if test="isBalance != null">
         #{isBalance,jdbcType=INTEGER},
+      </if>
+      <if test="dateFlag != null">
+        #{dateFlag,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
@@ -365,6 +378,9 @@
       <if test="isBalance != null">
         is_balance = #{isBalance,jdbcType=INTEGER},
       </if>
+      <if test="dateFlag != null">
+        date_flag = #{dateFlag,jdbcType=VARCHAR},
+      </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
@@ -401,6 +417,7 @@
       order_status = #{orderStatus,jdbcType=VARCHAR},
       data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
       is_balance = #{isBalance,jdbcType=INTEGER},
+      date_flag = #{dateFlag,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
       update_user = #{updateUser,jdbcType=VARCHAR},
