@@ -63,7 +63,8 @@
   export default {
     name: "ReceiveGoods",
     props:{
-      multipleSelection: {}
+      multipleSelection: {},
+      dateFlag:{},
     },
     data(){
       return{
@@ -90,7 +91,7 @@
     },
     methods:{
       exec_search() {
-        activityService.finddeliverGoodsList({idsStr:this.multipleSelection}).then(resp => {
+        activityService.finddeliverGoodsList({idsStr:this.multipleSelection,dateFlag:this.dateFlag}).then(resp => {
           this.search_result = resp.data.resultList;                //视图展示查询结果
           this.search_result.forEach(item=>{
             item.suggestedAmount=item.materialAmount-item.supperAmountQut.supperAmount

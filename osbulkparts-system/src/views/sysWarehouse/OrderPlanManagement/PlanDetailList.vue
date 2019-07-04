@@ -385,7 +385,7 @@
           this.multipleSelection.forEach(item=>{
               this.idsStr.push(item.orderCode)
           });
-          this.link_modal_state1={activated:true,multipleSelection:this.idsStr};
+          this.link_modal_state1={activated:true,multipleSelection:this.idsStr,dateFlag:this.$route.meta.flag};
       },
       //审批
       approval(){
