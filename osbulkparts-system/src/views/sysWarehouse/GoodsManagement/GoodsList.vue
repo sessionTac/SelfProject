@@ -266,7 +266,7 @@
             handleSelectionChange(val) {
                 this.multipleSelection = val;
             },
-            sendGoods(uuid) {
+            sendGoods() {
                 this.$confirm("确认发货吗？", "提示", {
                     confirmButtonText: "是",
                     cancelButtonText: "否",

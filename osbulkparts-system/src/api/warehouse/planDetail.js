@@ -7,9 +7,7 @@ export default {
   //订单详情 获得list列表信息 模糊查询
   findOrderDetailInfoList:(params)=>
     getRequest(`~/orderDetailInfo/getList`,{params}),
-  //订单详情 获得list列表信息 模糊查询
-  finddeliverGoodsList:(params)=>
-      getRequest(`~/orderDetailInfo/deliverGoods`,{params}),
+
   excuteDeliverInfo:(data)=>
       postRequest(`~/orderDetailInfo/excuteDeliver`,{params}),
 
@@ -48,4 +46,12 @@ export default {
   //订单详情 导出功能
   exportData:(data) =>
     postRequest(`~/orderDetailInfo/exportData`,{data,responseType:'blob'}),
+
+  //订单详情 发货列表 确认发货
+  excuteDeliver:(data)=>
+    putRequest(`~/orderDetailInfo/excuteDeliver` ,{data}),
+
+  //订单详情 发货列表  获得list列表信息
+  finddeliverGoodsList:(params)=>
+    getRequest(`~/orderDetailInfo/deliverGoods`,{params}),
 }

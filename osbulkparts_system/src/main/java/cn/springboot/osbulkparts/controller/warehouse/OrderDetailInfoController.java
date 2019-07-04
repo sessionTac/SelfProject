@@ -127,6 +127,7 @@ public class OrderDetailInfoController {
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/excuteDeliver")
     public CommonResultInfo<?> excuteDeliver(@RequestBody List<TDeliverInfoEntity> deliverInfoList, Authentication auth){
+
         return orderDetailInfoService.excuteDeliveryInfo(deliverInfoList, auth);
     }
 

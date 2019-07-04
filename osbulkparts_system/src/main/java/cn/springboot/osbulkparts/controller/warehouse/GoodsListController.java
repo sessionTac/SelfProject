@@ -48,7 +48,8 @@ public class GoodsListController {
 	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
 	@PutMapping("/sendGoods")
 	public CommonResultInfo<?> sendGoods(@RequestBody CommonEntity commonEntity, Authentication auth){
-		return  null;
+
+		return  goodsListService.sendGoods(commonEntity,auth);
 	}
 
 	@ApiOperation(value="发货数据导出", notes="发货数据导出")

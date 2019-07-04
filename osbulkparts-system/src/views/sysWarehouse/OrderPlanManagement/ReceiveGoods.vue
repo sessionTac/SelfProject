@@ -52,7 +52,7 @@
       <el-button type="primary" size="mini"  @click="confirmDeliery()"><i
         class="fa fa-check"></i> 确定发货
       </el-button>
-      <el-button size="mini" @click=" ">取消</el-button>
+      <el-button size="mini" @click="cancel ">取消</el-button>
     </div>
   </el-dialog>
 </template>
@@ -103,6 +103,9 @@
           console.error(err);
         })
       },
+      cancel() {
+        this.dialogFormVisible = false
+      },
       confirmDeliery(){
         this.$confirm("确定发货吗？", "提示", {
           confirmButtonText: "是",
@@ -110,7 +113,17 @@
           type: 'warning',
           center: true
         }).then(() => {
+          // activityService.excuteDeliver({shipNo:this.shipNo,containerNo:this.containerNo,contractNo:this.contractNo,deliverInfoList:this.search_result}).then(resp=>{
 
+          let tempDatas = JSON.stringify(this.search_result)
+          activityService.excuteDeliver({deliverInfoList:tempDatas}).then(resp=>{
+            if (resp.data.code=="201"){
+              this.$notify({message: resp.data.message, type: "success"});
+              this.dialogFormVisible = false
+            } else {
+              this.$notify({message: resp.data.message, type: "error"});
+            }
+          })
           }
         ).catch(() => {
           this.internal_activated = true;
