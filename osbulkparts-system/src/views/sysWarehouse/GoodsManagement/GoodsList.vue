@@ -65,7 +65,7 @@
                     <!--</el-button>-->
                 <!--</el-form-item>-->
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('*')" :disabled="multipleSelection.length==0" @click="sendGoods" icon="el-icon-delete" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:goods:list:send')" :disabled="multipleSelection.length==0" @click="sendGoods" icon="el-icon-delete" >
                         确认发货
                     </el-button>
                 </el-form-item>
@@ -76,7 +76,7 @@
                 </el-form-item>
 
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('*')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:goods:list:view')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
                         <i class="fa fa-search" aria-hidden="true"></i> 查询
                     </el-button>
                 </el-form-item>

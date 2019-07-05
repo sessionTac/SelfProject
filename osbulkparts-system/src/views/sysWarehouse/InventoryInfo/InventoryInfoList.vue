@@ -68,15 +68,15 @@
                     </el-collapse-item>
                 </el-collapse>
                 <el-form-item style="float: right">
-                    <import-button v-if="subject.hasPermissions('*')" @saved="exec_search({search_keys, pageNum:1})" target = "STOCK_INFO"></import-button>
+                    <import-button v-if="subject.hasPermissions('maintenance:warehouse:stock:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "STOCK_INFO"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('*')" @click="exportData(old_search_keys)" size="mini" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:stock:info:export')" @click="exportData(old_search_keys)" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('*')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:stock:info:delete')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
                         删除
                     </el-button>
                 </el-form-item>
@@ -86,12 +86,12 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('*')" @click="add()" icon="el-icon-plus" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:stock:info:add')" @click="add()" icon="el-icon-plus" >
                         添加
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('*')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:stock:info:view')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
                         <i class="fa fa-search" aria-hidden="true"></i> 查询
                     </el-button>
                 </el-form-item>
@@ -131,7 +131,7 @@
             </el-table-column>
             <el-table-column   width="80" label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
+                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:warehouse:stock:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
                         <i class="el-icon-news"></i></el-button>
                 </template>
             </el-table-column>

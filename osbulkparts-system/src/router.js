@@ -144,14 +144,14 @@ export const constantRoutes = [
               component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
               name: 'warehousePlanDetail',
               meta: { title: 'warehousePlanDetail',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
-                requiresPermission: 'maintenance:warehouse:order:info:view',}
+                requiresPermission: 'maintenance:warehouse:plan:detail:view',}
             },
             {
                 path: 'planDetailYear',
                 component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
                 name: 'warehousePlanDetailYear',
                 meta: { title: 'warehousePlanDetailYear',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
-                    requiresPermission: 'maintenance:warehouse:order:info:view',flag:"year"}
+                    requiresPermission: 'maintenance:warehouse:plan:detail:view',flag:"year"}
 
             },
             {
@@ -159,7 +159,7 @@ export const constantRoutes = [
                 component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
                 name: 'warehousePlanDetailMonth',
                 meta: { title: 'warehousePlanDetailMonth',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
-                    requiresPermission: 'maintenance:warehouse:order:info:view',flag:"month"}
+                    requiresPermission: 'maintenance:warehouse:plan:detail:view',flag:"month"}
 
             },
             {
@@ -167,7 +167,7 @@ export const constantRoutes = [
                 component: () => import('@/views/sysWarehouse/OrderPlanManagement/PlanDetailList.vue'),
                 name: 'warehousePlanDetailWeek',
                 meta: { title: 'warehousePlanDetailWeek',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
-                    requiresPermission: 'maintenance:warehouse:order:info:view',flag:"week"}
+                    requiresPermission: 'maintenance:warehouse:plan:detail:view',flag:"week"}
 
             },
             {
@@ -175,7 +175,7 @@ export const constantRoutes = [
                 component: () => import('@/views/sysWarehouse/GoodsManagement/GoodsList.vue'),
                 name: 'warehouseGoodsList',
                 meta: { title: 'warehouseGoodsList',  icon: 'warehouseOrderplan', noCache: true,breadcrumb:true,keepAlive: false ,
-                    requiresPermission: 'maintenance:warehouse:order:info:view'}
+                    requiresPermission: 'maintenance:warehouse:goods:list:view'}
 
             },
             {
@@ -184,7 +184,7 @@ export const constantRoutes = [
                 name: 'warehouseInventoryInfoList',
                 meta: { title: 'warehouseInventoryInfoList',  icon: 'warehouseCollection',
                     noCache: true,breadcrumb:true,keepAlive: true,
-                    requiresPermission: 'maintenance:warehouse:order:info:view',
+                    requiresPermission: 'maintenance:warehouse:stock:info:view',
                 }
             },
             {
@@ -193,7 +193,7 @@ export const constantRoutes = [
                 name: 'warehousePlanningBalanceList',
                 meta: { title: 'warehousePlanningBalanceList',  icon: 'warehouseCollection',
                     noCache: true,breadcrumb:true,keepAlive: true,
-                    requiresPermission: 'maintenance:warehouse:order:info:view',
+                    requiresPermission: 'maintenance:warehouse:planningbalance:info:view',
                 }
             },
             {
@@ -202,7 +202,7 @@ export const constantRoutes = [
                 name: 'warehousePlanningBalanceDetailList',
                 meta: { title: 'warehousePlanningBalanceDetailList',  icon: 'warehouseCollection',
                     noCache: true,breadcrumb:true,keepAlive: true,
-                    requiresPermission: 'maintenance:warehouse:order:info:view',
+                    requiresPermission: 'maintenance:warehouse:planningbalance:detail:view',
                 }
             },
 
