@@ -274,7 +274,7 @@
         components:{ImportButton,EditMatter},
         mounted() {
             this.init();
-            this.exec_search({search_keys:this.search_keys, pageNumber:1});
+            this.exec_search({search_keys:this.search_keys, pageNum:1});
         },
         computed:{
             lockFlag(){

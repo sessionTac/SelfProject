@@ -187,7 +187,7 @@
     components:{ImportButton},
     mounted() {
       this.init();
-      this.exec_search({search_keys:this.search_keys, pageNumber:1});
+      this.exec_search({search_keys:this.search_keys, pageNum:1});
     },
     methods: {
       handleSelectionChange(val) {
@@ -204,11 +204,11 @@
       },
       exec_search({
                     search_keys = JSON.parse(this.search_keys_snap),
-                    pageNumber = this.search_result.pageNum,
+                    pageNum = this.search_result.pageNum,
                     pageSize = this.search_result.pageSize,
                   }) {
         let search_keys_snap = JSON.stringify(search_keys);     //抓查询条件快照
-        activityService.findMatterList({search_keys, pageNumber, pageSize}).then(resp => {
+        activityService.findMatterList({search_keys, pageNum, pageSize}).then(resp => {
           this.search_result = resp.data;                //视图展示查询结果
           this.search_keys = JSON.parse(search_keys_snap); //还原查询条件
           this.search_keys_snap = search_keys_snap;             //存储查询条件快照
