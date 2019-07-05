@@ -8,6 +8,7 @@ import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
@@ -49,6 +50,7 @@ public interface OrderDetailInfoService {
     
     CommonResultInfo<?> selectDeliveryInfo(CommonEntity commonEntity);
     
-    CommonResultInfo<?> excuteDeliveryInfo(List<TDeliverInfoEntity> deliverInfoList, Authentication auth);
+    @Transactional
+    CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth);
 
 }

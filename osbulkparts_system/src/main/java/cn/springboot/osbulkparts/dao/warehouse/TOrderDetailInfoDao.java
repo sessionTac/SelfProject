@@ -4,6 +4,7 @@ import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Mapper
@@ -29,5 +30,8 @@ public interface TOrderDetailInfoDao {
     int deleteBatchData(@Param("ids") String[] ids, @Param("updateUser") String updateUser, @Param("isDelete") String isDelete);
 
     int approvalBatchData(@Param("ids") String[] ids, @Param("updateUser") String updateUser, @Param("confirmStatus") String confirmStatus);
+    
+    int updateDeliveryAmount(@Param("orderCode") String orderCode,@Param("materialCode") String materialCode, @Param("updateUser") String updateUser, 
+    		                 @Param("dateFlag") String dateFlag);
 
 }

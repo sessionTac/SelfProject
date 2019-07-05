@@ -1,5 +1,6 @@
 package cn.springboot.osbulkparts.controller.warehouse;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -127,8 +128,7 @@ public class OrderDetailInfoController {
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/excuteDeliver")
     public CommonResultInfo<?> excuteDeliver(@RequestBody CommonEntity commonEntity, Authentication auth){
-
-        return null;
+        return orderDetailInfoService.excuteDeliveryInfo(commonEntity,auth);
     }
 
     @ApiOperation(value="订单计划导出", notes="订单计划导出")

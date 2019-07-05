@@ -360,23 +360,44 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> excuteDeliveryInfo(List<TDeliverInfoEntity> deliverInfoList, Authentication auth) {
+	public CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth) {
         CommonResultInfo<?> result = new CommonResultInfo<TDeliverInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
+        String dateFlag = commonEntity.getDateFlag();
         try {
 	        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 	        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 	        List<TDeliverInfoEntity> tdeliveryInfoListParam = new ArrayList<TDeliverInfoEntity>();
+	        List<TDeliverInfoEntity> deliverInfoList= new ArrayList<TDeliverInfoEntity>();
+	        List<TOrderDetailInfoEntity> orderDetailInfoEntity = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr(),commonEntity.getDateFlag());
+	        for(int i=0;i<=orderDetailInfoEntity.size();i++) {
+	        	BigDecimal sendAmountDec = new BigDecimal(commonEntity.getAmouts()[i]);
+	        	TDeliverInfoEntity deliveryInfo = new TDeliverInfoEntity();
+	        	deliveryInfo.setOrderCode(orderDetailInfoEntity.get(i).getOrderCode());
+	        	deliveryInfo.setMaterialCode(orderDetailInfoEntity.get(i).getMaterialCode());
+	        	deliveryInfo.setDataRoleAt(orderDetailInfoEntity.get(i).getDataRoleAt());
+	        	deliveryInfo.setSendAmount(sendAmountDec);
+	        	deliverInfoList.add(deliveryInfo);
+	        }
 	        // 通过订单型号从订单详细表中取得数据
 	        for(TDeliverInfoEntity deliveryInfo:deliverInfoList) {
 	        	TOrderDetailInfoEntity orderDetailParam = new TOrderDetailInfoEntity();
 	        	orderDetailParam.setOrderCode(deliveryInfo.getOrderCode());
+	        	orderDetailParam.setMaterialCode(deliveryInfo.getMaterialCode());
 	        	orderDetailParam.setDataRoleAt(deliveryInfo.getDataRoleAt());
+	        	orderDetailParam.setDateFlag(dateFlag);
 	        	orderDetailParam.setIsBalance("0");
-	        	List<TOrderDetailInfoEntity> orderDetailInfo = tOrderDetailInfoDao.getOrderDetailInfoList(orderDetailParam);
-	        	if(orderDetailInfo.size()==0) {
+	        	List<TOrderDetailInfoEntity> orderDetailInfoList = tOrderDetailInfoDao.getOrderDetailInfoList(orderDetailParam);
+	        	if(orderDetailInfoList.size()==0) {
 	        		result.setMessage(messageBean.getMessage("bussiness.order.delivery.del.error",deliveryInfo.getOrderCode()));
 	        		return result;
+	        	}else {
+	        		for(TOrderDetailInfoEntity orderInfo:orderDetailInfoList) {
+	        			orderInfo.setDeliveryAmount(deliveryInfo.getSendAmount());
+	        			orderInfo.setUpdateUser(principal.getUserName());
+	        			orderInfo.setVersion(orderInfo.getVersion()+1);
+	        			tOrderDetailInfoDao.updateByPrimaryKeySelective(orderInfo);
+	        		}
 	        	}
             	//更新物料记录表的发货数量
             	TMaterialRecordInfoEntity recordParam = new TMaterialRecordInfoEntity();
@@ -384,7 +405,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             	recordParam.setDataRoleAt(deliveryInfo.getDataRoleAt());
             	recordParam.setSupperAmount(deliveryInfo.getSendAmount());
             	materialRecordInfoDao.updateByPrimaryKeySelective(recordParam);
-            	//
+
 	        	deliveryInfo.setId(CommonSqlUtils.getUUID32());
 	        	deliveryInfo.setCreateUser(principal.getUserName());
 	        	deliveryInfo.setIsDelete(0);
@@ -395,7 +416,6 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	        }
             int returnInt = tdeliverInfoDao.insertList(tdeliveryInfoListParam);
             if (returnInt > 0) {
-
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 result.setMessage(messageBean.getMessage("bussiness.order.delivery.success"));
             }

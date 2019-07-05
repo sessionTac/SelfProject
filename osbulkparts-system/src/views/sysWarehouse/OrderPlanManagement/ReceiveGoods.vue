@@ -118,7 +118,7 @@
           this.search_result.forEach(item=>{
             amouts.push(item.materialAmount);
           })
-          activityService.excuteDeliver({idsStr:this.multipleSelection,shipNo:this.shipNo,containerNo:this.containerNo,contractNo:this.contractNo,amouts:amouts}).then(resp=>{
+          activityService.excuteDeliver({idsStr:this.multipleSelection,shipNo:this.shipNo,containerNo:this.containerNo,contractNo:this.contractNo,amouts:amouts,dateFlag:this.dateFlag}).then(resp=>{
             if (resp.data.code=="201"){
               this.$notify({message: resp.data.message, type: "success"});
               this.dialogFormVisible = false
