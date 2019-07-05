@@ -170,6 +170,7 @@
             <el-table-column prop="materialDescRn"  width="150" :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
             <el-table-column prop="hsNo" align="center" label="HS海关编码"  />
             <el-table-column prop="supplierCode" align="center" label="供应商代码"  />
+            <el-table-column prop="materialQuota" align="center" :formatter="price" label="配额"  />
             <el-table-column prop="materialAmount" align="center" label="单耗"  />
             <el-table-column prop="dictMaterialUnit.name" align="center" label="单位"  />
             <el-table-column prop="materialRelation" align="center" label="换算关系"  />
