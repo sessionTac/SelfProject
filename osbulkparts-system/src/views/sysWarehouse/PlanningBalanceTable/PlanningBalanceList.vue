@@ -83,20 +83,20 @@
                     </el-collapse-item>
                 </el-collapse>
                 <el-form-item style="float: right">
-                    <el-button type="primary"  v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" :disabled="generateFlag" @click="generate()" icon="el-icon-s-check" >
+                    <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:info:generate')" :disabled="generateFlag" @click="generate()" icon="el-icon-s-check" >
                         生成
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <import-button v-if="subject.hasPermissions('maintenance:basis:matter:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "ORDER_PLAN_BALANCE"></import-button>
+                    <import-button v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:info:import')" @saved="exec_search({search_keys, pageNum:1})" target = "ORDER_PLAN_BALANCE"></import-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary"  v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(search_keys)" size="mini" >
+                    <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:info:export')" @click="exportData(search_keys)" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> 导出
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" :disabled="generateFlag" @click="deleteMatter" icon="el-icon-delete" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:info:delete')" :disabled="generateFlag" @click="deleteMatter" icon="el-icon-delete" >
                         删除
                     </el-button>
                 </el-form-item>
@@ -106,12 +106,12 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:add')" @click="add()" icon="el-icon-plus" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:info:add')" @click="add()" icon="el-icon-plus" >
                         添加
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:select')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:info:view')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
                         <i class="fa fa-search" aria-hidden="true"></i> 查询
                     </el-button>
                 </el-form-item>
@@ -133,7 +133,7 @@
             <el-table-column type="selection" fixed width="50" align="center"/>
             <el-table-column prop="orderCode"   width="100" align="center" label="订单产品型号"  >
               <template slot-scope="scope">
-                <a style="text-decoration: underline;" @click="toPlanDetailList(scope.row.orderCode)">{{scope.row.orderCode}}</a>
+                <a :disabled="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:view')" style="text-decoration: underline;" @click="toPlanDetailList(scope.row.orderCode)">{{scope.row.orderCode}}</a>
               </template>
             </el-table-column>
             <el-table-column prop="orderCodeDesc"  width="300" align="center" label="订单产品型号描述"  />
@@ -161,7 +161,7 @@
             <el-table-column  prop="dictOrderStatus.name" align="center" label="计划状态"  />
             <el-table-column   width="80" label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
+                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
                         <i class="el-icon-news"></i></el-button>
                 </template>
             </el-table-column>

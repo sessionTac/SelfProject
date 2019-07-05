@@ -84,23 +84,23 @@
           </el-collapse-item>
         </el-collapse>
         <el-form-item style="float: right">
-          <el-button type="primary"  v-if="subject.hasPermissions('*')" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >
+          <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:approval')" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >
             审批
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary"  v-if="subject.hasPermissions('*')" @click="deliverGoods" icon="el-icon-s-check" >
+          <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:goods')" @click="deliverGoods" icon="el-icon-s-check" >
             发货
           </el-button>
         </el-form-item>
 
         <el-form-item style="float: right">
-          <el-button type="primary" v-if="subject.hasPermissions('*')" @click="exportData(search_keys)" size="mini" >
+          <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:export')" @click="exportData(search_keys)" size="mini" >
             <i class="fa fa-plus" aria-hidden="true"></i> 导出
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary" v-if="subject.hasPermissions('*')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
+          <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:delete')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
             删除
           </el-button>
         </el-form-item>
@@ -110,12 +110,12 @@
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary" v-if="subject.hasPermissions('*')" @click="add()" icon="el-icon-plus" >
+          <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:add')" @click="add()" icon="el-icon-plus" >
             添加
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary" v-if="subject.hasPermissions('*')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
+          <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:view')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
             <i class="fa fa-search" aria-hidden="true"></i> 查询
           </el-button>
         </el-form-item>
@@ -192,7 +192,7 @@
         <el-table-column fixed="right" prop="dictConfirmStatus.name"  align="center" label="状态"  />
       <el-table-column fixed="right"  width="80" label="操作" >
         <template slot-scope="scope" >
-          <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
+          <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
             <i class="el-icon-news"></i></el-button>
         </template>
       </el-table-column>
