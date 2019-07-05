@@ -144,6 +144,11 @@
                         <i class="fa fa-search" aria-hidden="true"></i> 查询
                     </el-button>
                 </el-form-item>
+                <el-form-item style="float: right">
+                    <el-button type="primary" v-if="subject.hasPermissions('*')" @click="openQuota()" icon="el-icon-s-check" >
+                        配额设定
+                    </el-button>
+                </el-form-item>
             </el-form>
         </div>
 
@@ -212,6 +217,7 @@
             </el-table-column>
         </el-table>
         <edit-matter v-bind.sync="link_modal_state" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state.activated"></edit-matter>
+        <edit-matter-quota v-bind.sync="link_modal_state_quota"  v-if="link_modal_state_quota.activated"></edit-matter-quota>
         <!--分页-->
         <div style="text-align: center">
             <el-pagination @current-change="exec_search({pageNum:$event})"
@@ -233,6 +239,7 @@
     import activityService from '@/api/basedata/matter.js'
     import ui_config from '@/config/ui_config'
     import ImportButton from '@/components/data-import/ImportButton'
+    import EditMatterQuota from './EditMatterQuota'
     import EditMatter from './EditMatter'
     import {downloadBlobResponse} from '@/utils/request_utils'
 
@@ -241,6 +248,7 @@
             return {
                 PAGE_SIZES : ui_config.PAGE_SIZES,
                 link_modal_state      : {},
+                link_modal_state_quota:{},
                 //单位下拉框数据
                 is_searching : true,
                 materialCategorys:[],
@@ -271,7 +279,7 @@
                 idsStr:[],
             };
         },
-        components:{ImportButton,EditMatter},
+        components:{ImportButton,EditMatter,EditMatterQuota},
         mounted() {
             this.init();
             this.exec_search({search_keys:this.search_keys, pageNum:1});
@@ -289,6 +297,9 @@
             }
         },
         methods: {
+            openQuota(){
+                this.link_modal_state_quota={activated:true};
+            },
             reset(){
                 this.search_keys   = {
                     materialOrderCode:'',

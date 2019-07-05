@@ -193,7 +193,7 @@
     -->
     insert into t_order_info (id, order_code, order_code_desc, 
       order_amount, order_date, order_unit, 
-      order_status, data_role_at,is_balance, date_flag, create_user, create_time, 
+      order_status, data_role_at,is_balance, date_flag, create_user, create_time,
       update_user, update_time, is_delete, 
       version)
     values (#{id,jdbcType=VARCHAR}, #{orderCode,jdbcType=VARCHAR}, #{orderCodeDesc,jdbcType=VARCHAR}, 

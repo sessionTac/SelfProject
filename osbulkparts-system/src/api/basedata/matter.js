@@ -43,4 +43,17 @@ export default {
   /**数据导出**/
   exportData:(data) =>
     postRequest(`~/material/exportData`,{data,responseType:'blob'}),
+
+  //配额设置 获得 所有物料号和所有 供应商信息
+  findQuotaInitInfo: () =>
+    getRequest(`~/material/findQuotaInitInfo`),
+  //配额设置 根据用户输入内容 添加或者修改数据
+  upsertQuotaInfo:(data)=>
+    putRequest(`~/material/upsertQuotaInfo`, {data}),
+  //配额设置 根据用户输入内容 查找数据
+  findQuotaInfoList: (params) =>
+    getRequest(`~/material/findQuotaInfoList`, {params}),
+  //配额设置 根据主键id 删除一条数据
+  deleteQuotaInfoById:(data)=>
+    putRequest(`~/material/deleteQuotaInfoById` ,{data}),
 }

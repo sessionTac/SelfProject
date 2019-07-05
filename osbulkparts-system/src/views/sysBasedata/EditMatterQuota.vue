@@ -1,5 +1,5 @@
 <template>
-  <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)" width="800px">
+  <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)" width="900px">
     <el-card>
       <div class="dialogStyle" style="display: flex;flex-direction: column">
         <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm">
@@ -15,6 +15,16 @@
           <el-form-item label="配额">
             <el-input placeholder="配额" v-model="materialQuota" class="search-form-item-input"></el-input>
           </el-form-item>
+          <el-form-item style="float: right">
+            <el-button type="primary" :disabled="false"  @click="upsertQuotaInfo" icon="el-icon-s-check" >
+              更新配额
+            </el-button>
+          </el-form-item>
+          <el-form-item style="float: right">
+            <el-button type="primary" :disabled="false"  @click="exec_search" icon="el-icon-s-check" >
+              搜索配额
+            </el-button>
+          </el-form-item>
         </el-form>
         <el-table
                 ref="multipleTable"
@@ -25,14 +35,10 @@
                 style="flex: 1"
                 border
                 tooltip-effect="dark">
-          <el-table-column prop="materialCode"  width="100" align="center" label="物料号"  />
-          <el-table-column prop="supplierCode"  width="80" align="center" label="供应商代码"  />
-          <el-table-column prop="supplierName" width="120" :show-overflow-tooltip="true" align="center" label="供应商名称"  />
-          <el-table-column prop="materialQuota" label="配额" width="100">
-            <template slot-scope="scope">
-              <el-input v-model="scope.row.materialQuota"></el-input>
-            </template>
-          </el-table-column>
+          <el-table-column prop="materialCode"  width="170" align="center" label="物料号"  />
+          <el-table-column prop="supplierCode"  width="170" align="center" label="供应商代码"  />
+          <el-table-column prop="supplierName" width="250" :show-overflow-tooltip="true" align="center" label="供应商名称"  />
+          <el-table-column prop="materialQuota" label="配额" align="center" width="100"/>
           <el-table-column fixed="right" width="120" label="操作" >
           <template slot-scope="scope" >
           <el-button title="删除" type="primary" size="mini" class="btn-opt" plain  @click="deleteQuota(scope.row.uuid)">
@@ -73,7 +79,7 @@
       }
     },
     async mounted(){
-      this.exec_search();
+
     },
     methods:{
       exec_search() {
@@ -86,8 +92,8 @@
       cancel() {
         this.dialogFormVisible = false
       },
-      addQuota(){
-        this.$confirm("确定添加吗？", "提示", {
+      upsertQuotaInfo(){
+        this.$confirm("确定更新吗？", "提示", {
           confirmButtonText: "是",
           cancelButtonText: "否",
           type: 'warning',
