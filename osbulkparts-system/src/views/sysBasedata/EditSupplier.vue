@@ -191,15 +191,15 @@
                         {max: 100, message: '长度不超过100个字符', trigger: 'blur'},
                     ],
                     supplierNameEn: [
-                        {required: true, message: '请填写供应商英文名称', trigger: 'blur'},
+                        // {required: true, message: '请填写供应商英文名称', trigger: 'blur'},
                         {max: 100, message: '长度不超过100个字符', trigger: 'blur'},
                     ],
                     supplierDescCn: [
-                        {required: true, message: '请填写供应商中文说明', trigger: 'blur'},
+                        // {required: true, message: '请填写供应商中文说明', trigger: 'blur'},
                         {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
                     ],
                     supplierDescEn: [
-                        {required: true, message: '请填写供应商英文说明', trigger: 'blur'},
+                        // {required: true, message: '请填写供应商英文说明', trigger: 'blur'},
                         {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
                     ],
                     address: [
@@ -225,13 +225,13 @@
                         { required: false,pattern: /^\+?-?[1-9][0-9]*$/, trigger: 'blur',message: '请输入正确的联系方式',}
                     ],
                     supplierCata: [
-                        {required: true, message: '请选择供应商分类', trigger: 'change'}
+                        // {required: true, message: '请选择供应商分类', trigger: 'change'}
                     ],
                     supplierLevel: [
-                        {required: true, message: '请选择供应商等级', trigger: 'change'}
+                        // {required: true, message: '请选择供应商等级', trigger: 'change'}
                     ],
                     supplierAt: [
-                        {required: true, message: '请选择供应商所属', trigger: 'change'}
+                        // {required: true, message: '请选择供应商所属', trigger: 'change'}
                     ],
                     supplierQuo:[
                         {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}

@@ -54,6 +54,11 @@
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
+                        <el-form-item label="日期范围" prop="dateFlag">
+                            <el-radio v-model="form.dateFlag" label="year">年</el-radio>
+                            <el-radio v-model="form.dateFlag" label="month">月</el-radio>
+                            <el-radio v-model="form.dateFlag" label="week">周</el-radio>
+                        </el-form-item>
                         <!--<el-form-item label="计划状态" prop="orderStatus">-->
                             <!--<el-select v-model="form.orderStatus" style="width: 160px" size="mini" clearable>-->
                                 <!--<el-option value=""></el-option>-->
@@ -124,6 +129,7 @@
                     orderDate: '',
                     orderUnit: '',
                     orderStatus: '',
+                    dateFlag:"",
                 },
                 /**表单的验证*/
                 rules: {
@@ -190,6 +196,7 @@
                             orderStatus: this.form.orderStatus || undefined,
                             dataRoleAt:this.form.dataRoleAt || undefined,
                             version: this.form.version || undefined,
+                            dateFlag: this.form.dateFlag || undefined,
                             isBalance                 :0,
                         }
                         if (this.mode == 'EDIT') {  //编辑
