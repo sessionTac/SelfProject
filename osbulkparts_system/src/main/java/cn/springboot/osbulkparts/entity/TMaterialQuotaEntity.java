@@ -7,11 +7,6 @@ import lombok.Data;
 @Data
 public class TMaterialQuotaEntity implements Serializable {
     /**
-     * 主键ID
-     */
-    private String id;
-
-    /**
      * 物料号
      */
     private String materialCode;
@@ -35,6 +30,36 @@ public class TMaterialQuotaEntity implements Serializable {
      * 数据所属
      */
     private String dataRoleAt;
+
+    /**
+     * 
+     */
+    private String createUser;
+
+    /**
+     * 
+     */
+    private String createTime;
+
+    /**
+     * 
+     */
+    private String updateUser;
+
+    /**
+     * 
+     */
+    private String updateTime;
+
+    /**
+     * 
+     */
+    private Integer isDelete;
+
+    /**
+     * 
+     */
+    private Integer version;
 
     private static final long serialVersionUID = 1L;
 }
