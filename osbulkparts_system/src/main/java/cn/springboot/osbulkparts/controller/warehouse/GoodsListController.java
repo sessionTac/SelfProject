@@ -28,6 +28,12 @@ public class GoodsListController {
 	@Autowired
 	private GoodsListService goodsListService;
 
+	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
+	@GetMapping("/init")
+	public Object initViews(){
+		return goodsListService.initViews();
+	}
+
 	
 	@ApiOperation(value="获取发货信息列表信息", notes="查询发货信息列表")
 	@ApiImplicitParams({

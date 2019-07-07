@@ -16,7 +16,7 @@ import java.util.Map;
 
 public interface GoodsListService {
 
-
+	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews();
 
 	CommonResultInfo<?> getGoodsList(TDeliverInfoEntity stockInfoEntity, int pageNumber, int pageSize, Authentication auth);
 

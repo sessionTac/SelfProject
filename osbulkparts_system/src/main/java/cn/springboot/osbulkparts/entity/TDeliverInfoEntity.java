@@ -27,6 +27,15 @@ public class TDeliverInfoEntity implements Serializable {
     private BigDecimal sendAmount;
 
     /**
+     * 提单号
+     */
+    private String billNo;
+
+    /**
+     * 运输方式
+     */
+    private String transportation;
+    /**
      * 航次
      */
     private String shipNo;
@@ -70,7 +79,15 @@ public class TDeliverInfoEntity implements Serializable {
      * 换算后单位
      */
     private TDictDataEntity dictRelationUnit;
+    /**
+     * 发货状态dictGoodsStatus
+     */
+    private TDictDataEntity dictGoodsStatus;
 
+    /**
+     * 运输方式 dictTransportation
+     */
+    private TDictDataEntity dictTransportation;
     /**
      * 发货状态
      */

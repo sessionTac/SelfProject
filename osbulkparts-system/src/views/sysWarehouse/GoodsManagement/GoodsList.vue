@@ -17,7 +17,18 @@
               <el-form-item label="合同号">
                 <el-input placeholder="物料号" v-model="search_keys.contractNo" class="search-form-item-input"></el-input>
               </el-form-item>
-
+              <el-form-item label="状态">
+                <el-select v-model="search_keys.state" class="search-form-item-input" size="mini" knx>
+                  <el-option value=""></el-option>
+                  <el-option
+                    size="mini"
+                    v-for="item in goodsStatus"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
                 <el-collapse accordion>
                     <el-collapse-item>
                         <template slot="title">
@@ -119,7 +130,8 @@
             <el-table-column prop="materialRelationQuantity"  :show-overflow-tooltip="true" align="center" label="换算后数量"  />
             <el-table-column prop="shipNo" width="100" align="center" label="航次" />
             <el-table-column prop="sendAmount"  :show-overflow-tooltip="true" align="center" label="发货数量"  />
-            <el-table-column prop="shipNo"  :show-overflow-tooltip="true" align="center" label="航次"  />
+            <el-table-column prop="dictTransportation.name"  :show-overflow-tooltip="true" align="center" label="运输方式"  />
+            <el-table-column prop="billNo"  :show-overflow-tooltip="true" align="center" label="提单号"  />
             <el-table-column prop="containerNo"  :show-overflow-tooltip="true" align="center" label="集装箱号"  />
             <el-table-column prop="contractNo" align="center" label="合同号"  />
             <el-table-column prop="createUser" align="center" label="创建人"  />
@@ -134,12 +146,8 @@
                     {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
                 </template>
             </el-table-column>
-            <el-table-column   width="80" label="操作" >
-                <template slot-scope="scope" >
-                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
-                        <i class="el-icon-news"></i></el-button>
-                </template>
-            </el-table-column>
+            <el-table-column fixed="right" prop="dictGoodsStatus.name"   width="80" label="状态" />
+
         </el-table>
         <!--分页-->
         <div style="text-align: center">
@@ -169,6 +177,7 @@
                 link_modal_state      : {},
                 //单位下拉框数据
                 is_searching : true,
+                goodsStatus:[],
                 materialCategorys:[],
                 old_search_keys:{},
                 search_keys   : {
@@ -191,8 +200,8 @@
             };
         },
         components:{ImportButton},
-        mounted() {
-            this.init();
+        async mounted() {
+            await this.init();
             this.exec_search({search_keys:this.search_keys, pageNum:1});
         },
         computed:{
@@ -222,7 +231,11 @@
                 }
             },
             init(){
+              return activityService.initView().then(resp=>{
+                this.goodsStatus=resp.data.result.goodsStatus
+              },error => {
 
+              })
             },
             clickRow(row){
                 this.$refs.tb.toggleRowSelection(row);

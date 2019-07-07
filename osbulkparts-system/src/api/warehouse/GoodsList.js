@@ -3,6 +3,11 @@ import {getRequest, postRequest, putRequest,deleteRequest} from "@/utils/request
 export default {
 
   /**
+   * 页面初始化数据
+   */
+  initView: () =>
+    getRequest(`~/goods/init`),
+  /**
    * 查询发货信息列表
    */
   findGoodsList: (params) =>

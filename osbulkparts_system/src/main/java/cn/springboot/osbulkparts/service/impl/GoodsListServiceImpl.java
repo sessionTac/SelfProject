@@ -1,5 +1,7 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import cn.springboot.osbulkparts.dao.system.TDictDataDao;
+import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,10 @@ import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.TDeliverInfoEntity;
 import cn.springboot.osbulkparts.service.GoodsListService;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 @Service
 public class GoodsListServiceImpl implements GoodsListService {
     @Autowired
@@ -26,7 +32,30 @@ public class GoodsListServiceImpl implements GoodsListService {
     @Autowired
     private MRoleInfoDao mroleInfoDao;
     @Autowired
+    private TDictDataDao tDictDataDao;
+    @Autowired
     private I18nMessageBean messageBean;
+
+    @SuppressWarnings("finally")
+    @Override
+    public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews() {
+        CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
+        try {
+            Map<String,List<TDictDataEntity>> map = new HashMap<>();
+            TDictDataEntity tDictDataEntity = new TDictDataEntity();
+            tDictDataEntity.setDictTypeCode("goodsStatus");
+            map.put("goodsStatus",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+
+            result.setResult(map);
+        } catch (Exception e) {
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+    }
+
     @SuppressWarnings("finally")
 	@Override
     public CommonResultInfo<?> getGoodsList(TDeliverInfoEntity tDeliverInfoEntity, int pageNumber, int pageSize, Authentication auth) {
