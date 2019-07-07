@@ -102,7 +102,7 @@
                   class="search-result-table"
                   :data="search_result.list" row-key="id"
                   :stripe="true"
-                  :row-class-name="({row,rowIndex}) => { return row.isLocked ? 'locked-row' : null; }"
+                  :row-class-name="({row,rowIndex}) => { return row.state==1 ? 'locked-row' : null; }"
                   @row-click="clickRow"
                   @selection-change="handleSelectionChange"
         >

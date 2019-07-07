@@ -18,4 +18,6 @@ public class CommonEntity {
 	private String contractNo;
 	private String containerNo;
 	private String shipNo;
+	private String transportation;
+	private String billNo;
 }
