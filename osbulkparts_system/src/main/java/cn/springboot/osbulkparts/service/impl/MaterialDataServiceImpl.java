@@ -41,12 +41,14 @@ import cn.springboot.osbulkparts.common.utils.excel.CommonPoiReadUtil;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.basedata.MMaterialInfoDao;
 import cn.springboot.osbulkparts.dao.basedata.MSupplierInfoDao;
+import cn.springboot.osbulkparts.dao.basedata.TMaterialQuotaDao;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.MSupplierInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TMaterialQuotaEntity;
 import cn.springboot.osbulkparts.service.MaterialDataService;
 
 @Service
@@ -54,6 +56,9 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 
 	@Autowired
 	private MMaterialInfoDao mmaterialInfoDao;
+	
+	@Autowired
+	private TMaterialQuotaDao tmaterialQuotaDao;
 	
 	@Autowired
 	private MRoleInfoDao mroleInfoDao;
@@ -68,6 +73,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
     private I18nMessageBean messageBean;
     
     private int version;
+    private int quotaVersion;
     
 	@SuppressWarnings("finally")
 	@Override
@@ -102,27 +108,37 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		}
     }
 	
-	@SuppressWarnings("finally")
+	@SuppressWarnings({ "finally", "unchecked" })
 	@Override
 	public CommonResultInfo<?> importExcel(MultipartFile excleFile, HttpServletRequest request, Authentication auth) {
         CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         try {
         	int resultInt = 0;
-        	Map<String,List<MMaterialInfoEntity>> materialInfoParams = resolvExcelToDb(excleFile,auth);
+        	int quotaResultInt = 0;
+        	Map<String,Object> materialInfoParams = resolvExcelToDb(excleFile,auth);
         	if(materialInfoParams.size() == 0) {
         		result.setMessage(messageBean.getMessage("common.excel.error"));
         	}else {
         		List<MMaterialInfoEntity> paramList = new ArrayList<MMaterialInfoEntity>();
+        		List<TMaterialQuotaEntity> quotaParamList = new ArrayList<TMaterialQuotaEntity>();
         		if(materialInfoParams.containsKey("insertList")) {
-        			paramList = materialInfoParams.get("insertList");
+        			paramList = (List<MMaterialInfoEntity>)materialInfoParams.get("insertList");
         			if(paramList.size()>0) {resultInt = resultInt + mmaterialInfoDao.insertList(paramList);}
         		}
         		if(materialInfoParams.containsKey("updateList")) {
-        			paramList = materialInfoParams.get("updateList");
+        			paramList = (List<MMaterialInfoEntity>)materialInfoParams.get("updateList");
         			if(paramList.size()>0) {resultInt = resultInt + mmaterialInfoDao.updateList(paramList);}
         		}
-            	if(resultInt >0) {
+        		if(materialInfoParams.containsKey("quotaInsertList")) {
+        			quotaParamList = (List<TMaterialQuotaEntity>)materialInfoParams.get("quotaInsertList");
+        			if(quotaParamList.size()>0) {quotaResultInt = quotaResultInt + tmaterialQuotaDao.insertList(quotaParamList);}
+        		}
+        		if(materialInfoParams.containsKey("quotaUpdateList")) {
+        			quotaParamList = (List<TMaterialQuotaEntity>)materialInfoParams.get("quotaUpdateList");
+        			if(quotaParamList.size()>0) {quotaResultInt = quotaResultInt + tmaterialQuotaDao.updateList(quotaParamList);}
+        		}
+            	if(resultInt >0 && quotaResultInt>0) {
             		result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
             		result.setMessage(messageBean.getMessage("common.excel.success"));
             	}
@@ -239,7 +255,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
 				}
 			}else {
-				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("bussiness.material.version.update"));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -447,14 +463,16 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	 * Excel文件解析
 	 * @throws Exception 
 	 */
-	private Map<String,List<MMaterialInfoEntity>> resolvExcelToDb(MultipartFile excleFile,Authentication auth) throws NullPointerException,Exception{
+	private Map<String,Object> resolvExcelToDb(MultipartFile excleFile,Authentication auth) throws NullPointerException,Exception{
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 			List<MMaterialInfoEntity> insertResultLst = new ArrayList<MMaterialInfoEntity>();
 			List<MMaterialInfoEntity> updateResultLst = new ArrayList<MMaterialInfoEntity>();
+			List<TMaterialQuotaEntity> quotaInsertResultLst = new ArrayList<TMaterialQuotaEntity>();
+			List<TMaterialQuotaEntity> quotaUpdateResultLst = new ArrayList<TMaterialQuotaEntity>();
 			
-			Map<String,List<MMaterialInfoEntity>> returnMap = new HashMap<String,List<MMaterialInfoEntity>>();
+			Map<String,Object> returnMap = new HashMap<String,Object>();
 			
 			File file = CommonPoiReadUtil.MultipartFileToFile(excleFile);
 			CommonPoiReadUtil poiUtil=new CommonPoiReadUtil(file,true);
@@ -475,19 +493,16 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			//文件解析后数据放入实体对象List
 			for(Map<String, Object> mapData:dataLst) {
 				MMaterialInfoEntity mmaterialInfoEntity = new MMaterialInfoEntity();
+				TMaterialQuotaEntity materialQuotaEntity = new TMaterialQuotaEntity();
 				// 主键ID
 				mmaterialInfoEntity.setMaterialInfoId(CommonSqlUtils.getUUID32());
 				// 订单型号，成品型号
 				mmaterialInfoEntity.setMaterialOrderCode((String)mapData.get("成品型号"));
-				// 物料HNR号
-//				mmaterialInfoEntity.setMaterialHnrCode();
-				// 物料CKD号
-				mmaterialInfoEntity.setMaterialCkdCode((String)mapData.get("物料CKD号"));
 				// 物料专用号，子件型号
-				mmaterialInfoEntity.setMaterialCode((String)mapData.get("子件型号"));
+				mmaterialInfoEntity.setMaterialCode((String)mapData.get("物料专用号"));
 				// 物料类别
 				String materCateVle = getFromDictDataByName(
-						(String)mapData.get("物料类别"),"mattertype","物料类别");
+						(String)mapData.get("渠道"),"mattertype","渠道");
 				mmaterialInfoEntity.setMaterialCategory(materCateVle);
 				// 物料中文描述
 				mmaterialInfoEntity.setMaterialDescCn((String)mapData.get("物料中文描述"));
@@ -495,14 +510,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				mmaterialInfoEntity.setMaterialDescEn((String)mapData.get("物料英文描述"));
 				// 物料俄文描述
 				mmaterialInfoEntity.setMaterialDescRn((String)mapData.get("物料俄文描述"));
-				// HS海关编码
-				mmaterialInfoEntity.setHsNo((String)mapData.get("HS海关编码"));
-				// 供应商编码
-				MSupplierInfoEntity supplierInfo = msupplierInfoDao.selectByCode((String)mapData.get("供应商编码"));
-				if(supplierInfo == null) {
-					throw new NullPointerException(messageBean.getMessage("common.check.isExist", "供应商信息"));
-				}
-				mmaterialInfoEntity.setSupplierCode((String)mapData.get("供应商编码"));
+
 				// 物料数量
 				String materialAmount = (String)mapData.get("单耗");
 				mmaterialInfoEntity.setMaterialAmount(
@@ -521,14 +529,14 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				String minPackageAmt = (String)mapData.get("最小包装数量");
 				mmaterialInfoEntity.setMaterialMinpackageAmt(
 						CommonMethods.changeToBigdecimal(minPackageAmt.trim()));
-				// 不含税单价
-				String materialTaxPrice = (String)mapData.get("不含税单价");
-				mmaterialInfoEntity.setMaterialTaxPrice(
-						CommonMethods.changeToBigdecimal(materialTaxPrice.trim()));
 				// 含税单价
 				String materialVatPrice = (String)mapData.get("含税单价");
 				mmaterialInfoEntity.setMaterialVatPrice(
 						CommonMethods.changeToBigdecimal(materialVatPrice.trim()));
+				// 不含税单价
+				String materialTaxPrice = (String)mapData.get("不含税单价");
+				mmaterialInfoEntity.setMaterialTaxPrice(
+						CommonMethods.changeToBigdecimal(materialTaxPrice.trim()));
 				// 含税单价
 				String tax = (String)mapData.get("税率");
 				mmaterialInfoEntity.setMaterialVatPrice(
@@ -537,18 +545,26 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				String materialRate = (String)mapData.get("代理费率");
 				mmaterialInfoEntity.setMaterialRate(
 						CommonMethods.changeToBigdecimal(materialRate.trim()));
-				// 币种
-				String currencyVle = getFromDictDataByName(
-						(String)mapData.get("币种"),"currency","币种");
-				mmaterialInfoEntity.setMaterialCurrency(currencyVle);
-				// 单价
-//				mmaterialInfoEntity.setMaterialPrice();
-				// 分级BOM编码
-//				mmaterialInfoEntity.setLevelBomCode();
-				// 物料供货模式分类标识
-//				mmaterialInfoEntity.setMaterialSupplyMode();
-				// 工厂号
-				mmaterialInfoEntity.setFactoryCode((String)mapData.get("代理商"));
+//				// 币种
+//				String currencyVle = getFromDictDataByName(
+//						(String)mapData.get("币种"),"currency","币种");
+//				mmaterialInfoEntity.setMaterialCurrency(currencyVle);
+				// HS海关编码
+				mmaterialInfoEntity.setHsNo((String)mapData.get("HS海关编码"));
+				// 供应商编码
+				MSupplierInfoEntity supplierInfo = msupplierInfoDao.selectByCode((String)mapData.get("供应商编码"));
+				if(supplierInfo == null) {
+					throw new NullPointerException(messageBean.getMessage("common.check.isExist", "供应商信息"));
+				}
+				mmaterialInfoEntity.setSupplierCode((String)mapData.get("供应商编码"));
+				// 物料配额表
+				// 物料号
+				materialQuotaEntity.setMaterialCode((String)mapData.get("物料专用号"));
+				// 供应商编码
+				materialQuotaEntity.setSupplierCode((String)mapData.get("供应商编码"));
+				// 配额
+				String quota = (String)mapData.get("配额");
+				materialQuotaEntity.setMaterialQuota(CommonMethods.changeToBigdecimal(quota.trim()));
 				// 长
 				String length = (String)mapData.get("长");
 				mmaterialInfoEntity.setLength(
@@ -579,9 +595,25 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 					mmaterialInfoEntity.setIsLocked(0);
 					insertResultLst.add(mmaterialInfoEntity);
 				}
+				//物料号和供应商编码是否存在，存在是更新，不存在时插入
+				if(isExistQuota(materialQuotaEntity.getMaterialCode(),materialQuotaEntity.getSupplierCode())) {
+					// 更新者
+					materialQuotaEntity.setUpdateUser(principal.getUserName());
+					materialQuotaEntity.setVersion(quotaVersion+1);
+					quotaUpdateResultLst.add(materialQuotaEntity);
+				}
+				else {
+					// 创建者
+					materialQuotaEntity.setCreateUser(principal.getUserName());
+					materialQuotaEntity.setIsDelete(0);
+					materialQuotaEntity.setVersion(1);
+					quotaInsertResultLst.add(materialQuotaEntity);
+				}
 			}
 			returnMap.put("insertList", insertResultLst);
 			returnMap.put("updateList", updateResultLst);
+			returnMap.put("quotaInsertList", quotaInsertResultLst);
+			returnMap.put("quotaUpdateList", quotaUpdateResultLst);
 			return returnMap;
 		}
 		catch(NullPointerException se) {
@@ -604,6 +636,24 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		List<MMaterialInfoEntity> resultList = mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity);
 		if(resultList.size()>0) {
 			version = resultList.get(0).getVersion();
+			return true;
+		}
+		return false;
+	}
+	
+	/***
+	 * 物料号和供应商编码共同判定是否存在
+	 * @param materialCode
+	 * @param supplierNo
+	 * @return true/false
+	 */
+	private boolean isExistQuota(String materialCode,String supplierNo) {
+		TMaterialQuotaEntity materialQuotaEntity = new TMaterialQuotaEntity();
+		materialQuotaEntity.setMaterialCode(materialCode);
+		materialQuotaEntity.setSupplierCode(supplierNo);
+		List<TMaterialQuotaEntity> resultList = tmaterialQuotaDao.selectByPrimaryKey(materialQuotaEntity);
+		if(resultList.size()>0) {
+			quotaVersion = resultList.get(0).getVersion();
 			return true;
 		}
 		return false;

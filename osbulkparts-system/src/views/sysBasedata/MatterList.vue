@@ -2,8 +2,8 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="订单型号">
-                    <el-input placeholder="订单型号" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
+                <el-form-item label="成品编码">
+                    <el-input placeholder="成品编码" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-form-item label="物料号">
                     <el-input placeholder="物料号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
@@ -165,7 +165,7 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="materialOrderCode"  width="100" align="center" label="订单型号"  />
+            <el-table-column prop="materialOrderCode"  width="100" align="center" label="成品编码"  />
             <el-table-column prop="materialOrderCodeDesc"  width="100" align="center" label="订单型号描述"  />
             <el-table-column prop="materialCkdCode"  width="100" align="center" label="物料CKD号"  />
             <el-table-column prop="materialCode"  width="100" align="center" label="子件型号"/>
