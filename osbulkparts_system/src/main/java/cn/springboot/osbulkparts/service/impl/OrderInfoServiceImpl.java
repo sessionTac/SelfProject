@@ -609,6 +609,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					String ordeUnit = getFromDictDataByName(
 							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
 					torderInfoEntity.setOrderUnit(ordeUnit);
+					String orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("周"),"yyyyMMddhhmmss"));
 					// 数量

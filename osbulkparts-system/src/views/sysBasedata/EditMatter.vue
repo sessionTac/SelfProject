@@ -6,7 +6,7 @@
         <div class="dialogStyle" style="display: flex;flex-direction: column">
           <el-form :disabled="form.isLocked==1" class="search-form search-form-normal" label-width="110px" ref="form"
                    style="flex: 5" :model="form" size="mini" :rules="rules">
-            <el-form-item label="订单型号" prop="materialOrderCode">
+            <el-form-item label="成品编码" prop="materialOrderCode">
               <el-input v-model="form.materialOrderCode" class="search-form-item-input" style="width: 160px" size="mini"
                         autocomplete="new-password" clearable></el-input>
               <template slot="error" slot-scope="scope">
@@ -309,7 +309,7 @@
         /**表单的验证*/
         rules: {
           materialOrderCode: [
-            {required: true, message: '请填写订单型号', trigger: 'blur'},
+            {required: true, message: '请填写成品编码', trigger: 'blur'},
             {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
             {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
           ],
