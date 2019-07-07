@@ -51,6 +51,10 @@ export default {
   excuteDeliver:(data)=>
     putRequest(`~/orderDetailInfo/excuteDeliver` ,{data}),
 
+  //订单详情 发货列表  初始化数据
+  sendGoodsInit:()=>
+    getRequest(`~/orderDetailInfo/sendGoodsInit`),
+
   //订单详情 发货列表  获得list列表信息
   finddeliverGoodsList:(params)=>
     getRequest(`~/orderDetailInfo/deliverGoods`,{params}),

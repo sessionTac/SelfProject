@@ -117,6 +117,12 @@ public class OrderDetailInfoController {
         return orderDetailInfoService.approvalBatchOrderInfo(commonEntity,auth);
     }
 
+    @ApiOperation(value="发货信息数据初始化", notes="发货信息数据初始化")
+    @GetMapping("/sendGoodsInit")
+    public CommonResultInfo<?> sendGoodsInit(){
+        return orderDetailInfoService.sendGoodsInit();
+    }
+
     @ApiOperation(value="发货信息查询", notes="根据订单号查询需要发货的订单信息")
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @GetMapping("/deliverGoods")

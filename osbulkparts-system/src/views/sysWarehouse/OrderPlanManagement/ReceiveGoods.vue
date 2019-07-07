@@ -12,6 +12,22 @@
           <el-form-item label="合同号">
             <el-input placeholder="合同号" v-model="contractNo" class="search-form-item-input"></el-input>
           </el-form-item>
+          <el-form-item label="提单号">
+            <el-input placeholder="提单号" v-model="billNo" class="search-form-item-input"></el-input>
+          </el-form-item>
+          <el-form-item label="运输方式">
+            <el-select v-model="transportation"  size="mini" class="search-form-item-input">
+              <el-option value=""></el-option>
+              <el-option
+                size="mini"
+                v-for="item in transportations"
+                :key="item.value"
+                :label="item.name"
+                :value="item.value">
+              </el-option>
+            </el-select>
+          </el-form-item>
+
         </el-form>
         <el-table
           ref="multipleTable"
@@ -84,9 +100,15 @@
         supperAmount:"",
         suggestedAmount:"",
         search_result         : [],
+        transportation:"",
+        billNo:"",
+        transportations:[],
       }
     },
     async mounted(){
+      await activityService.sendGoodsInit().then(resp=>{
+        this.transportations=resp.data.result.transportation
+      });
       this.exec_search();
     },
     methods:{
@@ -118,7 +140,7 @@
           this.search_result.forEach(item=>{
             amouts.push(item.materialAmount);
           })
-          activityService.excuteDeliver({idsStr:this.multipleSelection,shipNo:this.shipNo,containerNo:this.containerNo,contractNo:this.contractNo,amouts:amouts,dateFlag:this.dateFlag}).then(resp=>{
+          activityService.excuteDeliver({idsStr:this.multipleSelection,billNo:this.billNo,transportation:this.transportation,shipNo:this.shipNo,containerNo:this.containerNo,contractNo:this.contractNo,amouts:amouts,dateFlag:this.dateFlag}).then(resp=>{
             if (resp.data.code=="201"){
               this.$notify({message: resp.data.message, type: "success"});
               this.dialogFormVisible = false

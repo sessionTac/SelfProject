@@ -409,8 +409,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	        	deliveryInfo.setId(CommonSqlUtils.getUUID32());
 	        	deliveryInfo.setCreateUser(principal.getUserName());
 	        	deliveryInfo.setIsDelete(0);
-	        	deliveryInfo.setState("1");
+	        	deliveryInfo.setState("0");
 	        	deliveryInfo.setVersion(1);
+	        	deliveryInfo.setContainerNo(commonEntity.getContainerNo());
+	        	deliveryInfo.setContractNo(commonEntity.getContractNo());
+	        	deliveryInfo.setShipNo(commonEntity.getShipNo());
+	        	deliveryInfo.setBillNo(commonEntity.getBillNo());
+	        	deliveryInfo.setTransportation(commonEntity.getTransportation());
 	        	deliveryInfo.setDataRoleAt(roleInfoEntity.getRoleAt());
 	        	tdeliveryInfoListParam.add(deliveryInfo);
 	        }
@@ -428,4 +433,22 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             return result;
         }
 	}
+    @SuppressWarnings("finally")
+    @Override
+    public CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit() {
+        CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
+        try {
+            Map<String,List<TDictDataEntity>> map = new HashMap<>();
+            TDictDataEntity tDictDataEntity = new TDictDataEntity();
+            tDictDataEntity.setDictTypeCode("transportation");
+            map.put("transportation",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+            result.setResult(map);
+        } catch (Exception e) {
+            result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+            result.setMessage(messageBean.getMessage("common.server.error"));
+            result.setException(e.getMessage().toString());
+        } finally {
+            return result;
+        }
+    }
 }

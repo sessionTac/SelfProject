@@ -53,4 +53,7 @@ public interface OrderDetailInfoService {
     @Transactional
     CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth);
 
+
+    CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit();
+
 }
