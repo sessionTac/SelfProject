@@ -66,7 +66,7 @@
                 <!--</el-form-item>-->
                 <el-form-item style="float: right">
                     <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:goods:list:send')" :disabled="multipleSelection.length==0" @click="sendGoods" icon="el-icon-delete" >
-                        确认发货
+                        确认收货
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
@@ -267,7 +267,7 @@
                 this.multipleSelection = val;
             },
             sendGoods() {
-                this.$confirm("确认发货吗？", "提示", {
+                this.$confirm("确认收货吗？", "提示", {
                     confirmButtonText: "是",
                     cancelButtonText: "否",
                     type: 'warning',
