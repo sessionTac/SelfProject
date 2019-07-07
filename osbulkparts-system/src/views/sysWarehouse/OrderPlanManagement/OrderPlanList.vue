@@ -144,6 +144,7 @@
                 </template>
             </el-table-column>
             <el-table-column prop="dictOrderUnit.name"  width="100" align="center" label="订单型号单位" />
+            <el-table-column prop="dictOrderType.name"  width="100" align="center" label="订单型号单位" />
 <!--            <el-table-column prop="dictOrderStatus.name"  :show-overflow-tooltip="true" align="center" label="计划状态"  />-->
 
             <el-table-column prop="createUser" align="center" label="创建人"  />
@@ -215,7 +216,8 @@
                     updateUser:'',
                     updateTimeArray:'',
                     updateTime:'',
-                    isBalance:0
+                    isBalance:0,
+                    orderType:"",
                 },
                 old_search_keys:{},
                 search_keys_snap      : null,
@@ -265,6 +267,7 @@
                       updateUser:'',
                       updateTimeArray:'',
                       updateTime:'',
+                      orderType:"",
                 };
             },
             price(row, column, cellValue, index){

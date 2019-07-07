@@ -215,7 +215,8 @@
                     updateUser:'',
                     updateTimeArray:'',
                     updateTime:'',
-                    isBalance:1
+                    isBalance:1,
+                    orderType:1,
                 },
                 old_search_keys:{},
                 search_keys_snap      : null,
@@ -265,7 +266,8 @@
                       updateUser:'',
                       updateTimeArray:'',
                       updateTime:'',
-                      isBalance:1
+                      isBalance:1,
+                      orderType:1,
                 };
             },
             price(row, column, cellValue, index){

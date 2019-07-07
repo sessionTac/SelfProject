@@ -53,6 +53,10 @@ public class TOrderInfoEntity implements Serializable {
      * 计划状态 0已导入未生成，1已生成关联数据字典中计划状态
      */
     private String orderStatus;
+    /**
+     * 计划类型
+     */
+    private String orderType;
 
     /**
      * 数据所属
@@ -132,6 +136,11 @@ public class TOrderInfoEntity implements Serializable {
      * 订单状态
      */
     private TDictDataEntity dictOrderStatus;
+
+    /**
+     * 订单类型
+     */
+    private TDictDataEntity dictOrderType;
 
     private static final long serialVersionUID = 1L;
 }

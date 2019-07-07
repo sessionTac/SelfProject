@@ -54,6 +54,20 @@
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
+                        <el-form-item label="订单型号单位" prop="orderType">
+                            <el-select v-model="form.orderType" style="width: 160px" size="mini" clearable>
+                                <el-option
+                                  size="mini"
+                                  v-for="item in orderType"
+                                  :key="item.value"
+                                  :label="item.name"
+                                  :value="item.value">
+                                </el-option>
+                            </el-select>
+                            <template slot="error" slot-scope="scope">
+                                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+                            </template>
+                        </el-form-item>
                         <el-form-item label="日期范围" prop="dateFlag">
                             <el-radio v-model="form.dateFlag" label="year">年</el-radio>
                             <el-radio v-model="form.dateFlag" label="month">月</el-radio>
@@ -119,6 +133,7 @@
                 materialUnits: [],
                 orderUnits:[],
                 orderStatus:[],
+                orderType:[],
                 materialRelationUnits: [],
                 materialCategorys: [],
                 materialSupplyModes: [],
@@ -129,6 +144,7 @@
                     orderDate: '',
                     orderUnit: '',
                     orderStatus: '',
+                    orderType:'',
                     dateFlag:"",
                 },
                 /**表单的验证*/
@@ -151,10 +167,13 @@
                         {required: true, message: '请填写订单日期', trigger: 'blur'},
                     ],
                     orderUnit: [
-                        {required: true, message: '请选择物料类别', trigger: 'change'}
+                        {required: true, message: '请选择订单单位', trigger: 'change'}
+                    ],
+                    orderType: [
+                        {required: true, message: '请选择订单类别', trigger: 'change'}
                     ],
                     orderStatus: [
-                        {required: true, message: '请选择物料类别', trigger: 'change'}
+                        {required: true, message: '请选择订单状态', trigger: 'change'}
                     ],
                 },
             }
@@ -167,6 +186,7 @@
                 await activityService.initData().then(resp => {
                     this.orderUnits = resp.data.result.orderUnits;
                     this.orderStatus = resp.data.result.orderStatus;
+                    this.orderType=resp.data.result.orderType;
                     // this.currencys = resp.data.result.currencys;
                     // this.materialCategorys = resp.data.result.materialCategorys;
                     // this.materialSupplyModes = resp.data.result.materialSupplyModes;
@@ -194,6 +214,7 @@
                             orderDate: this.form.orderDate || undefined,
                             orderUnit: this.form.orderUnit || undefined,
                             orderStatus: this.form.orderStatus || undefined,
+                            orderType:this.form.orderType||undefined,
                             dataRoleAt:this.form.dataRoleAt || undefined,
                             version: this.form.version || undefined,
                             dateFlag: this.form.dateFlag || undefined,

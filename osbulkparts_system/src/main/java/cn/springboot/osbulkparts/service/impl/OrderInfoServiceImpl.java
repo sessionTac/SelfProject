@@ -96,6 +96,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			map.put("orderUnits",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			tDictDataEntity.setDictTypeCode("planStatus");
 			map.put("orderStatus",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+			tDictDataEntity.setDictTypeCode("orderType");
+			map.put("orderType",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			result.setResult(map);
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
