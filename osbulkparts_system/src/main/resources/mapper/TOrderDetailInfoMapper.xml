@@ -667,7 +667,7 @@
       <if test="updateUser != null">
         update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
-       DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
+       update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
       </if>

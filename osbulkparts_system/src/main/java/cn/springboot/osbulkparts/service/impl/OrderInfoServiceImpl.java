@@ -429,13 +429,20 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 								// 未税单价
 								orderDetailParam.setMaterialTaxPrice(materialInfo.getMaterialTaxPrice());
 								// 未税总价
-								orderDetailParam.setMaterialTaxTotalprice(materialInfo.getMaterialTaxPrice().multiply(orderMaterAmount).setScale(2,BigDecimal.ROUND_HALF_UP));
+								orderDetailParam.setMaterialTaxTotalprice(materialInfo.getMaterialTaxPrice()
+										.multiply(orderMaterAmount)
+										.multiply(materialInfo.getMaterialAmount()==null?new BigDecimal("0"):materialInfo.getMaterialAmount())
+										.multiply(CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation()))
+										.setScale(2,BigDecimal.ROUND_HALF_UP));
 								// 含税单价
 								BigDecimal vatPrice = materialInfo.getMaterialTaxPrice().add(
 										materialInfo.getMaterialTaxPrice().multiply(materialInfo.getTax()));
 								orderDetailParam.setMaterialVatPrice(vatPrice);
 								// 含税总价
-								orderDetailParam.setMaterialVatTotalprice(vatPrice.multiply(orderMaterAmount).setScale(2,BigDecimal.ROUND_HALF_UP));
+								orderDetailParam.setMaterialVatTotalprice(vatPrice.multiply(orderMaterAmount)
+										.multiply(materialInfo.getMaterialAmount()==null?new BigDecimal("0"):materialInfo.getMaterialAmount())
+										.multiply(CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation()))
+										.setScale(2,BigDecimal.ROUND_HALF_UP));
 							}
 							// 代理费率
 							orderDetailParam.setMaterialRate(materialInfo.getMaterialRate());
@@ -613,7 +620,6 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					String orderType = getFromDictDataByName(
 							(String)mapData.get("计划类型"),"orderType","计划类型");
-					
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("周"),"yyyyMMddhhmmss"));
 					// 数量

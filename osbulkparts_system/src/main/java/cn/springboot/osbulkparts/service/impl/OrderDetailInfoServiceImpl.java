@@ -370,7 +370,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	        List<TDeliverInfoEntity> tdeliveryInfoListParam = new ArrayList<TDeliverInfoEntity>();
 	        List<TDeliverInfoEntity> deliverInfoList= new ArrayList<TDeliverInfoEntity>();
 	        List<TOrderDetailInfoEntity> orderDetailInfoEntity = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr(),commonEntity.getDateFlag());
-	        for(int i=0;i<=orderDetailInfoEntity.size();i++) {
+	        for(int i=0;i<orderDetailInfoEntity.size();i++) {
 	        	BigDecimal sendAmountDec = new BigDecimal(commonEntity.getAmouts()[i]);
 	        	TDeliverInfoEntity deliveryInfo = new TDeliverInfoEntity();
 	        	deliveryInfo.setOrderCode(orderDetailInfoEntity.get(i).getOrderCode());
@@ -440,7 +440,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         try {
             Map<String,List<TDictDataEntity>> map = new HashMap<>();
             TDictDataEntity tDictDataEntity = new TDictDataEntity();
-            tDictDataEntity.setDictTypeCode("transportation");
+            tDictDataEntity.setDictTypeCode("transportation");	
             map.put("transportation",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
             result.setResult(map);
         } catch (Exception e) {
