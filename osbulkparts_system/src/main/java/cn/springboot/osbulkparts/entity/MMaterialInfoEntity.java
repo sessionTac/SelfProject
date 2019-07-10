@@ -295,6 +295,11 @@ public class MMaterialInfoEntity implements Serializable {
 	private TDictDataEntity dictMinpackageType;
 	
 	/**
+	 * 物料配额
+	 */
+	private TMaterialQuotaEntity materialQuota;
+	
+	/**
 	 * 物料供货模式分类标识
 	*/
 	private TDictDataEntity dictMaterialSupplyMode;

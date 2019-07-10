@@ -2,11 +2,11 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="订单型号">
-                    <el-input placeholder="订单型号" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
+                <el-form-item label="成品编码">
+                    <el-input placeholder="成品编码" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="订单型号描述">
-                    <el-input placeholder="订单型号描述" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
+                <el-form-item label="成品描述">
+                    <el-input placeholder="成品描述" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
                 </el-form-item>
                 <el-collapse accordion>
                     <el-collapse-item>
@@ -131,12 +131,12 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="orderCode"   width="100" align="center" label="订单产品型号"  >
+            <el-table-column prop="orderCode"   width="100" align="center" label="成品编码"  >
               <template slot-scope="scope">
                 <a :disabled="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:view')" style="text-decoration: underline;" @click="toPlanDetailList(scope.row.orderCode)">{{scope.row.orderCode}}</a>
               </template>
             </el-table-column>
-            <el-table-column prop="orderCodeDesc"  width="300" align="center" label="订单产品型号描述"  />
+            <el-table-column prop="orderCodeDesc"  width="300" align="center" label="成品描述"  />
             <el-table-column prop="orderAmount"  width="100" align="center" label="订单数量"  />
             <el-table-column prop="orderDate"  width="160" align="center" label="订单日期">
                 <template slot-scope="scope">
@@ -382,14 +382,14 @@
                       this.multipleSelection.forEach(item=>{
                           this.idsStr.push(item.id)
                       });
-                      activityService.lockedById({idsStr:this.idsStr,toLocked:toLocked}).then(resp => {
-                          if (resp.data.code=="201"){
-                              this.$notify({message: resp.data.message, type: "success"});
-                              this.exec_search({search_keys:this.search_keys, pageNum:1})
-                          } else {
-                              this.$notify({message: resp.data.message, type: "error"});
-                          }
-                      })
+                    activityService.generateById({idsStr:this.idsStr}).then(resp => {
+                        if (resp.data.code=="201"){
+                            this.$notify({message: resp.data.message, type: "success"});
+                            this.exec_search({search_keys:this.search_keys, pageNum:1})
+                        } else {
+                            this.$notify({message: resp.data.message, type: "error"});
+                        }
+                    })
                   }
                 ).catch(() => {
                     this.internal_activated = true;

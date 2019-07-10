@@ -4,7 +4,7 @@
             <el-card>
                 <div class="dialogStyle" style="display: flex;flex-direction: column">
                     <el-form class="search-form search-form-normal" ref="form" style="flex: 5"  :model="form"  label-width="110px" :rules="rules"  size="mini">
-                        <el-form-item label="供应商代码" prop="supplierCode">
+                        <el-form-item label="供应商编码" prop="supplierCode">
                             <el-input v-model="form.supplierCode" class="search-form-item-input" style="width: 160px" size="mini" :maxlength="64" autocomplete="new-password"clearable></el-input>
                             <template slot="error" slot-scope="scope">
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>

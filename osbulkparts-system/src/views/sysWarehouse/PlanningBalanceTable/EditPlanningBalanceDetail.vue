@@ -6,7 +6,7 @@
         <div class="dialogStyle" style="display: flex;flex-direction: column">
           <el-form  class="search-form search-form-normal" label-width="110px" ref="form"
                     style="flex: 5" :model="form" size="mini" :rules="rules">
-            <el-form-item label="订单产品型号" prop="orderCode">
+            <el-form-item label="成品编码" prop="orderCode">
               <el-autocomplete v-model="form.orderCode" :disabled="mode ==='EDIT'" class="search-form-item-input" style="width: 160px" size="mini"
                             :fetch-suggestions="searchOrderCode"    clearable></el-autocomplete>
               <template slot="error" slot-scope="scope">
@@ -14,7 +14,7 @@
               </template>
               <div style="float: right;margin-right: 40px;"><el-button :disabled="form.orderCode==''" @click="checkOrderCode(form.orderCode)">校验并获取</el-button></div>
             </el-form-item>
-            <el-form-item label="订单产品型号描述" prop="orderCodeDesc">
+            <el-form-item label="成品描述" prop="orderCodeDesc">
               <el-input type="textarea" autosize="" v-model="form.orderCodeDesc" class="search-form-item-input" style="width: 160px" size="mini"
                        :disabled="true" clearable></el-input>
               <template slot="error" slot-scope="scope">
@@ -70,7 +70,7 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="物料号" prop="materialCode">
+            <el-form-item label="物料专用号" prop="materialCode">
               <el-autocomplete v-model="form.materialCode" class="search-form-item-input" style="width:160px" size="mini"
                                :fetch-suggestions="searchMaterialCode"  :disabled="form.orderCode==''"   clearable></el-autocomplete>
               <template slot="error" slot-scope="scope">
@@ -123,7 +123,7 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="物料类别" prop="materialCategory">
+            <el-form-item label="渠道" prop="materialCategory">
               <el-select :disabled="true" v-model="form.materialCategory" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
@@ -433,12 +433,12 @@
         /**表单的验证*/
         rules: {
           orderCode: [
-            {required: true, message: '请填写订单型号', trigger: 'blur'},
+            {required: true, message: '请填写成品编码', trigger: 'blur'},
             {max: 32, message: '长度不超过20个字符', trigger: 'blur'},
             {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
           ],
           orderCodeDesc: [
-            {required: true, message: '请填写订单型号描述', trigger: 'blur'},
+            {required: true, message: '请填写成品描述', trigger: 'blur'},
             {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
             {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
           ],
@@ -460,7 +460,7 @@
             {max: 5, message: '长度不超过5个字符', trigger: 'blur'},
           ],
           materialCode: [
-            {required: true, message: '请填写物料号', trigger: 'blur'},
+            {required: true, message: '请填写物料专用号', trigger: 'blur'},
             {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
           ],
           materialDescCn: [
@@ -483,7 +483,7 @@
             {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
           materialCategory: [
-            {required: true, message: '请选择物料类别', trigger: 'change'}
+            {required: true, message: '请选择渠道', trigger: 'change'}
           ],
           materialRelation: [
             {max: 30, message: '长度不超过30个字符', trigger: 'blur'},

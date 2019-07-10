@@ -2,8 +2,8 @@
   <div style="display: flex;flex-direction: column;height: 100%">
     <div class="el-header">
       <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-        <el-form-item label="订单产品型号">
-          <el-input placeholder="订单产品型号" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
+        <el-form-item label="成品编码">
+          <el-input placeholder="成品编码" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
         </el-form-item>
         <el-form-item label="订单日期">
           <el-date-picker
@@ -16,8 +16,8 @@
             end-placeholder="结束日期">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="物料号">
-          <el-input placeholder="物料号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
+        <el-form-item label="物料专用号">
+          <el-input placeholder="物料专用号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
         </el-form-item>
         <el-collapse accordion>
           <el-collapse-item>
@@ -25,8 +25,8 @@
               <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
             </template>
             <div>
-              <el-form-item label="订单描述">
-                <el-input placeholder="订单描述" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
+              <el-form-item label="成品描述">
+                <el-input placeholder="成品描述" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
               </el-form-item>
               <el-form-item label="订单号">
                 <el-input placeholder="订单号" v-model="search_keys.orderId" class="search-form-item-input"></el-input>
@@ -83,16 +83,16 @@
             </div>
           </el-collapse-item>
         </el-collapse>
-        <el-form-item style="float: right">
-          <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:approval')" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >
-            审批
-          </el-button>
-        </el-form-item>
-        <el-form-item style="float: right">
-          <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:goods')" @click="deliverGoods" icon="el-icon-s-check" >
-            发货
-          </el-button>
-        </el-form-item>
+<!--        <el-form-item style="float: right">-->
+<!--          <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:approval')" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >-->
+<!--            审批-->
+<!--          </el-button>-->
+<!--        </el-form-item>-->
+<!--        <el-form-item style="float: right">-->
+<!--          <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:goods')" @click="deliverGoods" icon="el-icon-s-check" >-->
+<!--            发货-->
+<!--          </el-button>-->
+<!--        </el-form-item>-->
 
         <el-form-item style="float: right">
           <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:planningbalance:detail:export')" @click="exportData(search_keys)" size="mini" >
@@ -134,8 +134,8 @@
               @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" fixed width="50" align="center"/>
-      <el-table-column prop="orderCode"  width="100" align="center" label="订单产品型号"  />
-      <el-table-column prop="orderCodeDesc"  width="100" align="center" label="订单产品型号描述"  />
+      <el-table-column prop="orderCode"  width="100" align="center" label="成品编码"  />
+      <el-table-column prop="orderCodeDesc"  width="100" align="center" label="成品描述"  />
       <el-table-column prop="orderAmount"  width="100" align="center" label="订单数量"  />
       <el-table-column prop="orderDate"  width="100" align="center" label="订单日期">
         <template slot-scope="scope">

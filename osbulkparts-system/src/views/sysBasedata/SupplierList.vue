@@ -2,8 +2,8 @@
   <div style="display: flex;flex-direction: column;height: 100%">
     <div class="el-header">
       <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-        <el-form-item label="供应商代码">
-          <el-input placeholder="供应商代码" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
+        <el-form-item label="供应商编码">
+          <el-input placeholder="供应商编码" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
         </el-form-item>
         <el-form-item label="供应商中文名称">
           <el-input placeholder="供应商中文名称" v-model="search_keys.supplierNameCn" class="search-form-item-input"></el-input>
@@ -98,7 +98,7 @@
               @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" fixed width="50" align="center"/>
-      <el-table-column prop="supplierCode"  width="100" align="center" label="供应商代码"  />
+      <el-table-column prop="supplierCode"  width="100" align="center" label="供应商编码"  />
       <el-table-column prop="supplierNameCn"  width="100" align="center" label="供应商中文名称" />
       <el-table-column prop="supplierNameEn"  width="100" align="center" label="供应商英文名称" />
       <el-table-column prop="supplierQuo" align="center" label="供应商配额"  />

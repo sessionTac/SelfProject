@@ -7,7 +7,7 @@
           <el-form  class="search-form search-form-normal" label-width="110px" ref="form"
                    style="flex: 5" :model="form" size="mini" :rules="rules">
 
-            <el-form-item label="物料号" prop="materialCode">
+            <el-form-item label="物料专用号" prop="materialCode">
               <el-input v-model="form.materialCode" class="search-form-item-input" style="width: 160px" size="mini"
                          autocomplete="new-password" clearable></el-input>
               <template slot="error" slot-scope="scope">
@@ -15,7 +15,7 @@
               </template>
             </el-form-item>
 
-            <el-form-item label="物料类别" prop="materialCategory">
+            <el-form-item label="渠道" prop="materialCategory">
               <el-select v-model="form.materialCategory" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
@@ -117,13 +117,13 @@
         rules: {
 
           materialCode: [
-            {required: true, message: '请填写物料号', trigger: 'blur'},
+            {required: true, message: '请填写物料专用号', trigger: 'blur'},
             {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
             {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
           ],
 
           materialCategory: [
-            {required: true, message: '请选择物料类别', trigger: 'change'}
+            {required: true, message: '请选择渠道', trigger: 'change'}
           ],
           materialDescCn: [
             {required: true, message: '请填写物料中文描述', trigger: 'blur'},

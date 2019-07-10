@@ -23,6 +23,7 @@
               USER_INFO                   : '用户信息',
               MATTER                      : '物料数据',
               ORDER_PLAN                  : '订单计划',
+              ORDER_PLAN_BALANCE          : '订单平衡计划',
               STOCK_INFO                  : '库存信息'
           }[this.target] || '未知导入类型';
         },

@@ -5,13 +5,13 @@
                 <el-form-item label="成品编码">
                     <el-input placeholder="成品编码" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="物料号">
-                    <el-input placeholder="物料号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
+                <el-form-item label="物料专用号">
+                    <el-input placeholder="物料专用号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="物料CKD号">
-                    <el-input placeholder="物料CKD号" v-model="search_keys.materialCkdCode" class="search-form-item-input"></el-input>
-                </el-form-item>
-                <el-form-item label="物料类别">
+<!--                <el-form-item label="物料CKD号">-->
+<!--                    <el-input placeholder="物料CKD号" v-model="search_keys.materialCkdCode" class="search-form-item-input"></el-input>-->
+<!--                </el-form-item>-->
+                <el-form-item label="渠道">
                     <el-select v-model="search_keys.materialCategory" class="search-form-item-input" size="mini" knx>
                         <el-option value=""></el-option>
                         <el-option
@@ -29,8 +29,8 @@
                             <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
                         </template>
                         <div>
-                            <el-form-item label="订单型号描述">
-                                <el-input placeholder="订单型号描述" v-model="search_keys.materialOrderCodeDesc" class="search-form-item-input"></el-input>
+                            <el-form-item label="成品描述">
+                                <el-input placeholder="成品描述" v-model="search_keys.materialOrderCodeDesc" class="search-form-item-input"></el-input>
                             </el-form-item>
                             <el-form-item label="物料中文描述">
                                 <el-input placeholder="物料中文描述" v-model="search_keys.materialDescCn" class="search-form-item-input"></el-input>
@@ -53,6 +53,18 @@
                                     <el-option
                                             size="mini"
                                             v-for="item in currencys"
+                                            :key="item.value"
+                                            :label="item.name"
+                                            :value="item.value">
+                                    </el-option>
+                                </el-select>
+                            </el-form-item>
+                            <el-form-item label="版本">
+                                <el-select v-model="search_keys.version"  size="mini" class="search-form-item-input">
+                                    <el-option value=""></el-option>
+                                    <el-option
+                                            size="mini"
+                                            v-for="item in versions"
                                             :key="item.value"
                                             :label="item.name"
                                             :value="item.value">
@@ -166,32 +178,34 @@
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
             <el-table-column prop="materialOrderCode"  width="100" align="center" label="成品编码"  />
-            <el-table-column prop="materialOrderCodeDesc"  width="100" align="center" label="订单型号描述"  />
-            <el-table-column prop="materialCkdCode"  width="100" align="center" label="物料CKD号"  />
-            <el-table-column prop="materialCode"  width="100" align="center" label="子件型号"/>
-            <el-table-column prop="dictMaterialCategory.name" width="100" align="center" label="物料类别" />
+            <el-table-column prop="materialOrderCodeDesc"  width="100" align="center" label="成品描述"  />
+<!--            <el-table-column prop="materialCkdCode"  width="100" align="center" label="物料CKD号"  />-->
+            <el-table-column prop="materialCode"  width="100" align="center" label="物料专用号"/>
+            <el-table-column prop="dictMaterialCategory.name" width="100" align="center" label="渠道" />
             <el-table-column prop="materialDescCn" width="150"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
             <el-table-column prop="materialDescEn"  width="150" :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
             <el-table-column prop="materialDescRn"  width="150" :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
-            <el-table-column prop="hsNo" align="center" label="HS海关编码"  />
-            <el-table-column prop="supplierCode" align="center" label="供应商代码"  />
-            <el-table-column prop="materialQuota" align="center" :formatter="price" label="配额"  />
             <el-table-column prop="materialAmount" align="center" label="单耗"  />
             <el-table-column prop="dictMaterialUnit.name" align="center" label="单位"  />
+            <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />
             <el-table-column prop="materialRelation" align="center" label="换算关系"  />
             <el-table-column prop="dictMaterialRelationUnit.name" align="center" label="换算后单位"  />
-<!--            <el-table-column prop="materialMinpackageAmt" align="center" label="最小包装数量"  />-->
-<!--	          <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />-->
-            <el-table-column prop="materialTaxPrice" align="center" :formatter="price" label="未税单价"  />
+            <el-table-column prop="materialMinpackageAmt" align="center" label="最小包装数量"  />
             <el-table-column prop="materialVatPrice" align="center" :formatter="price" label="含税单价"  />
+            <el-table-column prop="materialTaxPrice" align="center" :formatter="price" label="未税单价"  />
             <el-table-column prop="tax" align="center" :formatter="price" label="税率"  />
-            <el-table-column prop="materialPrice" align="center" :formatter="price" label="单价"  />
             <el-table-column prop="materialRate" align="center" label="代理费率"  />
-            <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />
-            <el-table-column prop="factoryCode" align="center" label="代理商"  />
+            <el-table-column prop="hsNo" align="center" label="HS海关编码"  />
+            <el-table-column prop="supplierCode" align="center" label="供应商代码"  />
+            <el-table-column prop="materialQuota.materialQuota" :formatter="price" align="center"  label="配额"  />
+<!--	          <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />-->
+<!--            <el-table-column prop="materialPrice" align="center" :formatter="price" label="单价"  />-->
+<!--            <el-table-column prop="factoryCode" align="center" label="代理商"  />-->
             <el-table-column prop="length" align="center" label="长"  />
             <el-table-column prop="width" align="center" label="宽"  />
             <el-table-column prop="height" align="center" label="高"  />
+            <el-table-column prop="user_defined1"  width="150" :show-overflow-tooltip="true" align="center" label="备注"  />
+            <el-table-column prop="version" width="150" align="center" :formatter="formatVer" label="版本"  />
             <el-table-column prop="createUser" align="center" label="创建人"  />
 <!--            <el-table-column prop="createTime" align="center" label="创建时间"  />-->
             <el-table-column label="创建时间" show-overflow-tooltip>
@@ -254,6 +268,7 @@
                 materialCategorys:[],
                 old_search_keys:{},
                 currencys:[],
+                versions:[],
                 search_keys   : {
                     materialOrderCode:'',
                     materialOrderCodeDesc:'',
@@ -266,6 +281,7 @@
                     hsNo:'',
                     supplierCode:'',
                     materialCurrency:'',
+                    version:'',
                     createUser:'',
                     createTime:'',
                     createTimeArray:'',
@@ -297,6 +313,9 @@
             }
         },
         methods: {
+            formatVer: function (row, column) {
+                return "V"+ row.version
+            },
             openQuota(){
                 this.link_modal_state_quota={activated:true};
             },
@@ -332,6 +351,7 @@
                 activityService.initData().then(resp =>{
                     this.currencys = resp.data.result.currencys;
                     this.materialCategorys = resp.data.result.materialCategorys;
+                    this.versions = resp.data.result.versions;
                 }, err => {
                     console.error(err);
                 })

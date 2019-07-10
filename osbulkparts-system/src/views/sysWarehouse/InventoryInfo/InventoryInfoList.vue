@@ -2,10 +2,10 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="物料号">
-                    <el-input placeholder="物料号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
+                <el-form-item label="物料专用号">
+                    <el-input placeholder="物料专用号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="物料类别">
+                <el-form-item label="渠道">
                     <el-select v-model="search_keys.materialCategory" class="search-form-item-input" size="mini" knx>
                         <el-option value=""></el-option>
                         <el-option
@@ -111,8 +111,8 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="materialCode"  width="100" align="center" label="物料号"/>
-            <el-table-column prop="dictMaterialCategory.name" width="100" align="center" label="物料类别" />
+            <el-table-column prop="materialCode"  width="100" align="center" label="物料专用号"/>
+            <el-table-column prop="dictMaterialCategory.name" width="100" align="center" label="渠道" />
             <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
             <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
             <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />

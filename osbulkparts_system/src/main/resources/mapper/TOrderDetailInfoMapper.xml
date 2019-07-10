@@ -31,6 +31,7 @@
     <result column="material_tax_price" jdbcType="DECIMAL" property="materialTaxPrice" />
     <result column="material_tax_totalprice" jdbcType="DECIMAL" property="materialTaxTotalprice" />
     <result column="material_vat_price" jdbcType="DECIMAL" property="materialVatPrice" />
+    <result column="tax" jdbcType="DECIMAL" property="tax" />
     <result column="material_vat_totalprice" jdbcType="DECIMAL" property="materialVatTotalprice" />
     <result column="material_rate" jdbcType="DECIMAL" property="materialRate" />
     <result column="material_currency" jdbcType="VARCHAR" property="materialCurrency" />
@@ -48,6 +49,7 @@
     <result column="date_flag" jdbcType="VARCHAR" property="dateFlag" />
     <result column="data_role_at" jdbcType="VARCHAR" property="dataRoleAt" />
     <result column="is_balance" jdbcType="INTEGER" property="isBalance" />
+    <result column="order_detail_type" jdbcType="VARCHAR" property="orderDetailType" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="create_time" jdbcType="VARCHAR" property="createTime" />
     <result column="update_user" jdbcType="VARCHAR" property="updateUser" />
@@ -107,6 +109,12 @@
       <result property="value" column="confirm_status"/>
       <result property="name" column="dictConfirmStatus"/>
     </association>
+    <!--订单详细类型-->
+    <association property="dictOrderDetailType"
+                 javaType="cn.springboot.osbulkparts.entity.TDictDataEntity">
+      <result property="value" column="order_detail_type"/>
+      <result property="name" column="dictOrderDetailType"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -118,10 +126,10 @@
     order_id_item, material_code, material_desc_cn, material_desc_en, material_desc_rn, 
     material_unit, material_amount, material_category, material_relation, material_relation_unit, 
     material_relation_quantity, material_minpackage_type, material_minpackage_amt, material_minpackage_totalamt, 
-    material_tax_price, material_tax_totalprice, material_vat_price, material_vat_totalprice, 
+    material_tax_price, material_tax_totalprice, material_vat_price, material_vat_totalprice, tax,
     material_rate, material_currency, country_code, confirm_status, order_out_total_amount, 
     mater_out_total_amount, residual_amount, trim_amount, stock_amount, differ_amount, 
-    take_over_amount, delivery_amount, surplus_amount, date_flag,data_role_at, is_balance, create_user, create_time,
+    take_over_amount, delivery_amount, surplus_amount, date_flag,data_role_at, is_balance, order_detail_type,create_user, create_time,
     update_user, update_time, is_delete, version
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -150,12 +158,12 @@
       material_relation_quantity, material_minpackage_type, 
       material_minpackage_amt, material_minpackage_totalamt, 
       material_tax_price, material_tax_totalprice, 
-      material_vat_price, material_vat_totalprice, 
+      material_vat_price, material_vat_totalprice, tax,
       material_rate, material_currency, country_code, 
       confirm_status, order_out_total_amount, mater_out_total_amount, 
       residual_amount, trim_amount, stock_amount, 
       differ_amount, take_over_amount, delivery_amount, 
-      surplus_amount, data_role_at, is_balance, create_user, 
+      surplus_amount, data_role_at, is_balance, order_detail_type,create_user, 
       create_time, update_user, update_time, 
       is_delete, version)
     values (#{id,jdbcType=VARCHAR}, #{orderCode,jdbcType=VARCHAR}, #{orderCodeDesc,jdbcType=VARCHAR}, 
@@ -167,12 +175,13 @@
       #{materialRelationQuantity,jdbcType=DECIMAL}, #{materialMinpackageType,jdbcType=VARCHAR}, 
       #{materialMinpackageAmt,jdbcType=DECIMAL}, #{materialMinpackageTotalamt,jdbcType=DECIMAL}, 
       #{materialTaxPrice,jdbcType=DECIMAL}, #{materialTaxTotalprice,jdbcType=DECIMAL}, 
-      #{materialVatPrice,jdbcType=DECIMAL}, #{materialVatTotalprice,jdbcType=DECIMAL}, 
+      #{materialVatPrice,jdbcType=DECIMAL}, #{materialVatTotalprice,jdbcType=DECIMAL}, #{tax,jdbcType=DECIMAL},
       #{materialRate,jdbcType=DECIMAL}, #{materialCurrency,jdbcType=VARCHAR}, #{countryCode,jdbcType=VARCHAR}, 
       #{confirmStatus,jdbcType=VARCHAR}, #{orderOutTotalAmount,jdbcType=DECIMAL}, #{materOutTotalAmount,jdbcType=DECIMAL}, 
       #{residualAmount,jdbcType=DECIMAL}, #{trimAmount,jdbcType=DECIMAL}, #{stockAmount,jdbcType=DECIMAL}, 
       #{differAmount,jdbcType=DECIMAL}, #{takeOverAmount,jdbcType=DECIMAL}, #{deliveryAmount,jdbcType=DECIMAL}, 
-      #{surplusAmount,jdbcType=DECIMAL}, #{dataRoleAt,jdbcType=VARCHAR}, #{isBalance,jdbcType=INTEGER},#{createUser,jdbcType=VARCHAR}, 
+      #{surplusAmount,jdbcType=DECIMAL}, #{dataRoleAt,jdbcType=VARCHAR}, #{isBalance,jdbcType=INTEGER},
+      #{orderDetailType,jdbcType=VARCHAR},#{createUser,jdbcType=VARCHAR}, 
       #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, 
       #{isDelete,jdbcType=INTEGER}, #{version,jdbcType=INTEGER})
   </insert>
@@ -259,6 +268,9 @@
       <if test="materialVatTotalprice != null">
         material_vat_totalprice,
       </if>
+      <if test="tax != null">
+        tax,
+      </if>
       <if test="materialRate != null">
         material_rate,
       </if>
@@ -306,6 +318,9 @@
       </if>
       <if test="isBalance != null">
         is_balance,
+      </if>
+      <if test="orderDetailType != null">
+        order_detail_type,
       </if>
       <if test="createUser != null">
         create_user,
@@ -400,6 +415,9 @@
       <if test="materialVatTotalprice != null">
         #{materialVatTotalprice,jdbcType=DECIMAL},
       </if>
+      <if test="tax != null">
+        #{tax,jdbcType=DECIMAL},
+      </if>
       <if test="materialRate != null">
         #{materialRate,jdbcType=DECIMAL},
       </if>
@@ -448,6 +466,9 @@
       <if test="isBalance != null">
         #{isBalance,jdbcType=INTEGER},
       </if>
+      <if test="orderDetailType != null">
+        #{orderDetailType,jdbcType=VARCHAR},
+      </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
       </if>
@@ -476,13 +497,13 @@
       material_relation_quantity, material_minpackage_type, 
       material_minpackage_amt, material_minpackage_totalamt, 
       material_tax_price, material_tax_totalprice, 
-      material_vat_price, material_vat_totalprice, 
+      material_vat_price, material_vat_totalprice, tax,
       material_rate, material_currency, country_code, 
       confirm_status, order_out_total_amount, mater_out_total_amount, 
       residual_amount, trim_amount, stock_amount, 
       differ_amount, take_over_amount, delivery_amount, 
-      surplus_amount, data_role_at, is_balance,create_user, 
-      create_time, update_user, update_time, 
+      surplus_amount, data_role_at, is_balance,order_detail_type,date_flag,
+      create_user, create_time, update_user, update_time, 
       is_delete, version) values
     <foreach collection="list" item="item" index="index" separator=",">
      (#{item.id,jdbcType=VARCHAR},
@@ -510,6 +531,7 @@
       #{item.materialTaxTotalprice,jdbcType=DECIMAL}, 
       #{item.materialVatPrice,jdbcType=DECIMAL}, 
       #{item.materialVatTotalprice,jdbcType=DECIMAL}, 
+      #{item.tax,jdbcType=DECIMAL}, 
       #{item.materialRate,jdbcType=DECIMAL}, 
       #{item.materialCurrency,jdbcType=VARCHAR}, 
       #{item.countryCode,jdbcType=VARCHAR}, 
@@ -525,6 +547,8 @@
       #{item.surplusAmount,jdbcType=DECIMAL}, 
       #{item.dataRoleAt,jdbcType=VARCHAR}, 
       #{item.isBalance,jdbcType=INTEGER}, 
+      #{item.orderDetailType,jdbcType=VARCHAR}, 
+      #{item.dateFlag,jdbcType=VARCHAR}, 
       #{item.createUser,jdbcType=VARCHAR}, 
       DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
       #{item.updateUser,jdbcType=VARCHAR}, 
@@ -613,6 +637,9 @@
       <if test="materialVatTotalprice != null">
         material_vat_totalprice = #{materialVatTotalprice,jdbcType=DECIMAL},
       </if>
+      <if test="tax != null">
+        tax = #{tax,jdbcType=DECIMAL},
+      </if>
       <if test="materialRate != null">
         material_rate = #{materialRate,jdbcType=DECIMAL},
       </if>
@@ -657,6 +684,9 @@
       </if>
       <if test="isBalance != null">
         is_balance = #{isBalance,jdbcType=INTEGER},
+      </if>
+      <if test="orderDetailType != null">
+        order_detail_type =  #{orderDetailType,jdbcType=VARCHAR}, 
       </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
@@ -708,6 +738,7 @@
       material_tax_totalprice = #{materialTaxTotalprice,jdbcType=DECIMAL},
       material_vat_price = #{materialVatPrice,jdbcType=DECIMAL},
       material_vat_totalprice = #{materialVatTotalprice,jdbcType=DECIMAL},
+      tax = #{tax,jdbcType=DECIMAL},
       material_rate = #{materialRate,jdbcType=DECIMAL},
       material_currency = #{materialCurrency,jdbcType=VARCHAR},
       country_code = #{countryCode,jdbcType=VARCHAR},
@@ -724,6 +755,7 @@
       data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
       date_flag=#{dateFlag,jdbcType=VARCHAR},
       is_balance = #{isBalance,jdbcType=INTEGER},
+      order_detail_type =  #{orderDetailType,jdbcType=VARCHAR}, 
       create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=VARCHAR},
       update_user = #{updateUser,jdbcType=VARCHAR},
@@ -743,7 +775,8 @@
         t7.`name` AS dictMaterialCurrency,
         t8.`name` AS dictCountryCode,
         t9.`name` AS dictConfirmStatus,
-        t10.stock_amount AS stockAmount
+        t10.stock_amount AS stockAmount,
+	    t11.`name` AS dictOrderDetailType
     FROM
         t_order_detail_info AS t1
     LEFT JOIN t_dict_data AS t2 ON t1.order_unit = t2.`value`
@@ -773,6 +806,9 @@
 	LEFT JOIN t_stock_info AS t10 ON t1.material_code = t10.material_code
 	AND t10.data_role_at = t1.data_role_at
 	AND t10.is_delete = 0
+	LEFT JOIN t_dict_data AS t11 ON t1.order_detail_type = t11.`value`
+	AND t11.dict_type_code = 'orderDetailType'
+	AND t11.delete_flg = 0
     WHERE
         t1.is_delete = 0
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCode)">
@@ -800,6 +836,9 @@
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
       AND t1.data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
+    </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderDetailType)">
+      AND t1.order_detail_type = #{orderDetailType,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCodeDesc)">
       <bind name="orderCodeDesc_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(orderCodeDesc)"/>
@@ -889,6 +928,7 @@
 	LEFT JOIN t_material_record_info AS t2 ON t1.material_code = t2.material_code
 	WHERE
 	    t1.data_role_at = 0
+	AND t1.is_delete = 0
 	AND t1.is_balance = 0
 	AND t1.date_flag = #{dateFlag,jdbcType=VARCHAR}
 	AND t1.order_code IN

@@ -5,9 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
-import cn.springboot.osbulkparts.entity.TMaterialQuotaEntity;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,13 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriUtils;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TMaterialQuotaEntity;
 import cn.springboot.osbulkparts.service.MaterialDataService;
+import cn.springboot.osbulkparts.service.MaterialQuotaService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -39,6 +38,8 @@ public class MaterialDataController {
 
 	@Autowired
 	private MaterialDataService materialDataService;
+	@Autowired
+	private MaterialQuotaService materialQuotaService;
 	
 	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
 	@GetMapping("/init")
@@ -128,9 +129,6 @@ public class MaterialDataController {
 		return response;
 	}
 
-
-
-
 	@ApiOperation(value="配额设置页面初始化", notes="配额设置获取页面初始化数据(所有物料号和所有供应商信息)")
 	@GetMapping("/findQuotaInitInfo")
 	public CommonResultInfo<Map<String, List<TDictDataEntity>>> findQuotaInitInfo(){
@@ -143,32 +141,26 @@ public class MaterialDataController {
 			@ApiImplicitParam(name = "tMaterialQuotaEntity", value = "配额实体对象", required = true, dataType = "body", paramType = "body"),
 	})
 	@PutMapping("/upsertQuotaInfo")
-	public CommonResultInfo<TMaterialQuotaEntity> upsertQuotaInfo(
-			TMaterialQuotaEntity tMaterialQuotaEntity,
-			HttpServletRequest request, Authentication auth){
-//		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfoList(mmaterialInfoEntity, pageNum, pageSize,auth);
-		return null;
+	public CommonResultInfo<?> upsertQuotaInfo(
+			@RequestBody TMaterialQuotaEntity tMaterialQuotaEntity,Authentication auth){
+		CommonResultInfo<?> result = materialQuotaService.insertMaterialQuota(tMaterialQuotaEntity, auth);
+		return result;
 	}
 	@ApiOperation(value="配额设置 根据用户输入内容 查找数据", notes="配额设置 根据用户输入内容 查找数据")
 	@ApiImplicitParams({
 			@ApiImplicitParam(name = "tMaterialQuotaEntity", value = "配额实体对象", required = true, dataType = "body", paramType = "body"),
 	})
 	@GetMapping("/findQuotaInfoList")
-	public CommonResultInfo<TMaterialQuotaEntity> findQuotaInfoList(
-			TMaterialQuotaEntity tMaterialQuotaEntity,
+	public CommonResultInfo<TMaterialQuotaEntity> findQuotaInfoList(TMaterialQuotaEntity tMaterialQuotaEntity,
 			HttpServletRequest request, Authentication auth){
-//		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfoList(mmaterialInfoEntity, pageNum, pageSize,auth);
-		return null;
+		CommonResultInfo<TMaterialQuotaEntity> result = materialQuotaService.selectMaterialQuotaList(tMaterialQuotaEntity, auth);
+		return result;
 	}
 	@ApiOperation(value="配额设置 根据主键id 删除一条数据", notes="配额设置 根据主键id 删除一条数据")
-	@ApiImplicitParams({
-			@ApiImplicitParam(name = "tMaterialQuotaEntity", value = "配额实体对象", required = true, dataType = "body", paramType = "body"),
-	})
-	@GetMapping("/deleteQuotaInfoById")
-	public CommonResultInfo<MMaterialInfoEntity> deleteQuotaInfoById(
-			TMaterialQuotaEntity tMaterialQuotaEntity,
-			HttpServletRequest request, Authentication auth){
-//		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfoList(mmaterialInfoEntity, pageNum, pageSize,auth);
-		return null;
+	@ApiImplicitParam(name = "materialCode", value = "物料号", required = true, dataType = "path", paramType = "path")
+	@PutMapping("/deleteQuotaInfoById")
+	public CommonResultInfo<?> deleteQuotaInfoById(@RequestBody TMaterialQuotaEntity tMaterialQuotaEntity, Authentication auth){
+		CommonResultInfo<?> result = materialQuotaService.deleteMaterialQuota(tMaterialQuotaEntity.getMaterialCode(), auth);
+		return result;
 	}
 }

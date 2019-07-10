@@ -23,7 +23,6 @@
 
       if (redir) {
         if (!this.$router.resolve(redir).route.name) {
-          console.log('未知的redir');
           this.$router.replace({name:'NotFound'});
           return;
         }

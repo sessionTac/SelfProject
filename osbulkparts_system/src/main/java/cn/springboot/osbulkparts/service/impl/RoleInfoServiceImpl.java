@@ -1,35 +1,38 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+
 import cn.springboot.osbulkparts.common.CommonConstantEnum;
 import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
-import cn.springboot.osbulkparts.dao.user.*;
+import cn.springboot.osbulkparts.dao.user.MFunctionInfoDao;
+import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
+import cn.springboot.osbulkparts.dao.user.TRoleFunctionRelationDao;
+import cn.springboot.osbulkparts.dao.user.TUserRoleRelationDao;
 import cn.springboot.osbulkparts.entity.MFunctionInfoEntity;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.service.RoleInfoService;
-import cn.springboot.osbulkparts.service.UserInfoService;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import javax.servlet.http.HttpServletRequest;
-import java.beans.Transient;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 public class RoleInfoServiceImpl implements RoleInfoService {
@@ -48,7 +51,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
     @Autowired
     private I18nMessageBean messageBean;
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<MRoleInfoEntity> getRoleInfoList(MRoleInfoEntity mRoleInfoEntity, int pageNumber, int pageSize) {
         CommonResultInfo<MRoleInfoEntity> result = new CommonResultInfo<MRoleInfoEntity>();
         try {
@@ -271,7 +275,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
         }
     }
 
-    @Override
+    @SuppressWarnings("finally")
+	@Override
     public CommonResultInfo<?> addRoleInfo(MRoleInfoEntity mRoleInfoEntity, Authentication auth) {
         CommonResultInfo<?> result = new CommonResultInfo<MRoleInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());

@@ -109,10 +109,10 @@
             {required: true, message: '请选择所属上级'}
           ],
           name: [
-            {required: true, message: '请选择单位名称'}
+            {required: true, message: '请输入名称'}
           ],
           value: [
-            {required: true, message: '请选择值', trigger: 'blur'}
+            {required: true, message: '请输入值', trigger: 'blur'}
           ],
         }
       }

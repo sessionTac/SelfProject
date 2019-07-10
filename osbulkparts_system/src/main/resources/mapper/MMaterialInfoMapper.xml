@@ -95,6 +95,10 @@
         <result property="value" column="material_relation"/>
         <result property="name" column="dictConvertRelation"/>
     </association>
+    <association property="materialQuota"
+                 javaType="cn.springboot.osbulkparts.entity.TMaterialQuotaEntity">
+        <result property="materialQuota" column="material_quota"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -131,6 +135,7 @@
 			material.material_desc_rn,
 			material.hs_no,
 			material.supplier_code,
+			quota.material_quota as material_quota,
 			material.material_unit,
 			material.material_amount,
 			dictUnit.`name` AS dictMaterialUnit,
@@ -176,6 +181,9 @@
 			material.version
 		FROM
 			m_material_info material
+		LEFT JOIN t_material_quota quota ON material.material_code = quota.material_code 
+		AND material.supplier_code = quota.supplier_code
+		AND material.material_code = quota.material_code
 		LEFT JOIN t_dict_data dictCate ON material.material_category = dictCate.`value`
 		AND dictCate.dict_type_code = 'mattertype'
 		AND dictCate.is_enable = 1
@@ -207,9 +215,12 @@
 		LEFT JOIN t_dict_data dictConvertRelation ON material.material_relation = dictConvertRelation.`value`
 		AND dictConvertRelation.dict_type_code = 'converRelation'
 		AND dictConvertRelation.is_enable = 1
-		AND dictConvertRelation.delete_flg = 0
+		AND dictConvertRelation.delete_flg = 0,
+		(SELECT max(t1.version) AS version,t1.material_code FROM m_material_info t1 WHERE t1.is_delete = 0 GROUP BY t1.material_code) maxVersion
 		WHERE
 			material.is_delete = 0
+		    AND material.version = maxVersion.version
+		    AND material.material_code = maxVersion.material_code
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialInfoId)">
     	AND material.material_info_id = #{materialInfoId,jdbcType=VARCHAR}
     </if>
@@ -342,6 +353,9 @@
     </if>
     <if test="isLocked != null">
     	AND material.is_locked = #{isLocked,jdbcType=INTEGER}
+    </if>
+    <if test="version != null">
+    	AND material.version = #{version,jdbcType=INTEGER}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createUser)">
     <bind name="createUser_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(createUser)"/>
@@ -1050,5 +1064,22 @@
         AND t1.material_code = #{materialCode}
         and t1.data_role_at =#{dataRoleAt}
   </select>
-
+    <!-- 查询物料中的版本号 -->
+    <select id="selectAllVersion" resultMap="BaseResultMap">
+    SELECT DISTINCT
+		materialInfo.version
+	FROM
+		m_material_info materialInfo
+	ORDER BY
+		materialInfo.version
+    </select>
+    <select id="selectInfoById" resultMap="BaseResultMap">
+		SELECT
+		<include refid="Base_Column_List"></include>
+		FROM
+			m_material_info materialInfo
+		WHERE
+			 materialInfo.data_role_at = #{dataRoleAt}
+		AND materialInfo.material_info_id = #{id,jdbcType=VARCHAR}
+    </select>
 </mapper>

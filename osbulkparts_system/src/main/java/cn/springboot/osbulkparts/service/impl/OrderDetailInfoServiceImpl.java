@@ -76,6 +76,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             map.put("countryCode",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
             tDictDataEntity.setDictTypeCode("orderStatus");
             map.put("orderStatus",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+            tDictDataEntity.setDictTypeCode("orderDetailType");
+            map.put("orderDetailType",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
             result.setResult(map);
         } catch (Exception e) {
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -208,7 +210,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 }else {
                     result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
-                    result.setMessage(messageBean.getMessage("common.info.empty"));
+                    result.setMessage(messageBean.getMessage("bussiness.order.exist.no",orderCode));
                     return result;
                 }
             }
@@ -218,7 +220,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 }else {
                     result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
-                    result.setMessage(messageBean.getMessage("common.info.empty"));
+                    result.setMessage(messageBean.getMessage("bussiness.material.exist.no",materialCode));
                     return result;
                 }
             }
@@ -267,14 +269,18 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
     public CommonResultInfo<?> insertOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity, Authentication auth) {
         CommonResultInfo<?> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
-        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
         try {
-            tOrderDetailInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+	        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+	        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+        
             tOrderDetailInfoEntity.setId(CommonSqlUtils.getUUID32());
             tOrderDetailInfoEntity.setCreateUser(principal.getUserName());
             tOrderDetailInfoEntity.setIsDelete(0);
             tOrderDetailInfoEntity.setVersion(1);
+            tOrderDetailInfoEntity.setIsBalance("0");
+            tOrderDetailInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+            tOrderDetailInfoEntity.setDateFlag("week");
+            tOrderDetailInfoEntity.setOrderDetailType("1");
             int returnInt = tOrderDetailInfoDao.insertSelective(tOrderDetailInfoEntity);
             if (returnInt > 0) {
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
@@ -405,6 +411,16 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             	recordParam.setDataRoleAt(deliveryInfo.getDataRoleAt());
             	recordParam.setSupperAmount(deliveryInfo.getSendAmount());
             	materialRecordInfoDao.updateByPrimaryKeySelective(recordParam);
+            	
+            	// 更新物料表中的单耗
+//            	MMaterialInfoEntity materialInfo = new MMaterialInfoEntity();
+//            	materialInfo.setMaterialOrderCode(materialOrderCode);
+//            	materialInfo.setMaterialCode(materialCode);
+//            	materialInfo.setMaterialAmount(materialAmount);
+//            	materialInfo.setUpdateUser(updateUser);
+//            	materialInfo.setDataRoleAt(dataRoleAt);
+//            	materialInfo.set
+//            	mMaterialInfoDao
 
 	        	deliveryInfo.setId(CommonSqlUtils.getUUID32());
 	        	deliveryInfo.setCreateUser(principal.getUserName());

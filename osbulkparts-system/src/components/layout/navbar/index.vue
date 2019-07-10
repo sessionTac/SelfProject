@@ -20,7 +20,7 @@
                 {{ $t('navbar.person') }}
             </el-dropdown-item>
           <el-dropdown-item divided>
-            <span style="display:block;" @click="">{{ $t('navbar.logOut') }}</span>
+            <span style="display:block;" @click="exit">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
@@ -62,6 +62,10 @@
       }),
     },
     methods: {
+      exit(){
+        // this.$router.push({ name: 'Login', query: {redir: router.currentRoute.fullPath}});
+        this.$router.push({name: 'Login'})
+      },
       toggleSideBar() {
         this.$store.dispatch('app/toggleSideBar')
       },

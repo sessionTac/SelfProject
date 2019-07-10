@@ -38,23 +38,23 @@
           style="flex: 1"
           border
           tooltip-effect="dark">
-          <el-table-column prop="orderCode"  width="100" align="center" label="订单产品型号"  />
-          <el-table-column prop="orderAmount"  width="80" align="center" label="订单数量"  />
+<!--          <el-table-column prop="orderCode"  width="100" align="center" label="成品编码"  />-->
+<!--          <el-table-column prop="orderAmount"  width="80" align="center" label="订单数量"  />-->
           <el-table-column prop="orderDate"  width="100" align="center" label="订单日期">
             <template slot-scope="scope">
               {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD') : ''}}
             </template>
           </el-table-column>
-          <el-table-column prop="materialCode" width="120" :show-overflow-tooltip="true" align="center" label="物料号"  />
+          <el-table-column prop="materialCode" width="120" :show-overflow-tooltip="true" align="center" label="物料专用号"  />
           <el-table-column prop="materialAmount" label="单耗数量" width="100">
             <template slot-scope="scope">
               <el-input v-model="scope.row.materialAmount"></el-input>
             </template>
           </el-table-column>
-          <el-table-column prop="materialRelationQuantity"  :show-overflow-tooltip="true" width="100" align="center" label="换算后数量"  />
           <el-table-column prop="supperAmountQut.supperAmount" label="超发数量" width="120"/>
-          <el-table-column prop="suggestedAmount" label="建议数量" width="120">
-          </el-table-column>
+          <el-table-column prop="suggestedAmount" label="建议数量" width="120"></el-table-column>
+            <el-table-column prop="materialRelationQuantity"  :show-overflow-tooltip="true" width="100" align="center" label="换算后数量"  />
+
           <!--<el-table-column fixed="right" width="120" label="操作" >-->
           <!--<template slot-scope="scope" >-->
           <!--<el-button title="收货" type="primary" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">-->

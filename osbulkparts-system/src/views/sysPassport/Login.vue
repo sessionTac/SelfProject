@@ -3,9 +3,9 @@
         <div class="flex" style="height:50px;width:100%;background-color:white;z-index:99999999;box-shadow: 0 1px 5px #666; ">
             <div class="flex-1">
                 <div class="flex" style="width:20%;margin-left:15%;height:50px;">
-                    <div class="" style='width:100%;background-color:rgba(220,255,207,0);text-align:center;position:relative;'>
-                        <img style="width: 80%;z-index: 1300;display:inline-block;position:absolute;top:50%;left:50%;transform:translateY(-50%) translateX(-50%);" src="../../static/images/login/mainLogo.png" />
-                    </div>
+<!--                    <div class="" style='width:100%;background-color:rgba(220,255,207,0);text-align:center;position:relative;'>-->
+<!--                        <img style="width: 80%;z-index: 1300;display:inline-block;position:absolute;top:50%;left:50%;transform:translateY(-50%) translateX(-50%);" src="../../static/images/login/mainLogo.png" />-->
+<!--                    </div>-->
                 </div>
             </div>
             <div class="" style="width:15px;height:100%;"></div>

@@ -59,6 +59,7 @@ public class DictDataServiceImpl implements DictDataSettingService {
 		}
 	}
 
+	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<TDictDataEntity> getDictDataInfoDetail(String id) {
 		CommonResultInfo<TDictDataEntity> result = new CommonResultInfo<TDictDataEntity>();

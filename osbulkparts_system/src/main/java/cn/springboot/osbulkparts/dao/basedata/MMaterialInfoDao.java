@@ -18,6 +18,8 @@ public interface MMaterialInfoDao {
     int updateList(List<MMaterialInfoEntity> records);
 
     int insertSelective(MMaterialInfoEntity record);
+    
+    List<MMaterialInfoEntity> selectAllVersion();
 
     List<MMaterialInfoEntity> selectByPrimaryKey(MMaterialInfoEntity materialInfoEntity);
 
@@ -29,6 +31,7 @@ public interface MMaterialInfoDao {
     
     int deleteBatchData(@Param("ids") String[] ids,@Param("updateUser") String updateUser,@Param("isDelete") String isDelete);
 
+    MMaterialInfoEntity selectInfoById(@Param("id")String id,@Param("dataRoleAt")String dataRoleAt);
     /**
      * 查重（用户名）和排他字段比较   luka
      */

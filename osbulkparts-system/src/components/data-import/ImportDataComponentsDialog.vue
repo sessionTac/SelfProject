@@ -9,7 +9,7 @@
       @closed="$emit('update:activated', false)"
     >
       <el-form class="search-form search-form-normal" ref="form" size="mini" :model="form" label-width="200px" :rules="rules" >
-        <div  v-if="target=='ORDER_PLAN'" style="text-align: center">
+        <div  v-if="target=='ORDER_PLAN'|| target == 'ORDER_PLAN_BALANCE'" style="text-align: center">
           <el-radio v-model="radio" label="1" border>周</el-radio>
           <el-radio  v-model="radio" label="2" border>月</el-radio>
           <el-radio  v-model="radio" label="3" border>年</el-radio>
@@ -186,6 +186,10 @@
             return service.downloadExcelTemp('orderPlanTemp').then(resp=>{
               downloadBlobResponse(resp); // 文件下载
             });
+          case 'ORDER_PLAN_BALANCE' :
+            return service.downloadExcelTemp('orderPlanTemp').then(resp=>{
+              downloadBlobResponse(resp); // 文件下载
+            });
           case 'STOCK_INFO':
             return service.downloadExcelTemp('stockInfoTemp').then(resp=>{
               downloadBlobResponse(resp); // 文件下载
@@ -197,9 +201,9 @@
         switch(this.target) {
           case 'MATTER' : return service.importData('/material/importExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
 
-          case 'ORDER_PLAN' : return service.importData('/orderInfo/importExcel', {importType:this.radio}, {isBalance:0},{file:this.currentFile.raw}, this.onUploadProgress);
+          case 'ORDER_PLAN' : return service.importData('/orderInfo/importExcel', {importType:this.radio,isBalance:0},{file:this.currentFile.raw}, this.onUploadProgress);
 
-          case 'ORDER_PLAN_BALANCE' : return service.importData('/orderInfo/importExcel', {importType:this.radio}, {isBalance:1},{file:this.currentFile.raw}, this.onUploadProgress);
+          case 'ORDER_PLAN_BALANCE' : return service.importData('/orderInfo/importExcel', {importType:this.radio,isBalance:1},{file:this.currentFile.raw}, this.onUploadProgress);
 
           case 'STOCK_INFO' : return service.importData('/stock/importExcel', {}, {file:this.currentFile.raw}, this.onUploadProgress);
 

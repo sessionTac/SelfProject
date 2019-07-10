@@ -42,12 +42,10 @@
 		WHERE
 			quota.is_delete = 0
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCode)">
-    <bind name="materialCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialCode)"/>
-    	AND quota.material_code LIKE #{materialCode_like,jdbcType=VARCHAR}
+    	AND quota.material_code = #{materialCode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(supplierCode)">
-    <bind name="supplierCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(supplierCode)"/>
-    	AND quota.supplier_code LIKE #{supplierCode_like,jdbcType=VARCHAR}
+    	AND quota.supplier_code = #{supplierCode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(supplierName)">
     <bind name="supplierName_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(supplierName)"/>
@@ -59,6 +57,7 @@
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCode)">
     	AND quota.data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
     </if>
+    Order by quota.material_code,quota.supplier_code
   </select>
   <insert id="insert" parameterType="cn.springboot.osbulkparts.entity.TMaterialQuotaEntity">
     <!--
@@ -223,4 +222,18 @@
     AND supplier_code = #{item.supplierCode,jdbcType=VARCHAR}
     </foreach>
   </update>
+  <update id="deleteBatchData">
+  	update t_material_quota
+  	set update_user = #{updateUser,jdbcType=VARCHAR},update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),is_delete = #{isDelete,jdbcType=INTEGER} 
+  	where material_code  = #{materialCode,jdbcType=VARCHAR}
+  </update>
+  <delete id="deleteData">
+  	DELETE
+	FROM
+		t_material_quota
+	WHERE
+		material_code = #{materialCode,jdbcType=VARCHAR}
+	AND data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
+	AND supplier_code = #{supplierCode,jdbcType=VARCHAR}
+  </delete>
 </mapper>

@@ -1,20 +1,16 @@
 package cn.springboot.osbulkparts.service.impl;
 
-import java.beans.Transient;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
-import cn.springboot.osbulkparts.dao.user.TUserRoleRelationDao;
-import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
-import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -25,11 +21,14 @@ import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
+import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
 import cn.springboot.osbulkparts.dao.user.MUserInfoDao;
+import cn.springboot.osbulkparts.dao.user.TUserRoleRelationDao;
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
 import cn.springboot.osbulkparts.service.UserInfoService;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class UserInfoServiceImpl implements UserInfoService {
@@ -249,6 +248,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			return result;
 		}
 	}
+	@SuppressWarnings("finally")
 	@Transactional
 	@Override
 	public CommonResultInfo<?> changePassword(MUserInfoEntity userInfoEntity, String oldPassword, Authentication auth) {
@@ -285,7 +285,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 		}
 	}
 
-	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MUserInfoEntity> getUserCustomerRelationInfo(String userId) {
 //		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
@@ -334,6 +333,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			return result;
 		}
 	}
+	@SuppressWarnings("finally")
 	@Transactional
 	@Override
 	public CommonResultInfo<?> deleteUserInfo(String userId, Authentication auth) {

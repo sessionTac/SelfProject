@@ -14,8 +14,12 @@ public interface TMaterialQuotaDao {
     int insert(TMaterialQuotaEntity record);
     
     int insertList(List<TMaterialQuotaEntity> record);
+    
+    int updateList(List<TMaterialQuotaEntity> record);
 
     int insertSelective(TMaterialQuotaEntity record);
     
-    int updateList(List<TMaterialQuotaEntity> record);
+    int deleteBatchData(TMaterialQuotaEntity records);
+    
+    int deleteData(TMaterialQuotaEntity records);
 }

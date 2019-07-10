@@ -2,20 +2,20 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-              <el-form-item label="订单号">
-                  <el-input placeholder="物料号" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
+              <el-form-item label="成品编码">
+                  <el-input placeholder="成品编码" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="物料号">
-                <el-input placeholder="物料号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
+              <el-form-item label="物料专用号">
+                <el-input placeholder="物料专用号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
               </el-form-item>
               <el-form-item label="航次">
-                <el-input placeholder="物料号" v-model="search_keys.shipNo" class="search-form-item-input"></el-input>
+                <el-input placeholder="航次" v-model="search_keys.shipNo" class="search-form-item-input"></el-input>
               </el-form-item>
               <el-form-item label="集装箱号">
-                <el-input placeholder="物料号" v-model="search_keys.containerNo" class="search-form-item-input"></el-input>
+                <el-input placeholder="集装箱号" v-model="search_keys.containerNo" class="search-form-item-input"></el-input>
               </el-form-item>
               <el-form-item label="合同号">
-                <el-input placeholder="物料号" v-model="search_keys.contractNo" class="search-form-item-input"></el-input>
+                <el-input placeholder="合同号" v-model="search_keys.contractNo" class="search-form-item-input"></el-input>
               </el-form-item>
               <el-form-item label="状态">
                 <el-select v-model="search_keys.state" class="search-form-item-input" size="mini" knx>
@@ -107,18 +107,18 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="orderCode"  width="100" align="center" label="订单产品型号"/>
-            <el-table-column prop="orderDetailInfo.orderCodeDesc"  width="100" align="center" label="订单产品型号描述"  />
-            <el-table-column prop="orderDetailInfo.orderAmount"  width="100" align="center" label="订单数量"  />
+<!--            <el-table-column prop="orderCode"  width="100" align="center" label="订单产品型号"/>-->
+<!--            <el-table-column prop="orderDetailInfo.orderCodeDesc"  width="100" align="center" label="订单产品型号描述"  />-->
+<!--            <el-table-column prop="orderDetailInfo.orderAmount"  width="100" align="center" label="订单数量"  />-->
             <el-table-column prop="orderDetailInfo.orderDate"  width="100" align="center" label="订单日期">
               <template slot-scope="scope">
                 {{scope.row.orderDetailInfo.orderDate != null ?$moment(scope.row.orderDetailInfo.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
               </template>
             </el-table-column>
-            <el-table-column prop="dictOrderUnit.name" width="100" align="center" label="订单型号单位" />
+<!--            <el-table-column prop="dictOrderUnit.name" width="100" align="center" label="订单型号单位" />-->
             <el-table-column prop="orderDetailInfo.orderId" width="100" align="center" label="订单号" />
             <el-table-column prop="orderDetailInfo.orderIdItem" width="100" align="center" label="订单行项目" />
-            <el-table-column prop="materialCode"  width="100" align="center" label="物料号"/>
+            <el-table-column prop="materialCode"  width="100" align="center" label="物料专用号"/>
             <el-table-column prop="orderDetailInfo.materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
             <el-table-column prop="orderDetailInfo.materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
             <el-table-column prop="orderDetailInfo.materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />

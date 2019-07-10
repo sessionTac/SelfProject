@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -84,19 +85,24 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			TDictDataEntity tDictDataEntity = new TDictDataEntity();
 			tDictDataEntity.setDictTypeCode("currency");
 			map.put("currencys",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+			
 			tDictDataEntity.setDictTypeCode("mattertype");
 			map.put("materialCategorys",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+			
 			tDictDataEntity.setDictTypeCode("unit");
 			map.put("materialUnits",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			map.put("materialRelationUnits",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+			
 			tDictDataEntity.setDictTypeCode("supplyMode");
 			map.put("materialSupplyModes",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
-			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			
 			tDictDataEntity.setDictTypeCode("minpackageType");
 			map.put("materialMinpackageTypes",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
-			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+			
 			tDictDataEntity.setDictTypeCode("converRelation");
 			map.put("materialConverRelation",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
+			
+			map.put("versions",change2DictData(mmaterialInfoDao.selectAllVersion()));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(map);
 		} catch (Exception e) {
@@ -107,6 +113,21 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			return result;
 		}
     }
+	
+	private List<TDictDataEntity> change2DictData(List<MMaterialInfoEntity>  objectEntity){
+		List<TDictDataEntity> resultList = new ArrayList<TDictDataEntity>();
+		if(objectEntity.size() == 0) {
+			return null;
+		}else {
+			for(MMaterialInfoEntity object:objectEntity) {
+				TDictDataEntity dictData = new TDictDataEntity();
+				dictData.setValue(object.getVersion().toString());
+				dictData.setName("V"+object.getVersion().toString());
+				resultList.add(dictData);
+			}
+			return resultList;
+		}
+	}
 	
 	@SuppressWarnings({ "finally", "unchecked" })
 	@Override
@@ -128,7 +149,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
         		}
         		if(materialInfoParams.containsKey("updateList")) {
         			paramList = (List<MMaterialInfoEntity>)materialInfoParams.get("updateList");
-        			if(paramList.size()>0) {resultInt = resultInt + mmaterialInfoDao.updateList(paramList);}
+        			if(paramList.size()>0) {resultInt = resultInt + mmaterialInfoDao.insertList(paramList);}
         		}
         		if(materialInfoParams.containsKey("quotaInsertList")) {
         			quotaParamList = (List<TMaterialQuotaEntity>)materialInfoParams.get("quotaInsertList");
@@ -209,14 +230,18 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 		try {
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			if(isExist(materialInfoEntity.getMaterialOrderCode(),materialInfoEntity.getMaterialCode(),roleInfoEntity.getRoleAt())) {
+				materialInfoEntity.setVersion(version +1);
+			}else {
+				materialInfoEntity.setVersion(1);
+			}
 			String dictUUID = CommonSqlUtils.getUUID32();
 			materialInfoEntity.setMaterialInfoId(dictUUID);
 			materialInfoEntity.setCreateUser(principal.getUserName());
 			materialInfoEntity.setIsDelete(0);
 			materialInfoEntity.setIsLocked(0);
-			materialInfoEntity.setVersion(1);
 			materialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 			int returnInt = mmaterialInfoDao.insertSelective(materialInfoEntity);
 			if (returnInt > 0) {
@@ -330,8 +355,17 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 			int returnInt = mmaterialInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName());
 			if (returnInt > 0) {
+				for(int i =0;i<commonEntity.getIdsStr().length;i++) {
+					TMaterialQuotaEntity param = new TMaterialQuotaEntity();
+					MMaterialInfoEntity rntRes = mmaterialInfoDao.selectInfoById(commonEntity.getIdsStr()[i],roleInfoEntity.getRoleAt());
+					param.setMaterialCode(rntRes.getMaterialCode());
+					param.setSupplierCode(rntRes.getSupplierCode());
+					param.setDataRoleAt(roleInfoEntity.getRoleAt());
+					tmaterialQuotaDao.deleteData(param);
+				}
 				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
 			}
 			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
@@ -498,6 +532,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				mmaterialInfoEntity.setMaterialInfoId(CommonSqlUtils.getUUID32());
 				// 订单型号，成品型号
 				mmaterialInfoEntity.setMaterialOrderCode((String)mapData.get("成品型号"));
+				mmaterialInfoEntity.setMaterialOrderCodeDesc((String)mapData.get("成品描述"));
 				// 物料专用号，子件型号
 				mmaterialInfoEntity.setMaterialCode((String)mapData.get("物料专用号"));
 				// 物料类别
@@ -519,6 +554,10 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				String unitVle = getFromDictDataByName(
 						(String)mapData.get("单位"),"unit","单位");
 				mmaterialInfoEntity.setMaterialUnit(unitVle);
+				// 币种
+				String currencyVle = getFromDictDataByName(
+						(String)mapData.get("币种"),"currency","币种");
+				mmaterialInfoEntity.setMaterialCurrency(currencyVle);
 				// 换算关系
 				mmaterialInfoEntity.setMaterialRelation((String)mapData.get("换算关系"));
 				// 换算后单位
@@ -537,24 +576,20 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				String materialTaxPrice = (String)mapData.get("不含税单价");
 				mmaterialInfoEntity.setMaterialTaxPrice(
 						CommonMethods.changeToBigdecimal(materialTaxPrice.trim()));
-				// 含税单价
+				// 税率
 				String tax = (String)mapData.get("税率");
-				mmaterialInfoEntity.setMaterialVatPrice(
-						CommonMethods.changeToBigdecimal(tax.trim()));
+				mmaterialInfoEntity.setTax(CommonMethods.changeToBigdecimal(tax.trim()));
 				// 代理费率
 				String materialRate = (String)mapData.get("代理费率");
 				mmaterialInfoEntity.setMaterialRate(
 						CommonMethods.changeToBigdecimal(materialRate.trim()));
-//				// 币种
-//				String currencyVle = getFromDictDataByName(
-//						(String)mapData.get("币种"),"currency","币种");
-//				mmaterialInfoEntity.setMaterialCurrency(currencyVle);
+
 				// HS海关编码
 				mmaterialInfoEntity.setHsNo((String)mapData.get("HS海关编码"));
 				// 供应商编码
 				MSupplierInfoEntity supplierInfo = msupplierInfoDao.selectByCode((String)mapData.get("供应商编码"));
 				if(supplierInfo == null) {
-					throw new NullPointerException(messageBean.getMessage("common.check.isExist", "供应商信息"));
+					throw new NullPointerException(messageBean.getMessage("bussiness.material.supplier.exist.no", (String)mapData.get("供应商编码")));
 				}
 				mmaterialInfoEntity.setSupplierCode((String)mapData.get("供应商编码"));
 				// 物料配额表
@@ -562,29 +597,33 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				materialQuotaEntity.setMaterialCode((String)mapData.get("物料专用号"));
 				// 供应商编码
 				materialQuotaEntity.setSupplierCode((String)mapData.get("供应商编码"));
+				materialQuotaEntity.setSupplierName(supplierInfo.getSupplierNameCn());
 				// 配额
 				String quota = (String)mapData.get("配额");
 				materialQuotaEntity.setMaterialQuota(CommonMethods.changeToBigdecimal(quota.trim()));
 				// 长
 				String length = (String)mapData.get("长");
 				mmaterialInfoEntity.setLength(
-						CommonMethods.changeToBigdecimal(length.trim()));
+						CommonMethods.changeToBigdecimal(length!=null?length.trim():length));
 				// 宽
 				String width = (String)mapData.get("宽");
 				mmaterialInfoEntity.setWidth(
-						CommonMethods.changeToBigdecimal(width.trim()));
+						CommonMethods.changeToBigdecimal(width!=null?width.trim():width));
 				// 高
 				String height = (String)mapData.get("高");
 				mmaterialInfoEntity.setHeight(
-						CommonMethods.changeToBigdecimal(height.trim()));
+						CommonMethods.changeToBigdecimal(height!=null?height.trim():height));
+				// 备注
+				mmaterialInfoEntity.setUserDefined1((String)mapData.get("备注"));
 				// 数据所属
 				mmaterialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 				// 成品型号和子件型号组合判定是否存在，存在时更新，不存在时插入
-				if(isExist(mmaterialInfoEntity.getMaterialOrderCode(),mmaterialInfoEntity.getMaterialCode())) {
+				if(isExist(mmaterialInfoEntity.getMaterialOrderCode(),mmaterialInfoEntity.getMaterialCode(),roleInfoEntity.getRoleAt())) {
 					// 更新者
-					mmaterialInfoEntity.setUpdateUser(principal.getUserName());
+					mmaterialInfoEntity.setCreateUser(principal.getUserName());
 					mmaterialInfoEntity.setVersion(version+1);
 					mmaterialInfoEntity.setIsLocked(0);
+					mmaterialInfoEntity.setIsDelete(0);
 					updateResultLst.add(mmaterialInfoEntity);
 				}
 				else {
@@ -596,10 +635,11 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 					insertResultLst.add(mmaterialInfoEntity);
 				}
 				//物料号和供应商编码是否存在，存在是更新，不存在时插入
-				if(isExistQuota(materialQuotaEntity.getMaterialCode(),materialQuotaEntity.getSupplierCode())) {
+				if(isExistQuota(materialQuotaEntity.getMaterialCode(),materialQuotaEntity.getSupplierCode(),roleInfoEntity.getRoleAt())) {
 					// 更新者
 					materialQuotaEntity.setUpdateUser(principal.getUserName());
 					materialQuotaEntity.setVersion(quotaVersion+1);
+					materialQuotaEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 					quotaUpdateResultLst.add(materialQuotaEntity);
 				}
 				else {
@@ -607,9 +647,13 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 					materialQuotaEntity.setCreateUser(principal.getUserName());
 					materialQuotaEntity.setIsDelete(0);
 					materialQuotaEntity.setVersion(1);
+					materialQuotaEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 					quotaInsertResultLst.add(materialQuotaEntity);
 				}
 			}
+			// 去除重复对象
+			quotaInsertResultLst = deleteItear(quotaInsertResultLst);
+			quotaUpdateResultLst = deleteItear(quotaUpdateResultLst);
 			returnMap.put("insertList", insertResultLst);
 			returnMap.put("updateList", updateResultLst);
 			returnMap.put("quotaInsertList", quotaInsertResultLst);
@@ -623,16 +667,22 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		}
 	}
 	
+	private List<TMaterialQuotaEntity> deleteItear(List<TMaterialQuotaEntity> quotaInsertResultLst){
+		List<TMaterialQuotaEntity> list = quotaInsertResultLst.stream().distinct().collect(Collectors.toList());
+		return list;
+	}
+	
 	/***
 	 * 成品型号和子件型号共同判定是否存在
 	 * @param materialOrderCode
 	 * @param materialCode
 	 * @return true/false
 	 */
-	private boolean isExist(String materialOrderCode,String materialCode) {
+	private boolean isExist(String materialOrderCode,String materialCode,String roleAt) {
 		MMaterialInfoEntity materialInfoEntity = new MMaterialInfoEntity();
 		materialInfoEntity.setMaterialOrderCode(materialOrderCode);
 		materialInfoEntity.setMaterialCode(materialCode);
+		materialInfoEntity.setDataRoleAt(roleAt);
 		List<MMaterialInfoEntity> resultList = mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity);
 		if(resultList.size()>0) {
 			version = resultList.get(0).getVersion();
@@ -647,10 +697,11 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	 * @param supplierNo
 	 * @return true/false
 	 */
-	private boolean isExistQuota(String materialCode,String supplierNo) {
+	private boolean isExistQuota(String materialCode,String supplierNo,String roleAt) {
 		TMaterialQuotaEntity materialQuotaEntity = new TMaterialQuotaEntity();
 		materialQuotaEntity.setMaterialCode(materialCode);
 		materialQuotaEntity.setSupplierCode(supplierNo);
+		materialQuotaEntity.setDataRoleAt(roleAt);
 		List<TMaterialQuotaEntity> resultList = tmaterialQuotaDao.selectByPrimaryKey(materialQuotaEntity);
 		if(resultList.size()>0) {
 			quotaVersion = resultList.get(0).getVersion();
@@ -674,7 +725,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			if(dictDataLst.size()>0) {
 				return dictDataLst.get(0).getValue();
 			}else {
-				throw new NullPointerException(messageBean.getMessage("common.dict.emptyerror", dictTypeCn));
+				throw new NullPointerException(messageBean.getMessage("common.dict.emptyerror", dictTypeCn,nameValue));
 			}
 		}
 		catch(Exception e) {

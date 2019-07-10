@@ -2,8 +2,8 @@
   <div style="display: flex;flex-direction: column;height: 100%">
     <div class="el-header">
       <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-        <el-form-item label="订单产品型号">
-          <el-input placeholder="订单产品型号" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
+        <el-form-item label="成品编码">
+          <el-input placeholder="成品编码" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
         </el-form-item>
         <el-form-item label="订单日期">
           <el-date-picker
@@ -16,8 +16,8 @@
             end-placeholder="结束日期">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="物料号">
-          <el-input placeholder="物料号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
+        <el-form-item label="物料专用号">
+          <el-input placeholder="物料专用号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
         </el-form-item>
         <el-collapse accordion>
           <el-collapse-item>
@@ -49,6 +49,18 @@
                     :key="item.value"
                     :label="item.name"
                     :value="item.value">
+                  </el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item label="订单详细类型">
+                <el-select v-model="search_keys.orderDetailType"  size="mini" class="search-form-item-input">
+                  <el-option value=""></el-option>
+                  <el-option
+                          size="mini"
+                          v-for="item in orderDetailType"
+                          :key="item.value"
+                          :label="item.name"
+                          :value="item.value">
                   </el-option>
                 </el-select>
               </el-form-item>
@@ -84,12 +96,12 @@
           </el-collapse-item>
         </el-collapse>
         <el-form-item style="float: right">
-          <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:approval')" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >
+          <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:approval')&& $route.meta.flag=='week'" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >
             审批
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:goods')" :disabled="multipleSelection.length==0" @click="deliverGoods" icon="el-icon-s-check" >
+          <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:goods')&& $route.meta.flag=='week'" :disabled="deliver" @click="deliverGoods" icon="el-icon-s-check" >
             发货
           </el-button>
         </el-form-item>
@@ -134,8 +146,8 @@
               @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" fixed width="50" align="center"/>
-      <el-table-column prop="orderCode"  width="100" align="center" label="订单产品型号"  />
-      <el-table-column prop="orderCodeDesc"  width="100" align="center" label="订单产品型号描述"  />
+      <el-table-column prop="orderCode"  width="100" align="center" label="成品型号"  />
+      <el-table-column prop="orderCodeDesc"  width="100" align="center" label="成品型号描述"  />
       <el-table-column prop="orderAmount"  width="100" align="center" label="订单数量"  />
       <el-table-column prop="orderDate"  width="100" align="center" label="订单日期">
         <template slot-scope="scope">
@@ -145,13 +157,13 @@
       <el-table-column prop="dictOrderUnit.name" width="100" align="center" label="订单型号单位" />
       <el-table-column prop="orderId" width="100" align="center" label="订单号" />
       <el-table-column prop="orderIdItem" width="100" align="center" label="订单行项目" />
-      <el-table-column prop="materialCode"  :show-overflow-tooltip="true" align="center" label="物料号"  />
+      <el-table-column prop="materialCode"  :show-overflow-tooltip="true" align="center" label="物料专用号"  />
       <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
       <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
       <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
       <el-table-column prop="dictMaterialUnit.name"  :show-overflow-tooltip="true" align="center" label="物料单位"  />
       <el-table-column prop="materialAmount"  :show-overflow-tooltip="true" align="center" label="物料数量"  />
-      <el-table-column prop="dictMaterialCategory.name"  :show-overflow-tooltip="true" align="center" label="物料类别"  />
+      <el-table-column prop="dictMaterialCategory.name"  :show-overflow-tooltip="true" align="center" label="渠道"  />
       <el-table-column prop="materialRelation"  :show-overflow-tooltip="true" align="center" label="换算关系"  />
       <el-table-column prop="dictRelationUnit.name"  :show-overflow-tooltip="true" align="center" label="换算后单位"  />
       <el-table-column prop="materialRelationQuantity"  :show-overflow-tooltip="true" align="center" label="换算后数量"  />
@@ -160,8 +172,9 @@
 <!--      <el-table-column prop="materialMinpackageTotalamt"  :show-overflow-tooltip="true" align="center" label="最小包装总量"  />-->
       <el-table-column prop="materialTaxPrice"  :show-overflow-tooltip="true" align="center" label="未税单价"  />
       <el-table-column prop="materialTaxTotalprice"  :show-overflow-tooltip="true" align="center" label="未税总价"  />
-      <el-table-column prop="materialVatPrice"  :show-overflow-tooltip="true" align="center" label="含税单价"  />
+<!--      <el-table-column prop="materialVatPrice"  :show-overflow-tooltip="true" align="center" label="含税单价"  />-->
       <el-table-column prop="materialVatTotalprice"  :show-overflow-tooltip="true" align="center" label="含税总价"  />
+      <el-table-column prop="tax"  :show-overflow-tooltip="true" align="center" label="税率"  />
       <el-table-column prop="materialRate"  :show-overflow-tooltip="true" align="center" label="代理费率"  />
       <el-table-column prop="dictMaterialCurrency.name"  :show-overflow-tooltip="true" align="center" label="币种"  />
       <el-table-column prop="dictCountryCode.name"  :show-overflow-tooltip="true" align="center" label="国家标志"  />
@@ -174,6 +187,7 @@
       <!--<el-table-column prop="differAmount"  :show-overflow-tooltip="true" align="center" label="差异数量"  />-->
       <el-table-column prop="takeOverAmount"  :show-overflow-tooltip="true" align="center" label="收货数量"  />
       <el-table-column prop="deliveryAmount"  :show-overflow-tooltip="true" align="center" label="发货数量"  />
+      <el-table-column prop="dictOrderDetailType.name"  :show-overflow-tooltip="true" align="center" label="订单详细类型"  />
       <!--<el-table-column prop="surplusAmount"  :show-overflow-tooltip="true" align="center" label="物料剩余数量"  />-->
 
 
@@ -240,6 +254,7 @@
           materialDescEn:"",
           materialDescRn:"",
           confirmStatus:"",
+          orderDetailType:"",
           createUser:"",
           createTimeArray:'',
           updateUser:"",
@@ -247,6 +262,7 @@
           isBalance:0
         },
         confirmStatus:[],
+        orderDetailType:[],
         options:{
           
         },
@@ -263,6 +279,11 @@
           return item.confirmStatus==1
         }) || (this.multipleSelection.length===0))
       },
+        deliver(){
+            return (this.multipleSelection.some(item=>{
+                return item.confirmStatus==0
+            }) || (this.multipleSelection.length===0))
+        },
       // unlockFlag(){
       //   return (this.multipleSelection.some(item=>{
       //     return item.isLocked===0
@@ -272,7 +293,8 @@
     async mounted(){
       this.search_keys.orderCode=this.$route.query.orderCode;
       await activityService.initData().then(resp=>{
-        this.confirmStatus=resp.data.result.orderStatus
+        this.confirmStatus=resp.data.result.orderStatus;
+        this.orderDetailType =resp.data.result.orderDetailType
       },error=>{})
       this.exec_search({search_keys:this.search_keys, pageNum:1});
     },

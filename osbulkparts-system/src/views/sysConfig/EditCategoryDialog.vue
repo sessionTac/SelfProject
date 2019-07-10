@@ -94,15 +94,9 @@
         parentUuid: [
           {value: "0", label: "根节点"},
           {value: "1", label: "通用分类"},
-          {value: "2", label: "婚姻"},
-          {value: "2", label: "性别"},
-          {value: "2", label: "民族"},
-          {value: "2", label: "学历"},
         ],
         subordinate: [
           {label: 1, value: "根节点"},
-          {label: 2, value: "单位A"},
-          {label: 3, value: "单位B"},
         ],
 
         /*表单验证*/

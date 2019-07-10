@@ -90,6 +90,8 @@ public class GoodsListServiceImpl implements GoodsListService {
 			String state = "1";//已收货
 			int returnInt = tDeliverInfoDao.updateListForDelivery(commonEntity.getIdsStr(), updateUser, state);
 			if (returnInt > 0) {
+				// 更新订单详细的收货数量
+				
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 				result.setMessage(messageBean.getMessage("bussiness.order.delivery.take.success"));
 			}

@@ -140,6 +140,11 @@ public class TOrderDetailInfoEntity implements Serializable {
      * 含税总价
      */
     private BigDecimal materialVatTotalprice;
+    
+    /**
+     * 税率
+     */
+    private BigDecimal tax;
 
     /**
      * 代理费率
@@ -227,6 +232,11 @@ public class TOrderDetailInfoEntity implements Serializable {
     private String isBalance;
 
     /**
+     * 订单详细类型
+     */
+    private String orderDetailType;
+
+    /**
      * 创建者
      */
     private String createUser;
@@ -303,7 +313,10 @@ public class TOrderDetailInfoEntity implements Serializable {
      */
     private TDictDataEntity dictConfirmStatus;
 
-
+    /**
+     * 订单详细类型
+     */
+    private TDictDataEntity dictOrderDetailType;
 
     private static final long serialVersionUID = 1L;
 }

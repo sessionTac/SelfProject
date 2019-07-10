@@ -6,7 +6,7 @@
         <div class="dialogStyle" style="display: flex;flex-direction: column">
           <el-form  class="search-form search-form-normal" label-width="110px" ref="form"
                     style="flex: 5" :model="form" size="mini" :rules="rules">
-            <el-form-item label="订单产品型号" prop="orderCode">
+            <el-form-item label="成品编码" prop="orderCode">
               <el-autocomplete v-model="form.orderCode" :disabled="mode ==='EDIT'" class="search-form-item-input" style="width: 160px" size="mini"
                             :fetch-suggestions="searchOrderCode"    clearable></el-autocomplete>
               <template slot="error" slot-scope="scope">
@@ -14,23 +14,22 @@
               </template>
               <div style="float: right;margin-right: 40px;"><el-button :disabled="form.orderCode==''" @click="checkOrderCode(form.orderCode)">校验并获取</el-button></div>
             </el-form-item>
-            <el-form-item label="订单产品型号描述" prop="orderCodeDesc">
+            <el-form-item label="成品描述" prop="orderCodeDesc">
               <el-input type="textarea" autosize="" v-model="form.orderCodeDesc" class="search-form-item-input" style="width: 160px" size="mini"
-                       :disabled="true" clearable></el-input>
+                        clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="订单数量" prop="orderAmount">
               <el-input v-model="form.orderAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="true"  :maxlength="18" clearable></el-input>
+                         :maxlength="18" clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="订单日期" prop="orderDate">
               <el-date-picker
-                :disabled="true"
                 v-model="form.orderDate"
                 type="date"
                 style="width:160px"
@@ -42,7 +41,7 @@
               </template>
             </el-form-item>
             <el-form-item label="订单型号单位" prop="orderUnit">
-              <el-select :disabled="true" v-model="form.orderUnit" style="width: 160px" size="mini" clearable>
+              <el-select  v-model="form.orderUnit" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -58,21 +57,21 @@
             </el-form-item>
             <el-form-item label="订单号" prop="orderId">
               <el-input v-model="form.orderId" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"    :maxlength="20"  clearable></el-input>
+                        :disabled="true"  placeholder="自动生成"  :maxlength="20"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="订单行项目" prop="orderIdItem">
               <el-input v-model="form.orderIdItem" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"    :maxlength="5" clearable></el-input>
+                        :disabled="true"  placeholder="自动生成"  :maxlength="5" clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="物料号" prop="materialCode">
+            <el-form-item label="物料专用号" prop="materialCode">
               <el-autocomplete v-model="form.materialCode" class="search-form-item-input" style="width:160px" size="mini"
-                               :fetch-suggestions="searchMaterialCode"  :disabled="form.orderCode==''"   clearable></el-autocomplete>
+                               :fetch-suggestions="searchMaterialCode" clearable></el-autocomplete>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 30px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -80,29 +79,29 @@
 
             </el-form-item>
             <el-form-item label="物料中文描述" prop="materialDescCn">
-              <el-input v-model="form.materialDescCn" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="true"   clearable></el-input>
+              <el-input type="textarea" v-model="form.materialDescCn" class="search-form-item-input" style="width:160px" size="mini"
+                        clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="物料英文描述" prop="materialDescEn">
-              <el-input v-model="form.materialDescEn" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="true"   clearable></el-input>
+              <el-input type="textarea" v-model="form.materialDescEn" class="search-form-item-input" style="width:160px" size="mini"
+                          clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="物料俄文描述" prop="materialDescRn">
-              <el-input v-model="form.materialDescRn" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="true"   clearable></el-input>
+              <el-input type="textarea" v-model="form.materialDescRn" class="search-form-item-input" style="width:160px" size="mini"
+                          clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
 
             <el-form-item label="物料单位" prop="materialUnit">
-              <el-select :disabled="true" v-model="form.materialUnit" style="width: 160px" size="mini" clearable>
+              <el-select  v-model="form.materialUnit" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -118,13 +117,13 @@
             </el-form-item>
             <el-form-item label="单耗" prop="materialAmount">
               <el-input v-model="form.materialAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"      :maxlength="18" clearable></el-input>
+                          :maxlength="18" clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="物料类别" prop="materialCategory">
-              <el-select :disabled="true" v-model="form.materialCategory" style="width: 160px" size="mini" clearable>
+            <el-form-item label="渠道" prop="materialCategory">
+              <el-select  v-model="form.materialCategory" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -140,13 +139,13 @@
             </el-form-item>
             <el-form-item label="换算关系" prop="materialRelation">
               <el-input v-model="form.materialRelation" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="true"   clearable></el-input>
+                         clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="换算后单位" prop="materialRelationUnit">
-              <el-select :disabled="true" v-model="form.materialRelationUnit" style="width: 160px" size="mini" clearable>
+              <el-select  v-model="form.materialRelationUnit" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -162,7 +161,7 @@
             </el-form-item>
             <el-form-item label="换算后数量" prop="materialRelationQuantity">
               <el-input v-model="form.materialRelationQuantity" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"  :maxlength="18" clearable></el-input>
+                         :maxlength="18" clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
@@ -198,41 +197,48 @@
 <!--            </el-form-item>-->
             <el-form-item label="未税单价" prop="materialTaxPrice">
               <el-input v-model="form.materialTaxPrice" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="true"   :maxlength="18"   clearable></el-input>
+                         :maxlength="18"   clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="未税总价" prop="materialTaxTotalprice">
-              <el-input v-model="form.materialTaxTotalprice" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"    :maxlength="18"   clearable></el-input>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
+            <el-input v-model="form.materialTaxTotalprice" class="search-form-item-input" style="width:160px" size="mini"
+                      :maxlength="18"   clearable></el-input>
+            <template slot="error" slot-scope="scope">
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
+          </el-form-item>
+<!--            <el-form-item label="税率" prop="materialTaxTotalprice">-->
+<!--              <el-input v-model="form.materialTaxTotalprice" class="search-form-item-input" style="width:160px" size="mini"-->
+<!--                        :maxlength="18"   clearable></el-input>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
             <el-form-item label="含税单价" prop="materialVatPrice">
               <el-input v-model="form.materialVatPrice" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="true"    :maxlength="18"  clearable></el-input>
+                         :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="含税总价" prop="materialVatTotalprice">
               <el-input v-model="form.materialVatTotalprice" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"     :maxlength="18"  clearable></el-input>
+                          :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="代理费率" prop="materialRate">
               <el-input v-model="form.materialRate" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="true"   :maxlength="18"  clearable></el-input>
+                         :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="币种" prop="materialCurrency">
-              <el-select :disabled="true" v-model="form.materialCurrency" style="width: 160px" size="mini" clearable>
+              <el-select  v-model="form.materialCurrency" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -247,7 +253,7 @@
               </template>
             </el-form-item>
             <el-form-item label="国家标志" prop="countryCode">
-              <el-select :disabled="form.orderCode==''" v-model="form.countryCode" style="width: 160px" size="mini" clearable>
+              <el-select  v-model="form.countryCode" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -262,7 +268,7 @@
               </template>
             </el-form-item>
             <el-form-item label="状态" prop="confirmStatus">
-              <el-select :disabled="form.orderCode==''" v-model="form.confirmStatus" style="width: 160px" size="mini" clearable>
+              <el-select  v-model="form.confirmStatus" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
                 <el-option
                   size="mini"
@@ -276,27 +282,42 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="型号发货总数量" prop="orderOutTotalAmount">
-              <el-input v-model="form.orderOutTotalAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"  :maxlength="18"  clearable></el-input>
+            <el-form-item label="订单详细类型" prop="orderDetailType">
+              <el-select  :disabled="true" v-model="form.orderDetailType" style="width: 160px" size="mini" clearable>
+                <el-option value=""></el-option>
+                <el-option
+                        size="mini"
+                        v-for="item in orderDetailType"
+                        :key="item.value"
+                        :label="item.name"
+                        :value="item.value">
+                </el-option>
+              </el-select>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="子件发货总数量" prop="materOutTotalAmount">
-              <el-input v-model="form.materOutTotalAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   :maxlength="18"  clearable></el-input>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
-            <el-form-item label="订单剩余数量" prop="residualAmount">
-              <el-input v-model="form.residualAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   :maxlength="18"  clearable></el-input>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
+<!--            <el-form-item label="型号发货总数量" prop="orderOutTotalAmount">-->
+<!--              <el-input v-model="form.orderOutTotalAmount" class="search-form-item-input" style="width:160px" size="mini"-->
+<!--                        :disabled="form.orderCode==''"  :maxlength="18"  clearable></el-input>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
+<!--            <el-form-item label="子件发货总数量" prop="materOutTotalAmount">-->
+<!--              <el-input v-model="form.materOutTotalAmount" class="search-form-item-input" style="width:160px" size="mini"-->
+<!--                        :disabled="form.orderCode==''"   :maxlength="18"  clearable></el-input>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
+<!--            <el-form-item label="订单剩余数量" prop="residualAmount">-->
+<!--              <el-input v-model="form.residualAmount" class="search-form-item-input" style="width:160px" size="mini"-->
+<!--                        :maxlength="18"  clearable></el-input>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
             <!--<el-form-item label="调整后数量" prop="trimAmount">-->
               <!--<el-input v-model="form.trimAmount" class="search-form-item-input" style="width:160px" size="mini"-->
                         <!--:disabled="form.orderCode==''"   :maxlength="18"   clearable></el-input>-->
@@ -311,40 +332,36 @@
 <!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
 <!--              </template>-->
 <!--            </el-form-item>-->
-            <el-form-item label="差异数量" prop="differAmount">
-              <el-input v-model="form.differAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"  :maxlength="18"  clearable></el-input>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
-            <el-form-item label="收货数量" prop="takeOverAmount">
-              <el-input v-model="form.takeOverAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"  :maxlength="18"  clearable></el-input>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
+<!--            <el-form-item label="差异数量" prop="differAmount">-->
+<!--              <el-input v-model="form.differAmount" class="search-form-item-input" style="width:160px" size="mini"-->
+<!--                         :maxlength="18"  clearable></el-input>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
+<!--            <el-form-item label="收货数量" prop="takeOverAmount">-->
+<!--              <el-input v-model="form.takeOverAmount" class="search-form-item-input" style="width:160px" size="mini"-->
+<!--                        :maxlength="18"  clearable></el-input>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
             <el-form-item label="发货数量" prop="deliveryAmount">
               <el-input v-model="form.deliveryAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   :maxlength="18"  clearable></el-input>
+                        :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
             <el-form-item label="物料剩余数量" prop="surplusAmount">
               <el-input v-model="form.surplusAmount" class="search-form-item-input" style="width:160px" size="mini"
-                        :disabled="form.orderCode==''"   :maxlength="18"  clearable></el-input>
+                        :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-
-
           </el-form>
-
         </div>
-
       </el-card>
       <div class="dialogButton">
         <el-button type="primary" size="mini" :disabled="form.isLocked==1" @click="submit('form')"><i
@@ -390,6 +407,7 @@
         materialCurrency:[],
         countryCode:[],
         confirmStatus:[],
+        orderDetailType:[],
         form: {
           orderCode:"",
           orderCodeDesc:"",
@@ -419,6 +437,7 @@
           materialCurrency:"",
           countryCode:"",
           confirmStatus:"",
+          orderDetailType:"",
           orderOutTotalAmount:"",
           materOutTotalAmount:"",
           residualAmount:"",
@@ -434,26 +453,25 @@
         /**表单的验证*/
         rules: {
           orderCode: [
-            {required: true, message: '请填写订单型号', trigger: 'blur'},
+            // {required: true, message: '请填写订单型号', trigger: 'blur'},
             {max: 32, message: '长度不超过20个字符', trigger: 'blur'},
             {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
           ],
           orderCodeDesc: [
-            {required: true, message: '请填写订单型号描述', trigger: 'blur'},
-            {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
-            {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
+            // {required: true, message: '请填写订单型号描述', trigger: 'blur'},
+            {max: 200, message: '长度不超过200个字符', trigger: 'blur'}
           ],
           orderAmount: [
-            {required: true, message: '请填写订单数量', trigger: 'blur'},
+            // {required: true, message: '请填写订单数量', trigger: 'blur'},
             // {pattern: /^[0-9]*$/ , trigger: 'blur', message: '请输入数字',}
             {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
-          orderDate:[
-            {required: true, message: '请填写订单日期', trigger: 'blur'},
-          ],
-          orderUnit: [
-            {required: true, message: '请选择订单型号单位', trigger: 'change'}
-          ],
+          // orderDate:[
+          //   {required: true, message: '请填写订单日期', trigger: 'blur'},
+          // ],
+          // orderUnit: [
+          //   {required: true, message: '请选择订单型号单位', trigger: 'change'}
+          // ],
           orderId:[
             {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
           ],
@@ -461,7 +479,7 @@
             {max: 5, message: '长度不超过5个字符', trigger: 'blur'},
           ],
           materialCode: [
-            {required: true, message: '请填写物料号', trigger: 'blur'},
+            {required: true, message: '请填写物料专用号', trigger: 'blur'},
             {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
           ],
           materialDescCn: [
@@ -484,7 +502,7 @@
             {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
           materialCategory: [
-            {required: true, message: '请选择物料类别', trigger: 'change'}
+            {required: true, message: '请选择渠道', trigger: 'change'}
           ],
           materialRelation: [
             {max: 30, message: '长度不超过30个字符', trigger: 'blur'},
@@ -527,33 +545,33 @@
           materialCurrency: [
             {required: true, message: '请选择币种', trigger: 'change'}
           ],
-          countryCode: [
-            {required: true, message: '请选择国家标志', trigger: 'change'}
-          ],
+          // countryCode: [
+          //   {required: true, message: '请选择国家标志', trigger: 'change'}
+          // ],
           confirmStatus: [
 
           ],
-          orderOutTotalAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
-          ],
-          materOutTotalAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
-          ],
-          residualAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
-          ],
-          trimAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
-          ],
+          // orderOutTotalAmount: [
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          // ],
+          // materOutTotalAmount: [
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          // ],
+          // residualAmount: [
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          // ],
+          // trimAmount: [
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          // ],
           // stockAmount: [
           //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           // ],
-          differAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
-          ],
-          takeOverAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
-          ],
+          // differAmount: [
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          // ],
+          // takeOverAmount: [
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          // ],
           deliveryAmount: [
             {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
@@ -580,6 +598,7 @@
           this.materialCurrency=resp.data.result.currency
           this.countryCode=resp.data.result.countryCode
           this.confirmStatus=resp.data.result.orderStatus
+          this.orderDetailType= resp.data.result.orderDetailType
         },error=>{});
         await activityService.getAllOrderCode({isBalance:0}).then(resp=>{
           this.orderCodeList=resp.data.resultList

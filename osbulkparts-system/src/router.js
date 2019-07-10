@@ -205,33 +205,6 @@ export const constantRoutes = [
                     requiresPermission: 'maintenance:warehouse:planningbalance:detail:view',
                 }
             },
-
-
-
-            {
-                path: 'warehouseCollection',
-                component: () => import('@/views/sysWarehouse/CollectionDeliveryManagement/CollectionList.vue'),
-                name: 'warehouseCollection',
-                meta: { title: 'warehouseCollection',  icon: 'warehouseCollection', noCache: true,breadcrumb:true,keepAlive: true  }
-            },
-            {
-                path: 'warehouseDelivery',
-                component: () => import('@/views/sysWarehouse/CollectionDeliveryManagement/DeliveryList.vue'),
-                name: 'warehouseDelivery',
-                meta: { title: 'warehouseDelivery',  icon: 'warehouseDelivery', noCache: true,breadcrumb:true,keepAlive: true  }
-            },
-            {
-                path: 'warehouseRollingplan',
-                component: () => import('@/views/sysWarehouse/RollingPlanManagement/RollingPlanList.vue'),
-                name: 'warehouseRollingplan',
-                meta: { title: 'warehouseRollingplan',  icon: 'warehouseRollingplan', noCache: true,breadcrumb:true,keepAlive: true  }
-            },
-            {
-                path: 'warehouseFinance',
-                component: () => import('@/views/sysWarehouse/FinanceManangement/FinanceList.vue'),
-                name: 'warehouseFinance',
-                meta: { title: 'warehouseFinance',  icon: 'warehouseFinance', noCache: true,breadcrumb:true,keepAlive: true  }
-            }
         ]
     }
 ];
