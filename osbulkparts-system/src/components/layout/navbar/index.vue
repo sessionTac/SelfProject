@@ -7,7 +7,7 @@
       <template>
         <screenfull id="screenfull" class="right-menu-item hover-effect" />
 
-        <!--<lang-select class="right-menu-item hover-effect" />-->
+        <lang-select class="right-menu-item hover-effect" />
       </template>
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click" @command="handleCommand">
         <div class="avatar-wrapper" style="font-size: 15px">
@@ -59,7 +59,9 @@
     computed: {
       ...mapState({
         sidebar: state => state.app.sidebar,
+        language:state=>state.app.language
       }),
+
     },
     methods: {
       exit(){

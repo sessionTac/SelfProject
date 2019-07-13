@@ -1,5 +1,6 @@
 export default {
   route: {
+    ceshi:"ceshi",
     dashboard: 'Dashboard',
     documentation: 'Documentation',
     guide: 'Guide',

@@ -34,7 +34,7 @@ axiosService.interceptors.request.use(config => {
     };
 
     // 添加语言信息头
-    // config.headers['KNX_UI_LOCALE'] = i18n.locale;
+    config.headers['UI_LOCALE'] = localStorage.locale;
 
 
   }

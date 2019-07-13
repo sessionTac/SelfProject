@@ -1,5 +1,6 @@
 export default {
   route: {
+    ceshi:"测试",
     dashboard: '首页',
     documentation: '文档',
     guide: '引导页',
