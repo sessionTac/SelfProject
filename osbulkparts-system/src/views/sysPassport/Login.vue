@@ -73,8 +73,8 @@
         },
         data() {
             return {
-                username: 'admin',
-                password: '123456',
+                username: '',
+                password: '',
                 registerReadmeDialogState : {},
                 selectRoleDialogState : {},
             }

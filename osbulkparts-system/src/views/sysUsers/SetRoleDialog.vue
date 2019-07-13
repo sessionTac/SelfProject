@@ -28,8 +28,8 @@
                   @selection-change="handleSelectionChange"
                   ref="roleTable">
           <el-table-column reserve-selection type="selection" width="55"></el-table-column>
-          <el-table-column prop="roleId" label="角色编号"></el-table-column>
           <el-table-column prop="roleName" label="角色名称"></el-table-column>
+          <el-table-column prop="roleDesc" label="角色说明"></el-table-column>
         </el-table>
       </div>
     </div>

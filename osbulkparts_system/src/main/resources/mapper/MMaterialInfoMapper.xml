@@ -306,8 +306,7 @@
     	AND material.material_supply_mode = #{materialSupplyMode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(factoryCode)">
-    <bind name="factoryCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(factoryCode)"/>
-    	AND material.factory_code LIKE #{factoryCode_like,jdbcType=VARCHAR}
+    	AND material.factory_code = #{factoryCode,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(length)">
         AND `length` = #{length,jdbcType=DECIMAL}
@@ -320,6 +319,7 @@
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
     	AND material.data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
+    	AND material.data_role_at IN #{dataRoleAt}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(userDefined1)">
     	AND material.user_defined1 = #{userDefined1,jdbcType=VARCHAR}

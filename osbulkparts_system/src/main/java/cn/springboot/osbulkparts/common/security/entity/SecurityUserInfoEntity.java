@@ -22,6 +22,8 @@ public class SecurityUserInfoEntity {
 	
 	private String userRealName;
 	
+	private Integer userStauts;
+	
 	private String roleIdSelected;
 	
 	private List<MRoleInfoEntity> roleList = new ArrayList<MRoleInfoEntity>();

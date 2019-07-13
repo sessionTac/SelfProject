@@ -99,7 +99,7 @@ public class UserInfoController {
 
 	@Data
 	public static class InsertRoleForm {
-		List<Integer> roleIds;
+		List<String> roleIds;
 		String userId;
 	}
 	/**

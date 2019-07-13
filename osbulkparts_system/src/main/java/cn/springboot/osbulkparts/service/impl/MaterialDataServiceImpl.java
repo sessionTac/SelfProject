@@ -184,6 +184,9 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
 		try {
+			if(principal.getUserType()==4) {
+				materialInfoEntity.setFactoryCode(principal.getUserName());
+			}
 			materialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 			PageHelper.startPage(pageNumber, pageSize);
 			PageInfo<MMaterialInfoEntity> pageInfo = new PageInfo<>(

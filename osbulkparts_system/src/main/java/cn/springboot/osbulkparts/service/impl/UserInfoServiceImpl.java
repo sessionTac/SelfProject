@@ -163,7 +163,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @SuppressWarnings("finally")
     @Transactional
     @Override
-    public Object insertRole(List<Integer> roleIds, String userId, Authentication auth) {
+    public Object insertRole(List<String> roleIds, String userId, Authentication auth) {
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());

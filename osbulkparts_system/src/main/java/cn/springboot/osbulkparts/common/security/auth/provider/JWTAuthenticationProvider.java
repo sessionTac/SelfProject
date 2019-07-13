@@ -52,6 +52,7 @@ public class JWTAuthenticationProvider implements AuthenticationProvider{
 		principal.setUserRealName(user.getUserRealName());
 		principal.setUserType(user.getUserType());
 		principal.setRoleList(user.getRoleList());
+		principal.setUserStauts(user.getUserStatus());
 		
 		// 添加操作日志
 //		service.writeLog(String.valueOf(user.getId()),user.getUserName());

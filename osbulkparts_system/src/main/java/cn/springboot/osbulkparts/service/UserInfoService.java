@@ -40,7 +40,7 @@ public interface UserInfoService {
      * @param userId
      * @return
      */
-    Object insertRole(List<Integer> roleIds, String userId,Authentication auth);
+    Object insertRole(List<String> roleIds, String userId,Authentication auth);
 
     /**
      * 校验角色信息

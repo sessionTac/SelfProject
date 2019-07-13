@@ -1,31 +1,31 @@
 export default [
   {
     title: '首页',
-    requiresPermission: 'maintenance:index',
+    requiresPermission: 'maintenance:dashboard',
     iconClass:'iconfont icon-index',
     index: 'dashboard',
 
   },
   {
     title: '用户管理',
-    requiresPermission: 'maintenance:system:users:manages',
+    requiresPermission: 'maintenance:systemusers',
     index: 'users',
       children: [
           {
               title: '用户信息',
-              requiresPermission: 'maintenance:system:users:info:view',
+              requiresPermission: 'maintenance:system:users:info',
               index: 'userInfo',
           },
           {
               title: '角色权限',
-              requiresPermission: 'maintenance:system:users:role:view',
+              requiresPermission: 'maintenance:system:users:role',
               index: 'roleFunction',
           },
       ]
   },
   {
     title: '系统设置',
-    requiresPermission: 'maintenance:system:config',
+    requiresPermission: 'maintenance:systemconfig',
     index: 'config',
     children: [
         {
@@ -37,17 +37,17 @@ export default [
   },
   {
     title: '基础数据',
-    requiresPermission: 'maintenance:basis:matter:info',
+    requiresPermission: 'maintenance:basisdata',
     index: 'basicsData',
     children: [
       {
         title: '物料主数据',
-        requiresPermission: 'maintenance:basis:matter:info:view',
+        requiresPermission: 'maintenance:basis:matterinfo',
         index: 'basicsDataMatter',
       },
       {
         title: '供应商信息',
-        requiresPermission: 'maintenance:basis:supplier:info:view',
+        requiresPermission: 'maintenance:basis:supplierinfo',
         index: 'basicsDataSupplier',
       },
     ]
@@ -61,22 +61,22 @@ export default [
 
           {
               title: '订单计划',
-              requiresPermission: 'maintenance:warehouse:order:info:view',
+              requiresPermission: 'maintenance:warehouse:orderinfo',
               index: 'warehouseOrderplan',
           },
           {
             title: '订单详情年',
-            requiresPermission: 'maintenance:warehouse:plan:detail:view',
+            requiresPermission: 'maintenance:warehouse:order:info:view',
             index: 'warehousePlanDetailYear',
           },
           {
             title: '订单详情月',
-            requiresPermission: 'maintenance:warehouse:plan:detail:view',
+            requiresPermission: 'maintenance:warehouse:order:info:view',
             index: 'warehousePlanDetailMonth',
           },
           {
             title: '订单详情周',
-            requiresPermission: 'maintenance:warehouse:plan:detail:view',
+            requiresPermission: 'maintenance:warehouse:order:info:view',
             index: 'warehousePlanDetailWeek',
           },
           {

@@ -27,7 +27,10 @@ public class MethodTest {
     	Date now = new Date();
     	SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
         df.format(now);// new Date()为获取当前系统时间
-		System.out.println(df.format(now));
+        
+        String password = "osadmin@123";
+        encoder.encode(password);
+		System.out.println(encoder.encode(password));
 		
 		
 	}
