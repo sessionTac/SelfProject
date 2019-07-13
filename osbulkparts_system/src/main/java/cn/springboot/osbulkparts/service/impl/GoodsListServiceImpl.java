@@ -2,11 +2,14 @@ package cn.springboot.osbulkparts.service.impl;
 
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -17,6 +20,7 @@ import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
 import cn.springboot.osbulkparts.dao.warehouse.TDeliverInfoDao;
+import cn.springboot.osbulkparts.dao.warehouse.TOrderDetailInfoDao;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.TDeliverInfoEntity;
 import cn.springboot.osbulkparts.service.GoodsListService;
@@ -29,6 +33,8 @@ import java.util.Map;
 public class GoodsListServiceImpl implements GoodsListService {
     @Autowired
     private TDeliverInfoDao tDeliverInfoDao;
+    @Autowired
+    private TOrderDetailInfoDao orderDetailInfoDao;
     @Autowired
     private MRoleInfoDao mroleInfoDao;
     @Autowired
@@ -91,7 +97,14 @@ public class GoodsListServiceImpl implements GoodsListService {
 			int returnInt = tDeliverInfoDao.updateListForDelivery(commonEntity.getIdsStr(), updateUser, state);
 			if (returnInt > 0) {
 				// 更新订单详细的收货数量
-				
+				for(int i =0;i<commonEntity.getIdsStr().length;i++) {
+					TDeliverInfoEntity deliverInfo = tDeliverInfoDao.selectByPrimaryKey(commonEntity.getIdsStr()[i]);
+					TOrderDetailInfoEntity orderDetailParam = new TOrderDetailInfoEntity();
+					orderDetailParam.setOrderCode(deliverInfo.getOrderCode());
+					orderDetailParam.setTakeOverAmount(deliverInfo.getSendAmount());
+					orderDetailParam.setUpdateUser(updateUser);
+					orderDetailInfoDao.updateByPrimaryKeySelective(orderDetailParam);
+				}
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 				result.setMessage(messageBean.getMessage("bussiness.order.delivery.take.success"));
 			}
@@ -100,6 +113,7 @@ public class GoodsListServiceImpl implements GoodsListService {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("common.server.error"));
 			result.setException(e.getMessage().toString());
+			TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
 		} finally {
 			return result;
 		}

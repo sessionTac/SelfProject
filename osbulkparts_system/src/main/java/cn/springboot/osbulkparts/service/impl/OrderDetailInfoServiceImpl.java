@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -413,15 +414,16 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             	materialRecordInfoDao.updateByPrimaryKeySelective(recordParam);
             	
             	// 更新物料表中的单耗
-//            	MMaterialInfoEntity materialInfo = new MMaterialInfoEntity();
-//            	materialInfo.setMaterialOrderCode(materialOrderCode);
-//            	materialInfo.setMaterialCode(materialCode);
-//            	materialInfo.setMaterialAmount(materialAmount);
-//            	materialInfo.setUpdateUser(updateUser);
-//            	materialInfo.setDataRoleAt(dataRoleAt);
-//            	materialInfo.set
-//            	mMaterialInfoDao
-
+            	MMaterialInfoEntity materialParam = new MMaterialInfoEntity();
+            	materialParam.setMaterialOrderCode(deliveryInfo.getOrderCode());
+            	materialParam.setMaterialCode(deliveryInfo.getMaterialCode());
+            	List<MMaterialInfoEntity>  materialInfoList = mMaterialInfoDao.selectByPrimaryKey(materialParam);
+            	for(MMaterialInfoEntity materialInfo :materialInfoList) {
+                	materialInfo.setMaterialAmount(materialInfo.getMaterialAmount().subtract(deliveryInfo.getSendAmount()));
+                	materialInfo.setUpdateUser(principal.getUserName());
+            	}
+            	mMaterialInfoDao.updateList(materialInfoList);
+            	
 	        	deliveryInfo.setId(CommonSqlUtils.getUUID32());
 	        	deliveryInfo.setCreateUser(principal.getUserName());
 	        	deliveryInfo.setIsDelete(0);
@@ -445,6 +447,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
             result.setMessage(messageBean.getMessage("common.server.error"));
             result.setException(e.getMessage().toString());
+            TransactionAspectSupport.currentTransactionStatus().setRollbackOnly(); 
         } finally {
             return result;
         }
