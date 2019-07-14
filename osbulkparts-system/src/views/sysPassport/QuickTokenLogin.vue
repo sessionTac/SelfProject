@@ -35,7 +35,12 @@
         let user_info = await passportService.user_info();
         this.subject.login(user_info);
         console.log('成功恢复登录状态');
-
+        if (this.subject.principal.userStatus == 1 ) {
+          // debugger
+           this.$notify({message: "用户被禁用", type: 'error'});
+           this.$router.replace({name:'Login', query:{redir:redir||undefined}});
+           return
+        }
         let to = null;
 
         // this.$router.push({name:"Root"})

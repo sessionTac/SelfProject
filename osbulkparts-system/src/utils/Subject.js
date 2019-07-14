@@ -59,6 +59,7 @@ class Subject {
       tel  : user_info.userPhone || "",
       email : user_info.userMail || "",
       userId:user_info.userId ||"",
+      userStatus:user_info.userStatus ||"",
       // map_region : {"code":"360100","name":"南昌市"}, //地图组件使用的区域代码
 /*      map_region : {"code":"360000","name":"江西省"}, //地图组件使用的区域代码*/
     };
