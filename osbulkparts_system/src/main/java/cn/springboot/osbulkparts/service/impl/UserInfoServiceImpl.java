@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,19 +48,32 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@Autowired
 	private I18nMessageBean messageBean;
+
+
 	
 	private static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity, int pageNumber,
-															 int pageSize) {
+															 int pageSize,String UI_LOCALE) {
 		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
 		try {
 			PageHelper.startPage(pageNumber, pageSize);
 			PageInfo<MUserInfoEntity> pageInfo = new PageInfo<>(
 					muserInfoDao.selectUserInfoList(muserInfoEntity));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+
+			if ("en".equals(UI_LOCALE)){
+				messageBean.setLocale(null,null,Locale.US);
+			}else if ("es".equals(UI_LOCALE)){
+				Locale locale =new Locale("rn","");
+				messageBean.setLocale(null,null,locale);
+			}else {
+				messageBean.setLocale(null,null,Locale.CHINA);
+			}
+
+			String a=messageBean.getMessage("common.server.error");
 			result.setResultInfo(pageInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
