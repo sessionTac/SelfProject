@@ -162,7 +162,7 @@
       <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
       <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
       <el-table-column prop="dictMaterialUnit.name"  :show-overflow-tooltip="true" align="center" label="物料单位"  />
-      <el-table-column prop="materialAmount"  :show-overflow-tooltip="true" align="center" label="物料数量"  />
+      <el-table-column prop="materialAmount"  :show-overflow-tooltip="true" align="center" label="单耗"  />
       <el-table-column prop="dictMaterialCategory.name"  :show-overflow-tooltip="true" align="center" label="渠道"  />
       <el-table-column prop="materialRelation"  :show-overflow-tooltip="true" align="center" label="换算关系"  />
       <el-table-column prop="dictRelationUnit.name"  :show-overflow-tooltip="true" align="center" label="换算后单位"  />

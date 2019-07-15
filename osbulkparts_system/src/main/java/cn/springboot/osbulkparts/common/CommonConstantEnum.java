@@ -10,6 +10,8 @@ public enum CommonConstantEnum {
     ROLE("角色"),
     POWER("权限"),
     USER("用户"),
+    LOSSRATE("损耗"),
+    RATE("税率"),
 	USER_NAME("用户名"),
 	SUPPLIER("供应商"),
 	TO_DELETE("1"),

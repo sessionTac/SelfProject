@@ -194,6 +194,7 @@
             <el-table-column prop="materialVatPrice" align="center" :formatter="price" label="含税单价"  />
             <el-table-column prop="materialTaxPrice" align="center" :formatter="price" label="未税单价"  />
             <el-table-column prop="tax" align="center" :formatter="price" label="税率"  />
+            <el-table-column prop="materialLossRate" align="center" :formatter="price" label="损耗率"  />
             <el-table-column prop="materialRate" align="center" label="代理费率"  />
             <el-table-column prop="hsNo" align="center" label="HS海关编码"  />
             <el-table-column prop="supplierCode" align="center" label="供应商代码"  />

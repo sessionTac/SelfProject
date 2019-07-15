@@ -125,6 +125,11 @@ public class MMaterialInfoEntity implements Serializable {
      * 单价
      */
     private BigDecimal materialPrice;
+    
+    /**
+     * 损耗率
+     */
+    private BigDecimal materialLossRate;
 
     /**
      * 分级BOM编码

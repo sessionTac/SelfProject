@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -582,11 +583,12 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				// 税率
 				String tax = (String)mapData.get("税率");
 				mmaterialInfoEntity.setTax(CommonMethods.changeToBigdecimal(tax.trim()));
+				if(CommonMethods.changeToBigdecimal(tax.trim()).equals(1)) {
+					throw new NullPointerException(messageBean.getMessage("bussiness.material.tax.error", (String)mapData.get("物料专用号"),CommonConstantEnum.RATE.getTypeName()));
+				}
 				// 代理费率
 				String materialRate = (String)mapData.get("代理费率");
-				mmaterialInfoEntity.setMaterialRate(
-						CommonMethods.changeToBigdecimal(materialRate.trim()));
-
+				mmaterialInfoEntity.setMaterialRate(CommonMethods.changeToBigdecimal(materialRate.trim()));
 				// HS海关编码
 				mmaterialInfoEntity.setHsNo((String)mapData.get("HS海关编码"));
 				// 供应商编码
@@ -604,6 +606,13 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				// 配额
 				String quota = (String)mapData.get("配额");
 				materialQuotaEntity.setMaterialQuota(CommonMethods.changeToBigdecimal(quota.trim()));
+				
+				//损耗率
+				String lossRate = (String)mapData.get("损耗率");
+				if(CommonMethods.changeToBigdecimal(lossRate.trim()).equals(1)) {
+					throw new NullPointerException(messageBean.getMessage("bussiness.material.tax.error", (String)mapData.get("物料专用号"),CommonConstantEnum.LOSSRATE.getTypeName()));
+				}
+				mmaterialInfoEntity.setMaterialLossRate(CommonMethods.changeToBigdecimal(lossRate.trim()));
 				// 长
 				String length = (String)mapData.get("长");
 				mmaterialInfoEntity.setLength(

@@ -389,7 +389,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 										orderDetailParam.setMaterialDescRn(materialInfo.getMaterialDescRn());
 										// 物料单位
 										orderDetailParam.setMaterialUnit(materialInfo.getMaterialUnit());
-										// 物料数量
+										// 
 										BigDecimal orderMaterAmount= new BigDecimal("0");
 										if(materialInfo.getMaterialAmount() == null) {
 											result.setMessage(messageBean.getMessage("bussiness.material.amount.empty",
@@ -397,12 +397,17 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 													materialInfo.getMaterialCode()));
 											return result;
 										}
-										// 按照供应商配额计算数量
+										// 按照供应商配额和损耗计算数量
+										BigDecimal lossAmount = new BigDecimal("0");
+										lossAmount = torderInfo.getOrderAmount().multiply(
+												materialInfo.getMaterialAmount()).multiply(
+														quotaEntityList.get(m).getMaterialQuota()).multiply(
+																materialInfo.getMaterialLossRate()).setScale(2, BigDecimal.ROUND_HALF_UP);
 										orderMaterAmount = torderInfo.getOrderAmount().multiply(
 												materialInfo.getMaterialAmount()).multiply(
 														quotaEntityList.get(m).getMaterialQuota()).setScale(2, BigDecimal.ROUND_HALF_UP);
-										// 订单物料数量
-										orderDetailParam.setMaterialAmount(orderMaterAmount);
+										// 订单物料数量(单耗)
+										orderDetailParam.setMaterialAmount(materialInfo.getMaterialAmount());
 										// 物料类别
 										orderDetailParam.setMaterialCategory(materialInfo.getMaterialCategory());
 										// 换算关系
@@ -411,7 +416,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 										orderDetailParam.setMaterialRelationUnit(materialInfo.getMaterialRelationUnit());
 										// 换算后数量
 										BigDecimal relation = new BigDecimal(orderDetailParam.getMaterialRelation().length() > 0 ? orderDetailParam.getMaterialRelation():"1");
-										BigDecimal relationAmount = orderMaterAmount.multiply(relation);
+										BigDecimal relationAmount = orderMaterAmount.add(lossAmount).multiply(relation);
 										orderDetailParam.setMaterialRelationQuantity(relationAmount);
 										// 最小包装类型
 										orderDetailParam.setMaterialMinpackageType(materialInfo.getMaterialMinpackageType());
@@ -421,7 +426,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 										if(materialInfo.getMaterialMinpackageAmt() == null || materialInfo.getMaterialMinpackageAmt().equals(BigDecimal.ZERO)) {
 											orderDetailParam.setMaterialMinpackageTotalamt(BigDecimal.ZERO);
 										}else {
-											orderDetailParam.setMaterialMinpackageTotalamt(orderMaterAmount.divide(materialInfo.getMaterialMinpackageAmt(), 2, BigDecimal.ROUND_HALF_UP));
+											orderDetailParam.setMaterialMinpackageTotalamt(orderMaterAmount.add(lossAmount).divide(materialInfo.getMaterialMinpackageAmt(), 2, BigDecimal.ROUND_HALF_UP));
 										}
 										if(materialInfo.getMaterialTaxPrice() == null) {
 											orderDetailParam.setMaterialTaxPrice(BigDecimal.ZERO);
@@ -438,21 +443,23 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 											// 未税单价
 											orderDetailParam.setMaterialTaxPrice(materialInfo.getMaterialTaxPrice());
 											// 未税总价
-											orderDetailParam.setMaterialTaxTotalprice(materialInfo.getMaterialTaxPrice()
-													.multiply(orderMaterAmount)
-													.multiply(materialInfo.getMaterialAmount()==null?new BigDecimal("0"):materialInfo.getMaterialAmount())
-													.multiply(CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation()))
-													.setScale(2,BigDecimal.ROUND_HALF_UP));
+											BigDecimal taxTotalPrice = new BigDecimal("0");
+											taxTotalPrice = orderMaterAmount.add(lossAmount).multiply(
+													CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation())).multiply(
+															materialInfo.getMaterialTaxPrice()).setScale(2,BigDecimal.ROUND_HALF_UP);
+											orderDetailParam.setMaterialTaxTotalprice(taxTotalPrice);
 											// 含税单价
 											// 税额
 											BigDecimal taxN = materialInfo.getMaterialTaxPrice().multiply(materialInfo.getTax());
 											BigDecimal vatPrice = materialInfo.getMaterialTaxPrice().add(taxN);
 											orderDetailParam.setMaterialVatPrice(vatPrice);
 											// 含税总价
-											orderDetailParam.setMaterialVatTotalprice(vatPrice.multiply(orderMaterAmount)
-													.multiply(materialInfo.getMaterialAmount()==null?new BigDecimal("0"):materialInfo.getMaterialAmount())
-													.multiply(CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation()))
-													.setScale(2,BigDecimal.ROUND_HALF_UP));
+											// 未税总价
+											BigDecimal vatTotalPrice = new BigDecimal("0");
+											vatTotalPrice = orderMaterAmount.add(lossAmount).multiply(
+													CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation())).multiply(
+															materialInfo.getMaterialTaxPrice().add(vatPrice)).setScale(2,BigDecimal.ROUND_HALF_UP);
+											orderDetailParam.setMaterialVatTotalprice(vatTotalPrice);
 										}
 										// 税率
 										orderDetailParam.setTax(materialInfo.getTax());
@@ -532,7 +539,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 								orderDetailParam.setMaterialDescRn(materialInfo.getMaterialDescRn());
 								// 物料单位
 								orderDetailParam.setMaterialUnit(materialInfo.getMaterialUnit());
-								// 物料数量
+								// 
 								BigDecimal orderMaterAmount= new BigDecimal("0");
 								if(materialInfo.getMaterialAmount() == null) {
 									result.setMessage(messageBean.getMessage("bussiness.material.amount.empty",
@@ -540,12 +547,15 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 											materialInfo.getMaterialCode()));
 									return result;
 								}
-
-								// 按照供应商配额计算数量
+								// 按照供应商配额和损耗计算数量
+								BigDecimal lossAmount = new BigDecimal("0");
+								lossAmount = torderInfo.getOrderAmount().multiply(
+										materialInfo.getMaterialAmount()).multiply(
+														materialInfo.getMaterialLossRate()).setScale(2, BigDecimal.ROUND_HALF_UP);
 								orderMaterAmount = torderInfo.getOrderAmount().multiply(
 										materialInfo.getMaterialAmount()).setScale(2, BigDecimal.ROUND_HALF_UP);
-								// 订单物料数量
-								orderDetailParam.setMaterialAmount(orderMaterAmount);
+								// 订单物料数量(单耗)
+								orderDetailParam.setMaterialAmount(materialInfo.getMaterialAmount());
 								// 物料类别
 								orderDetailParam.setMaterialCategory(materialInfo.getMaterialCategory());
 								// 换算关系
@@ -554,7 +564,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 								orderDetailParam.setMaterialRelationUnit(materialInfo.getMaterialRelationUnit());
 								// 换算后数量
 								BigDecimal relation = new BigDecimal(orderDetailParam.getMaterialRelation().length() > 0 ? orderDetailParam.getMaterialRelation():"1");
-								BigDecimal relationAmount = orderMaterAmount.multiply(relation);
+								BigDecimal relationAmount = orderMaterAmount.add(lossAmount).multiply(relation);
 								orderDetailParam.setMaterialRelationQuantity(relationAmount);
 								// 最小包装类型
 								orderDetailParam.setMaterialMinpackageType(materialInfo.getMaterialMinpackageType());
@@ -564,7 +574,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 								if(materialInfo.getMaterialMinpackageAmt() == null || materialInfo.getMaterialMinpackageAmt().equals(BigDecimal.ZERO)) {
 									orderDetailParam.setMaterialMinpackageTotalamt(BigDecimal.ZERO);
 								}else {
-									orderDetailParam.setMaterialMinpackageTotalamt(orderMaterAmount.divide(materialInfo.getMaterialMinpackageAmt(), 2, BigDecimal.ROUND_HALF_UP));
+									orderDetailParam.setMaterialMinpackageTotalamt(orderMaterAmount.add(lossAmount).divide(materialInfo.getMaterialMinpackageAmt(), 2, BigDecimal.ROUND_HALF_UP));
 								}
 								if(materialInfo.getMaterialTaxPrice() == null) {
 									orderDetailParam.setMaterialTaxPrice(BigDecimal.ZERO);
@@ -581,20 +591,23 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 									// 未税单价
 									orderDetailParam.setMaterialTaxPrice(materialInfo.getMaterialTaxPrice());
 									// 未税总价
-									orderDetailParam.setMaterialTaxTotalprice(materialInfo.getMaterialTaxPrice()
-											.multiply(orderMaterAmount)
-											.multiply(materialInfo.getMaterialAmount()==null?new BigDecimal("0"):materialInfo.getMaterialAmount())
-											.multiply(CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation()))
-											.setScale(2,BigDecimal.ROUND_HALF_UP));
+									BigDecimal taxTotalPrice = new BigDecimal("0");
+									taxTotalPrice = orderMaterAmount.add(lossAmount).multiply(
+											CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation())).multiply(
+													materialInfo.getMaterialTaxPrice()).setScale(2,BigDecimal.ROUND_HALF_UP);
+									orderDetailParam.setMaterialTaxTotalprice(taxTotalPrice);
 									// 含税单价
-									BigDecimal vatPrice = materialInfo.getMaterialTaxPrice().add(
-											materialInfo.getMaterialTaxPrice().multiply(materialInfo.getTax()));
+									// 税额
+									BigDecimal taxN = materialInfo.getMaterialTaxPrice().multiply(materialInfo.getTax());
+									BigDecimal vatPrice = materialInfo.getMaterialTaxPrice().add(taxN);
 									orderDetailParam.setMaterialVatPrice(vatPrice);
 									// 含税总价
-									orderDetailParam.setMaterialVatTotalprice(vatPrice.multiply(orderMaterAmount)
-											.multiply(materialInfo.getMaterialAmount()==null?new BigDecimal("0"):materialInfo.getMaterialAmount())
-											.multiply(CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation()))
-											.setScale(2,BigDecimal.ROUND_HALF_UP));
+									// 未税总价
+									BigDecimal vatTotalPrice = new BigDecimal("0");
+									vatTotalPrice = orderMaterAmount.add(lossAmount).multiply(
+											CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation())).multiply(
+													materialInfo.getMaterialTaxPrice().add(vatPrice)).setScale(2,BigDecimal.ROUND_HALF_UP);
+									orderDetailParam.setMaterialVatTotalprice(vatTotalPrice);
 								}
 								// 税率
 								orderDetailParam.setTax(materialInfo.getTax());
