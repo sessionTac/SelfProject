@@ -103,9 +103,19 @@
                     console.log(err);
                     // if (err.response && err.response.status === 401) return;
                     if (err.response && err.response.status === 401){
-                        Notification.error({title:"账号或者密码错误"})
+                        // Notification.error({title:"账号或者密码错误"})
+                        this.$notify.error({
+                            title: '账号或者密码错误',
+                            customClass:"notifyClass"
+                        });
                     }else {
-                        Notification.error({title:"网络异常"})
+
+                        // Notification.error({title:"网络异常"})
+
+                        this.$notify.error({
+                            title: '网络异常',
+                            customClass:"notifyClass"
+                        });
                     }
                     // console.error('登录操作异常', err);
                     // Notification.error({message:err.message})
@@ -129,6 +139,7 @@
 </script>
 
 <style scoped>
+
     .navbar-header,
     .navbar-brand,
     .navbar-sarnath {

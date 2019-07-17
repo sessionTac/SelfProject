@@ -17,6 +17,9 @@ body .el-table th.gutter{
     display: table-cell!important;
 }
 
+.notifyClass{
+    margin-top: 40px;
+}
 
 .search-result-table {
     font-size: 10px;
