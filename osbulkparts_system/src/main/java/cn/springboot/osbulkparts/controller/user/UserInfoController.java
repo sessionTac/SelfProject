@@ -3,23 +3,29 @@ package cn.springboot.osbulkparts.controller.user;
 import java.util.List;
 import java.util.Map;
 
-import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
-import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
-import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.MUserInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TUserRoleRelationEntity;
 import cn.springboot.osbulkparts.service.UserInfoService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
-
-import javax.servlet.http.HttpServletRequest;
 
 @Slf4j
 @RestController
@@ -39,8 +45,8 @@ public class UserInfoController {
 	public CommonResultInfo<MUserInfoEntity> getUserInfoList(
 			MUserInfoEntity muserInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue="10") int pageSize, @RequestHeader String UI_LOCALE){
-		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfoList(muserInfoEntity,pageNum,pageSize,UI_LOCALE);
+            @RequestParam(defaultValue="10") int pageSize){
+		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfoList(muserInfoEntity,pageNum,pageSize);
 		return result;
 	}
 	

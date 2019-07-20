@@ -37,8 +37,8 @@
         console.log('成功恢复登录状态');
         if (this.subject.principal.userStatus == 1 ) {
           // debugger
-           this.$notify({message: "用户被禁用", type: 'error'});
-           this.$router.replace({name:'Login', query:{redir:redir||undefined}});
+           this.$notify({message: "用户被禁用", type: 'error',customClass:"notifyClass"});
+           this.$router.replace({name:'Login'});
            return
         }
         let to = null;

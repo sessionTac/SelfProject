@@ -4,14 +4,14 @@
       <i class="iconfont icon-language svg-icon" />
     </div>
     <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item :disabled="language==='zh'" command="zh">
+      <el-dropdown-item :disabled="language==='zh_CN'" command="zh_CN">
         中文
       </el-dropdown-item>
-      <el-dropdown-item :disabled="language==='en'" command="en">
+      <el-dropdown-item :disabled="language==='en_US'" command="en_US">
         English
       </el-dropdown-item>
-      <el-dropdown-item :disabled="language==='es'" command="es">
-        Español
+      <el-dropdown-item :disabled="language==='ru'" command="ru">
+        русский язык
       </el-dropdown-item>
     </el-dropdown-menu>
   </el-dropdown>

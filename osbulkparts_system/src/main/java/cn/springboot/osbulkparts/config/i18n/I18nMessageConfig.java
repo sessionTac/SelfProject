@@ -27,7 +27,7 @@ public class I18nMessageConfig {
             @Override
             public void addInterceptors(InterceptorRegistry registry) {
                 LocaleChangeInterceptor localeInterceptor = new LocaleChangeInterceptor();
-                localeInterceptor.setParamName("UI_LOCALE");
+                localeInterceptor.setParamName("lang");
                 registry.addInterceptor(localeInterceptor);
             }
         };

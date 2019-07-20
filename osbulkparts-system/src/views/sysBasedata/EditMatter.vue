@@ -138,13 +138,13 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="含税单价" prop="materialVatPrice">
-              <el-input v-model="form.materialVatPrice" class="search-form-item-input" style="width: 160px"  size="mini"
-                        :maxlength="18"   clearable></el-input>
-              <template slot="error" slot-scope="scope">
-                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
-              </template>
-            </el-form-item>
+<!--            <el-form-item label="含税单价" prop="materialVatPrice">-->
+<!--              <el-input v-model="form.materialVatPrice" class="search-form-item-input" style="width: 160px"  size="mini"-->
+<!--                        :maxlength="18"   clearable></el-input>-->
+<!--              <template slot="error" slot-scope="scope">-->
+<!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
+<!--              </template>-->
+<!--            </el-form-item>-->
             <el-form-item label="税率" prop="tax">
               <el-input v-model="form.tax" class="search-form-item-input" style="width: 160px"  size="mini"
                         :maxlength="18"   clearable></el-input>
@@ -378,9 +378,9 @@
           materialTaxPrice: [
             {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
-          materialVatPrice: [
-            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
-          ],
+          // materialVatPrice: [
+          //   {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          // ],
           tax: [
             {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
           ],
@@ -464,7 +464,7 @@
               materialRelationUnit: this.form.materialRelationUnit || undefined,
               materialMinpackageAmt: this.form.materialMinpackageAmt || undefined,
               materialTaxPrice: this.form.materialTaxPrice || undefined,
-              materialVatPrice: this.form.materialVatPrice || undefined,
+              // materialVatPrice: this.form.materialVatPrice || undefined,
               tax: this.form.tax || undefined,
               materialLossRate: this.form.materialLossRate || undefined,
               materialPrice: this.form.materialPrice || undefined,
