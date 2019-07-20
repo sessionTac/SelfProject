@@ -163,4 +163,18 @@ public class MaterialDataController {
 		CommonResultInfo<?> result = materialQuotaService.deleteMaterialQuota(tMaterialQuotaEntity.getMaterialCode(), auth);
 		return result;
 	}
+
+	@ApiOperation(value="附件数据设定", notes="附件数据设定")
+	@ApiImplicitParam(name = "imgFile", value = "物料附件文件", required = true, dataType = "body", paramType = "body")
+	@PostMapping("/setEnclosure")
+	public CommonResultInfo<?> setEnclosure(
+			@RequestParam("file") MultipartFile imgFile,HttpServletRequest request,Authentication auth) {
+		return null;
+	}
+
+	@ApiOperation(value="附件数据读取", notes="附件数据读取")
+	@GetMapping("/getEnclosure/{fileId}")
+	public Object getEnclosure(@PathVariable String fileId,Authentication auth){
+		return null;
+	}
 }
