@@ -114,6 +114,7 @@ export default {
     dictionaryEnable:"有效",
     dictionaryRemark:"备注",
     dictionaryNo:"编号",
+    dictionaryParent:"父级",
     Parental:"父级分类",
     //物料主数据
 
@@ -156,6 +157,8 @@ export default {
     //数据字典
     dictionaryNameCheck:"请输入名称",
     dictionaryValueCheck:"请输入值",
+    dictionaryCodeCheck:"请填写数据字典编号",
+
     //物料主数据
 
     //供应商信息

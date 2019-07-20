@@ -114,6 +114,7 @@ export default {
     dictionaryEnable:"enable",
     dictionaryRemark:"remark",
     dictionaryNo:"code",
+    dictionaryParent:"dictionaryParent",
     Parental:"ParentalClassification",
     //物料主数据
 
@@ -156,6 +157,7 @@ export default {
     //数据字典
     dictionaryNameCheck:"Please enter a name",
     dictionaryValueCheck:"Please enter a value",
+    dictionaryCodeCheck:"Please fill in the data dictionary number.",
     //物料主数据
 
     //供应商信息
