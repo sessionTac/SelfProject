@@ -4,40 +4,61 @@
       :title="title"
       :visible.sync="dialogFormVisible"
       @closed="$emit('update:activated', false);$emit('refresh')"
-      width="600px" >
+      width="700px" >
       <el-card>
         <div class="dialogStyle" style="display: flex;flex-direction: column">
         <el-form ref="form" size="mini" :model="form" label-width="100px" :rules="rules" class="search-form search-form-normal">
           <!--     {{id}}-->
-          <el-form-item label="所属分类">
+          <el-form-item :label="$t('pageTable.dictionaryClassification')">
             <el-input
               class="search-form-item-input" style="width: 200px"
               v-model="form.tdictTypeEntity.name"
               :disabled="true" size="mini" knx>
             </el-input>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
 
-          <el-form-item label="名称" prop="name">
+          <el-form-item :label="$t('pageTable.dictionaryName')" prop="name">
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.name"   size="mini" :maxlength="50"></el-input>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
 
-          <el-form-item label="值" prop="value">
+          <el-form-item :label="$t('pageTable.dictionaryValue')" prop="value">
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.value" size="mini" :maxlength="30"></el-input>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
-          <el-form-item label="描述" prop="desc">
+          <el-form-item :label="$t('pageTable.dictionaryDescribe')" prop="desc">
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.desc" size="mini" :maxlength="50"></el-input>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
-          <el-form-item label="排序" prop="sortCode">
+          <el-form-item :label="$t('pageTable.dictionarySort')" prop="sortCode">
             <el-input  class="search-form-item-input" style="width: 200px" v-model="form.sortCode" clearable :maxlength="11" size="mini" knx></el-input>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
 
-          <el-form-item label="是否有效" >
+          <el-form-item :label="$t('pageTable.dictionaryEnable')" >
             <el-checkbox  v-model="form.isEnable"></el-checkbox>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
 
 
-          <el-form-item label="备注" prop="remark">
-            <el-input  class="search-form-item-input" style="width: 200px" v-model="form.remark"  clearable type="textarea" :rows="2" placeholder="请输入内容" size="mini" :maxlength="200"></el-input>
+          <el-form-item :label="$t('pageTable.dictionaryRemark')" prop="remark">
+            <el-input  class="search-form-item-input" style="width: 200px" v-model="form.remark"  clearable type="textarea" :rows="2"  size="mini" :maxlength="200"></el-input>
+            <template slot="error" slot-scope="scope"  >
+              <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+            </template>
           </el-form-item>
 
         </el-form>
@@ -47,8 +68,8 @@
 
       <div class="dialogButton">
           <el-button type="primary" size="mini" @click="submit('form')">
-            <i class="fa fa-check"></i> 确定</el-button>
-          <el-button  size="mini" @click="cancel()">取消</el-button>
+            <i class="fa fa-check"></i> {{$t('searchFrom.confirm')}}</el-button>
+          <el-button  size="mini" @click="cancel()">{{$t('searchFrom.cancel')}}</el-button>
         </div>
 
     </el-dialog>
@@ -61,9 +82,9 @@
   export default {
     computed:{
       title:function () {
-        let entityName = '数据字典'
-        if(this.mode === 'ADD'){return '新增'+entityName}
-        else if(this.mode === 'EDIT'){return '编辑'+entityName}
+        let entityName = this.$t('searchFrom.dictionary');
+        if(this.mode === 'ADD'){return this.$t('searchFrom.add')+entityName}
+        else if(this.mode === 'EDIT'){return this.$t('searchFrom.edit')+entityName}
       }
     },
 
@@ -106,13 +127,13 @@
         rules: {
 
           subordinate: [
-            {required: true, message: '请选择所属上级'}
+            // {required: true, message: '请选择所属上级'}
           ],
           name: [
-            {required: true, message: '请输入名称'}
+            {required: true, message: this.$t('Tips.dictionaryNameCheck')}
           ],
           value: [
-            {required: true, message: '请输入值', trigger: 'blur'}
+            {required: true, message: this.$t('Tips.dictionaryValueCheck'), trigger: 'blur'}
           ],
         }
       }

@@ -1,23 +1,24 @@
 <template>
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
+            {{language}}{{$t('route.ceshi') }}
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="用户名">
-                    <el-input placeholder="用户名" v-model="search_keys.userName" class="search-form-item-input"></el-input>
+                <el-form-item :label="$t('searchFrom.userName')">
+                    <el-input :placeholder="$t('searchFrom.userName')" v-model="search_keys.userName" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="真实姓名">
-                    <el-input placeholder="真实姓名" v-model="search_keys.userRealName" class="search-form-item-input"></el-input>
+                <el-form-item :label="$t('searchFrom.trueName')">
+                    <el-input :placeholder="$t('searchFrom.trueName')" v-model="search_keys.userRealName" class="search-form-item-input"></el-input>
                 </el-form-item>
 
                 <el-form-item style="float: right">
                     <el-button type="primary" @click="add" size="mini" >
-                        <i class="fa fa-plus" aria-hidden="true"></i> 添加
+                        <i class="fa fa-plus" aria-hidden="true"></i> {{$t('searchFrom.add') }}
                     </el-button>
                 </el-form-item>
 
                 <el-form-item style="float: right">
                     <el-button type="primary" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
-                        <i class="fa fa-search" aria-hidden="true"></i> 查询
+                        <i class="fa fa-search" aria-hidden="true"></i> {{$t('searchFrom.search') }}
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
@@ -36,21 +37,21 @@
                   :data="search_result.list" row-key="id"
                   :stripe="true"
         >
-            <el-table-column prop="userName" align="center" label="用户名" width="140"  />
-            <el-table-column prop="userRealName" align="center" label="真实姓名"  width="140" />
-            <el-table-column prop="dictUserType.name" align="center" label="用户类型"  width="140" />
-            <el-table-column prop="dictUserStatus.name" align="center" label="用户状态"   />
-            <el-table-column prop="dictUserLevel.name" align="center" label="用户所属"    />
+            <el-table-column prop="userName" align="center" :label="$t('pageTable.userName')" width="140"  />
+            <el-table-column prop="userRealName" align="center" :label="$t('pageTable.trueName')"  width="140" />
+            <el-table-column prop="dictUserType.name" align="center" :label="$t('pageTable.userType')"  width="140" />
+            <el-table-column prop="dictUserStatus.name" align="center" :label="$t('pageTable.userState')"  />
+            <el-table-column prop="dictUserLevel.name" align="center" :label="$t('pageTable.userOwner')"    />
 
-            <el-table-column label="操作" >
+            <el-table-column :label="$t('pageTable.operate')"  >
                 <template slot-scope="scope" >
-                    <el-button title="角色设置" type="primary" size="mini" class="btn-opt smallButton" @click="setRole(scope.row.userId)">
-                        角色设置</el-button>
-                    <el-button title="查看" size="mini" class="btn-opt smallButton"  @click="viewRole(scope.row.userId)">
-                        角色查看</el-button>
-                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:system:users:info:edit')" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.userId)">
+                    <el-button  type="primary" size="mini" class="btn-opt smallButton" @click="setRole(scope.row.userId)">
+                        {{$t('pageTable.roleSet')}}</el-button>
+                    <el-button  size="mini" class="btn-opt smallButton"  @click="viewRole(scope.row.userId)">
+                        {{$t('pageTable.roleSee')}}</el-button>
+                    <el-button  v-if="subject.hasPermissions('maintenance:system:users:info:edit')" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.userId)">
                         <i class="el-icon-news"></i></el-button>
-                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.userId)">
+                    <el-button  type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.userId)">
                         <i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>
@@ -78,6 +79,7 @@
     import ui_config from '@/config/ui_config'
     import SetRoleDialog from  './SetRoleDialog'
     import SeeRoleDialog from './SeeRoleDialog'
+    import { mapGetters,mapState } from 'vuex'
 
     import ImportButton from '@/components/data-import/ImportButton'
 
@@ -109,6 +111,17 @@
         },
         mounted() {
             this.exec_search({search_keys:this.search_keys, pageNum:1});
+        },
+        computed: {
+            ...mapState({
+                language:state=>state.app.language
+            }),
+
+        },
+        watch:{
+            language(val,val1){
+                // alert(val+val1)
+            }
         },
         methods: {
             exec_search({
@@ -146,18 +159,18 @@
             },
             //删除
             deleteUser(uuid) {
-                this.$confirm("确定删除吗？", "提示", {
-                    confirmButtonText: "是",
-                    cancelButtonText: "否",
+                this.$confirm(this.$t("Tips.deleteQueries"), this.$t("Tips.tips"), {
+                    confirmButtonText: this.$t("Tips.yes"),
+                    cancelButtonText: this.$t("Tips.no"),
                     type: 'warning',
                     center: true
                 }).then(() => {
                         activityService.deleteById(uuid).then(resp => {
                             if (resp.data.code == "201") {
-                                this.$notify({message: "删除成功", type: 'success'});
+                                this.$notify({message:  this.$t("Tips.deleteSuccess"), type: 'success'});
                                 this.exec_search({search_keys:this.search_keys, pageNum:1})
                             } else {
-                                this.$notify({message: "删除失败", type: 'error'});
+                                this.$notify({message: this.$t("Tips.deleteFail"), type: 'error'});
                             }
                         })
                     }
@@ -165,16 +178,6 @@
                     this.internal_activated = true;
                 })//删除
 
-            },
-            //密码重置
-            reset(uuid) {
-                activityService.reset(uuid).then(resp => {
-                    if (resp.data == 1) {
-                        this.$notify({message: "密码已重置", type: 'success'});
-                    } else {
-                        this.$notify({message: "密码重置失败，请重试", type: 'error'});
-                    }
-                })
             },
         },
     }

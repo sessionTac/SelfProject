@@ -12,7 +12,7 @@
                         <el-submenu index="1" style="overflow-x:hidden;;flex: 1;display: flex;flex-direction: column;height: 100%">
                             <template slot="title">
                                 <i class="el-icon-location"></i>
-                                <span>通用分类</span>
+                                <span>{{$t('pageTable.dictionaryTitle')}}</span>
                             </template>
                             <el-menu-item-group style="">
                                 <el-menu-item  v-for="(item,index) in system_menus" :index="item.code":key="index" @click="screenByMenu(item.code,item.name)">{{item.name}}</el-menu-item>
@@ -27,7 +27,7 @@
                     <el-form :inline="true" size="mini"  @submit.native.prevent>
                         <el-form-item style="float: right;margin-right: 20px;margin-top: 10px">
                             <el-button type="primary" @click="add()" :disabled="disableFlag"  size="mini" >
-                                <i class="fa fa-plus" aria-hidden="true"></i> 添加
+                                <i class="fa fa-plus" aria-hidden="true"></i> {{$t('searchFrom.add')}}
                             </el-button>
                         </el-form-item>
                     </el-form>
@@ -36,8 +36,8 @@
                 <div style="padding-top: 10px;padding-left: 30px">
                     <el-form :inline="true" size="mini">
                         <el-form-item>
-                            <el-button type="primary" @click="$router.push({name:'SystemDictionaryCategory'})" style="width: 80px" size="mini">
-                                字典分类
+                            <el-button type="primary" @click="$router.push({name:'SystemDictionaryCategory'})" style="" size="mini">
+                                {{$t('searchFrom.dictionaryClassification')}}
                             </el-button>
                         </el-form-item>
                     </el-form>
@@ -54,18 +54,18 @@
                               :stripe="true"
                               v-loading="is_searching"
                     >
-                        <el-table-column prop="value" sortable label="值"/>
-                        <el-table-column prop="name" sortable label="名称"/>
-                        <el-table-column prop="sortCode" sortable label="排序"/>
-                        <el-table-column prop="desc" sortable label="描述" />
-                        <el-table-column prop="isEnable" sortable label="有效"  :formatter="formatterEnable">
+                        <el-table-column prop="value" sortable :label="$t('pageTable.dictionaryValue')"/>
+                        <el-table-column prop="name" sortable :label="$t('pageTable.dictionaryName')"/>
+                        <el-table-column prop="sortCode" sortable :label="$t('pageTable.dictionarySort')"/>
+                        <el-table-column prop="desc" sortable :label="$t('pageTable.dictionaryDescribe')" />
+                        <el-table-column prop="isEnable" sortable :label="$t('pageTable.dictionaryEnable')"  :formatter="formatterEnable">
                         </el-table-column>
-                        <el-table-column prop="remark" sortable label="备注"/>
+                        <el-table-column prop="remark" sortable :label="$t('pageTable.dictionaryRemark')"/>
                         <el-table-column prop="createTime" sortable
-                                         :formatter="(row,col,val)=>val && $moment(val,'YYYYMMDDHHmmss').format('YYYY-MM-DD')" label="创建时间"/>
-                        <el-table-column label="操作" >
+                                         :formatter="(row,col,val)=>val && $moment(val,'YYYYMMDDHHmmss').format('YYYY-MM-DD')" :label="$t('pageTable.createTime')"/>
+                        <el-table-column :label="$t('pageTable.operate')" >
                             <template slot-scope="scope" >
-                                <el-button title="编辑" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row)">
+                                <el-button  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row)">
                                     <i class="el-icon-edit"></i></el-button>
 <!--                                <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="remove(scope.row)">-->
 <!--                                    <i class="el-icon-delete"></i></el-button>-->
@@ -97,7 +97,7 @@
     import Submenu from '@/components/plugin/Submenu'
     import dictionaryService from '@/api/sysConfig/dictionary'
     import EditDictionaryDialog from './EditDictionaryDialog'
-
+    import { mapGetters,mapState } from 'vuex'
     export default {
         name: "Dictionary",
         components: {ElCardPlus, Submenu,EditDictionaryDialog},
@@ -120,6 +120,12 @@
 
             };
         },
+        computed: {
+            ...mapState({
+                language:state=>state.app.language
+            }),
+
+        },
         async mounted() {
             await this.init();
             if(this.system_menus.length != 0){
@@ -130,17 +136,42 @@
             //
             formatterisDefault(row,col,val){
                 if(val==0){
-                    return "否"
+                    if (this.language=='zh'){
+                        return "否"
+                    } else if(this.language=='en'){
+                        return "no"
+                    } else if(this.language=='es'){
+                        return "no1"
+                    }
+
                 }else {
-                    return "是"
+                    if (this.language=='zh'){
+                        return "是"
+                    } else if(this.language=='en'){
+                        return "yes"
+                    } else if(this.language=='es'){
+                        return "yes1"
+                    }
                 }
             },
             //
             formatterEnable(row,col,val){
                 if(val==0){
-                    return "无效"
+                    if (this.language=='zh'){
+                        return "无效"
+                    } else if(this.language=='en'){
+                        return "disable"
+                    } else if(this.language=='es'){
+                        return "disable1"
+                    }
                 }else {
-                    return "有效"
+                    if (this.language=='zh'){
+                        return "有效"
+                    } else if(this.language=='en'){
+                        return "enable"
+                    } else if(this.language=='es'){
+                        return "enable1"
+                    }
                 }
             },
             //刷新
@@ -164,29 +195,29 @@
                 this.dialogState = {activated:true,entity,mode:'EDIT',dictTypeCode:this.dictTypeCode}
             },
 
-            /*删除*/
-            remove(row) {
-                this.$confirm("此操作将删除该记录, 是否继续?","提示！", {
-                    confirmButtonText: "确定",
-                    cancelButtonText: "取消",
-                    type: 'warning',
-                    center: true
-                }).then(()=> {
-                    dictionaryService.deleteDict(row.id).then(resp=>{
-
-                        this.$notify({title: '成功',type: 'success', message: resp.data.msg});
-                        this.screenByMenu(this.dictTypeCode,this.dictTypeName);
-
-                    })
-
-                }).catch(() => {
-                    this.$notify({
-                        title: '消息',
-                        type: 'info',
-                        message: "已取消删除"
-                    });
-                });
-            },
+            // /*删除*/
+            // remove(row) {
+            //     this.$confirm("此操作将删除该记录, 是否继续?","提示！", {
+            //         confirmButtonText: "确定",
+            //         cancelButtonText: "取消",
+            //         type: 'warning',
+            //         center: true
+            //     }).then(()=> {
+            //         dictionaryService.deleteDict(row.id).then(resp=>{
+            //
+            //             this.$notify({title: '成功',type: 'success', message: resp.data.msg});
+            //             this.screenByMenu(this.dictTypeCode,this.dictTypeName);
+            //
+            //         })
+            //
+            //     }).catch(() => {
+            //         this.$notify({
+            //             title: '消息',
+            //             type: 'info',
+            //             message: "已取消删除"
+            //         });
+            //     });
+            // },
             //点击菜单查询对应数据
             screenByMenu(code,name,
                          pageNum = this.search_result.pageNum,

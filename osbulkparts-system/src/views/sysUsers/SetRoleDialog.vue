@@ -1,24 +1,24 @@
 <template>
-  <el-dialog title="角色设置" :visible.sync="user_role_setting" @closed="$emit('update:activated', false)" width="800px">
+  <el-dialog :title="$t('pageTable.roleSet')" :visible.sync="user_role_setting" @closed="$emit('update:activated', false)" width="800px">
     <div class="dialogStyle" >
       <el-form class="search-form search-form-normal" :inline="true" label-width="100px" size="mini" ref="searchForm"
                :model="search_keys" @submit.native.prevent>
-        <el-form-item label="角色名称">
-          <el-input placeholder="角色名称" v-model="search_keys.roleName" size="mini" clearable></el-input>
+        <el-form-item :label="$t('searchFrom.roleName')">
+          <el-input :placeholder="$t('searchFrom.roleName')" v-model="search_keys.roleName" size="mini" clearable></el-input>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="primary" @click=" inquire({search_keys})" native-type="submit">
-            <i class="fa fa-search" aria-hidden="true"></i> 查询
+            <i class="fa fa-search" aria-hidden="true"></i>{{$t('searchFrom.search')}}
           </el-button>
         </el-form-item>
       </el-form>
 
 
       <el-button type="primary" class="btn-opt" style="float:right;margin-right: 10px" size="mini" @click="OnSubmit">
-        保存
+        {{$t('searchFrom.save')}}
       </el-button>
 
-      <p> 请选择你的角色</p>
+      <p>{{$t('Tips.ChoosingRoles')}}</p>
       <div>
         <el-table size="mini"
                   class="search-result-table"
@@ -28,8 +28,8 @@
                   @selection-change="handleSelectionChange"
                   ref="roleTable">
           <el-table-column reserve-selection type="selection" width="55"></el-table-column>
-          <el-table-column prop="roleName" label="角色名称"></el-table-column>
-          <el-table-column prop="roleDesc" label="角色说明"></el-table-column>
+          <el-table-column prop="roleName" :label="$t('pageTable.roleName')"></el-table-column>
+          <el-table-column prop="roleDesc" :label="$t('pageTable.roleExplain')"></el-table-column>
         </el-table>
       </div>
     </div>

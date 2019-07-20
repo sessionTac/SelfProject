@@ -2,14 +2,14 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="角色名">
-                    <el-input placeholder="角色名" v-model="search_keys.roleName" class="search-form-item-input"></el-input>
+                <el-form-item :label="$t('searchFrom.roleName')">
+                    <el-input :placeholder="$t('searchFrom.roleName')" v-model="search_keys.roleName" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="角色说明">
-                    <el-input placeholder="角色说明" v-model="search_keys.roleDesc" class="search-form-item-input"></el-input>
+                <el-form-item :label="$t('searchFrom.roleExplain')">
+                    <el-input :placeholder="$t('searchFrom.roleExplain')" v-model="search_keys.roleDesc" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="角色所属" >
-                    <el-select v-model="search_keys.roleAt" placeholder="请选择" class="search-form-item-input">
+                <el-form-item :label="$t('searchFrom.roleAt')" >
+                    <el-select v-model="search_keys.roleAt" :placeholder="$t('searchFrom.choose')" class="search-form-item-input">
                         <el-option
                           v-for="item in options.roleAt"
                           :key="item.value"
@@ -20,13 +20,13 @@
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="primary" @click="add" size="mini" >
-                        <i class="fa fa-plus" aria-hidden="true"></i> 添加
+                        <i class="fa fa-plus" aria-hidden="true"></i> {{$t('searchFrom.add')}}
                     </el-button>
                 </el-form-item>
 
                 <el-form-item style="float: right">
                     <el-button type="primary" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
-                        <i class="fa fa-search" aria-hidden="true"></i> 查询
+                        <i class="fa fa-search" aria-hidden="true"></i> {{$t('searchFrom.search')}}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -41,17 +41,17 @@
                   :data="search_result.list" row-key="id"
                   :stripe="true"
         >
-            <el-table-column prop="roleName" align="center" label="角色名"  />
-            <el-table-column prop="roleDesc" align="center" label="角色说明" />
-            <el-table-column prop="dictRoleAt.name" align="center" label="角色所属"  />
+            <el-table-column prop="roleName" align="center" :label="$t('pageTable.roleName')"  />
+            <el-table-column prop="roleDesc" align="center" :label="$t('pageTable.roleExplain')" />
+            <el-table-column prop="dictRoleAt.name" align="center" :label="$t('pageTable.roleAt')"  />
 
             <el-table-column label="操作" >
                 <template slot-scope="scope" >
-                    <el-button title="权限设置" type="primary" size="mini" class="btn-opt smallButton" @click="setFunction(scope.row.roleId)">
-                        权限设置</el-button>
-                    <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.roleId)">
+                    <el-button  type="primary" size="mini" class="btn-opt smallButton" @click="setFunction(scope.row.roleId)">
+                        {{$t('pageTable.powerSet')}}</el-button>
+                    <el-button  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.roleId)">
                         <i class="el-icon-news"></i></el-button>
-                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.roleId)">
+                    <el-button  type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.roleId)">
                         <i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>
@@ -150,9 +150,9 @@
             },
             //删除
             deleteUser(roleId) {
-                this.$confirm("确定删除吗？", "提示", {
-                    confirmButtonText: "是",
-                    cancelButtonText: "否",
+                this.$confirm(this.$t('Tips.deleteQueries'), this.$t('Tips.tips'), {
+                    confirmButtonText:  this.$t('Tips.yes'),
+                    cancelButtonText:  this.$t('Tips.no'),
                     type: 'warning',
                     center: true
                 }).then(() => {

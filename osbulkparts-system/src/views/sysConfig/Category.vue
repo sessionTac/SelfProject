@@ -4,25 +4,25 @@
     <div style="margin-left: 5px">
       <el-form :inline="true" size="mini" class="searchArea search-form search-form-normal" @submit.native.prevent>
 
-        <el-form-item  label="名称:">
+        <el-form-item  :label="$t('pageTable.dictionaryName')">
           <el-input v-model="search_keys.name" class="search-form-item-input"></el-input>
         </el-form-item>
 
         <el-form-item style="float: right">
           <el-button type="primary" @click="Return()"  size="mini" >
-            <i class="fa fa-back" aria-hidden="true"></i> 返回
+            <i class="fa fa-back" aria-hidden="true"></i> {{$t('searchFrom.back')}}
           </el-button>
         </el-form-item>
 
         <el-form-item style="float: right">
           <el-button type="primary" @click="add()"  size="mini" >
-            <i class="fa fa-plus" aria-hidden="true"></i> 添加
+            <i class="fa fa-plus" aria-hidden="true"></i> {{$t('searchFrom.add')}}
           </el-button>
         </el-form-item>
 
         <el-form-item label=" " label-width="40px" style="float: right">
           <el-button type="primary"  @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
-            <i class="fa fa-search" aria-hidden="true"></i> 查询
+            <i class="fa fa-search" aria-hidden="true"></i> {{$t('searchFrom.search')}}
           </el-button>
         </el-form-item>
       </el-form>
@@ -51,45 +51,45 @@
               v-loading="is_searching"
     >
       <el-table-column
-        prop="dictTypeId"
+        prop="code"
         sortable
-        label="编号">
+        :label="$t('pageTable.dictionaryNo')">
       </el-table-column>
       <el-table-column
         prop="name"
         sortable
-        label="名称">
+        :label="$t('pageTable.dictionaryName')">
       </el-table-column>
       <el-table-column
         prop="sortCode"
         sortable
-        label="排序">
+        :label="$t('pageTable.dictionarySort')">
       </el-table-column>
       <el-table-column
         prop="parentId"
         sortable
-        label="父级分类">
+        :label="$t('pageTable.Parental')">
       </el-table-column>
       <el-table-column
         prop="isEnable" :formatter="formatterEnable"
         sortable
-        label="有效">
+        :label="$t('pageTable.dictionaryEnable')">
       </el-table-column>
       <el-table-column
         prop="remark"
         sortable
-        label="备注" show-tooltip-when-overflow />
+        :label="$t('pageTable.dictionaryRemark')" show-tooltip-when-overflow />
 
       <el-table-column
         prop="createTime"
         sortable
-        label="创建时间">
+        :label="$t('pageTable.createTime')">
       </el-table-column>
-      <el-table-column label="操作" >
+      <el-table-column :label="$t('pageTable.operate')" >
         <template slot-scope="scope" >
-          <el-button title="编辑" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row,'编辑')">
+          <el-button  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row,'编辑')">
             <i class="el-icon-edit"></i></el-button>
-          <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="remove(scope.row)">
+          <el-button  type="danger" size="mini" class="btn-opt" plain  @click="remove(scope.row)">
             <i class="el-icon-delete"></i></el-button>
         </template>
       </el-table-column>
@@ -122,6 +122,8 @@
 <script>
   import EditCategoryDialog from './EditCategoryDialog'
   import service from '@/api/sysConfig/dictionary'
+  import { mapGetters,mapState } from 'vuex'
+
   export default {
     components:{
       EditCategoryDialog
@@ -211,12 +213,30 @@
       },
       formatterEnable(row,col,val){
         if(val==0){
-          return "无效"
+          if (this.language=='zh'){
+            return "无效"
+          } else if(this.language=='en'){
+            return "disable"
+          } else if(this.language=='es'){
+            return "disable1"
+          }
         }else {
-          return "有效"
+          if (this.language=='zh'){
+            return "有效"
+          } else if(this.language=='en'){
+            return "enable"
+          } else if(this.language=='es'){
+            return "enable1"
+          }
         }
       },
-    }
+    },
+    computed: {
+      ...mapState({
+        language:state=>state.app.language
+      }),
+
+    },
   }
 </script>
 

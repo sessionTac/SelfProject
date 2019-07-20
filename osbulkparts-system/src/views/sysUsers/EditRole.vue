@@ -1,26 +1,26 @@
 <template>
   <div>
     <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)"
-               width="600px">
+               width="700px">
       <el-card>
         <div class="dialogStyle" style="display: flex;flex-direction: column">
           <el-form ref="form" style="flex: 5" class="search-form search-form-normal" :model="form" label-width="100px" :rules="rules" size="mini">
-            <el-form-item label="角色名" prop="roleName">
+            <el-form-item :label="$t('pageTable.roleName')" prop="roleName">
               <el-input v-model="form.roleName" class="search-form-item-input" style="width: 200px" size="mini"
                         :maxlength="500"></el-input>
               <template slot="error" slot-scope="scope"  >
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="角色说明" prop="roleDesc">
+            <el-form-item :label="$t('pageTable.roleExplain')" prop="roleDesc">
               <el-input v-model="form.roleDesc" class="search-form-item-input" style="width: 200px" size="mini"
                         :maxlength="30"></el-input>
               <template slot="error" slot-scope="scope"  >
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item label="角色所属" prop="roleAt">
-              <el-select v-model="form.roleAt" placeholder="请选择" style="width: 200px" class="">
+            <el-form-item :label="$t('pageTable.roleAt')" prop="roleAt">
+              <el-select v-model="form.roleAt" :placeholder="$t('pageTable.choose')" style="width: 200px" class="">
                 <el-option
                   v-for="item in options.roleAt"
                   :key="item.value"
@@ -37,8 +37,8 @@
         </div>
       </el-card>
       <div class="dialogButton">
-        <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> 确定</el-button>
-        <el-button size="mini" @click=" cancel">取消</el-button>
+        <el-button type="primary" size="mini" @click="submit('form')"><i class="fa fa-check"></i> {{$t('searchFrom.confirm')}}</el-button>
+        <el-button size="mini" @click=" cancel">{{$t('searchFrom.cancel')}}</el-button>
       </div>
     </el-dialog>
   </div>
@@ -51,11 +51,11 @@
   export default {
     computed: {
       title: function () {
-        let entityName = '角色'
+        let entityName = this.$t('pageTable.role')
         if (this.mode === 'ADD') {
-          return '新增' + entityName
+          return this.$t('searchFrom.add') + entityName
         } else if (this.mode === 'EDIT') {
-          return '编辑' + entityName
+          return this.$t('searchFrom.edit') + entityName
         }
       }
     },
@@ -76,16 +76,15 @@
         /**表单的验证*/
         rules: {
           roleName: [
-            {required: true, message: '请填写用户名', trigger: 'blur'},
-            {max: 30, message: '长度不超过30个字符', trigger: 'blur'},
-            {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
+            {required: true, message: this.$t('Tips.roleName'), trigger: 'blur'},
+            {max: 30, message: this.$t('Tips.lentghGT30'), trigger: 'blur'},
+            {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: this.$t('Tips.formatNames'),}
           ],
           roleDesc: [
-            {required: false, message: '请填写真实姓名', trigger: 'blur'},
-            {max: 30, message: '长度不超过30个字符', trigger: 'blur'}
+            {max: 30, message: this.$t('Tips.lentghGT30'), trigger: 'blur'}
           ],
           roleAt: [
-            { required: true, message: '用户状态', trigger: 'change' }
+            { required: true, message: this.$t('pageTable.choose')+" "+this.$t('pageTable.roleAt'), trigger: 'change' }
           ],
         },
       }

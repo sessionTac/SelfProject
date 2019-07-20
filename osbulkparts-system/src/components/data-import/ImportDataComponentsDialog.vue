@@ -66,13 +66,16 @@
 <script>
   import service from '@/api/import'
   import {downloadBlobResponse} from '@/utils/request_utils'
+  import { generateTitle } from '@/utils/i18n'
 
   export default {
     name: "ImportDataComponents",
     components:{},
     computed:{
       title() {
-        return this.targetName + "信息导入"
+        // return generateTitle(this.targetName) + "信息导入"
+
+        return this.$t('route.' + this.targetName) + this.$t('searchFrom.infoImport')
       }
     },
 
@@ -119,6 +122,7 @@
     },
 
     methods:{
+      generateTitle,
       cleanUploadErrorMessage() {
         this.uploadState = {
           state: null,

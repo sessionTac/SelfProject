@@ -27,7 +27,7 @@
             </el-form-item>
 
             <el-form-item label="编号" prop="code">
-              <el-input v-model="form.code" class="search-form-item-input" style="width: 200px" clearable knx size="mini" :maxlength="30"></el-input>
+              <el-input :disabled="mode=='EDIT'" v-model="form.code" class="search-form-item-input" style="width: 200px" clearable knx size="mini" :maxlength="30"></el-input>
               <template slot="error" slot-scope="scope"  >
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>

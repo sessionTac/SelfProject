@@ -1,10 +1,10 @@
 <template>
-  <el-dialog title="权限设置" width="650px"
+  <el-dialog :title="$t('pageTable.powerSet')" width="650px"
              :visible.sync="internal_activated" @closed="$emit('update:activated', false)">
     <div class="dialogStyle">
       <el-form :inline="true" class="" size="mini" ref="searchForm" :model="search_keys">
         <el-form-item>
-          系统菜单
+          {{$t('Tips.systemMenu')}}
         </el-form-item>
         <div style="padding-left: 10%">
           <!--<el-scrollbar style="height: 100%">-->
@@ -25,8 +25,8 @@
 
     <span style="margin-left: 230px;">
       <el-button type="primary" size="mini" @click="getCheckedKeys">
-        <i class="fa fa-check"></i> 确定</el-button>
-      <el-button size="mini" @click="internal_activated = false">取消</el-button>
+        <i class="fa fa-check"></i> {{$t('searchFrom.confirm')}}</el-button>
+      <el-button size="mini" @click="internal_activated = false">{{$t('searchFrom.cancel')}}</el-button>
     </span>
   </el-dialog>
 </template>

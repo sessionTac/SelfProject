@@ -223,6 +223,11 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
+
+            <el-form-item label="头像" prop="avatar_attachment" label-width="50px">
+              <mi-avatar-attachment-editor
+              ref="avatarUploader" v-model="form.avatar_attachment" :dao="avatarDao" />
+            </el-form-item>
 <!--            <el-form-item label="分级BOM编码" prop="levelBomCode">-->
 <!--              <el-input v-model="form.levelBomCode" class="search-form-item-input" style="width: 160px" size="mini"-->
 <!--                        :maxlength="10"  clearable></el-input>-->
@@ -264,12 +269,16 @@
 <script>
   import activityService from '@/api/basedata/matter.js'
   import ui_config from '@/config/ui_config'
+  import MiAvatarAttachmentEditor from "@/components/MiAvatarAttachmentEditor"
 
   export default {
     name: "EditMatter",
     props: {
       id: {},
       mode: "",
+    },
+    components: {
+      MiAvatarAttachmentEditor
     },
     computed: {
       title: function () {
@@ -283,6 +292,7 @@
     },
     data() {
       return {
+        avatarDao: activityService.avatarDao,
         dialogFormVisible: true,
         search_keys: {},
         currencys: [],
@@ -445,70 +455,71 @@
       },
       /*确定*/
       submit(formName) {
-        this.$refs[formName].validate((valid) => {
-          if (valid) {
-            let data = {
-              materialInfoId: this.id || undefined,
-              materialOrderCode: this.form.materialOrderCode || undefined,
-              materialCode: this.form.materialCode || undefined,
-              materialCkdCode: this.form.materialCkdCode || undefined,
-              materialCategory: this.form.materialCategory || undefined,
-              materialDescCn: this.form.materialDescCn || undefined,
-              materialDescEn: this.form.materialDescEn || undefined,
-              materialDescRn: this.form.materialDescRn || undefined,
-              materialUnit: this.form.materialUnit || undefined,
-              materialAmount: this.form.materialAmount || undefined,
-              hsNo: this.form.hsNo || undefined,
-              supplierCode: this.form.supplierCode || undefined,
-              materialRelation: this.form.materialRelation || undefined,
-              materialRelationUnit: this.form.materialRelationUnit || undefined,
-              materialMinpackageAmt: this.form.materialMinpackageAmt || undefined,
-              materialTaxPrice: this.form.materialTaxPrice || undefined,
-              materialVatPrice: this.form.materialVatPrice || undefined,
-              tax: this.form.tax || undefined,
-              materialLossRate: this.form.materialLossRate || undefined,
-              materialPrice: this.form.materialPrice || undefined,
-              materialCurrency: this.form.materialCurrency || undefined,
-              materialRate: this.form.materialRate || undefined,
-              levelBomCode: this.form.levelBomCode || undefined,
-              materialSupplyMode: this.form.materialSupplyMode || undefined,
-              factoryCode: this.form.factoryCode || undefined,
-              length:this.form.length || undefined,
-              width:this.form.width  || undefined,
-              height:this.form.height || undefined,
-              version: this.form.version || undefined,
-              dataRoleAt: this.form.dataRoleAt || undefined,
-              isLocked: this.form.isLocked,
-            }
-            if (this.mode == 'EDIT') {  //编辑
-                // debugger
-              activityService.updateMatter({...data}).then(resp => {
-
-                if (resp.data.code == "201") {
-                  this.$notify({message: resp.data.message, type: "success"});
-                  this.$emit("success");
-                  this.dialogFormVisible = false
-                } else {
-                  this.$notify({message: resp.data.message, type: "error"});
-                }
-              })
-            } else {
-              activityService.addMatter({...data}).then(resp => {  //添加
-                if (resp.data.code == "201") {
-                  this.$notify({message: resp.data.message, type: "success"});
-                  this.$emit("success");
-                  this.dialogFormVisible = false
-                } else {
-                  this.$notify({message: resp.data.message, type: "error"});
-                }
-              })
-            }
-
-          } else {
-            console.log('error submit!!');
-            return false;
-          }
-        });
+        this.$refs.avatarUploader.upload();
+        // this.$refs[formName].validate((valid) => {
+        //   if (valid) {
+        //     let data = {
+        //       materialInfoId: this.id || undefined,
+        //       materialOrderCode: this.form.materialOrderCode || undefined,
+        //       materialCode: this.form.materialCode || undefined,
+        //       materialCkdCode: this.form.materialCkdCode || undefined,
+        //       materialCategory: this.form.materialCategory || undefined,
+        //       materialDescCn: this.form.materialDescCn || undefined,
+        //       materialDescEn: this.form.materialDescEn || undefined,
+        //       materialDescRn: this.form.materialDescRn || undefined,
+        //       materialUnit: this.form.materialUnit || undefined,
+        //       materialAmount: this.form.materialAmount || undefined,
+        //       hsNo: this.form.hsNo || undefined,
+        //       supplierCode: this.form.supplierCode || undefined,
+        //       materialRelation: this.form.materialRelation || undefined,
+        //       materialRelationUnit: this.form.materialRelationUnit || undefined,
+        //       materialMinpackageAmt: this.form.materialMinpackageAmt || undefined,
+        //       materialTaxPrice: this.form.materialTaxPrice || undefined,
+        //       materialVatPrice: this.form.materialVatPrice || undefined,
+        //       tax: this.form.tax || undefined,
+        //       materialLossRate: this.form.materialLossRate || undefined,
+        //       materialPrice: this.form.materialPrice || undefined,
+        //       materialCurrency: this.form.materialCurrency || undefined,
+        //       materialRate: this.form.materialRate || undefined,
+        //       levelBomCode: this.form.levelBomCode || undefined,
+        //       materialSupplyMode: this.form.materialSupplyMode || undefined,
+        //       factoryCode: this.form.factoryCode || undefined,
+        //       length:this.form.length || undefined,
+        //       width:this.form.width  || undefined,
+        //       height:this.form.height || undefined,
+        //       version: this.form.version || undefined,
+        //       dataRoleAt: this.form.dataRoleAt || undefined,
+        //       isLocked: this.form.isLocked,
+        //     }
+        //     if (this.mode == 'EDIT') {  //编辑
+        //         // debugger
+        //       activityService.updateMatter({...data}).then(resp => {
+        //
+        //         if (resp.data.code == "201") {
+        //           this.$notify({message: resp.data.message, type: "success"});
+        //           this.$emit("success");
+        //           this.dialogFormVisible = false
+        //         } else {
+        //           this.$notify({message: resp.data.message, type: "error"});
+        //         }
+        //       })
+        //     } else {
+        //       activityService.addMatter({...data}).then(resp => {  //添加
+        //         if (resp.data.code == "201") {
+        //           this.$notify({message: resp.data.message, type: "success"});
+        //           this.$emit("success");
+        //           this.dialogFormVisible = false
+        //         } else {
+        //           this.$notify({message: resp.data.message, type: "error"});
+        //         }
+        //       })
+        //     }
+        //
+        //   } else {
+        //     console.log('error submit!!');
+        //     return false;
+        //   }
+        // });
       },
       cancel() {
         this.dialogFormVisible = false

@@ -1,4 +1,4 @@
-import {getRequest, postRequest, putRequest,deleteRequest} from "@/utils/request_utils";
+import {getRequest, postRequest, putRequest,deleteRequest,postFormData} from "@/utils/request_utils";
 
 export default {
 
@@ -56,4 +56,15 @@ export default {
   //配额设置 根据主键id 删除一条数据
   deleteQuotaInfoById:(data)=>
     putRequest(`~/material/deleteQuotaInfoById` ,{data}),
+  //图片部分
+  avatarDao: {
+    uploader: (file) => {
+      let form = new FormData();
+      form.append('file', file);
+      return postRequest('~/material/setEnclosure',{data:form} ).then(({data}) => data);
+    },
+    // srcGetter: attachment => `${API_HOME}/passport/avatar/${attachment.file_id}`,
+    srcGetter:(attachment)  =>
+      getRequest(`~/material/getEnclosure/${attachment.file_id}`),
+  },
 }

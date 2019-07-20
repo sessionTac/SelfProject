@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <el-button type="primary" @click="Import()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> 导入</el-button>
+      <el-button type="primary" @click="Import()"><i class="fa fa-cloud-upload" aria-hidden="true"></i> {{$t('searchFrom.import') }}</el-button>
     </div>
     <div>
       <import-data-components-dialog @saved="$emit('saved')" :target="target" :targetName="targetName" v-bind.sync="dialogState" v-if="dialogState.activated"></import-data-components-dialog>
@@ -12,6 +12,7 @@
 <script>
 
   import ImportDataComponentsDialog from './ImportDataComponentsDialog.vue'
+
     export default {
         name: "",
       components:{
@@ -20,11 +21,11 @@
       computed:{
         targetName() {
           return {
-              USER_INFO                   : '用户信息',
-              MATTER                      : '物料数据',
-              ORDER_PLAN                  : '订单计划',
-              ORDER_PLAN_BALANCE          : '订单平衡计划',
-              STOCK_INFO                  : '库存信息'
+              USER_INFO                   : 'userinfo',
+              MATTER                      : 'basicsDataMatter',
+              ORDER_PLAN                  : 'warehouseOrderplan',
+              ORDER_PLAN_BALANCE          : 'warehousePlanningBalanceList',
+              STOCK_INFO                  : 'warehouseInventoryInfoList'
           }[this.target] || '未知导入类型';
         },
       },
@@ -42,7 +43,8 @@
       methods:{
         Import(){
           this.dialogState = {activated:true,}
-        }
+        },
+
       }
     }
 </script>
