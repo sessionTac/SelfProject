@@ -106,15 +106,21 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			String dictUUID = CommonSqlUtils.getUUID32();
-			mSupplierInfoEntity.setSupplierId(dictUUID);
-			mSupplierInfoEntity.setCreateUser(principal.getUserName());
-			mSupplierInfoEntity.setIsDelete(0);
-			mSupplierInfoEntity.setVersion(1);
-			int returnInt = msupplierInfoDao.insertSelective(mSupplierInfoEntity);
-			if (returnInt > 0) {
-				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.SUPPLIER.getTypeName()));
+			MSupplierInfoEntity supplierInfo = msupplierInfoDao.selectByCode(mSupplierInfoEntity.getSupplierCode());
+			if(supplierInfo != null) {
+				result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.SUPPLIER.getTypeName()));
+			}else {
+				String dictUUID = CommonSqlUtils.getUUID32();
+				mSupplierInfoEntity.setSupplierId(dictUUID);
+				mSupplierInfoEntity.setCreateUser(principal.getUserName());
+				mSupplierInfoEntity.setIsDelete(0);
+				mSupplierInfoEntity.setVersion(1);
+				int returnInt = msupplierInfoDao.insertSelective(mSupplierInfoEntity);
+				if (returnInt > 0) {
+					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
+					result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.SUPPLIER.getTypeName()));
+				}
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

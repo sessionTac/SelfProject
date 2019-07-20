@@ -30,6 +30,7 @@ import org.springframework.web.util.UriUtils;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 
 import cn.springboot.osbulkparts.common.CommonBusinessException;
 import cn.springboot.osbulkparts.common.CommonConstantEnum;
@@ -521,7 +522,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			poiUtil.setPrintLog(false);
 			
 			// 必须项[成品型号,子件型号]
-			config.setNotNullColumn(new int[]{1,2});
+			config.setNotNullColumn(new int[]{1,2,3,4,5,8,9,19,20});
 			// 不需要快读
 			config.setBriefRead(false);
 			//默认第一行为实例
@@ -550,7 +551,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				// 物料俄文描述
 				mmaterialInfoEntity.setMaterialDescRn((String)mapData.get("物料俄文描述"));
 
-				// 物料数量
+				// 单耗
 				String materialAmount = (String)mapData.get("单耗");
 				mmaterialInfoEntity.setMaterialAmount(
 						CommonMethods.changeToBigdecimal(materialAmount.trim()));
@@ -558,37 +559,46 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				String unitVle = getFromDictDataByName(
 						(String)mapData.get("单位"),"unit","单位");
 				mmaterialInfoEntity.setMaterialUnit(unitVle);
+
 				// 币种
-				String currencyVle = getFromDictDataByName(
-						(String)mapData.get("币种"),"currency","币种");
-				mmaterialInfoEntity.setMaterialCurrency(currencyVle);
+				if(StringUtil.isNotEmpty((String)mapData.get("币种"))) {
+					String currencyVle = getFromDictDataByName(
+							(String)mapData.get("币种"),"currency","币种");
+					mmaterialInfoEntity.setMaterialCurrency(currencyVle);
+				}else {
+					mmaterialInfoEntity.setMaterialCurrency(null);
+				}
 				// 换算关系
 				mmaterialInfoEntity.setMaterialRelation((String)mapData.get("换算关系"));
 				// 换算后单位
-				String relationUnitVle = getFromDictDataByName(
-						(String)mapData.get("换算后单位"),"unit","换算后单位");
-				mmaterialInfoEntity.setMaterialRelationUnit(relationUnitVle);
+				if(StringUtil.isNotEmpty((String)mapData.get("换算后单位"))) {
+					String relationUnitVle = getFromDictDataByName(
+							(String)mapData.get("换算后单位"),"unit","换算后单位");
+					mmaterialInfoEntity.setMaterialRelationUnit(relationUnitVle);
+				}else {
+					mmaterialInfoEntity.setMaterialRelationUnit(null);
+				}
 				// 最小包装数量
 				String minPackageAmt = (String)mapData.get("最小包装数量");
-				mmaterialInfoEntity.setMaterialMinpackageAmt(
-						CommonMethods.changeToBigdecimal(minPackageAmt.trim()));
+				mmaterialInfoEntity.setMaterialMinpackageAmt(minPackageAmt !=null?
+						CommonMethods.changeToBigdecimal(minPackageAmt.trim()):null);
 				// 含税单价
 				String materialVatPrice = (String)mapData.get("含税单价");
-				mmaterialInfoEntity.setMaterialVatPrice(
-						CommonMethods.changeToBigdecimal(materialVatPrice.trim()));
+				mmaterialInfoEntity.setMaterialVatPrice(materialVatPrice != null?
+						CommonMethods.changeToBigdecimal(materialVatPrice.trim()):null);
 				// 不含税单价
 				String materialTaxPrice = (String)mapData.get("不含税单价");
-				mmaterialInfoEntity.setMaterialTaxPrice(
-						CommonMethods.changeToBigdecimal(materialTaxPrice.trim()));
+				mmaterialInfoEntity.setMaterialTaxPrice(materialTaxPrice!=null?
+						CommonMethods.changeToBigdecimal(materialTaxPrice.trim()):null);
 				// 税率
 				String tax = (String)mapData.get("税率");
-				mmaterialInfoEntity.setTax(CommonMethods.changeToBigdecimal(tax.trim()));
-				if(CommonMethods.changeToBigdecimal(tax.trim()).equals(1)) {
+				mmaterialInfoEntity.setTax(tax!=null?CommonMethods.changeToBigdecimal(tax.trim()):null);
+				if(CommonMethods.changeToBigdecimal(tax).equals(1)) {
 					throw new NullPointerException(messageBean.getMessage("bussiness.material.tax.error", (String)mapData.get("物料专用号"),CommonConstantEnum.RATE.getTypeName()));
 				}
 				// 代理费率
 				String materialRate = (String)mapData.get("代理费率");
-				mmaterialInfoEntity.setMaterialRate(CommonMethods.changeToBigdecimal(materialRate.trim()));
+				mmaterialInfoEntity.setMaterialRate(materialRate!=null?CommonMethods.changeToBigdecimal(materialRate.trim()):null);
 				// HS海关编码
 				mmaterialInfoEntity.setHsNo((String)mapData.get("HS海关编码"));
 				// 供应商编码
@@ -605,14 +615,14 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				materialQuotaEntity.setSupplierName(supplierInfo.getSupplierNameCn());
 				// 配额
 				String quota = (String)mapData.get("配额");
-				materialQuotaEntity.setMaterialQuota(CommonMethods.changeToBigdecimal(quota.trim()));
+				materialQuotaEntity.setMaterialQuota(quota!=null?CommonMethods.changeToBigdecimal(quota.trim()):null);
 				
 				//损耗率
 				String lossRate = (String)mapData.get("损耗率");
-				if(CommonMethods.changeToBigdecimal(lossRate.trim()).equals(1)) {
+				if(CommonMethods.changeToBigdecimal(lossRate).equals(1)) {
 					throw new NullPointerException(messageBean.getMessage("bussiness.material.tax.error", (String)mapData.get("物料专用号"),CommonConstantEnum.LOSSRATE.getTypeName()));
 				}
-				mmaterialInfoEntity.setMaterialLossRate(CommonMethods.changeToBigdecimal(lossRate.trim()));
+				mmaterialInfoEntity.setMaterialLossRate(lossRate!=null?CommonMethods.changeToBigdecimal(lossRate.trim()):null);
 				// 长
 				String length = (String)mapData.get("长");
 				mmaterialInfoEntity.setLength(

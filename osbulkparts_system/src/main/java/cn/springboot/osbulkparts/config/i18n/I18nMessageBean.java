@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.web.servlet.LocaleResolver;
 
 /**
@@ -23,7 +24,8 @@ public class I18nMessageBean implements LocaleResolver {
 	private Locale locale;
 	
 	public I18nMessageBean() {
-		this.locale = Locale.CHINA;
+//		this.locale = Locale.CHINA;
+		this.locale = LocaleContextHolder.getLocale();
 	}
 	
 	/**

@@ -34,7 +34,7 @@ axiosService.interceptors.request.use(config => {
     };
 
     // 添加语言信息头
-    config.headers['UI_LOCALE'] = localStorage.lang;
+    config.headers['lang'] = localStorage.lang;
 
 
   }

@@ -6,6 +6,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -56,23 +57,14 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity, int pageNumber,
-															 int pageSize,String UI_LOCALE) {
+															 int pageSize) {
 		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
 		try {
+			
 			PageHelper.startPage(pageNumber, pageSize);
 			PageInfo<MUserInfoEntity> pageInfo = new PageInfo<>(
 					muserInfoDao.selectUserInfoList(muserInfoEntity));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-
-			if ("en".equals(UI_LOCALE)){
-				messageBean.setLocale(null,null,Locale.US);
-			}else if ("es".equals(UI_LOCALE)){
-				Locale locale =new Locale("rn","");
-				messageBean.setLocale(null,null,locale);
-			}else {
-				messageBean.setLocale(null,null,Locale.CHINA);
-			}
-
 			String a=messageBean.getMessage("common.server.error");
 			result.setResultInfo(pageInfo);
 		} catch (Exception e) {

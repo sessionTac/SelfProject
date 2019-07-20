@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface UserInfoService {
 	
-	CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity, int pageNumber, int pageSize,String UI_LOCALE);
+	CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity, int pageNumber, int pageSize);
 	
 	CommonResultInfo<MUserInfoEntity> getUserInfo(String userId);
 
