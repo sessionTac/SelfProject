@@ -266,8 +266,8 @@
       sort_code = #{sortCode,jdbcType=INTEGER},
       is_enable = #{isEnable,jdbcType=INTEGER},
       remark = #{remark,jdbcType=VARCHAR},
-      create_user = #{createUser,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=VARCHAR},
+<!--       create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR}, -->
       update_user = #{updateUser,jdbcType=VARCHAR},
       update_time = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
       is_delete = #{isDelete,jdbcType=INTEGER},

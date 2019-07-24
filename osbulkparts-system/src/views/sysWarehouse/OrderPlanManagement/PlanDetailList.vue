@@ -19,6 +19,18 @@
         <el-form-item label="物料专用号">
           <el-input placeholder="物料专用号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
         </el-form-item>
+        <el-form-item label="渠道">
+          <el-select v-model="search_keys.materialCategory" class="search-form-item-input" size="mini" knx>
+            <el-option value=""></el-option>
+            <el-option
+                    size="mini"
+                    v-for="item in mattertype"
+                    :key="item.value"
+                    :label="item.name"
+                    :value="item.value">
+            </el-option>
+          </el-select>
+        </el-form-item>
         <el-collapse accordion>
           <el-collapse-item>
             <template slot="title">
@@ -162,7 +174,7 @@
       <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
       <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
       <el-table-column prop="dictMaterialUnit.name"  :show-overflow-tooltip="true" align="center" label="物料单位"  />
-      <el-table-column prop="materialAmount"  :show-overflow-tooltip="true" align="center" label="单耗"  />
+      <el-table-column prop="materialAmount"  :show-overflow-tooltip="true" align="center" label="计划数量"  />
       <el-table-column prop="dictMaterialCategory.name"  :show-overflow-tooltip="true" align="center" label="渠道"  />
       <el-table-column prop="materialRelation"  :show-overflow-tooltip="true" align="center" label="换算关系"  />
       <el-table-column prop="dictRelationUnit.name"  :show-overflow-tooltip="true" align="center" label="换算后单位"  />
@@ -243,6 +255,7 @@
         link_modal_state      : {},
         link_modal_state1     : {},
         multipleSelection:[],
+        mattertype:[],
         idsStr:[],
         search_keys:{
           orderCode:"",
@@ -294,7 +307,8 @@
       this.search_keys.orderCode=this.$route.query.orderCode;
       await activityService.initData().then(resp=>{
         this.confirmStatus=resp.data.result.orderStatus;
-        this.orderDetailType =resp.data.result.orderDetailType
+        this.orderDetailType =resp.data.result.orderDetailType;
+        this.mattertype = resp.data.result.mattertype;
       },error=>{})
       this.exec_search({search_keys:this.search_keys, pageNum:1});
     },

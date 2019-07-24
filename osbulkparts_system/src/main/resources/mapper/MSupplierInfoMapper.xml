@@ -360,8 +360,8 @@
       supplier_level = #{supplierLevel,jdbcType=VARCHAR},
       supplier_at = #{supplierAt,jdbcType=VARCHAR},
       supplier_quo = #{supplierQuo,jdbcType=DECIMAL},
-      create_user = #{createUser,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=VARCHAR},
+<!--       create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR}, -->
       update_user = #{updateUser,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=VARCHAR},
       is_delete = #{isDelete,jdbcType=INTEGER},

@@ -136,7 +136,7 @@
     values (#{id,jdbcType=VARCHAR}, #{materialCode,jdbcType=VARCHAR}, #{materialCategory,jdbcType=VARCHAR}, 
       #{materialDescCn,jdbcType=VARCHAR}, #{materialDescEn,jdbcType=VARCHAR}, #{materialDescRn,jdbcType=VARCHAR}, 
       #{stockAmount,jdbcType=DECIMAL}, #{dataRoleAt,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, 
-      #{createTime,jdbcType=VARCHAR}, #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, 
+      DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'), #{updateUser,jdbcType=VARCHAR}, #{updateTime,jdbcType=VARCHAR}, 
       #{isDelete,jdbcType=INTEGER}, #{version,jdbcType=INTEGER})
   </insert>
   <insert id="insertSelective" parameterType="cn.springboot.osbulkparts.entity.TStockInfoEntity">
@@ -270,7 +270,7 @@
         update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
       <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=VARCHAR},
+        update_time = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
       </if>
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
@@ -295,10 +295,10 @@
       material_desc_rn = #{materialDescRn,jdbcType=VARCHAR},
       stock_amount = #{stockAmount,jdbcType=DECIMAL},
       data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
-      create_user = #{createUser,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=VARCHAR},
+<!--       create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR}, -->
       update_user = #{updateUser,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=VARCHAR},
+      update_time = DATE_FORMAT(NOW(),'%Y%m%d%H%i%s'),
       is_delete = #{isDelete,jdbcType=INTEGER},
       version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}

@@ -119,6 +119,7 @@
     AND dictOrderType.delete_flg = 0
 	WHERE
 		orderInfo.is_delete = 0
+		AND orderInfo.order_amount &lt;&gt; 0
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
 		AND data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
     </if>
@@ -413,9 +414,7 @@
       <if test="updateUser != null">
         update_user = #{updateUser,jdbcType=VARCHAR},
       </if>
-      <if test="updateTime != null">
-        update_time = #{updateTime,jdbcType=VARCHAR},
-      </if>
+        update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
       <if test="isDelete != null">
         is_delete = #{isDelete,jdbcType=INTEGER},
       </if>
@@ -442,10 +441,10 @@
       is_balance = #{isBalance,jdbcType=INTEGER},
       order_type = #{orderType,jdbcType=VARCHAR},
       date_flag = #{dateFlag,jdbcType=VARCHAR},
-      create_user = #{createUser,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=VARCHAR},
+<!--       create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR}, -->
       update_user = #{updateUser,jdbcType=VARCHAR},
-      update_time = #{updateTime,jdbcType=VARCHAR},
+      update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
       is_delete = #{isDelete,jdbcType=INTEGER},
       version = #{version,jdbcType=INTEGER}
     where id = #{id,jdbcType=VARCHAR}

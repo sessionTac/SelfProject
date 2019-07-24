@@ -45,7 +45,7 @@ public class RoleInfoController {
 	public CommonResultInfo<MRoleInfoEntity> getUserInfoList(
 			MRoleInfoEntity mRoleInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
-			@RequestParam(defaultValue="10") int pageSize){
+			@RequestParam(defaultValue="100") int pageSize){
 		CommonResultInfo<MRoleInfoEntity> result = roleInfoService.getRoleInfoList(mRoleInfoEntity,pageNum,pageSize);
 		return result;
 	}

@@ -243,8 +243,8 @@
         user_status = #{userStatus,jdbcType=INTEGER},
         user_phone = #{userPhone,jdbcType=INTEGER},
         user_mail = #{userMail,jdbcType=VARCHAR},
-        create_user = #{createUser,jdbcType=VARCHAR},
-        create_time = #{createTime,jdbcType=VARCHAR},
+<!--         create_user = #{createUser,jdbcType=VARCHAR},
+        create_time = #{createTime,jdbcType=VARCHAR}, -->
         update_user = #{updateUser,jdbcType=VARCHAR},
         update_time = #{updateTime,jdbcType=VARCHAR},
         is_delete = #{isDelete,jdbcType=INTEGER},

@@ -45,7 +45,7 @@ public class StockInfoController {
 	public CommonResultInfo<?> getMaterialList(
 			TStockInfoEntity tStockInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue="10") int pageSize,
+            @RequestParam(defaultValue="100") int pageSize,
 			HttpServletRequest request, Authentication auth){
 		return  stockInfoService.getStockInfoList(tStockInfoEntity,pageNum,pageSize,auth);
 	}

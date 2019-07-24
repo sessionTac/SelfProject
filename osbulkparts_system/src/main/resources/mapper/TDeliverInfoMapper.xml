@@ -329,8 +329,8 @@
       contract_no = #{contractNo,jdbcType=VARCHAR},
       data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
       state = #{state,jdbcType=VARCHAR},
-      create_user = #{createUser,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=VARCHAR},
+<!--       create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR}, -->
       update_user = #{updateUser,jdbcType=VARCHAR},
       update_time = #{updateTime,jdbcType=VARCHAR},
       is_delete = #{isDelete,jdbcType=INTEGER},

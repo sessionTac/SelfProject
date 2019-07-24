@@ -32,6 +32,7 @@ import org.springframework.web.util.UriUtils;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.github.pagehelper.util.StringUtil;
 
 import cn.springboot.osbulkparts.common.CommonBusinessException;
 import cn.springboot.osbulkparts.common.CommonConstantEnum;
@@ -407,7 +408,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 												materialInfo.getMaterialAmount()).multiply(
 														quotaEntityList.get(m).getMaterialQuota()).setScale(2, BigDecimal.ROUND_HALF_UP);
 										// 订单物料数量(单耗)
-										orderDetailParam.setMaterialAmount(materialInfo.getMaterialAmount());
+										orderDetailParam.setMaterialAmount(orderMaterAmount.add(lossAmount));
 										// 物料类别
 										orderDetailParam.setMaterialCategory(materialInfo.getMaterialCategory());
 										// 换算关系
@@ -415,7 +416,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 										// 换算后单位
 										orderDetailParam.setMaterialRelationUnit(materialInfo.getMaterialRelationUnit());
 										// 换算后数量
-										BigDecimal relation = new BigDecimal(orderDetailParam.getMaterialRelation().length() > 0 ? orderDetailParam.getMaterialRelation():"1");
+										BigDecimal relation = new BigDecimal(BigDecimal.ZERO.toString());
+										if(orderDetailParam.getMaterialRelation() != null) {
+											relation = new BigDecimal(orderDetailParam.getMaterialRelation().length() > 0 ? orderDetailParam.getMaterialRelation():"1");
+										}
 										BigDecimal relationAmount = orderMaterAmount.add(lossAmount).multiply(relation);
 										orderDetailParam.setMaterialRelationQuantity(relationAmount);
 										// 最小包装类型
@@ -555,7 +559,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 								orderMaterAmount = torderInfo.getOrderAmount().multiply(
 										materialInfo.getMaterialAmount()).setScale(2, BigDecimal.ROUND_HALF_UP);
 								// 订单物料数量(单耗)
-								orderDetailParam.setMaterialAmount(materialInfo.getMaterialAmount());
+								orderDetailParam.setMaterialAmount(orderMaterAmount.add(lossAmount));
 								// 物料类别
 								orderDetailParam.setMaterialCategory(materialInfo.getMaterialCategory());
 								// 换算关系
@@ -563,7 +567,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 								// 换算后单位
 								orderDetailParam.setMaterialRelationUnit(materialInfo.getMaterialRelationUnit());
 								// 换算后数量
-								BigDecimal relation = new BigDecimal(orderDetailParam.getMaterialRelation().length() > 0 ? orderDetailParam.getMaterialRelation():"1");
+								BigDecimal relation = new BigDecimal(BigDecimal.ZERO.toString());
+								if(orderDetailParam.getMaterialRelation() != null) {
+									relation = new BigDecimal(orderDetailParam.getMaterialRelation().length() > 0 ? orderDetailParam.getMaterialRelation():"1");
+								}
 								BigDecimal relationAmount = orderMaterAmount.add(lossAmount).multiply(relation);
 								orderDetailParam.setMaterialRelationQuantity(relationAmount);
 								// 最小包装类型
@@ -725,7 +732,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				//订单型号单位
 				row.createCell(2).setCellValue(example.getDictOrderUnit().getName());
 				//日期
-				row.createCell(3).setCellValue(parseDate(example.getOrderDate(),"yyyy/MM/dd"));
+				row.createCell(3).setCellValue(parseDateExport(example.getOrderDate(),"yyyy/MM/dd"));
 				//订单数量
 				row.createCell(4).setCellValue(example.getOrderAmount().toString());
 			}
@@ -1445,6 +1452,21 @@ public class OrderInfoServiceImpl implements OrderInfoService{
             throw new ParseException(messageBean.getMessage("common.excel.date.error",CommonConstantEnum.ORDER_DATE.getTypeName()),0);
         }
         return dateString;
+    }
+    
+	/***
+	 * 日期转换
+	 * @param str
+	 * @param pattern
+	 * @return date
+	 * @throws ParseException 
+	 */
+    private String parseDateExport(String str, String pattern){
+    	String returnRes = null;
+    	if(StringUtil.isNotEmpty(str)) {
+    		returnRes = str.substring(0,4)+"/"+str.substring(4,6)+"/"+str.substring(6,8);
+    	}
+		return returnRes;
     }
 	
 	/***

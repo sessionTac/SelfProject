@@ -14,23 +14,27 @@ public class MethodTest {
 	
 	public static void main(String[] args) {
 		
-//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
-//        Date date = null;
-//        String dateString = null;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = null;
+        String dateString = null;
 //        try {
-//            date = dateFormat.parse("2019-07-01");
+        	String str= "20190724120000";
+//            date = dateFormat.parse("20190724120000");
 //            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHssmm");
 //            dateString = formatter.format(date);
+            String returnRes = null;
+            returnRes = str.substring(0,4)+"/"+str.substring(4,6)+"/"+str.substring(6,8);
+            System.out.println(returnRes);
 //        } catch (ParseException e) {
 //        }
         
-    	Date now = new Date();
-    	SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
-        String dd = df.format(now);// new Date()为获取当前系统时间
-        System.out.println(dd);
-        String password = "osadmin@123";
-        encoder.encode(password);
-		System.out.println(encoder.encode(password));
+//    	Date now = new Date();
+//    	SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
+//        String dd = df.format(now);// new Date()为获取当前系统时间
+//        System.out.println(dd);
+//        String password = "osadmin@123";
+//        encoder.encode(password);
+//		System.out.println(encoder.encode(password));
 		
 		
 	}

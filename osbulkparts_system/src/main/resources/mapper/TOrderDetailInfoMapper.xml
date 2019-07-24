@@ -756,8 +756,8 @@
       date_flag=#{dateFlag,jdbcType=VARCHAR},
       is_balance = #{isBalance,jdbcType=INTEGER},
       order_detail_type =  #{orderDetailType,jdbcType=VARCHAR}, 
-      create_user = #{createUser,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=VARCHAR},
+<!--       create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR}, -->
       update_user = #{updateUser,jdbcType=VARCHAR},
       update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
       is_delete = #{isDelete,jdbcType=INTEGER},
@@ -828,6 +828,9 @@
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(confirmStatus)">
       AND t1.confirm_status = #{confirmStatus,jdbcType=VARCHAR}
     </if>
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCategory)">
+      AND t1.material_category = #{materialCategory,jdbcType=VARCHAR}
+    </if>
     <if test="isBalance != null">
       AND t1.is_balance = #{isBalance,jdbcType=INTEGER}
     </if>
@@ -883,7 +886,7 @@
     <if test="id != null">
       AND t1.id = #{id,jdbcType=DECIMAL}
     </if>
-    order by t1.order_code,t1.order_id_item
+    order by t1.order_date,t1.order_code,t1.order_id_item
   </select>
 <!--根据id数组 批量删除数据  逻辑删除-->
   <update id="deleteBatchData">

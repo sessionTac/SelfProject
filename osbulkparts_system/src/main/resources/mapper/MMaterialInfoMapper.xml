@@ -1033,8 +1033,8 @@
       user_defined9 = #{userDefined9,jdbcType=VARCHAR},
       user_defined10 = #{userDefined10,jdbcType=VARCHAR},
       is_locked = #{isLocked,jdbcType=INTEGER},
-      create_user = #{createUser,jdbcType=VARCHAR},
-      create_time = #{createTime,jdbcType=VARCHAR},
+<!--       create_user = #{createUser,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=VARCHAR}, -->
       update_user = #{updateUser,jdbcType=VARCHAR},
       update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
       is_delete = #{isDelete,jdbcType=INTEGER},

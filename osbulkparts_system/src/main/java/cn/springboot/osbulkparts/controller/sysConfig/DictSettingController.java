@@ -33,7 +33,7 @@ public class DictSettingController {
 	public CommonResultInfo<TDictTypeEntity> getDictTypeInfoList(
 			TDictTypeEntity tdictTypeEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue="10") int pageSize){
+            @RequestParam(defaultValue="100") int pageSize){
 		CommonResultInfo<TDictTypeEntity> result = dictTypeSettingService.getDictTypeList(tdictTypeEntity,pageNum,pageSize);
 		return result;
 	}
@@ -61,7 +61,7 @@ public class DictSettingController {
 	})
 	@GetMapping("/getDictDataInfo/{dictTypeCode}")
 	public CommonResultInfo<TDictDataEntity> getDictDataInfoList(@PathVariable String dictTypeCode,@RequestParam(defaultValue = "1") int pageNum,
-															 @RequestParam(defaultValue="10") int pageSize){
+															 @RequestParam(defaultValue="100") int pageSize){
 		CommonResultInfo<TDictDataEntity> result = dictDataSettingService.getDictDataInfo(dictTypeCode,pageNum,pageSize);
 		return result;
 	}
