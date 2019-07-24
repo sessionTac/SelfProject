@@ -61,7 +61,9 @@ export default {
     dictionary:"数据字典",
     back:"返回",
     //物料主数据
-
+    MatterLock:"锁定",
+    MatterUnlock:"解锁",
+    MatterQuotaSetting:"配额设定",
     //供应商信息
 
     //订单计划
@@ -81,6 +83,8 @@ export default {
     createTime:"创建时间",
     updateUser:"最后修改人",
     updateTime:"最后修改时间",
+    startTime:"开始时间",
+    endTime:"结束时间",
     operate:"操作",
     choose:"请选择",
     //用户信息
@@ -117,6 +121,33 @@ export default {
     dictionaryParent:"父级",
     Parental:"父级分类",
     //物料主数据
+    MatterProductNO:"成品编号",
+    MatterProductDescription:"成品描述",
+    MatterMaterialSpecificNumber:"物料专用号",
+    MatterChannel:"渠道",
+    MatterChineseDescriptionOfMaterials:"物料中文描述",
+    MatterEnglishDescriptionOfMaterials:"物料英文描述",
+    MatterRussianDescriptionOfMaterials:"物料俄文描述",
+    MatterSpecificConsumption:"单耗",
+    MatterCompany:"单位",
+    MatterCurrency:"币种",
+    MatterConversionRelationship:"换算关系",
+    MatterConvertedUnit:"换算后单位",
+    MatterMinimumPackingNumber:"最小包装数",
+    MatterUnitPriceWithTax:"含税单价",
+    MatterUntaxedUnitPrice:"未税单价",
+    MatterTaxRate:"税率",
+    MatterLossRate:"损耗率",
+    MatterAgencyRate:"代理费率",
+    MatterHSCustomsNumber:"HS海关编号",
+    MatterSupplierCode:"供应商代码",
+    MatterQuota:"配额",
+    MatterLong:"长",
+    MatterWide:"宽",
+    MatterHigh:"高",
+    MatterRemark:"备注",
+    MatterVersion:"版本",
+    MatterLock:"是否锁定",
 
     //供应商信息
 
@@ -134,6 +165,7 @@ export default {
   Tips:{
     //共同
     deleteQueries:"确定删除吗",
+    exportQueries:"确定导出数据吗？",
     tips:"提示",
     yes:"是",
     no:"否",
@@ -158,8 +190,8 @@ export default {
     dictionaryNameCheck:"请输入名称",
     dictionaryValueCheck:"请输入值",
     dictionaryCodeCheck:"请填写数据字典编号",
-
     //物料主数据
+    lockOrUnlock:"确定对数据进行锁定/解锁吗？",
 
     //供应商信息
 

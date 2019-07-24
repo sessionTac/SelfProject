@@ -61,7 +61,9 @@ export default {
     dictionary:"dictionary",
     back:"back",
     //物料主数据
-
+    MatterLock:"lock",
+    MatterUnlock:"unlock",
+    MatterQuotaSetting:"quotaSetting",
     //供应商信息
 
     //订单计划
@@ -81,6 +83,8 @@ export default {
     createTime:"createTime",
     updateUser:"updateUser",
     updateTime:"updateTime",
+    startTime:"startTime",
+    endTime:"endTime",
     operate:"operate",
     choose:"Please choose",
     //用户信息
@@ -117,7 +121,33 @@ export default {
     dictionaryParent:"dictionaryParent",
     Parental:"ParentalClassification",
     //物料主数据
-
+    MatterProductNO:"ProductNO",
+    MatterProductDescription:"ProductDescription",
+    MatterMaterialSpecificNumber:"MaterialSpecificNumber",
+    MatterChannel:"Channel",
+    MatterChineseDescriptionOfMaterials:"ChineseDescriptionOfMaterials",
+    MatterEnglishDescriptionOfMaterials:"EnglishDescriptionOfMaterials",
+    MatterRussianDescriptionOfMaterials:"RussianDescriptionOfMaterials",
+    MatterSpecificConsumption:"SpecificConsumption",
+    MatterCompany:"Company",
+    MatterCurrency:"Currency",
+    MatterConversionRelationship:"ConversionRelationship",
+    MatterConvertedUnit:"ConvertedUnit",
+    MatterMinimumPackingNumber:"MinimumPackingNumber",
+    MatterUnitPriceWithTax:"UnitPriceWithTax",
+    MatterUntaxedUnitPrice:"UntaxedUnitPrice",
+    MatterTaxRate:"TaxRate",
+    MatterLossRate:"LossRate",
+    MatterAgencyRate:"AgencyRate",
+    MatterHSCustomsNumber:"HSCustomsNumber",
+    MatterSupplierCode:"SupplierCode",
+    MatterQuota:"Quota",
+    MatterLong:"Long",
+    MatterWide:"Wide",
+    MatterHigh:"High",
+    MatterRemark:"Remark",
+    MatterVersion:"Version",
+    MatterLock:"Lock",
     //供应商信息
 
     //订单计划
@@ -134,7 +164,8 @@ export default {
   Tips:{
     //共同
     deleteQueries:"Are you sure you want to delete it?",
-    Tips:"Tips",
+    exportQueries:"Are you sure you export data?",
+    tips:"Tips",
     yes:"yes",
     no:"no",
     deleteSuccess:"Successful deletion",
@@ -159,7 +190,7 @@ export default {
     dictionaryValueCheck:"Please enter a value",
     dictionaryCodeCheck:"Please fill in the data dictionary number.",
     //物料主数据
-
+    lockOrUnlock:"Are you sure to lock/unlock data?",
     //供应商信息
 
     //订单计划
