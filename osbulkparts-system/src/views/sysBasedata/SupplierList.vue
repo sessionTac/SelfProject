@@ -2,28 +2,28 @@
   <div style="display: flex;flex-direction: column;height: 100%">
     <div class="el-header">
       <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-        <el-form-item label="供应商编码">
-          <el-input placeholder="供应商编码" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
+        <el-form-item :label="$t('pageTable.SupplierCode')">
+          <el-input :placeholder="$t('pageTable.SupplierCode')" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
         </el-form-item>
-        <el-form-item label="供应商中文名称">
-          <el-input placeholder="供应商中文名称" v-model="search_keys.supplierNameCn" class="search-form-item-input"></el-input>
+        <el-form-item :label="$t('pageTable.SupplierNameCn')">
+          <el-input :placeholder="$t('pageTable.SupplierNameCn')" v-model="search_keys.supplierNameCn" class="search-form-item-input"></el-input>
         </el-form-item>
-        <el-form-item label="供应商英文名称">
-          <el-input placeholder="供应商英文名称" v-model="search_keys.supplierNameEn" class="search-form-item-input"></el-input>
+        <el-form-item :label="$t('pageTable.SupplierNameEn')">
+          <el-input :placeholder="$t('pageTable.SupplierNameEn')" v-model="search_keys.supplierNameEn" class="search-form-item-input"></el-input>
         </el-form-item>
         <el-collapse accordion>
           <el-collapse-item>
             <template slot="title">
-              <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
+              <i class="header-icon el-icon-s-operation">{{$t('Tips.allSearchKey')}}</i>
             </template>
             <div>
-              <el-form-item label="供应商中文说明">
-                <el-input placeholder="供应商中文说明" v-model="search_keys.supplierDescCn" class="search-form-item-input"></el-input>
+              <el-form-item :label="$t('pageTable.SupplierDescCn')">
+                <el-input :placeholder="$t('pageTable.SupplierDescCn')" v-model="search_keys.supplierDescCn" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="供应商英文说明">
-                <el-input placeholder="供应商英文说明" v-model="search_keys.supplierDescEn" class="search-form-item-input"></el-input>
+              <el-form-item :label="$t('pageTable.SupplierDescEn')">
+                <el-input :placeholder="$t('pageTable.SupplierDescEn')" v-model="search_keys.supplierDescEn" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="供应商分类">
+              <el-form-item :label="$t('pageTable.SupplierCata')">
                 <el-select v-model="search_keys.supplierCata"  size="mini" class="search-form-item-input">
                   <el-option value=""></el-option>
                   <el-option
@@ -35,7 +35,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="供应商等级">
+              <el-form-item :label="$t('pageTable.SupplierLevel')">
                 <el-select v-model="search_keys.supplierLevel"  size="mini" class="search-form-item-input">
                   <el-option value=""></el-option>
                   <el-option
@@ -47,7 +47,7 @@
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="供应商所属">
+              <el-form-item :label="$t('pageTable.SupplierAt')">
                 <el-select v-model="search_keys.supplierAt"  size="mini" class="search-form-item-input">
                   <el-option value=""></el-option>
                   <el-option
@@ -64,24 +64,24 @@
         </el-collapse>
         <el-form-item style="float: right">
           <el-button type="primary" :disabled="multipleSelection.length==0"  @click="deleteMatter" icon="el-icon-delete" >
-            删除
+           {{$t('searchFrom.delete')}}
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="primary"  @click="reset" icon="el-icon-error" >
-            清空
+            {{$t('searchFrom.reset')}}
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="primary"  @click="add()" icon="el-icon-plus" >
-            添加
+            {{$t('searchFrom.add')}}
           </el-button>
         </el-form-item>
 
 
         <el-form-item style="float: right">
           <el-button type="primary" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
-            <i class="fa fa-search" aria-hidden="true"></i> 查询
+            <i class="fa fa-search" aria-hidden="true"></i> {{$t('searchFrom.search')}}
           </el-button>
         </el-form-item>
 
@@ -100,37 +100,37 @@
               @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" fixed width="50" align="center"/>
-      <el-table-column prop="supplierCode"  width="100" align="center" label="供应商编码"  />
-      <el-table-column prop="supplierNameCn"  width="220" align="center" label="供应商中文名称" />
-      <el-table-column prop="supplierNameEn"  width="220" align="center" label="供应商英文名称" />
+      <el-table-column prop="supplierCode"  width="100" align="center" :label="$t('pageTable.SupplierCode')"  />
+      <el-table-column prop="supplierNameCn"  width="220" align="center" :label="$t('pageTable.SupplierNameCn')" />
+      <el-table-column prop="supplierNameEn"  width="220" align="center" :label="$t('pageTable.SupplierNameEn')" />
 <!--      <el-table-column prop="supplierQuo" width="100" align="center" label="供应商配额"  />-->
-      <el-table-column prop="supplierDescCn" width="150" :show-overflow-tooltip="true" align="center" label="供应商中文说明"  />
-      <el-table-column prop="supplierDescEn" width="150" :show-overflow-tooltip="true" align="center" label="供应商英文说明"  />
-      <el-table-column prop="address"  :show-overflow-tooltip="true" align="center" label="地址"  />
-      <el-table-column prop="contact"  :show-overflow-tooltip="true" align="center" label="联系人"  />
-      <el-table-column prop="accountBank" align="center" label="开户银行"  />
-      <el-table-column prop="bankAddress" align="center" :show-overflow-tooltip="true" width="150" label="开户银行地址"  />
-      <el-table-column prop="accountNo" align="center" label="帐号信息"  />
-      <el-table-column prop="accountant" align="center" label="账户人"  />
-      <el-table-column prop="contactWays" align="center" label="联系方式"  />
-      <el-table-column prop="dictSupplierCata.name" align="center" label="供应商分类"  />
-      <el-table-column prop="dictSupplierLevel.name" align="center" label="供应商等级"  />
-      <el-table-column prop="dictSupplierAt.name" align="center" label="供应商所属"  />
-      <el-table-column prop="createUser" align="center" label="创建人"  />
-      <el-table-column align="center" width="150" label="创建时间"  >
+      <el-table-column prop="supplierDescCn" width="150" :show-overflow-tooltip="true" align="center" :label="$t('pageTable.SupplierDescCn')"  />
+      <el-table-column prop="supplierDescEn" width="150" :show-overflow-tooltip="true" align="center" :label="$t('pageTable.SupplierDescEn')"  />
+      <el-table-column prop="address"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.SupplierAddress')"  />
+      <el-table-column prop="contact"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.SupplierContact')"  />
+      <el-table-column prop="accountBank" align="center" :label="$t('pageTable.SupplierAccountBank')"  />
+      <el-table-column prop="bankAddress" align="center" :show-overflow-tooltip="true" width="150" :label="$t('pageTable.SupplierBankAddress')"  />
+      <el-table-column prop="accountNo" align="center" :label="$t('pageTable.SupplierBankAddress')"  />
+      <el-table-column prop="accountant" align="center" :label="$t('pageTable.SupplierAccountNo')"  />
+      <el-table-column prop="contactWays" align="center" :label="$t('pageTable.SupplierAccountant')"  />
+      <el-table-column prop="dictSupplierCata.name" align="center" :label="$t('pageTable.SupplierCata')"  />
+      <el-table-column prop="dictSupplierLevel.name" align="center" :label="$t('pageTable.SupplierLevel')"  />
+      <el-table-column prop="dictSupplierAt.name" align="center" :label="$t('pageTable.SupplierAt')"  />
+      <el-table-column prop="createUser" align="center" :label="$t('pageTable.createUser')"  />
+      <el-table-column align="center" width="150" :label="$t('pageTable.createTime')"  >
         <template slot-scope="scope">
             {{scope.row.createTime != null ?$moment(scope.row.createTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>
       </el-table-column>
-      <el-table-column prop="updateUser" align="center" label="最后修改人"  />
-      <el-table-column align="center" width="150" label="最后修改时间" >
+      <el-table-column prop="updateUser" align="center" :label="$t('pageTable.updateUser')"  />
+      <el-table-column align="center" width="150" :label="$t('pageTable.updateTime')" >
         <template slot-scope="scope">
             {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" width="120" label="操作" >
+      <el-table-column fixed="right" width="120" :label="$t('pageTable.operate')" >
         <template slot-scope="scope" >
-          <el-button title="编辑与查看" type="primary" size="mini" class="btn-opt smallButton" plain @click="edit(scope.row.supplierId)">
+          <el-button  type="primary" size="mini" class="btn-opt smallButton" plain @click="edit(scope.row.supplierId)">
             <i class="el-icon-news"></i></el-button>
         </template>
       </el-table-column>
@@ -245,9 +245,9 @@
       },
       //删除
       deleteMatter(uuid) {
-        this.$confirm("确定删除吗？", "提示", {
-          confirmButtonText: "是",
-          cancelButtonText: "否",
+        this.$confirm(this.$t("Tips.deleteQueries"), this.$t("Tips.tips"), {
+          confirmButtonText:this.$t("Tips.yes"),
+          cancelButtonText: this.$t("Tips.no"),
           type: 'warning',
           center: true
         }).then(() => {

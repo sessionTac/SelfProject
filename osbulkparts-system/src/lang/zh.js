@@ -67,7 +67,7 @@ export default {
     matter:"物料信息",
     updateQuota:"更新配额",
     //供应商信息
-
+    supplier:"供应商信息",
     //订单计划
 
     //订单详情
@@ -154,7 +154,22 @@ export default {
     portrait:"头像",
 
     //供应商信息
-
+    SupplierCode:"供应商编码",
+    SupplierNameCn:"供应商中文名称",
+    SupplierNameEn:"供应商英文名称",
+    SupplierDescCn:"供应商中文说明",
+    SupplierDescEn:"供应商英文说明",
+    SupplierAddress:"地址",
+    SupplierContact:"联系人",
+    SupplierAccountBank:"开户银行",
+    SupplierBankAddress:"开户银行地址",
+    SupplierAccountNo:"账号信息",
+    SupplierAccountant:"账户人",
+    SupplierContactWays:"联系方式",
+    SupplierCata:"供应商分类",
+    SupplierLevel:"供应商等级",
+    SupplierAt:"供应商所属",
+    SupplierQuo:"供应商配额",
     //订单计划
 
     //订单详情
@@ -212,12 +227,13 @@ export default {
     checkMaterialDescEn:"请填写物料英文描述",
     checkMaterialDescRn:"请填写物料俄文描述",
     checkHSNo:"请填写HS海关编码",
-    checkSupplierCode:"请填写物供应商编号",
+    checkSupplierCode:"请填写供应商编号",
     checkMaterialUnit:"请选择单位",
     MaterQuotaNumber:"同物料不同供应商的配额不等于1，请及时修改。",
     MaterConfiguration:"确定配置吗？",
     //供应商信息
-
+    checkSupplierNameCn:"请填写供应商中文名称",
+    checkContactWays:"请输入正确的联系方式",
     //订单计划
 
     //订单详情

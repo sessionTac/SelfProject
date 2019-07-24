@@ -67,7 +67,7 @@ export default {
     matter:"MatterInfo",
     updateQuota:"UpdateQuota",
     //供应商信息
-
+    supplier:"SupplierInfo",
     //订单计划
 
     //订单详情
@@ -153,7 +153,22 @@ export default {
     MatterLock:"Lock",
     portrait:"Head portrait",
     //供应商信息
-
+    SupplierCode:"SupplierCode",
+    SupplierNameCn:"SupplierNameCn",
+    SupplierNameEn:"SupplierNameEn",
+    SupplierDescCn:"SupplierDescCn",
+    SupplierDescEn:"SupplierDescEn",
+    SupplierAddress:"Address",
+    SupplierContact:"Contact",
+    SupplierAccountBank:"AccountBank",
+    SupplierBankAddress:"BankAddress",
+    SupplierAccountNo:"AccountNo",
+    SupplierAccountant:"Accountant",
+    SupplierContactWays:"ContactWays",
+    SupplierCata:"SupplierCata",
+    SupplierLevel:"SupplierLevel",
+    SupplierAt:"SupplierAt",
+    SupplierQuo:"SupplierQuota",
     //订单计划
 
     //订单详情
@@ -216,7 +231,8 @@ export default {
     MaterQuotaNumber:"The quota for different suppliers of the same material is not equal to 1. Please revise it in time.",
     MaterConfiguration:"Are you sure about the configuration?？",
     //供应商信息
-
+    checkSupplierNameCn:"Please fill in the supplier's Chinese name.",
+    checkContactWays:"Please enter the correct contact information.",
     //订单计划
 
     //订单详情
