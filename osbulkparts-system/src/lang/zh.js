@@ -38,11 +38,18 @@ export default {
     cancel:"取消",
     browse:"浏览",
     edit:"编辑",
+    year:"年",
+    month:"月",
+    week:"周",
+    generate:"生成",
     createUser:"创建人",
     createTime:"创建时间",
     updateUser:"最后修改人",
     updateTime:"最后修改时间",
     infoImport:"导入",
+    file:"文件",
+    downloadTemplate:"下载模板",
+    downloadTemplateDesc:"点击这里下载模板",
     save:"保存",
     choose:"请选择",
     //用户信息
@@ -69,7 +76,7 @@ export default {
     //供应商信息
     supplier:"供应商信息",
     //订单计划
-
+    orderPlan:"订单计划",
     //订单详情
 
     //发货信息
@@ -171,7 +178,14 @@ export default {
     SupplierAt:"供应商所属",
     SupplierQuo:"供应商配额",
     //订单计划
-
+    OrderInfoOrderCode:"成品编号",
+    OrderInfoOrderCodeDesc:"成品描述",
+    OrderInfoOrderAmount:"订单数量",
+    OrderInfoOrderDate:"订单日期",
+    OrderInfoOrderUnit:"订单型号单位",
+    OrderInfoOrderStatus:"计划状态",
+    OrderInfoOrderType:"订单类型",
+    OrderInfoDateFlag:"日期范围",
     //订单详情
 
     //发货信息
@@ -186,6 +200,7 @@ export default {
     allSearchKey:"展开所有查询条件",
     deleteQueries:"确定删除吗",
     exportQueries:"确定导出数据吗？",
+    generateQueries:"确定对数据进行生成吗",
     tips:"提示",
     yes:"是",
     no:"否",
@@ -235,6 +250,13 @@ export default {
     checkSupplierNameCn:"请填写供应商中文名称",
     checkContactWays:"请输入正确的联系方式",
     //订单计划
+    checkOrderCode:"请填写成品编码",
+    checkOrderCodeDesc:"请填写成品描述",
+    checkOrderAmount:"请填写订单数量",
+    checkOrderDate:"请填写订单日期",
+    checkOrderUnit:"请选择订单单位",
+    checkOrderType:"请选择订单类别",
+    checkOrderStatus:"请选择订单状态",
 
     //订单详情
 

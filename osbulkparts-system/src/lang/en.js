@@ -38,11 +38,18 @@ export default {
     cancel:"cancel",
     browse:"browse",
     edit:"edit",
+    year:"year",
+    month:"month",
+    week:"week",
+    generate:"generate",
     createUser:"createUser",
     createTime:"createTime",
     updateUser:"updateUser",
     updateTime:"updateTime",
     infoImport:"Import",
+    file:"file",
+    downloadTemplate:"downloadTemplate",
+    downloadTemplateDesc:"Click here to download the template",
     save:"save",
     choose:"Please choose",
     //用户信息
@@ -69,7 +76,7 @@ export default {
     //供应商信息
     supplier:"SupplierInfo",
     //订单计划
-
+    orderPlan:"orderPlan",
     //订单详情
 
     //发货信息
@@ -170,7 +177,14 @@ export default {
     SupplierAt:"SupplierAt",
     SupplierQuo:"SupplierQuota",
     //订单计划
-
+    OrderInfoOrderCode:"OrderCode",
+    OrderInfoOrderCodeDesc:"OrderCodeDesc",
+    OrderInfoOrderAmount:"OrderAmount",
+    OrderInfoOrderDate:"OrderDate",
+    OrderInfoOrderUnit:"OrderUnit",
+    OrderInfoOrderStatus:"OrderStatus",
+    OrderInfoOrderType:"OrderType",
+    OrderInfoDateFlag:"DateRange",
     //订单详情
 
     //发货信息
@@ -185,6 +199,7 @@ export default {
     allSearchKey:"Expand all query conditions",
     deleteQueries:"Are you sure you want to delete it?",
     exportQueries:"Are you sure you export data?",
+    generateQueries:"Are you sure you want to generate data?",
     tips:"Tips",
     yes:"yes",
     no:"no",
@@ -234,7 +249,13 @@ export default {
     checkSupplierNameCn:"Please fill in the supplier's Chinese name.",
     checkContactWays:"Please enter the correct contact information.",
     //订单计划
-
+    checkOrderCode:"Please fill in the finished product code.",
+    checkOrderCodeDesc:"Please fill in the finished product description.",
+    checkOrderAmount:"Please fill in the quantity of the order.",
+    checkOrderDate:"Please fill in the order date.",
+    checkOrderUnit:"Please select the order unit.",
+    checkOrderType:"Please select the order category",
+    checkOrderStatus:"Please select the order status",
     //订单详情
 
     //发货信息

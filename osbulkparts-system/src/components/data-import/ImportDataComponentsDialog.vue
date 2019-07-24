@@ -10,14 +10,14 @@
     >
       <el-form class="search-form search-form-normal" ref="form" size="mini" :model="form" label-width="200px" :rules="rules" >
         <div  v-if="target=='ORDER_PLAN'|| target == 'ORDER_PLAN_BALANCE'" style="text-align: center">
-          <el-radio v-model="radio" label="1" border>周</el-radio>
-          <el-radio  v-model="radio" label="2" border>月</el-radio>
-          <el-radio  v-model="radio" label="3" border>年</el-radio>
+          <el-radio v-model="radio" label="1" border>{{$t('searchFrom.week')}}</el-radio>
+          <el-radio  v-model="radio" label="2" border>{{$t('searchFrom.month')}}</el-radio>
+          <el-radio  v-model="radio" label="3" border>{{$t('searchFrom.year')}}</el-radio>
         </div>
 
 
         <!--上传-->
-        <el-form-item label="文件">
+        <el-form-item :label="$t('searchFrom.file')">
           <el-input class="txt-brower" readonly v-model="fileName" style="width: 200px" size="mini "></el-input>
           <el-upload
             action=""
@@ -29,7 +29,7 @@
             style="width: 20px;float: right;margin-left: 10px"
             :auto-upload="false"
             ref="upload">
-            <el-button slot="trigger" size="mini" type="primary" class="btn-brower" >浏览</el-button>
+            <el-button slot="trigger" size="mini" type="primary" class="btn-brower" >{{$t('searchFrom.browse')}}</el-button>
           </el-upload>
         </el-form-item>
 
@@ -48,16 +48,16 @@
 <!--            <div v-if="entity" style=""><el-button @click="downloadFile" type="text" style="color: red"> 插入失败，请<u>下载附件</u>检查出错原因</el-button></div>-->
           </div>
         </el-form-item>
-        <el-form-item label="下载模板">
+        <el-form-item :label="$t('searchFrom.downloadTemplate')">
           <div>
-            <el-link type="primary" @click="downloadTemp">点击这里下载模板</el-link>
+            <el-link type="primary" @click="downloadTemp">{{$t('searchFrom.downloadTemplateDesc')}}</el-link>
           </div>
         </el-form-item>
       </el-form>
       <span slot="footer">
           <el-button type="primary" size="mini" @click="submit(form)" :disabled="!currentFile">
-            <i class="fa fa-check"></i> 确定</el-button>
-          <el-button  size="mini" @click="cancel()">取消</el-button>
+            <i class="fa fa-check"></i> {{$t('searchFrom.confirm')}}</el-button>
+          <el-button  size="mini" @click="cancel()">{{$t('searchFrom.cancel')}}</el-button>
       </span>
     </el-dialog>
   </div>
