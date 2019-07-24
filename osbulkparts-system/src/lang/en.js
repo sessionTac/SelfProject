@@ -110,7 +110,7 @@ export default {
     roleSee:"roleViewing",
     DownloadTemplate:"DownloadTemplate",
     DownloadTemplateDescribe:"Click here to download the template",
-    roleNo:"roleNo",
+    roleNo:"roleNo.",
     roleName:"roleName",
     roleExplain:"roleExplain",
     //角色权限
@@ -130,7 +130,7 @@ export default {
     dictionaryParent:"dictionaryParent",
     Parental:"ParentalClassification",
     //物料主数据
-    MatterProductNO:"ProductNO",
+    MatterProductNO:"ProductNO.",
     MatterProductDescription:"ProductDescription",
     MatterMaterialSpecificNumber:"MaterialSpecificNumber",
     MatterChannel:"Channel",
@@ -169,7 +169,7 @@ export default {
     SupplierContact:"Contact",
     SupplierAccountBank:"AccountBank",
     SupplierBankAddress:"BankAddress",
-    SupplierAccountNo:"AccountNo",
+    SupplierAccountNo:"AccountNo.",
     SupplierAccountant:"Accountant",
     SupplierContactWays:"ContactWays",
     SupplierCata:"SupplierCata",
@@ -189,16 +189,16 @@ export default {
 
     //发货信息
     orderDate:"orderDate",
-    orderNo:"orderNo",
+    orderNo:"orderNo.",
     orderIdItem:"orderIdItem",
     MaterialCategory:"MaterialCategory",
     ConvertedQuantity:"ConvertedQuantity",
     VoyageNumber:"VoyageNumber",
     QuantityOfShipments:"QuantityOfShipments",
     TypeOfShipping:"TypeOfShipping",
-    billNo:"billNo",
-    containerNo:"containerNo",
-    contractNo:"contractNo",
+    billNo:"billNo.",
+    containerNo:"containerNo.",
+    contractNo:"contractNo.",
     goodsStatus:"Status",
     //库存信息
     inventoryNumber:"InventoryQuantity"
