@@ -82,7 +82,7 @@ export default {
     //发货信息
     ConfirmationOfReceipt:"确认收货",
     //库存信息
-
+    inventory:"库存信息"
     //计划平衡表
 
   },
@@ -201,9 +201,8 @@ export default {
     containerNo:"集装箱号",
     contractNo:"合同号",
     goodsStatus:"状态",
-
     //库存信息
-
+    inventoryNumber:"库存数量"
     //计划平衡表
 
   },
