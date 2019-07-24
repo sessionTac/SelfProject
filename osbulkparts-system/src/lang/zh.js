@@ -80,7 +80,7 @@ export default {
     //订单详情
 
     //发货信息
-
+    ConfirmationOfReceipt:"确认收货",
     //库存信息
 
     //计划平衡表
@@ -189,6 +189,18 @@ export default {
     //订单详情
 
     //发货信息
+    orderDate:"订单日期",
+    orderNo:"订单号",
+    orderIdItem:"订单行项目",
+    MaterialCategory:"物料类别",
+    ConvertedQuantity:"换算后数量",
+    VoyageNumber:"航次",
+    QuantityOfShipments:"发货数量",
+    TypeOfShipping:"运输方式",
+    billNo:"提单号",
+    containerNo:"集装箱号",
+    contractNo:"合同号",
+    goodsStatus:"状态",
 
     //库存信息
 
@@ -257,11 +269,10 @@ export default {
     checkOrderUnit:"请选择订单单位",
     checkOrderType:"请选择订单类别",
     checkOrderStatus:"请选择订单状态",
-
     //订单详情
 
     //发货信息
-
+    ConfirmationOfReceipt:"确认收货吗?",
     //库存信息
 
     //计划平衡表

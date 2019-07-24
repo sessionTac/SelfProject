@@ -134,7 +134,7 @@
               <!--</template>-->
             </el-table-column>
             <el-table-column prop="orderCodeDesc"  width="300" align="center" :label="$t('pageTable.OrderInfoOrderCodeDesc')" />
-            <el-table-column prop="orderAmount"  width="100" align="center" :label="$t('pageTable.OrderInfoOrderAomount')"  />
+            <el-table-column prop="orderAmount"  width="100" align="center" :label="$t('pageTable.OrderInfoOrderAmount')"  />
             <el-table-column prop="orderDate"  width="160" align="center" :label="$t('pageTable.OrderInfoOrderDate')">
                 <template slot-scope="scope">
                     {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDD').format('YYYY-MM-DD') : ''}}

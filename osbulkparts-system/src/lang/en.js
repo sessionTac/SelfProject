@@ -80,7 +80,7 @@ export default {
     //订单详情
 
     //发货信息
-
+    ConfirmationOfReceipt:"Confirmation of receipt",
     //库存信息
 
     //计划平衡表
@@ -188,7 +188,18 @@ export default {
     //订单详情
 
     //发货信息
-
+    orderDate:"orderDate",
+    orderNo:"orderNo",
+    orderIdItem:"orderIdItem",
+    MaterialCategory:"MaterialCategory",
+    ConvertedQuantity:"ConvertedQuantity",
+    VoyageNumber:"VoyageNumber",
+    QuantityOfShipments:"QuantityOfShipments",
+    TypeOfShipping:"TypeOfShipping",
+    billNo:"billNo",
+    containerNo:"containerNo",
+    contractNo:"contractNo",
+    goodsStatus:"Status",
     //库存信息
 
     //计划平衡表
@@ -259,7 +270,7 @@ export default {
     //订单详情
 
     //发货信息
-
+    ConfirmationOfReceipt:"Confirmation of receipt?",
     //库存信息
 
     //计划平衡表
