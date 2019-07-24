@@ -239,6 +239,7 @@
        version) values
     <foreach collection="list" item="item" index="index" separator=",">
     (
+<!--       REPLACE(UUID(),'-',''),  -->
       #{item.id,jdbcType=VARCHAR}, 
       #{item.orderCode,jdbcType=VARCHAR}, 
       #{item.orderCodeDesc,jdbcType=VARCHAR}, 

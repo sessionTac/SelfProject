@@ -23,9 +23,11 @@ import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TFileEntity;
 import cn.springboot.osbulkparts.entity.TMaterialQuotaEntity;
 import cn.springboot.osbulkparts.service.MaterialDataService;
 import cn.springboot.osbulkparts.service.MaterialQuotaService;
+import cn.springboot.osbulkparts.service.TFileService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -40,6 +42,8 @@ public class MaterialDataController {
 	private MaterialDataService materialDataService;
 	@Autowired
 	private MaterialQuotaService materialQuotaService;
+	@Autowired
+	private TFileService tfileService;
 	
 	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
 	@GetMapping("/init")
@@ -167,9 +171,11 @@ public class MaterialDataController {
 	@ApiOperation(value="附件数据设定", notes="附件数据设定")
 	@ApiImplicitParam(name = "imgFile", value = "物料附件文件", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/setEnclosure")
-	public CommonResultInfo<?> setEnclosure(
+	public CommonResultInfo<?> setEnclosure(TFileEntity fileEntity,
 			@RequestParam("file") MultipartFile imgFile,HttpServletRequest request,Authentication auth) {
-		return null;
+		CommonResultInfo<?> result = tfileService.uploadFileToFtp(fileEntity, imgFile, auth);
+		return result;
+//		return null;
 	}
 
 	@ApiOperation(value="附件数据读取", notes="附件数据读取")
