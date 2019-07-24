@@ -31,6 +31,7 @@
     <result column="material_tax_price" jdbcType="DECIMAL" property="materialTaxPrice" />
     <result column="material_tax_totalprice" jdbcType="DECIMAL" property="materialTaxTotalprice" />
     <result column="material_vat_price" jdbcType="DECIMAL" property="materialVatPrice" />
+    <result column="material_supplier_no" jdbcType="VARCHAR" property="materialSupplierNo" />
     <result column="tax" jdbcType="DECIMAL" property="tax" />
     <result column="material_vat_totalprice" jdbcType="DECIMAL" property="materialVatTotalprice" />
     <result column="material_rate" jdbcType="DECIMAL" property="materialRate" />
@@ -115,6 +116,12 @@
       <result property="value" column="order_detail_type"/>
       <result property="name" column="dictOrderDetailType"/>
     </association>
+    <!--供应商-->
+    <association property="mSupplierInfoEntity"
+                 javaType="cn.springboot.osbulkparts.entity.MSupplierInfoEntity">
+      <result property="supplierCode" column="material_supplier_no"/>
+      <result property="supplierNameCn" column="supplierName"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -126,7 +133,7 @@
     order_id_item, material_code, material_desc_cn, material_desc_en, material_desc_rn, 
     material_unit, material_amount, material_category, material_relation, material_relation_unit, 
     material_relation_quantity, material_minpackage_type, material_minpackage_amt, material_minpackage_totalamt, 
-    material_tax_price, material_tax_totalprice, material_vat_price, material_vat_totalprice, tax,
+    material_tax_price, material_tax_totalprice, material_vat_price, material_vat_totalprice, material_supplier_no,tax,
     material_rate, material_currency, country_code, confirm_status, order_out_total_amount, 
     mater_out_total_amount, residual_amount, trim_amount, stock_amount, differ_amount, 
     take_over_amount, delivery_amount, surplus_amount, date_flag,data_role_at, is_balance, order_detail_type,create_user, create_time,
@@ -776,7 +783,8 @@
         t8.`name` AS dictCountryCode,
         t9.`name` AS dictConfirmStatus,
         t10.stock_amount AS stockAmount,
-	    t11.`name` AS dictOrderDetailType
+	    t11.`name` AS dictOrderDetailType,
+	    t12.supplier_name_cn as supplierName
     FROM
         t_order_detail_info AS t1
     LEFT JOIN t_dict_data AS t2 ON t1.order_unit = t2.`value`
@@ -809,6 +817,8 @@
 	LEFT JOIN t_dict_data AS t11 ON t1.order_detail_type = t11.`value`
 	AND t11.dict_type_code = 'orderDetailType'
 	AND t11.delete_flg = 0
+    LEFT JOIN m_supplier_info AS t12 ON t1.material_supplier_no = t12.supplier_code
+    AND t12.is_delete = 0
     WHERE
         t1.is_delete = 0
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCode)">

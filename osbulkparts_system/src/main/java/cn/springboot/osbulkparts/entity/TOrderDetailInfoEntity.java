@@ -322,6 +322,10 @@ public class TOrderDetailInfoEntity implements Serializable {
      * 订单详细类型
      */
     private TDictDataEntity dictOrderDetailType;
+    /**
+     * 供应商
+     */
+    private MSupplierInfoEntity mSupplierInfoEntity;
 
     private static final long serialVersionUID = 1L;
 }

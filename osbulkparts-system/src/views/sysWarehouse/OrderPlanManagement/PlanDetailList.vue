@@ -173,6 +173,10 @@
       <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
       <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
       <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
+
+      <el-table-column prop="materialSupplierNo"  :show-overflow-tooltip="true" align="center" label="供应商编码"  />
+      <el-table-column prop="msupplierInfoEntity.supplierNameCn"  :show-overflow-tooltip="true" align="center" label="供应商中文名称"  />
+
       <el-table-column prop="dictMaterialUnit.name"  :show-overflow-tooltip="true" align="center" label="物料单位"  />
       <el-table-column prop="materialAmount"  :show-overflow-tooltip="true" align="center" label="计划数量"  />
       <el-table-column prop="dictMaterialCategory.name"  :show-overflow-tooltip="true" align="center" label="渠道"  />
