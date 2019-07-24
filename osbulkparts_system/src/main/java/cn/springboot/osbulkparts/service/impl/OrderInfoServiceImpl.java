@@ -465,6 +465,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 															materialInfo.getMaterialTaxPrice().add(vatPrice)).setScale(2,BigDecimal.ROUND_HALF_UP);
 											orderDetailParam.setMaterialVatTotalprice(vatTotalPrice);
 										}
+										// 供应商编码
+										orderDetailParam.setMaterialSupplierNo(materialInfo.getSupplierCode());
 										// 税率
 										orderDetailParam.setTax(materialInfo.getTax());
 										// 代理费率
@@ -616,6 +618,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 													materialInfo.getMaterialTaxPrice().add(vatPrice)).setScale(2,BigDecimal.ROUND_HALF_UP);
 									orderDetailParam.setMaterialVatTotalprice(vatTotalPrice);
 								}
+								// 供应商编码
+								orderDetailParam.setMaterialSupplierNo(materialInfo.getSupplierCode());
 								// 税率
 								orderDetailParam.setTax(materialInfo.getTax());
 								// 代理费率

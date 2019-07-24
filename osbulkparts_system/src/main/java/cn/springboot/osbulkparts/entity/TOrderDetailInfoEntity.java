@@ -142,6 +142,11 @@ public class TOrderDetailInfoEntity implements Serializable {
     private BigDecimal materialVatTotalprice;
     
     /**
+     * 供应商编码
+     */
+    private String materialSupplierNo;
+    
+    /**
      * 税率
      */
     private BigDecimal tax;
