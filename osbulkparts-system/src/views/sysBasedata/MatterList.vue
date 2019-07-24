@@ -26,7 +26,7 @@
                 <el-collapse accordion>
                     <el-collapse-item>
                         <template slot="title">
-                            <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
+                            <i class="header-icon el-icon-s-operation">{{$t('Tips.allSearchKey')}}</i>
                         </template>
                         <div>
                             <el-form-item :label="$t('pageTable.MatterProductDescription')">

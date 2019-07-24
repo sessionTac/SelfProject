@@ -3,26 +3,26 @@
     <el-card>
       <div class="dialogStyle" style="display: flex;flex-direction: column">
         <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm">
-          <el-form-item label="物料专用号">
-            <el-input placeholder="物料专用号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
+          <el-form-item :label="$t('pageTable.MatterMaterialSpecificNumber')">
+            <el-input :placeholder="$t('pageTable.MatterMaterialSpecificNumber')" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
           </el-form-item>
-          <el-form-item label="供应商编号">
-            <el-input placeholder="供应商编号" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
+          <el-form-item :label="$t('pageTable.MatterSupplierCode')">
+            <el-input :placeholder="$t('pageTable.MatterSupplierCode')" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
           </el-form-item>
-          <el-form-item label="供应商名称">
-            <el-input placeholder="供应商名称" v-model="search_keys.supplierName" class="search-form-item-input"></el-input>
+          <el-form-item :label="$t('pageTable.MatterSupplierName')">
+            <el-input :placeholder="$t('pageTable.MatterSupplierName')" v-model="search_keys.supplierName" class="search-form-item-input"></el-input>
           </el-form-item>
-          <el-form-item label="配额">
-            <el-input placeholder="配额" v-model="search_keys.materialQuota" class="search-form-item-input"></el-input>
+          <el-form-item :label="$t('pageTable.MatterQuota')">
+            <el-input :placeholder="$t('pageTable.MatterQuota')" v-model="search_keys.materialQuota" class="search-form-item-input"></el-input>
           </el-form-item>
           <el-form-item style="float: right">
             <el-button type="primary" :disabled="false"  @click="upsertQuotaInfo({search_keys})" icon="el-icon-s-check" >
-              更新配额
+              {{$t('searchFrom.updateQuota')}}
             </el-button>
           </el-form-item>
           <el-form-item style="float: right">
             <el-button type="primary" :disabled="false"  @click="exec_search({search_keys})" icon="el-icon-s-check" >
-              查询
+              {{$t('searchFrom.search')}}
             </el-button>
           </el-form-item>
         </el-form>
@@ -36,10 +36,10 @@
                 style="flex: 1"
                 border
                 tooltip-effect="dark">
-          <el-table-column prop="materialCode"  width="170" align="center" label="物料专用号"  />
-          <el-table-column prop="supplierCode"  width="170" align="center" label="供应商编码"  />
-          <el-table-column prop="supplierName" width="250" :show-overflow-tooltip="true" align="center" label="供应商名称"  />
-          <el-table-column prop="materialQuota" label="配额" align="center" width="100"/>
+          <el-table-column prop="materialCode"  width="170" align="center" :label="$t('pageTable.MatterMaterialSpecificNumber')"  />
+          <el-table-column prop="supplierCode"  width="170" align="center" :label="$t('pageTable.MatterSupplierCode')"  />
+          <el-table-column prop="supplierName" width="250" :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterSupplierName')"  />
+          <el-table-column prop="materialQuota" :label="$t('pageTable.MatterQuota')" align="center" width="100"/>
 <!--          <el-table-column fixed="right" width="120" label="操作" >-->
 <!--          <template slot-scope="scope" >-->
 <!--          <el-button title="删除" type="primary" size="mini" class="btn-opt" plain  @click="deleteQuota(scope.row.materialCode)">-->
@@ -114,9 +114,9 @@
         this.dialogFormVisible = false
       },
       upsertQuotaInfo({search_keys}){
-        this.$confirm("确定配置吗？", "提示", {
-          confirmButtonText: "是",
-          cancelButtonText: "否",
+        this.$confirm(this.$t('Tips.MaterConfiguration'),  this.$t("Tips.tips"), {
+          confirmButtonText:  this.$t("Tips.yes"),
+          cancelButtonText:  this.$t("Tips.no"),
           type: 'warning',
           center: true
         }).then(() => {
@@ -143,7 +143,7 @@
               })
 
               if (sum != 1 ){
-                this.$notify({message: "同物料不同供应商的配额不等于1，请及时修改。", type: "warning"});
+                this.$notify({message: this.$t("Tips.MaterQuotaNumber"), type: "warning"});
               }
             } else {
               this.$notify({message: resp.data.message, type: "error"});
@@ -155,9 +155,9 @@
         })
       },
       deleteQuota(materialCode){
-        this.$confirm("确定删除吗？", "提示", {
-          confirmButtonText: "是",
-          cancelButtonText: "否",
+        this.$confirm(this.$t("Tips.deleteQueries"), this.$t("Tips.tips"), {
+          confirmButtonText: this.$t("Tips.yes"),
+          cancelButtonText: this.$t("Tips.no"),
           type: 'warning',
           center: true
         }).then(() => {

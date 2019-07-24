@@ -64,6 +64,8 @@ export default {
     MatterLock:"锁定",
     MatterUnlock:"解锁",
     MatterQuotaSetting:"配额设定",
+    matter:"物料信息",
+    updateQuota:"更新配额",
     //供应商信息
 
     //订单计划
@@ -141,6 +143,7 @@ export default {
     MatterAgencyRate:"代理费率",
     MatterHSCustomsNumber:"HS海关编号",
     MatterSupplierCode:"供应商代码",
+    MatterSupplierName:"供应商名称",
     MatterQuota:"配额",
     MatterLong:"长",
     MatterWide:"宽",
@@ -148,6 +151,7 @@ export default {
     MatterRemark:"备注",
     MatterVersion:"版本",
     MatterLock:"是否锁定",
+    portrait:"头像",
 
     //供应商信息
 
@@ -164,6 +168,7 @@ export default {
   },
   Tips:{
     //共同
+    allSearchKey:"展开所有查询条件",
     deleteQueries:"确定删除吗",
     exportQueries:"确定导出数据吗？",
     tips:"提示",
@@ -172,7 +177,15 @@ export default {
     deleteSuccess:"删除成功",
     deleteFail:"删除失败",
     lentghGT30:"长度不超过30个字符",
+    lentghGT32:"长度不超过32个字符",
+    lentghGT20:"长度不超过20个字符",
+    lentghGT5:"长度不超过5个字符",
+    lentghGT50:"长度不超过50个字符",
+    lentghGT100:"长度不超过100个字符",
+    lentghGT200:"长度不超过200个字符",
     formatNames:"请输入英文数字下划线",
+    floatCheck:"请输入数字且最多保留2位",
+    numberCheck:"请输入数字",
     //用户信息
     password:"请输入密码",
     passwordAgain:"请再次输入密码",
@@ -192,7 +205,17 @@ export default {
     dictionaryCodeCheck:"请填写数据字典编号",
     //物料主数据
     lockOrUnlock:"确定对数据进行锁定/解锁吗？",
-
+    checkMaterialOrderCode:"请填写成品编码",
+    checkMaterialCode:"请填写物料专用号",
+    checkMaterialCategory:"请选择渠道",
+    checkMaterialDescCn:"请填写物料中文描述",
+    checkMaterialDescEn:"请填写物料英文描述",
+    checkMaterialDescRn:"请填写物料俄文描述",
+    checkHSNo:"请填写HS海关编码",
+    checkSupplierCode:"请填写物供应商编号",
+    checkMaterialUnit:"请选择单位",
+    MaterQuotaNumber:"同物料不同供应商的配额不等于1，请及时修改。",
+    MaterConfiguration:"确定配置吗？",
     //供应商信息
 
     //订单计划

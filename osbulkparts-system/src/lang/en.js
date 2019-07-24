@@ -64,6 +64,8 @@ export default {
     MatterLock:"lock",
     MatterUnlock:"unlock",
     MatterQuotaSetting:"quotaSetting",
+    matter:"MatterInfo",
+    updateQuota:"UpdateQuota",
     //供应商信息
 
     //订单计划
@@ -141,6 +143,7 @@ export default {
     MatterAgencyRate:"AgencyRate",
     MatterHSCustomsNumber:"HSCustomsNumber",
     MatterSupplierCode:"SupplierCode",
+    MatterSupplierName:"SupplierName",
     MatterQuota:"Quota",
     MatterLong:"Long",
     MatterWide:"Wide",
@@ -148,6 +151,7 @@ export default {
     MatterRemark:"Remark",
     MatterVersion:"Version",
     MatterLock:"Lock",
+    portrait:"Head portrait",
     //供应商信息
 
     //订单计划
@@ -163,6 +167,7 @@ export default {
   },
   Tips:{
     //共同
+    allSearchKey:"Expand all query conditions",
     deleteQueries:"Are you sure you want to delete it?",
     exportQueries:"Are you sure you export data?",
     tips:"Tips",
@@ -171,7 +176,15 @@ export default {
     deleteSuccess:"Successful deletion",
     deleteFail:"Delete failed",
     lentghGT30:"No more than 30 characters in length",
+    lentghGT32:"No more than 32 characters in length",
+    lentghGT20:"No more than 20 characters in length",
+    lentghGT5:"No more than 5 characters in length",
+    lentghGT50:"No more than 50 characters in length",
+    lentghGT100:"No more than 100 characters in length",
+    lentghGT200:"No more than 200 characters in length",
     formatNames:"Please enter English numeric underscores",
+    floatCheck:"Please enter a number and reserve at most 2 digits.",
+    numberCheck:"please enter a number",
     //用户信息
     password:"Please input a password",
     passwordAgain:"Please enter your password again.",
@@ -191,6 +204,17 @@ export default {
     dictionaryCodeCheck:"Please fill in the data dictionary number.",
     //物料主数据
     lockOrUnlock:"Are you sure to lock/unlock data?",
+    checkMaterialOrderCode:"Please fill in the finished product code.",
+    checkMaterialCode:"Please fill in the special material number.",
+    checkMaterialCategory:"Please choose the channel",
+    checkMaterialDescCn:"Please fill in the Chinese description of the materials.",
+    checkMaterialDescEn:"Please fill in the English description of the materials.",
+    checkMaterialDescRn:"Please fill in the Russian description of the materials.",
+    checkHSNo:"Please fill in HS Customs Code",
+    checkSupplierCode:"Please fill in the supplier number.",
+    checkMaterialUnit:"Please select the unit.",
+    MaterQuotaNumber:"The quota for different suppliers of the same material is not equal to 1. Please revise it in time.",
+    MaterConfiguration:"Are you sure about the configuration?？",
     //供应商信息
 
     //订单计划
