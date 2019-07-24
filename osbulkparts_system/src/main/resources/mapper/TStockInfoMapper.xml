@@ -67,6 +67,9 @@
 		AND dictCate.delete_flg = 0
 		WHERE
 			stockInfo.is_delete = 0
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(id)">
+    	AND stockInfo.id = #{id,jdbcType=VARCHAR}
+    </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCode)">
     <bind name="materialCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialCode)"/>
     	AND stockInfo.material_code LIKE #{materialCode_like,jdbcType=VARCHAR}

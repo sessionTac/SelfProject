@@ -217,12 +217,12 @@
 		LEFT JOIN t_dict_data dictConvertRelation ON material.material_relation = dictConvertRelation.`value`
 		AND dictConvertRelation.dict_type_code = 'converRelation'
 		AND dictConvertRelation.is_enable = 1
-		AND dictConvertRelation.delete_flg = 0,
-		(SELECT max(t1.version) AS version,t1.material_code FROM m_material_info t1 WHERE t1.is_delete = 0 GROUP BY t1.material_code) maxVersion
+		AND dictConvertRelation.delete_flg = 0
+<!-- 		(SELECT max(t1.version) AS version,t1.material_code FROM m_material_info t1 WHERE t1.is_delete = 0 GROUP BY t1.material_code) maxVersion -->
 		WHERE
 			material.is_delete = 0
-		    AND material.version = maxVersion.version
-		    AND material.material_code = maxVersion.material_code
+<!-- 		    AND material.version = maxVersion.version
+		    AND material.material_code = maxVersion.material_code -->
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialInfoId)">
     	AND material.material_info_id = #{materialInfoId,jdbcType=VARCHAR}
     </if>

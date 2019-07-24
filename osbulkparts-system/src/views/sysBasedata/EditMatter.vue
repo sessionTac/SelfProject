@@ -224,7 +224,7 @@
               </template>
             </el-form-item>
 
-            <el-form-item label="头像" prop="avatar_attachment" label-width="50px">
+            <el-form-item label="价格" prop="avatar_attachment" label-width="50px">
               <mi-avatar-attachment-editor
               ref="avatarUploader" v-model="form.avatar_attachment" :dao="avatarDao" />
             </el-form-item>

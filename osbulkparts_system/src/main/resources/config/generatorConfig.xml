@@ -102,7 +102,12 @@
 			enableDeleteByExample="false">
 		</table> -->
 		<!-- 物料记录表  -->
-  		<table tableName="t_material_quota" domainObjectName="TMaterialQuotaEntity" 
+<!--   		<table tableName="t_material_quota" domainObjectName="TMaterialQuotaEntity" 
+			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
+			enableDeleteByExample="false">
+		</table> -->
+		<!-- 上传文件表  -->
+  		<table tableName="t_file" domainObjectName="TFileEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
 		</table>

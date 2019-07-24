@@ -25,9 +25,9 @@ public class MethodTest {
 //        }
         
     	Date now = new Date();
-    	SimpleDateFormat df = new SimpleDateFormat("yyyyMM");//设置日期格式
-        df.format(now);// new Date()为获取当前系统时间
-        
+    	SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
+        String dd = df.format(now);// new Date()为获取当前系统时间
+        System.out.println(dd);
         String password = "osadmin@123";
         encoder.encode(password);
 		System.out.println(encoder.encode(password));

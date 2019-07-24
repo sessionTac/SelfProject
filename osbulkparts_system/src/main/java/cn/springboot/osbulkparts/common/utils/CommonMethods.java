@@ -34,6 +34,18 @@ public class CommonMethods {
     	return nowStr;
     }
     
+    /***
+     * 获取当前系统时间
+     * @return
+     */
+    public static String getNowTimeForString() {
+    	String nowStr = null;
+    	Date now = new Date();
+    	SimpleDateFormat df = new SimpleDateFormat("yyyyMMddHHmmss");//设置日期格式
+    	nowStr = df.format(now);// new Date()为获取当前系统时间
+    	return nowStr;
+    }
+    
 	/***
 	 * 将excel中的文字转为Bigdecimal格式数据
 	 * @param value

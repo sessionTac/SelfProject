@@ -432,18 +432,20 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				row.createCell(0).setCellValue(example.getMaterialOrderCode());
 				//成品型号描述
 				row.createCell(1).setCellValue(example.getMaterialOrderCodeDesc());
-				//子件型号
+				//物料专用号
 				row.createCell(2).setCellValue(example.getMaterialCode());
-				//物料CKD号
-				row.createCell(3).setCellValue(example.getMaterialCkdCode());
-				//物料类别
-				row.createCell(4).setCellValue(example.getDictMaterialCategory().getName());
+//				//物料CKD号
+//				row.createCell(3).setCellValue(example.getMaterialCkdCode());
+				//渠道
+				row.createCell(3).setCellValue(example.getDictMaterialCategory().getName());
 				//物料中文描述
-				row.createCell(5).setCellValue(example.getMaterialDescCn());
+				row.createCell(4).setCellValue(example.getMaterialDescCn());
 				//物料英文描述
-				row.createCell(6).setCellValue(example.getMaterialDescEn());
+				row.createCell(5).setCellValue(example.getMaterialDescEn());
 				//物料俄文描述
-				row.createCell(7).setCellValue(example.getMaterialDescRn());
+				row.createCell(6).setCellValue(example.getMaterialDescRn());
+				//单耗
+				row.createCell(7).setCellValue(example.getMaterialAmount()!=null?example.getMaterialAmount().toString():"");
 				//单位
 				row.createCell(8).setCellValue(example.getDictMaterialUnit().getName());
 				//币种
@@ -471,17 +473,21 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				row.createCell(17).setCellValue(example.getHsNo());
 				//供应商编码
 				row.createCell(18).setCellValue(example.getSupplierCode());
-				//工厂号
-				row.createCell(19).setCellValue(example.getFactoryCode());
+				//配额
+				row.createCell(19).setCellValue(example.getMaterialQuota().getMaterialQuota()!=null ?example.getMaterialQuota().getMaterialQuota().toString():"");
+				//损耗
+				row.createCell(20).setCellValue(example.getMaterialLossRate()!=null ?example.getMaterialLossRate().toString():"");
 				//长
-				row.createCell(20).setCellValue(
+				row.createCell(21).setCellValue(
 						example.getLength()!=null?example.getLength().toString():"");
 				//宽
-				row.createCell(21).setCellValue(
+				row.createCell(22).setCellValue(
 						example.getWidth()!=null?example.getWidth().toString():"");
 				//高
-				row.createCell(22).setCellValue(
+				row.createCell(23).setCellValue(
 						example.getHeight()!=null?example.getHeight().toString():"");
+				// 备注
+				row.createCell(24).setCellValue(example.getUserDefined1());
 
 			}
 			workbook.write(os);

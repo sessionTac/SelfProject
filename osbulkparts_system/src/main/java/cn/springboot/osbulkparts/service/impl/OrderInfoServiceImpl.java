@@ -787,7 +787,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				// 按周导入
 				if(type == 1) {
 					// 主键ID
-					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+//					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
 					torderInfoEntity.setDateFlag("week");
 					// 订单型号，成品型号
 					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
@@ -824,6 +824,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				}
 				else if(type ==2) {
 					// 按月导入
+					/**第一周*START**/
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
 					torderInfoEntity.setDateFlag("month");
@@ -858,29 +859,118 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
-					// 主键ID
+					/**第一周*END**/
+					/**第二周*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("month");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("第二周"),"yyyyMMddhhmmss"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量2")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
-					// 主键ID
+					/**第二周*END**/
+					/**第三周*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("month");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("第三周"),"yyyyMMddhhmmss"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量3")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
-					// 主键ID
+					/**第三周*END**/
+					/**第四周*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("month");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("第四周"),"yyyyMMddhhmmss"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量4")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/**第四周*END**/
 				}else if(type ==3) {
 					// 按年导入
+					/***1月*START**/
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
 					torderInfoEntity.setDateFlag("year");
@@ -915,82 +1005,402 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					
+					/***2月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("2月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量2")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/***3月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("3月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量3")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/***4月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("4月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量4")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/***5月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("5月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量5")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/***6月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("6月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量6")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/***7月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("7月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量7")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/***8月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("8月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量8")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/***9月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("9月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量9")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/***10月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("10月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量10")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/***11月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("11月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量11")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
+					/***12月*START**/
+					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
 					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setDateFlag("year");
+					// 订单型号，成品型号
+					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
+					// 型号描述
+					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
+					// 订单型号单位
+					ordeUnit = getFromDictDataByName(
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+					torderInfoEntity.setOrderUnit(ordeUnit);
+					orderType = getFromDictDataByName(
+							(String)mapData.get("计划类型"),"orderType","计划类型");
+					if(orderType == null || orderType.length() ==0||isBalance ==1) {
+						orderType = "1";
+					}
+					// 是否平衡表数据
+					torderInfoEntity.setIsBalance(String.valueOf(isBalance));
 					// 订单日期
 					torderInfoEntity.setOrderDate(parseDate((String)mapData.get("12月"),"yyyyMM"));
 					// 数量
 					torderInfoEntity.setOrderAmount(CommonMethods.changeToBigdecimal((String)mapData.get("数量12")));
+					// 数据所属
+					torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+					// 计划状态
+					torderInfoEntity.setOrderStatus("0");
+					// 创建者
+					torderInfoEntity.setCreateUser(principal.getUserName());
+					// 删除
+					torderInfoEntity.setIsDelete(0);
+					// 版本
+					torderInfoEntity.setVersion(1);
+					torderInfoEntity.setOrderType(orderType);
 					insertResultLst.add(torderInfoEntity);
 				}
 				// 成品型号和子件型号组合判定是否存在，存在时更新，不存在时插入
