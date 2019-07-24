@@ -1,12 +1,13 @@
 <template>
   <div>
+
     <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)"
                width="600px">
       <el-card>
         <div class="dialogStyle" style="display: flex;flex-direction: column">
+          <!--{{id}}-->
           <el-form  class="search-form search-form-normal" label-width="110px" ref="form"
                    style="flex: 5" :model="form" size="mini" :rules="rules">
-
             <el-form-item label="物料专用号" prop="materialCode">
               <el-input v-model="form.materialCode" class="search-form-item-input" style="width: 160px" size="mini"
                          autocomplete="new-password" clearable></el-input>
@@ -157,7 +158,7 @@
           console.error(err);
         });
         if (this.mode == "EDIT") {
-          await activityService.findStockInfo({materialInfoId: this.id}).then(resp => {
+          await activityService.findStockInfo({id: this.id}).then(resp => {
             this.form = resp.data.result;
           }, err => {
             console.error(err);

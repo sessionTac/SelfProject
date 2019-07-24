@@ -2,16 +2,16 @@
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-                <el-form-item label="成品编码">
-                    <el-input placeholder="成品编码" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
+                <el-form-item :label="$t('pageTable.MatterProductNO')">
+                    <el-input :placeholder="$t('pageTable.MatterProductNO')" v-model="search_keys.materialOrderCode" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-form-item label="物料专用号">
-                    <el-input placeholder="物料专用号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
+                <el-form-item :label="$t('pageTable.MatterMaterialSpecificNumber')">
+                    <el-input :placeholder="$t('pageTable.MatterMaterialSpecificNumber')" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
                 </el-form-item>
 <!--                <el-form-item label="物料CKD号">-->
 <!--                    <el-input placeholder="物料CKD号" v-model="search_keys.materialCkdCode" class="search-form-item-input"></el-input>-->
 <!--                </el-form-item>-->
-                <el-form-item label="渠道">
+                <el-form-item :label="$t('pageTable.MatterChannel')">
                     <el-select v-model="search_keys.materialCategory" class="search-form-item-input" size="mini" knx>
                         <el-option value=""></el-option>
                         <el-option
@@ -26,28 +26,28 @@
                 <el-collapse accordion>
                     <el-collapse-item>
                         <template slot="title">
-                            <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
+                            <i class="header-icon el-icon-s-operation">{{$t('Tips.allSearchKey')}}</i>
                         </template>
                         <div>
-                            <el-form-item label="成品描述">
-                                <el-input placeholder="成品描述" v-model="search_keys.materialOrderCodeDesc" class="search-form-item-input"></el-input>
+                            <el-form-item :label="$t('pageTable.MatterProductDescription')">
+                                <el-input :placeholder="$t('pageTable.MatterProductDescription')" v-model="search_keys.materialOrderCodeDesc" class="search-form-item-input"></el-input>
                             </el-form-item>
-                            <el-form-item label="物料中文描述">
-                                <el-input placeholder="物料中文描述" v-model="search_keys.materialDescCn" class="search-form-item-input"></el-input>
+                            <el-form-item :label="$t('pageTable.MatterChineseDescriptionOfMaterials')">
+                                <el-input :placeholder="$t('pageTable.MatterChineseDescriptionOfMaterials')" v-model="search_keys.materialDescCn" class="search-form-item-input"></el-input>
                             </el-form-item>
-                            <el-form-item label="物料英文描述">
-                                <el-input placeholder="物料英文描述" v-model="search_keys.materialDescEn" class="search-form-item-input"></el-input>
+                            <el-form-item :label="$t('pageTable.MatterEnglishDescriptionOfMaterials')">
+                                <el-input :placeholder="$t('pageTable.MatterEnglishDescriptionOfMaterials')" v-model="search_keys.materialDescEn" class="search-form-item-input"></el-input>
                             </el-form-item>
-                            <el-form-item label="物料俄文描述">
-                                <el-input placeholder="物料俄文描述" v-model="search_keys.materialDescRn" class="search-form-item-input"></el-input>
+                            <el-form-item :label="$t('pageTable.MatterRussianDescriptionOfMaterials')">
+                                <el-input :placeholder="$t('pageTable.MatterRussianDescriptionOfMaterials')" v-model="search_keys.materialDescRn" class="search-form-item-input"></el-input>
                             </el-form-item>
-                            <el-form-item label="HS海关编码">
-                                <el-input placeholder="HS海关编码" v-model="search_keys.hsNo" class="search-form-item-input"></el-input>
+                            <el-form-item :label="$t('pageTable.MatterHSCustomsNumber')">
+                                <el-input :placeholder="$t('pageTable.MatterHSCustomsNumber')" v-model="search_keys.hsNo" class="search-form-item-input"></el-input>
                             </el-form-item>
-                            <el-form-item label="供应商编号">
-                                <el-input placeholder="供应商编号" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
+                            <el-form-item :label="$t('pageTable.MatterSupplierCode')">
+                                <el-input :placeholder="$t('pageTable.MatterSupplierCode')" v-model="search_keys.supplierCode" class="search-form-item-input"></el-input>
                             </el-form-item>
-                            <el-form-item label="币种">
+                            <el-form-item :label="$t('pageTable.MatterCurrency')">
                                 <el-select v-model="search_keys.materialCurrency"  size="mini" class="search-form-item-input">
                                     <el-option value=""></el-option>
                                     <el-option
@@ -59,7 +59,7 @@
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="版本">
+                            <el-form-item :label="$t('pageTable.MatterVersion')">
                                 <el-select v-model="search_keys.version"  size="mini" class="search-form-item-input">
                                     <el-option value=""></el-option>
                                     <el-option
@@ -71,10 +71,10 @@
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item label="创建人">
-                                <el-input placeholder="创建人" v-model="search_keys.createUser" class="search-form-item-input"></el-input>
+                            <el-form-item :label="$t('pageTable.createUser')">
+                                <el-input :placeholder="$t('pageTable.createUser')" v-model="search_keys.createUser" class="search-form-item-input"></el-input>
                             </el-form-item>
-                            <el-form-item label="创建时间">
+                            <el-form-item :label="$t('pageTable.createTime')">
                                     <!--<el-date-picker-->
                                       <!--class="search-form-item-input"-->
                                       <!--v-model="search_keys.createTime"-->
@@ -86,17 +86,16 @@
                                       class=""
                                       v-model="search_keys.createTimeArray"
                                       type="daterange"
-                                      range-separator="至"
                                       value-format="yyyyMMddHHmmss"
-                                      start-placeholder="开始日期"
-                                      end-placeholder="结束日期">
+                                      :start-placeholder="$t('pageTable.startTime')"
+                                      :end-placeholder="$t('pageTable.endTime')">
                                     </el-date-picker>
                                 <!--<el-input placeholder="创建时间" v-model="search_keys.createTime" class="search-form-item-input"></el-input>-->
                             </el-form-item>
-                            <el-form-item label="最后修改人">
-                                <el-input placeholder="最后修改人" v-model="search_keys.updateUser" class="search-form-item-input"></el-input>
+                            <el-form-item :label="$t('pageTable.updateUser')">
+                                <el-input :placeholder="$t('pageTable.updateUser')" v-model="search_keys.updateUser" class="search-form-item-input"></el-input>
                             </el-form-item>
-                            <el-form-item label="最后修改时间">
+                            <el-form-item :label="$t('pageTable.updateTime')">
                                 <!--<el-date-picker-->
                                   <!--class="search-form-item-input"-->
                                   <!--v-model="search_keys.updateTime"-->
@@ -108,10 +107,9 @@
                                   class=""
                                   v-model="search_keys.updateTimeArray"
                                   type="daterange"
-                                  range-separator="至"
                                   value-format="yyyyMMddHHmmss"
-                                  start-placeholder="开始日期"
-                                  end-placeholder="结束日期">
+                                  :start-placeholder="$t('pageTable.startTime')"
+                                  :end-placeholder="$t('pageTable.endTime')">
                                 </el-date-picker>
                                 <!--<el-input placeholder="最后修改时间" v-model="search_keys.updateTime" class="search-form-item-input"></el-input>-->
                             </el-form-item>
@@ -120,12 +118,12 @@
                 </el-collapse>
                 <el-form-item style="float: right">
                     <el-button type="primary" :disabled="unlockFlag " v-if="subject.hasPermissions('maintenance:basis:matter:info:unlocked')" @click="lockData(false)" icon="el-icon-s-check" >
-                        解锁
+                        {{$t('searchFrom.MatterUnlock')}}
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="primary" :disabled="lockFlag " v-if="subject.hasPermissions('maintenance:basis:matter:info:locked')" @click="lockData(true)" icon="el-icon-s-check" >
-                        锁定
+                        {{$t('searchFrom.MatterLock')}}
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
@@ -133,32 +131,32 @@
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:export')" @click="exportData(old_search_keys)" size="mini" >
-                        <i class="fa fa-plus" aria-hidden="true"></i> 导出
+                        <i class="fa fa-plus" aria-hidden="true"></i>  {{$t('searchFrom.export')}}
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:delete')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
-                        删除
+                        {{$t('searchFrom.delete')}}
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="primary"  @click="reset" icon="el-icon-error" >
-                        清空
+                        {{$t('searchFrom.reset')}}
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:add')" @click="add()" icon="el-icon-plus" >
-                        添加
+                        {{$t('searchFrom.add')}}
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
                     <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:select')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
-                        <i class="fa fa-search" aria-hidden="true"></i> 查询
+                        <i class="fa fa-search" aria-hidden="true"></i>  {{$t('searchFrom.search')}}
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('*')" @click="openQuota()" icon="el-icon-s-check" >
-                        配额设定
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:matter:info:quota')" @click="openQuota()" icon="el-icon-s-check" >
+                        {{$t('searchFrom.MatterQuotaSetting')}}
                     </el-button>
                 </el-form-item>
             </el-form>
@@ -177,54 +175,54 @@
                   @selection-change="handleSelectionChange"
         >
             <el-table-column type="selection" fixed width="50" align="center"/>
-            <el-table-column prop="materialOrderCode"  width="100" align="center" label="成品编码"  />
-            <el-table-column prop="materialOrderCodeDesc"  width="100" align="center" label="成品描述"  />
+            <el-table-column prop="materialOrderCode"  width="100" align="center" :label="$t('pageTable.MatterProductNO')"  />
+            <el-table-column prop="materialOrderCodeDesc"  width="100" align="center" :label="$t('pageTable.MatterProductDescription')"  />
 <!--            <el-table-column prop="materialCkdCode"  width="100" align="center" label="物料CKD号"  />-->
-            <el-table-column prop="materialCode"  width="100" align="center" label="物料专用号"/>
-            <el-table-column prop="dictMaterialCategory.name" width="100" align="center" label="渠道" />
-            <el-table-column prop="materialDescCn" width="150"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
-            <el-table-column prop="materialDescEn"  width="150" :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
-            <el-table-column prop="materialDescRn"  width="150" :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
-            <el-table-column prop="materialAmount" align="center" label="单耗"  />
-            <el-table-column prop="dictMaterialUnit.name" align="center" label="单位"  />
-            <el-table-column prop="dictMaterialCurrency.name" align="center" label="币种"  />
-            <el-table-column prop="materialRelation" align="center" label="换算关系"  />
-            <el-table-column prop="dictMaterialRelationUnit.name" align="center" label="换算后单位"  />
-            <el-table-column prop="materialMinpackageAmt" align="center" label="最小包装数量"  />
-            <el-table-column prop="materialVatPrice" align="center" :formatter="price" label="含税单价"  />
-            <el-table-column prop="materialTaxPrice" align="center" :formatter="price" label="未税单价"  />
-            <el-table-column prop="tax" align="center" :formatter="price" label="税率"  />
-            <el-table-column prop="materialLossRate" align="center" :formatter="price" label="损耗率"  />
-            <el-table-column prop="materialRate" align="center" label="代理费率"  />
-            <el-table-column prop="hsNo" align="center" label="HS海关编码"  />
-            <el-table-column prop="supplierCode" align="center" label="供应商代码"  />
-            <el-table-column prop="materialQuota.materialQuota" :formatter="price" align="center"  label="配额"  />
+            <el-table-column prop="materialCode"  width="100" align="center" :label="$t('pageTable.MatterMaterialSpecificNumber')"/>
+            <el-table-column prop="dictMaterialCategory.name" width="100" align="center" :label="$t('pageTable.MatterChannel')" />
+            <el-table-column prop="materialDescCn" width="150"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterChineseDescriptionOfMaterials')"  />
+            <el-table-column prop="materialDescEn"  width="150" :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterEnglishDescriptionOfMaterials')"  />
+            <el-table-column prop="materialDescRn"  width="150" :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterRussianDescriptionOfMaterials')"  />
+            <el-table-column prop="materialAmount" align="center" :label="$t('pageTable.MatterSpecificConsumption')"  />
+            <el-table-column prop="dictMaterialUnit.name" align="center" :label="$t('pageTable.MatterCompany')"  />
+            <el-table-column prop="dictMaterialCurrency.name" align="center" :label="$t('pageTable.MatterCurrency')"  />
+            <el-table-column prop="materialRelation" align="center" :label="$t('pageTable.MatterConversionRelationship')"  />
+            <el-table-column prop="dictMaterialRelationUnit.name" align="center" :label="$t('pageTable.MatterConvertedUnit')"  />
+            <el-table-column prop="materialMinpackageAmt" align="center" :label="$t('pageTable.MatterMinimumPackingNumber')"  />
+            <el-table-column prop="materialVatPrice" align="center" :formatter="price" :label="$t('pageTable.MatterUnitPriceWithTax')"  />
+            <el-table-column prop="materialTaxPrice" align="center" :formatter="price" :label="$t('pageTable.MatterUntaxedUnitPrice')"  />
+            <el-table-column prop="tax" align="center" :formatter="price" :label="$t('pageTable.MatterTaxRate')"  />
+            <el-table-column prop="materialLossRate" align="center" :formatter="price" :label="$t('pageTable.MatterLossRate')"  />
+            <el-table-column prop="materialRate" align="center" :label="$t('pageTable.MatterAgencyRate')"  />
+            <el-table-column prop="hsNo" align="center" :label="$t('pageTable.MatterHSCustomsNumber')"  />
+            <el-table-column prop="supplierCode" align="center" :label="$t('pageTable.MatterSupplierCode')"  />
+            <el-table-column prop="materialQuota.materialQuota" :formatter="price" align="center"  :label="$t('pageTable.MatterQuota')"  />
 <!--	          <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />-->
 <!--            <el-table-column prop="materialPrice" align="center" :formatter="price" label="单价"  />-->
 <!--            <el-table-column prop="factoryCode" align="center" label="代理商"  />-->
-            <el-table-column prop="length" align="center" label="长"  />
-            <el-table-column prop="width" align="center" label="宽"  />
-            <el-table-column prop="height" align="center" label="高"  />
-            <el-table-column prop="user_defined1"  width="150" :show-overflow-tooltip="true" align="center" label="备注"  />
-            <el-table-column prop="version" width="150" align="center" :formatter="formatVer" label="版本"  />
-            <el-table-column prop="createUser" align="center" label="创建人"  />
+            <el-table-column prop="length" align="center" :label="$t('pageTable.MatterLong')"  />
+            <el-table-column prop="width" align="center"  :label="$t('pageTable.MatterWide')"  />
+            <el-table-column prop="height" align="center" :label="$t('pageTable.MatterHigh')"  />
+            <el-table-column prop="user_defined1"  width="150" :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterRemark')"  />
+            <el-table-column prop="version" width="150" align="center" :formatter="formatVer" :label="$t('pageTable.MatterVersion')"  />
+            <el-table-column prop="createUser" align="center" :label="$t('pageTable.createUser')"  />
 <!--            <el-table-column prop="createTime" align="center" label="创建时间"  />-->
-            <el-table-column label="创建时间" show-overflow-tooltip>
+            <el-table-column :label="$t('pageTable.createTime')" show-overflow-tooltip>
                 <template slot-scope="scope">
                     {{scope.row.createTime != null ?$moment(scope.row.createTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
                 </template>
             </el-table-column>
-            <el-table-column prop="updateUser" align="center" label="最后修改人"  />
+            <el-table-column prop="updateUser" align="center" :label="$t('pageTable.updateUser')"  />
 <!--            <el-table-column prop="updateTime" align="center" label="最后修改时间"  />-->
-            <el-table-column label="最后修改时间" show-overflow-tooltip>
+            <el-table-column :label="$t('pageTable.updateTime')" show-overflow-tooltip>
                 <template slot-scope="scope">
                     {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
                 </template>
             </el-table-column>
-            <el-table-column fixed="right" prop="dictLockStatus.name" align="center" label="是否锁定"  />
-            <el-table-column fixed="right"  width="80" label="操作" >
+            <el-table-column fixed="right" prop="dictLockStatus.name" align="center" :label="$t('pageTable.MatterLock')"  />
+            <el-table-column fixed="right"  width="80" :label="$t('pageTable.operate')" >
                 <template slot-scope="scope" >
-                    <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
+                    <el-button  v-if="subject.hasPermissions('maintenance:basis:matter:info:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.materialInfoId)">
                         <i class="el-icon-news"></i></el-button>
 <!--                    <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="deleteMatter(scope.row.uuid)">-->
 <!--                        <i class="el-icon-delete"></i></el-button>-->
@@ -391,9 +389,9 @@
                 })
             },
             exportData(old_search_keys) {
-                this.$confirm("确定导出数据吗？", "提示", {
-                    confirmButtonText: "是",
-                    cancelButtonText: "否",
+                this.$confirm(this.$t("Tips.exportQueries"), this.$t("Tips.tips"), {
+                    confirmButtonText: this.$t("Tips.yes"),
+                    cancelButtonText: this.$t("Tips.no"),
                     type: 'info',
                     center: true
                 }).then(() => {
@@ -417,9 +415,9 @@
             },
             //删除
             deleteMatter(uuid) {
-                this.$confirm("确定删除吗？", "提示", {
-                    confirmButtonText: "是",
-                    cancelButtonText: "否",
+                this.$confirm(this.$t("Tips.deleteQueries"), this.$t("Tips.tips"), {
+                    confirmButtonText: this.$t("Tips.yes"),
+                    cancelButtonText: this.$t("Tips.no"),
                     type: 'warning',
                     center: true
                 }).then(() => {
@@ -441,9 +439,9 @@
                 })//删除
             },
             lockData(toLocked){
-                this.$confirm("确定对数据进行锁定/解锁吗？", "提示", {
-                    confirmButtonText: "是",
-                    cancelButtonText: "否",
+                this.$confirm(this.$t("Tips.lockOrUnlock"),this.$t("Tips.tips"), {
+                    confirmButtonText: this.$t("Tips.yes"),
+                    cancelButtonText: this.$t("Tips.no"),
                     type: 'warning',
                     center: true
                 }).then(() => {
