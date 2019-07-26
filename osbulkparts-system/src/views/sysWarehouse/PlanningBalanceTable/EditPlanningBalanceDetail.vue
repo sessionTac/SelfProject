@@ -100,7 +100,13 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-
+            <el-form-item :label="$t('pageTable.SupplierCode')" prop="materialSupplierNo">
+              <el-input type="textarea" v-model="form.materialSupplierNo" class="search-form-item-input" style="width:160px" size="mini"
+                        clearable></el-input>
+              <template slot="error" slot-scope="scope">
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
+            </el-form-item>
             <el-form-item label="物料单位" prop="materialUnit">
               <el-select :disabled="true" v-model="form.materialUnit" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
@@ -401,6 +407,7 @@
           materialDescCn:"",
           materialDescEn:"",
           materialDescRn:"",
+          materialSupplierNo:"",
           materialUnit:"",
           materialAmount:"",
           materialCategory:"",
@@ -695,6 +702,7 @@
               materialDescCn            :this.form.materialDescCn             || undefined,
               materialDescEn            :this.form.materialDescEn             || undefined,
               materialDescRn            :this.form.materialDescRn             || undefined,
+              materialSupplierNo        :this.form.materialSupplierNo         || undefined,
               materialUnit              :this.form.materialUnit               || undefined,
               materialAmount            :this.form.materialAmount             || undefined,
               materialCategory          :this.form.materialCategory           || undefined,

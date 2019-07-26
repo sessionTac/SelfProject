@@ -74,7 +74,7 @@
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 30px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
-              <div style="float: right;margin-right: 40px;"><el-button :disabled="form.materialCode==''" @click="checkMaterialCode(form.materialCode)">校验并获取</el-button></div>
+              <div style="float: right;margin-right: 40px;"><el-button :disabled="form.materialCode==''" @click="checkMaterialCode(form.materialCode)">{{$t('searchFrom.checkAndGet')}}</el-button></div>
 
             </el-form-item>
             <el-form-item :label="$t('pageTable.MatterChineseDescriptionOfMaterials')" prop="materialDescCn">
@@ -98,7 +98,14 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-
+            <!--materialSupplierNo-->
+            <el-form-item :label="$t('pageTable.SupplierCode')" prop="materialSupplierNo">
+              <el-input type="textarea" v-model="form.materialSupplierNo" class="search-form-item-input" style="width:160px" size="mini"
+                        clearable></el-input>
+              <template slot="error" slot-scope="scope">
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
+            </el-form-item>
             <el-form-item :label="$t('pageTable.MatterCompany')" prop="materialUnit">
               <el-select  v-model="form.materialUnit" style="width: 160px" size="mini" clearable>
                 <el-option value=""></el-option>
@@ -416,6 +423,7 @@
           materialDescCn:"",
           materialDescEn:"",
           materialDescRn:"",
+          materialSupplierNo:"",
           materialUnit:"",
           materialAmount:"",
           materialCategory:"",
@@ -711,6 +719,7 @@
               materialDescCn            :this.form.materialDescCn             || undefined,
               materialDescEn            :this.form.materialDescEn             || undefined,
               materialDescRn            :this.form.materialDescRn             || undefined,
+              materialSupplierNo        :this.form.materialSupplierNo         || undefined,
               materialUnit              :this.form.materialUnit               || undefined,
               materialAmount            :this.form.materialAmount             || undefined,
               materialCategory          :this.form.materialCategory           || undefined,

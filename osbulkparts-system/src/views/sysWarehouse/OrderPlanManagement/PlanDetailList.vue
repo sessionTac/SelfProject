@@ -106,12 +106,12 @@
         </el-collapse>
         <el-form-item style="float: right">
           <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:approval')&& $route.meta.flag=='week'" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >
-            {{$t('searchFrom.approval')}}
+            {{$t('pageTable.approval')}}
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:goods')&& $route.meta.flag=='week'" :disabled="deliver" @click="deliverGoods" icon="el-icon-s-check" >
-            {{$t('searchFrom.deliverGoods')}}
+            {{$t('pageTable.deliverGoods')}}
           </el-button>
         </el-form-item>
 

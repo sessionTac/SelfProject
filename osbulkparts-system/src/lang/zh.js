@@ -199,6 +199,13 @@ export default {
     approval:"审批",
     deliverGoods:"发货",
     AutomaticGeneration:"自动生成",
+    UnitConsumptionQuantity:"单耗数量",
+    supperAmount:"超发数量",
+    suggestedAmount:"建议数量",
+    ConfirmationOfDelivery:"确定发货",
+    DeliveryDetails:"发货明细",
+
+
     //发货信息
     orderDate:"订单日期",
     orderNo:"订单号",
@@ -289,6 +296,7 @@ export default {
     checkMaterialVatTotalprice:"请填写含税总价",
     checkMaterialRate:"请填写代理费率",
     checkMaterialCurrency:"请选择币种",
+    AreShipmentsConfirmed:"确定发货吗",
     //发货信息
     ConfirmationOfReceipt:"确认收货吗?",
     //库存信息

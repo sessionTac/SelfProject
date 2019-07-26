@@ -287,6 +287,7 @@ export default {
     checkMaterialVatTotalprice:"Please fill in the total tax price.",
     checkMaterialRate:"Please fill in the agency rate.",
     checkMaterialCurrency:"Please choose currency",
+    AreShipmentsConfirmed:"Are shipments confirmed?",
     //发货信息
     ConfirmationOfReceipt:"Confirmation of receipt?",
     //库存信息
