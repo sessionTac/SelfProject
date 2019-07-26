@@ -77,6 +77,7 @@ export default {
     supplier:"供应商信息",
     //订单计划
     orderPlan:"订单计划",
+    checkAndGet:'校验并获取',
     //订单详情
     planDetail:"订单详情",
     //发货信息
@@ -281,6 +282,13 @@ export default {
     checkOrderStatus:"请选择订单状态",
     //订单详情
     approvalQueries:"确定审批吗?",
+    checkMaterialAmount:'请填写单耗值',
+    checkMaterialTaxPrice:"请填写未税单价",
+    checkMaterialTaxTotalprice:"请填写未税总价",
+    checkMaterialVatPrice:"请填写含税单价",
+    checkMaterialVatTotalprice:"请填写含税总价",
+    checkMaterialRate:"请填写代理费率",
+    checkMaterialCurrency:"请选择币种",
     //发货信息
     ConfirmationOfReceipt:"确认收货吗?",
     //库存信息

@@ -12,7 +12,7 @@
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 30px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
-              <div style="float: right;margin-right: 40px;"><el-button :disabled="form.orderCode==''" @click="checkOrderCode(form.orderCode)">校验并获取</el-button></div>
+              <div style="float: right;margin-right: 40px;"><el-button :disabled="form.orderCode==''" @click="checkOrderCode(form.orderCode)">{{$t('searchFrom.checkAndGet')}}</el-button></div>
             </el-form-item>
             <el-form-item :label="$t('pageTable.OrderInfoOrderCodeDesc')" prop="orderCodeDesc">
               <el-input type="textarea" autosize="" v-model="form.orderCodeDesc" class="search-form-item-input" style="width: 160px" size="mini"
@@ -450,17 +450,17 @@
         rules: {
           orderCode: [
             // {required: true, message: '请填写订单型号', trigger: 'blur'},
-            {max: 32, message: '长度不超过20个字符', trigger: 'blur'},
-            {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
+            {max: 32, message: this.$t('Tips.lentghGT20'), trigger: 'blur'},
+            {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: this.$t('Tips.formatNames'),}
           ],
           orderCodeDesc: [
             // {required: true, message: '请填写订单型号描述', trigger: 'blur'},
-            {max: 200, message: '长度不超过200个字符', trigger: 'blur'}
+            {max: 200, message: this.$t('Tips.lentghGT200'), trigger: 'blur'}
           ],
           orderAmount: [
             // {required: true, message: '请填写$t('pageTable.OrderInfoOrderAmount')', trigger: 'blur'},
             // {pattern: /^[0-9]*$/ , trigger: 'blur', message: '请输入数字',}
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           // orderDate:[
           //   {required: true, message: '请填写$t('pageTable.OrderInfoOrderDate')', trigger: 'blur'},
@@ -469,77 +469,77 @@
           //   {required: true, message: '请选择订单型号单位', trigger: 'change'}
           // ],
           orderId:[
-            {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
+            {max: 20, message: this.$t('Tips.lentghGT20'), trigger: 'blur'},
           ],
           orderIdItem:[
-            {max: 5, message: '长度不超过5个字符', trigger: 'blur'},
+            {max: 5, message: this.$t('Tips.lentghGT5'), trigger: 'blur'},
           ],
           materialCode: [
-            {required: true, message: '请填写物料专用号', trigger: 'blur'},
-            {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
+            {required: true, message: this.$t('Tips.checkMaterialCode'), trigger: 'blur'},
+            {max: 20, message: this.$t('Tips.lentghGT20'), trigger: 'blur'},
           ],
           materialDescCn: [
-            {required: true, message: '请填写物料中文描述', trigger: 'blur'},
-            {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
+            {required: true, message: this.$t('Tips.checkMaterialDescCn'), trigger: 'blur'},
+            {max: 200, message: this.$t('Tips.lentghGT200'), trigger: 'blur'},
           ],
           materialDescEn: [
-            {required: true, message: '请填写物料英文描述', trigger: 'blur'},
-            {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
+            {required: true, message: this.$t('Tips.checkMaterialDescEn'), trigger: 'blur'},
+            {max: 200, message: this.$t('Tips.lentghGT200'), trigger: 'blur'},
           ],
           materialDescRn: [
-            {required: true, message: '请填写物料俄文描述', trigger: 'blur'},
-            {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
+            {required: true, message: this.$t('Tips.checkMaterialDescRn'), trigger: 'blur'},
+            {max: 200, message: this.$t('Tips.lentghGT200'), trigger: 'blur'},
           ],
           materialUnit: [
-            {required: true, message: '请选择物料单位', trigger: 'change'}
+            {required: true, message: this.$t('Tips.checkMaterialUnit'), trigger: 'change'}
           ],
           materialAmount: [
-            {required: true, message: '请填写单耗值', trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {required: true, message: this.$t('Tips.checkMaterialAmount'), trigger: 'blur'},
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialCategory: [
-            {required: true, message: '请选择渠道', trigger: 'change'}
+            {required: true, message: this.$t('Tips.checkMaterialCategory'), trigger: 'change'}
           ],
           materialRelation: [
-            {max: 30, message: '长度不超过30个字符', trigger: 'blur'},
+            {max: 30, message: this.$t('Tips.lentghGT30'), trigger: 'blur'},
           ],
           materialRelationUnit: [
 
           ],
           materialRelationQuantity: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialMinpackageType: [
 
           ],
           materialMinpackageAmt: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialMinpackageTotalamt: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialTaxPrice: [
-            {required: true, message: '请填写未税单价', trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {required: true, message: this.$t('Tips.checkMaterialTaxPrice'), trigger: 'blur'},
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialTaxTotalprice: [
-            {required: true, message: '请填写未税总价', trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {required: true, message:  this.$t('Tips.checkMaterialTaxTotalprice'), trigger: 'blur'},
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialVatPrice: [
-            {required: true, message: '请填写含税单价', trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {required: true, message: this.$t('Tips.checkMaterialVatPrice'), trigger: 'blur'},
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialVatTotalprice: [
-            {required: true, message: '请填写含税总价', trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {required: true, message: this.$t('Tips.checkMaterialVatTotalprice'), trigger: 'blur'},
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialRate: [
-            {required: true, message: '请填写代理费率', trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {required: true, message: this.$t('Tips.checkMaterialRate'), trigger: 'blur'},
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialCurrency: [
-            {required: true, message: '请选择币种', trigger: 'change'}
+            {required: true, message: this.$t('Tips.checkMaterialCurrency'), trigger: 'change'}
           ],
           // countryCode: [
           //   {required: true, message: '请选择国家标志', trigger: 'change'}
@@ -548,31 +548,31 @@
 
           ],
           // orderOutTotalAmount: [
-          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           // ],
           // materOutTotalAmount: [
-          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           // ],
           // residualAmount: [
-          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           // ],
           // trimAmount: [
-          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           // ],
           // stockAmount: [
-          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           // ],
           // differAmount: [
-          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           // ],
           // takeOverAmount: [
-          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+          //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           // ],
           deliveryAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           surplusAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: '请输入数字且最多保留2位',}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
 
 

@@ -77,6 +77,7 @@ export default {
     supplier:"SupplierInfo",
     //订单计划
     orderPlan:"orderPlan",
+    checkAndGet:'Verification and acquisition',
     //订单详情
     planDetail:"PlanDetail",
     //发货信息
@@ -279,6 +280,13 @@ export default {
     checkOrderStatus:"Please select the order status",
     //订单详情
     approvalQueries:"Is approval confirmed?",
+    checkMaterialAmount:'Please fill in the unit consumption value.',
+    checkMaterialTaxPrice:"Please fill in the untaxed unit price.",
+    checkMaterialTaxTotalprice:"Please fill in the total untaxed price.",
+    checkMaterialVatPrice:"Please fill in the unit price with tax",
+    checkMaterialVatTotalprice:"Please fill in the total tax price.",
+    checkMaterialRate:"Please fill in the agency rate.",
+    checkMaterialCurrency:"Please choose currency",
     //发货信息
     ConfirmationOfReceipt:"Confirmation of receipt?",
     //库存信息
