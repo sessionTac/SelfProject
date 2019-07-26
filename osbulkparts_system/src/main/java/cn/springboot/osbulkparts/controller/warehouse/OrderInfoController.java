@@ -48,7 +48,7 @@ public class OrderInfoController {
     public Object getOrderInfoList(
             TOrderInfoEntity tOrderInfoEntity,
             @RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue="100") int pageSize,
+            @RequestParam(defaultValue="50") int pageSize,
             HttpServletRequest request, Authentication auth){
         return orderInfoService.selectOrderInfoList(tOrderInfoEntity,pageNum,pageSize,auth);
     }

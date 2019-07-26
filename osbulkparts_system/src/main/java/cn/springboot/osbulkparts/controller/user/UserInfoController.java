@@ -45,7 +45,7 @@ public class UserInfoController {
 	public CommonResultInfo<MUserInfoEntity> getUserInfoList(
 			MUserInfoEntity muserInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue="100") int pageSize){
+            @RequestParam(defaultValue="50") int pageSize){
 		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfoList(muserInfoEntity,pageNum,pageSize);
 		return result;
 	}

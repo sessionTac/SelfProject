@@ -1,17 +1,18 @@
 package cn.springboot.osbulkparts.service;
 
-import cn.springboot.osbulkparts.common.CommonResultInfo;
-import cn.springboot.osbulkparts.common.entity.CommonEntity;
-import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
-import cn.springboot.osbulkparts.entity.TDeliverInfoEntity;
-import cn.springboot.osbulkparts.entity.TDictDataEntity;
-import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
-import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Map;
+import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.entity.CommonEntity;
+import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
+import cn.springboot.osbulkparts.entity.TDictDataEntity;
+import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
+import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
 
 public interface OrderDetailInfoService {
 
@@ -53,7 +54,7 @@ public interface OrderDetailInfoService {
     @Transactional
     CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth);
 
-
     CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit();
-
+    
+    ResponseEntity<byte[]> downloadExcel(TOrderDetailInfoEntity tOrderDetailInfoEntity);
 }
