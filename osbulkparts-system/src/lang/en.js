@@ -214,9 +214,10 @@ export default {
     contractNo:"contractNo.",
     goodsStatus:"Status",
     //库存信息
-    inventoryNumber:"InventoryQuantity"
+    inventoryNumber:"InventoryQuantity",
     //计划平衡表
-
+    stockAmount:"stockAmount",
+    differAmount:"differAmount",
   },
   Tips:{
     //共同

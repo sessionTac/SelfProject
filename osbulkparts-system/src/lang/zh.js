@@ -223,9 +223,10 @@ export default {
     goodsStatus:"状态",
 
     //库存信息
-    inventoryNumber:"库存数量"
+    inventoryNumber:"库存数量",
     //计划平衡表
-
+    stockAmount:"库存数量",
+    differAmount:"差异数量",
   },
   Tips:{
     //共同
