@@ -6,6 +6,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -49,7 +50,7 @@ public class OrderDetailInfoController {
     public Object getOrderDetailInfoList(
             TOrderDetailInfoEntity tOrderDetailInfoEntity,
             @RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue="100") int pageSize,
+            @RequestParam(defaultValue="50") int pageSize,
             HttpServletRequest request, Authentication auth){
         return orderDetailInfoService.selectOrderDetailInfoList(tOrderDetailInfoEntity,pageNum,pageSize,auth);
     }
@@ -141,7 +142,8 @@ public class OrderDetailInfoController {
     @ApiImplicitParam(name = "tOrderDetailInfoEntity", value = "订单详情信息实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/exportData")
     public Object downExcel(@RequestBody TOrderDetailInfoEntity tOrderDetailInfoEntity) {
-        return null;
+		ResponseEntity<byte[]> response = orderDetailInfoService.downloadExcel(tOrderDetailInfoEntity);
+		return response;
     }
 
 

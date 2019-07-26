@@ -12,26 +12,27 @@ public class MethodTest {
 
 	private static BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
 	
-	public static void main(String[] args) {
+	public static void main(String[] args) throws ParseException {
 		
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = null;
         String dateString = null;
 //        try {
-        	String str= "20190724120000";
-//            date = dateFormat.parse("20190724120000");
-//            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHssmm");
-//            dateString = formatter.format(date);
-            String returnRes = null;
-            returnRes = str.substring(0,4)+"/"+str.substring(4,6)+"/"+str.substring(6,8);
-            System.out.println(returnRes);
+//        	String str= "20190724120000";
+////            date = dateFormat.parse("20190724120000");
+////            SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHssmm");
+////            dateString = formatter.format(date);
+//            String returnRes = null;
+//            returnRes = str.substring(0,4)+"/"+str.substring(4,6)+"/"+str.substring(6,8);
+//            System.out.println(returnRes);
 //        } catch (ParseException e) {
 //        }
         
 //    	Date now = new Date();
-//    	SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");//设置日期格式
-//        String dd = df.format(now);// new Date()为获取当前系统时间
-//        System.out.println(dd);
+        Date time = new SimpleDateFormat("yyyyMMddHHmmss").parse("20140823134521");
+    	SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");//设置日期格式
+        String dd = df.format(time);// new Date()为获取当前系统时间
+        System.out.println(dd);
 //        String password = "osadmin@123";
 //        encoder.encode(password);
 //		System.out.println(encoder.encode(password));

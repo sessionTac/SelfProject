@@ -40,7 +40,7 @@ public class SupplierInfoController {
 	public CommonResultInfo<MSupplierInfoEntity> getSupplierList(
 			MSupplierInfoEntity msupplierInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue="100") int pageSize){
+            @RequestParam(defaultValue="50") int pageSize){
 		CommonResultInfo<MSupplierInfoEntity> result = supplierInfoService.getSupplierInfoList(msupplierInfoEntity, pageNum, pageSize);
 		return result;
 	}

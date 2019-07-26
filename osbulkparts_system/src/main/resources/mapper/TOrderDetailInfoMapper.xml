@@ -165,7 +165,7 @@
       material_relation_quantity, material_minpackage_type, 
       material_minpackage_amt, material_minpackage_totalamt, 
       material_tax_price, material_tax_totalprice, 
-      material_vat_price, material_vat_totalprice, tax,
+      material_vat_price, material_vat_totalprice, material_supplier_no,tax,
       material_rate, material_currency, country_code, 
       confirm_status, order_out_total_amount, mater_out_total_amount, 
       residual_amount, trim_amount, stock_amount, 
@@ -182,7 +182,7 @@
       #{materialRelationQuantity,jdbcType=DECIMAL}, #{materialMinpackageType,jdbcType=VARCHAR}, 
       #{materialMinpackageAmt,jdbcType=DECIMAL}, #{materialMinpackageTotalamt,jdbcType=DECIMAL}, 
       #{materialTaxPrice,jdbcType=DECIMAL}, #{materialTaxTotalprice,jdbcType=DECIMAL}, 
-      #{materialVatPrice,jdbcType=DECIMAL}, #{materialVatTotalprice,jdbcType=DECIMAL}, #{tax,jdbcType=DECIMAL},
+      #{materialVatPrice,jdbcType=DECIMAL}, #{materialVatTotalprice,jdbcType=DECIMAL}, #{materialSupplierNo,jdbcType=VARCHAR}, #{tax,jdbcType=DECIMAL},
       #{materialRate,jdbcType=DECIMAL}, #{materialCurrency,jdbcType=VARCHAR}, #{countryCode,jdbcType=VARCHAR}, 
       #{confirmStatus,jdbcType=VARCHAR}, #{orderOutTotalAmount,jdbcType=DECIMAL}, #{materOutTotalAmount,jdbcType=DECIMAL}, 
       #{residualAmount,jdbcType=DECIMAL}, #{trimAmount,jdbcType=DECIMAL}, #{stockAmount,jdbcType=DECIMAL}, 
@@ -274,6 +274,9 @@
       </if>
       <if test="materialVatTotalprice != null">
         material_vat_totalprice,
+      </if>
+      <if test="materialSupplierNo != null">
+        material_supplier_no,
       </if>
       <if test="tax != null">
         tax,
@@ -422,6 +425,9 @@
       <if test="materialVatTotalprice != null">
         #{materialVatTotalprice,jdbcType=DECIMAL},
       </if>
+      <if test="materialSupplierNo != null">
+        #{materialSupplierNo,jdbcType=VARCHAR},
+      </if>
       <if test="tax != null">
         #{tax,jdbcType=DECIMAL},
       </if>
@@ -504,7 +510,7 @@
       material_relation_quantity, material_minpackage_type, 
       material_minpackage_amt, material_minpackage_totalamt, 
       material_tax_price, material_tax_totalprice, 
-      material_vat_price, material_vat_totalprice, tax,
+      material_vat_price, material_vat_totalprice, material_supplier_no,tax,
       material_rate, material_currency, country_code, 
       confirm_status, order_out_total_amount, mater_out_total_amount, 
       residual_amount, trim_amount, stock_amount, 
@@ -538,6 +544,7 @@
       #{item.materialTaxTotalprice,jdbcType=DECIMAL}, 
       #{item.materialVatPrice,jdbcType=DECIMAL}, 
       #{item.materialVatTotalprice,jdbcType=DECIMAL}, 
+      #{item.materialSupplierNo,jdbcType=VARCHAR}, 
       #{item.tax,jdbcType=DECIMAL}, 
       #{item.materialRate,jdbcType=DECIMAL}, 
       #{item.materialCurrency,jdbcType=VARCHAR}, 
@@ -644,6 +651,9 @@
       <if test="materialVatTotalprice != null">
         material_vat_totalprice = #{materialVatTotalprice,jdbcType=DECIMAL},
       </if>
+      <if test="materialSupplierNo != null">
+        material_supplier_no = #{materialSupplierNo,jdbcType=VARCHAR}, 
+      </if>
       <if test="tax != null">
         tax = #{tax,jdbcType=DECIMAL},
       </if>
@@ -745,6 +755,7 @@
       material_tax_totalprice = #{materialTaxTotalprice,jdbcType=DECIMAL},
       material_vat_price = #{materialVatPrice,jdbcType=DECIMAL},
       material_vat_totalprice = #{materialVatTotalprice,jdbcType=DECIMAL},
+      material_supplier_no = #{materialSupplierNo,jdbcType=VARCHAR}, 
       tax = #{tax,jdbcType=DECIMAL},
       material_rate = #{materialRate,jdbcType=DECIMAL},
       material_currency = #{materialCurrency,jdbcType=VARCHAR},
