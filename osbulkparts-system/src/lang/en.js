@@ -78,7 +78,7 @@ export default {
     //订单计划
     orderPlan:"orderPlan",
     //订单详情
-
+    planDetail:"PlanDetail",
     //发货信息
     ConfirmationOfReceipt:"Confirmation of receipt",
     //库存信息
@@ -186,7 +186,17 @@ export default {
     OrderInfoOrderType:"OrderType",
     OrderInfoDateFlag:"DateRange",
     //订单详情
-
+    orderCodeDesc:"OrderDescription",
+    materialAmount:"PlannedQuantity",
+    materialTaxTotalprice:"TotalUntaxedPrice",
+    materialVatTotalprice:"TotalTaxIncludedPrice",
+    countryCode:"NationalSymbol",
+    takeOverAmount:"QuantityOfGoodsReceived",
+    orderDetailType:"OrderDetailType",
+    surplusAmount:"MaterialResidualQuantity",
+    approval:"Approval",
+    deliverGoods:"DeliverGoods",
+    AutomaticGeneration:"AutomaticGeneration",
     //发货信息
     orderDate:"orderDate",
     orderNo:"orderNo.",
@@ -268,7 +278,7 @@ export default {
     checkOrderType:"Please select the order category",
     checkOrderStatus:"Please select the order status",
     //订单详情
-
+    approvalQueries:"Is approval confirmed?",
     //发货信息
     ConfirmationOfReceipt:"Confirmation of receipt?",
     //库存信息

@@ -2,31 +2,30 @@
   <div style="display: flex;flex-direction: column;height: 100%">
     <div class="el-header">
       <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
-        <el-form-item label="成品编码">
-          <el-input placeholder="成品编码" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
+        <el-form-item :label="$t('pageTable.OrderInfoOrderCode')">
+          <el-input :placeholder="$t('pageTable.OrderInfoOrderCode')" v-model="search_keys.orderCode" class="search-form-item-input"></el-input>
         </el-form-item>
-        <el-form-item label="订单日期">
+        <el-form-item :label="$t('pageTable.OrderInfoOrderDate')">
           <el-date-picker
             class=""
             v-model="search_keys.orderDateArray"
             type="daterange"
-            range-separator="至"
             value-format="yyyyMMddHHmmss"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期">
+            :start-placeholder="$t('pageTable.startTime')"
+            :end-placeholder="$t('pageTable.endTime')">
           </el-date-picker>
         </el-form-item>
-        <el-form-item label="物料专用号">
-          <el-input placeholder="物料专用号" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
+        <el-form-item :label="$t('pageTable.MatterMaterialSpecificNumber')">
+          <el-input :placeholder="$t('pageTable.MatterMaterialSpecificNumber')" v-model="search_keys.materialCode" class="search-form-item-input"></el-input>
         </el-form-item>
-        <el-form-item label="渠道">
+        <el-form-item :label="$t('pageTable.MatterChannel')">
           <el-select v-model="search_keys.materialCategory" class="search-form-item-input" size="mini" knx>
             <el-option value=""></el-option>
             <el-option
                     size="mini"
                     v-for="item in mattertype"
                     :key="item.value"
-                    :label="item.name"
+                    ::label="item.name"
                     :value="item.value">
             </el-option>
           </el-select>
@@ -34,74 +33,72 @@
         <el-collapse accordion>
           <el-collapse-item>
             <template slot="title">
-              <i class="header-icon el-icon-s-operation">展开所有查询条件</i>
+              <i class="header-icon el-icon-s-operation">{{$t('Tips.allSearchKey')}}</i>
             </template>
             <div>
-              <el-form-item label="订单描述">
-                <el-input placeholder="订单描述" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
+              <el-form-item :label="$t('pageTable.orderCodeDesc')">
+                <el-input :placeholder="$t('pageTable.orderCodeDesc')" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="订单号">
-                <el-input placeholder="订单号" v-model="search_keys.orderId" class="search-form-item-input"></el-input>
+              <el-form-item :label="$t('pageTable.orderNo')">
+                <el-input :placeholder="$t('pageTable.orderNo')" v-model="search_keys.orderId" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="物料中文描述">
-                <el-input placeholder="物料中文描述" v-model="search_keys.materialDescCn" class="search-form-item-input"></el-input>
+              <el-form-item :label="$t('pageTable.MatterChineseDescriptionOfMaterials')">
+                <el-input :placeholder="$t('pageTable.MatterChineseDescriptionOfMaterials')" v-model="search_keys.materialDescCn" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="物料英文描述">
-                <el-input placeholder="物料英文描述" v-model="search_keys.materialDescEn" class="search-form-item-input"></el-input>
+              <el-form-item :label="$t('pageTable.MatterEnglishDescriptionOfMaterials')">
+                <el-input :placeholder="$t('pageTable.MatterEnglishDescriptionOfMaterials')" v-model="search_keys.materialDescEn" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="物料俄文描述">
-                <el-input placeholder="物料俄文描述" v-model="search_keys.materialDescRn" class="search-form-item-input"></el-input>
+              <el-form-item :label="$t('pageTable.MatterRussianDescriptionOfMaterials')">
+                <el-input :placeholder="$t('pageTable.MatterRussianDescriptionOfMaterials')" v-model="search_keys.materialDescRn" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="状态">
+              <el-form-item :label="$t('pageTable.goodsStatus')">
                 <el-select v-model="search_keys.confirmStatus"  size="mini" class="search-form-item-input">
                   <el-option value=""></el-option>
                   <el-option
                     size="mini"
                     v-for="item in confirmStatus"
                     :key="item.value"
-                    :label="item.name"
+                    ::label="item.name"
                     :value="item.value">
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="订单详细类型">
+              <el-form-item :label="$t('pageTable.orderDetailType')">
                 <el-select v-model="search_keys.orderDetailType"  size="mini" class="search-form-item-input">
                   <el-option value=""></el-option>
                   <el-option
                           size="mini"
                           v-for="item in orderDetailType"
                           :key="item.value"
-                          :label="item.name"
+                          ::label="item.name"
                           :value="item.value">
                   </el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="创建人">
-                <el-input placeholder="创建人" v-model="search_keys.createUser" class="search-form-item-input"></el-input>
+              <el-form-item :label="$t('pageTable.createUser')">
+                <el-input :placeholder="$t('pageTable.createUser')" v-model="search_keys.createUser" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="创建时间">
+              <el-form-item :label="$t('pageTable.createTime')">
                 <el-date-picker
                   class=""
                   v-model="search_keys.createTimeArray"
                   type="daterange"
-                  range-separator="至"
                   value-format="yyyyMMddHHmmss"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期">
+                  :start-placeholder="$t('pageTable.startTime')"
+                  :end-placeholder="$t('pageTable.endTime')">
                 </el-date-picker>
               </el-form-item>
-              <el-form-item label="最后修改人">
-                <el-input placeholder="最后修改人" v-model="search_keys.updateUser" class="search-form-item-input"></el-input>
+              <el-form-item :label="$t('pageTable.updateUser')">
+                <el-input :placeholder="$t('pageTable.updateUser')" v-model="search_keys.updateUser" class="search-form-item-input"></el-input>
               </el-form-item>
-              <el-form-item label="最后修改时间">
+              <el-form-item :label="$t('pageTable.updateTime')">
                 <el-date-picker
                   class=""
                   v-model="search_keys.updateTimeArray"
                   type="daterange"
-                  range-separator="至"
                   value-format="yyyyMMddHHmmss"
-                  start-placeholder="开始日期"
-                  end-placeholder="结束日期">
+                  :start-placeholder="$t('pageTable.startTime')"
+                  :end-placeholder="$t('pageTable.endTime')">
                 </el-date-picker>
               </el-form-item>
             </div>
@@ -109,38 +106,38 @@
         </el-collapse>
         <el-form-item style="float: right">
           <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:approval')&& $route.meta.flag=='week'" :disabled="approvalFlag" @click="approval" icon="el-icon-s-check" >
-            审批
+            {{$t('searchFrom.approval')}}
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="primary"  v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:goods')&& $route.meta.flag=='week'" :disabled="deliver" @click="deliverGoods" icon="el-icon-s-check" >
-            发货
+            {{$t('searchFrom.deliverGoods')}}
           </el-button>
         </el-form-item>
 
         <el-form-item style="float: right">
           <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:export')" @click="exportData(search_keys)" size="mini" >
-            <i class="fa fa-plus" aria-hidden="true"></i> 导出
+            <i class="fa fa-plus" aria-hidden="true"></i> {{$t('searchFrom.export')}}
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:delete')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
-            删除
+            {{$t('searchFrom.delete')}}
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="primary"  @click="reset" icon="el-icon-error" >
-            清空
+            {{$t('searchFrom.reset')}}
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:add')" @click="add()" icon="el-icon-plus" >
-            添加
+            {{$t('searchFrom.add')}}
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
           <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:view')" @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
-            <i class="fa fa-search" aria-hidden="true"></i> 查询
+            <i class="fa fa-search" aria-hidden="true"></i> {{$t('searchFrom.search')}}
           </el-button>
         </el-form-item>
       </el-form>
@@ -158,71 +155,71 @@
               @selection-change="handleSelectionChange"
     >
       <el-table-column type="selection" fixed width="50" align="center"/>
-      <el-table-column prop="orderCode"  width="100" align="center" label="成品型号"  />
-      <el-table-column prop="orderCodeDesc"  width="100" align="center" label="成品型号描述"  />
-      <el-table-column prop="orderAmount"  width="100" align="center" label="订单数量"  />
-      <el-table-column prop="orderDate"  width="100" align="center" label="订单日期">
+      <el-table-column prop="orderCode"  width="100" align="center" :label="$t('pageTable.OrderInfoOrderCode')"  />
+      <el-table-column prop="orderCodeDesc"  width="100" align="center" :label="$t('pageTable.OrderInfoOrderCodeDesc')"  />
+      <el-table-column prop="orderAmount"  width="100" align="center" :label="$t('pageTable.OrderInfoOrderAmount')"  />
+      <el-table-column prop="orderDate"  width="100" align="center" :label="$t('pageTable.OrderInfoOrderDate')">
         <template slot-scope="scope">
           {{scope.row.orderDate != null ?$moment(scope.row.orderDate,'YYYYMMDDHHmmss').format('YYYY-MM-DD') : ''}}
         </template>
       </el-table-column>
-      <el-table-column prop="dictOrderUnit.name" width="100" align="center" label="订单型号单位" />
-      <el-table-column prop="orderId" width="100" align="center" label="订单号" />
-      <el-table-column prop="orderIdItem" width="100" align="center" label="订单行项目" />
-      <el-table-column prop="materialCode"  :show-overflow-tooltip="true" align="center" label="物料专用号"  />
-      <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" label="物料中文描述"  />
-      <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" label="物料英文描述"  />
-      <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" label="物料俄文描述"  />
+      <el-table-column prop="dictOrderUnit.name" width="100" align="center" :label="$t('pageTable.OrderInfoOrderUnit')" />
+      <el-table-column prop="orderId" width="100" align="center" :label="$t('pageTable.orderNo')" />
+      <el-table-column prop="orderIdItem" width="100" align="center" :label="$t('pageTable.orderIdItem')" />
+      <el-table-column prop="materialCode"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterMaterialSpecificNumber')"  />
+      <el-table-column prop="materialDescCn"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterChineseDescriptionOfMaterials')"  />
+      <el-table-column prop="materialDescEn"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterEnglishDescriptionOfMaterials')"  />
+      <el-table-column prop="materialDescRn"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterRussianDescriptionOfMaterials')"  />
 
-      <el-table-column prop="materialSupplierNo"  :show-overflow-tooltip="true" align="center" label="供应商编码"  />
-      <el-table-column prop="msupplierInfoEntity.supplierNameCn"  :show-overflow-tooltip="true" align="center" label="供应商中文名称"  />
+      <el-table-column prop="materialSupplierNo"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.SupplierCode')"  />
+      <el-table-column prop="msupplierInfoEntity.supplierNameCn"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.SupplierNameCn')"  />
 
-      <el-table-column prop="dictMaterialUnit.name"  :show-overflow-tooltip="true" align="center" label="物料单位"  />
-      <el-table-column prop="materialAmount"  :show-overflow-tooltip="true" align="center" label="计划数量"  />
-      <el-table-column prop="dictMaterialCategory.name"  :show-overflow-tooltip="true" align="center" label="渠道"  />
-      <el-table-column prop="materialRelation"  :show-overflow-tooltip="true" align="center" label="换算关系"  />
-      <el-table-column prop="dictRelationUnit.name"  :show-overflow-tooltip="true" align="center" label="换算后单位"  />
-      <el-table-column prop="materialRelationQuantity"  :show-overflow-tooltip="true" align="center" label="换算后数量"  />
-<!--      <el-table-column prop="dictMinPackageType.name"  :show-overflow-tooltip="true" align="center" label="最小包装类型"  />-->
-<!--      <el-table-column prop="materialMinpackageAmt"  :show-overflow-tooltip="true" align="center" label="最小包装数量"  />-->
-<!--      <el-table-column prop="materialMinpackageTotalamt"  :show-overflow-tooltip="true" align="center" label="最小包装总量"  />-->
-      <el-table-column prop="materialTaxPrice"  :show-overflow-tooltip="true" align="center" label="未税单价"  />
-      <el-table-column prop="materialTaxTotalprice"  :show-overflow-tooltip="true" align="center" label="未税总价"  />
-<!--      <el-table-column prop="materialVatPrice"  :show-overflow-tooltip="true" align="center" label="含税单价"  />-->
-      <el-table-column prop="materialVatTotalprice"  :show-overflow-tooltip="true" align="center" label="含税总价"  />
-      <el-table-column prop="tax"  :show-overflow-tooltip="true" align="center" label="税率"  />
-      <el-table-column prop="materialRate"  :show-overflow-tooltip="true" align="center" label="代理费率"  />
-      <el-table-column prop="dictMaterialCurrency.name"  :show-overflow-tooltip="true" align="center" label="币种"  />
-      <el-table-column prop="dictCountryCode.name"  :show-overflow-tooltip="true" align="center" label="国家标志"  />
+      <el-table-column prop="dictMaterialUnit.name"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterCompany')"  />
+      <el-table-column prop="materialAmount"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.materialAmount')"  />
+      <el-table-column prop="dictMaterialCategory.name"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterChannel')"  />
+      <el-table-column prop="materialRelation"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterConversionRelationship')"  />
+      <el-table-column prop="dictRelationUnit.name"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterConvertedUnit')"  />
+      <el-table-column prop="materialRelationQuantity"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.ConvertedQuantity')"  />
+<!--      <el-table-column prop="dictMinPackageType.name"  :show-overflow-tooltip="true" align="center" :label="最小包装类型"  />-->
+<!--      <el-table-column prop="materialMinpackageAmt"  :show-overflow-tooltip="true" align="center" :label="最小包装数量"  />-->
+<!--      <el-table-column prop="materialMinpackageTotalamt"  :show-overflow-tooltip="true" align="center" :label="最小包装总量"  />-->
+      <el-table-column prop="materialTaxPrice"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterUntaxedUnitPrice')"  />
+      <el-table-column prop="materialTaxTotalprice"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.materialTaxTotalprice')"  />
+<!--      <el-table-column prop="materialVatPrice"  :show-overflow-tooltip="true" align="center" :label="含税单价"  />-->
+      <el-table-column prop="materialVatTotalprice"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.materialVatTotalprice')"  />
+      <el-table-column prop="tax"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterTaxRate')"  />
+      <el-table-column prop="materialRate"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterAgencyRate')"  />
+      <el-table-column prop="dictMaterialCurrency.name"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterCurrency')"  />
+      <el-table-column prop="dictCountryCode.name"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.countryCode')"  />
 
-      <!--<el-table-column prop="orderOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="型号发货总数量"  />-->
-      <!--<el-table-column prop="materOutTotalAmount"  :show-overflow-tooltip="true" align="center" label="子件发货总数量"  />-->
-      <!--<el-table-column prop="residualAmount"  :show-overflow-tooltip="true" align="center" label="订单剩余数量"  />-->
-      <!--<el-table-column prop="trimAmount"  :show-overflow-tooltip="true" align="center" label="调整后数量"  />-->
-<!--      <el-table-column prop="stockAmount"  :show-overflow-tooltip="true" align="center" label="库存数量"  />-->
-      <!--<el-table-column prop="differAmount"  :show-overflow-tooltip="true" align="center" label="差异数量"  />-->
-      <el-table-column prop="takeOverAmount"  :show-overflow-tooltip="true" align="center" label="收货数量"  />
-      <el-table-column prop="deliveryAmount"  :show-overflow-tooltip="true" align="center" label="发货数量"  />
-      <el-table-column prop="dictOrderDetailType.name"  :show-overflow-tooltip="true" align="center" label="订单详细类型"  />
-      <!--<el-table-column prop="surplusAmount"  :show-overflow-tooltip="true" align="center" label="物料剩余数量"  />-->
+      <!--<el-table-column prop="orderOutTotalAmount"  :show-overflow-tooltip="true" align="center" :label="型号发货总数量"  />-->
+      <!--<el-table-column prop="materOutTotalAmount"  :show-overflow-tooltip="true" align="center" :label="子件发货总数量"  />-->
+      <!--<el-table-column prop="residualAmount"  :show-overflow-tooltip="true" align="center" :label="订单剩余数量"  />-->
+      <!--<el-table-column prop="trimAmount"  :show-overflow-tooltip="true" align="center" :label="调整后数量"  />-->
+<!--      <el-table-column prop="stockAmount"  :show-overflow-tooltip="true" align="center" :label="库存数量"  />-->
+      <!--<el-table-column prop="differAmount"  :show-overflow-tooltip="true" align="center" :label="差异数量"  />-->
+      <el-table-column prop="takeOverAmount"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.takeOverAmount')"  />
+      <el-table-column prop="deliveryAmount"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.QuantityOfShipments')"  />
+      <el-table-column prop="dictOrderDetailType.name"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.orderDetailType')"  />
+      <!--<el-table-column prop="surplusAmount"  :show-overflow-tooltip="true" align="center" :label="物料剩余数量"  />-->
 
 
-      <el-table-column prop="createUser" align="center" label="创建人"  />
-      <el-table-column label="创建时间" show-overflow-tooltip>
+      <el-table-column prop="createUser" align="center" :label="$t('pageTable.createUser')"  />
+      <el-table-column :label="$t('pageTable.createTime')" show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.createTime != null ?$moment(scope.row.createTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>
       </el-table-column>
-      <el-table-column prop="updateUser" align="center" label="最后修改人"  />
-      <el-table-column label="最后修改时间" show-overflow-tooltip>
+      <el-table-column prop="updateUser" align="center" :label="$t('pageTable.updateUser')"  />
+      <el-table-column :label="$t('pageTable.updateTime')" show-overflow-tooltip>
         <template slot-scope="scope">
           {{scope.row.updateTime != null ?$moment(scope.row.updateTime,'YYYYMMDDHHmmss').format('YYYY-MM-DD h:mm:ss a') : ''}}
         </template>
       </el-table-column>
-      <el-table-column fixed="right" prop="dictConfirmStatus.name"  :show-overflow-tooltip="true" align="center" label="状态"  />
-      <el-table-column fixed="right" width="80" label="操作" >
+      <el-table-column fixed="right" prop="dictConfirmStatus.name"  :show-overflow-tooltip="true" align="center" :label="$t('pageTable.goodsStatus')"  />
+      <el-table-column fixed="right" width="80" :label="$t('pageTable.operate')" >
         <template slot-scope="scope" >
-          <el-button title="编辑与查看" v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
+          <el-button  v-if="subject.hasPermissions('maintenance:warehouse:plan:detail:edit')"  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.id)">
             <i class="el-icon-news"></i></el-button>
         </template>
       </el-table-column>
@@ -369,9 +366,9 @@
         this.$refs.tb.toggleRowSelection(row);
       },
       exportData(search_keys) {
-        this.$confirm("确定导出数据吗？", "提示", {
-          confirmButtonText: "是",
-          cancelButtonText: "否",
+        this.$confirm(this.$t("Tips.exportQueries"), this.$t("Tips.tips"),  {
+          confirmButtonText: this.$t("Tips.yes"),
+          cancelButtonText: this.$t("Tips.no"),
           type: 'info',
           center: true
         }).then(() => {
@@ -396,9 +393,9 @@
       },
       //删除
       deleteMatter() {
-        this.$confirm("确定删除吗？", "提示", {
-          confirmButtonText: "是",
-          cancelButtonText: "否",
+        this.$confirm(this.$t("Tips.deleteQueries"), this.$t("Tips.tips"),  {
+          confirmButtonText: this.$t("Tips.yes"),
+          cancelButtonText: this.$t("Tips.no"),
           type: 'warning',
           center: true
         }).then(() => {
@@ -429,9 +426,9 @@
       },
       //审批
       approval(){
-        this.$confirm("确定审批吗？", "提示", {
-          confirmButtonText: "是",
-          cancelButtonText: "否",
+        this.$confirm( this.$t("Tips.approvalQueries"), this.$t("Tips.tips"), {
+          confirmButtonText: this.$t("Tips.yes"),
+          cancelButtonText: this.$t("Tips.no"),
           type: 'warning',
           center: true
         }).then(() => {

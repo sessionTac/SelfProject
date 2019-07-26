@@ -78,7 +78,7 @@ export default {
     //订单计划
     orderPlan:"订单计划",
     //订单详情
-
+    planDetail:"订单详情",
     //发货信息
     ConfirmationOfReceipt:"确认收货",
     //库存信息
@@ -138,7 +138,7 @@ export default {
     MatterEnglishDescriptionOfMaterials:"物料英文描述",
     MatterRussianDescriptionOfMaterials:"物料俄文描述",
     MatterSpecificConsumption:"单耗",
-    MatterCompany:"单位",
+    MatterCompany:"物料单位",
     MatterCurrency:"币种",
     MatterConversionRelationship:"换算关系",
     MatterConvertedUnit:"换算后单位",
@@ -187,7 +187,17 @@ export default {
     OrderInfoOrderType:"订单类型",
     OrderInfoDateFlag:"日期范围",
     //订单详情
-
+    orderCodeDesc:"订单描述",
+    materialAmount:"计划数量",
+    materialTaxTotalprice:"未税总价",
+    materialVatTotalprice:"含税总价",
+    countryCode:"国家标志",
+    takeOverAmount:"收货数量",
+    orderDetailType:"订单详细类型",
+    surplusAmount:"物料剩余数量",
+    approval:"审批",
+    deliverGoods:"发货",
+    AutomaticGeneration:"自动生成",
     //发货信息
     orderDate:"订单日期",
     orderNo:"订单号",
@@ -201,6 +211,7 @@ export default {
     containerNo:"集装箱号",
     contractNo:"合同号",
     goodsStatus:"状态",
+
     //库存信息
     inventoryNumber:"库存数量"
     //计划平衡表
@@ -269,7 +280,7 @@ export default {
     checkOrderType:"请选择订单类别",
     checkOrderStatus:"请选择订单状态",
     //订单详情
-
+    approvalQueries:"确定审批吗?",
     //发货信息
     ConfirmationOfReceipt:"确认收货吗?",
     //库存信息
