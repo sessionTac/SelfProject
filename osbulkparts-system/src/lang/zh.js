@@ -83,8 +83,10 @@ export default {
     //发货信息
     ConfirmationOfReceipt:"确认收货",
     //库存信息
-    inventory:"库存信息"
+    inventory:"库存信息",
     //计划平衡表
+    balanceList:"计划平衡表",
+    balanceListDetail:"计划平衡表详细",
 
   },
   pageTable:{
@@ -302,7 +304,8 @@ export default {
     //库存信息
 
     //计划平衡表
-
+    modelUnitOfTheOrder:"请选择订单型号单位",
+    planStatus:"请选择计划状态",
   },
   navbar: {
     logOut: '退出登录',

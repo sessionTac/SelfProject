@@ -1,45 +1,44 @@
 <template>
     <div>
         <el-dialog :title='title' :visible.sync="dialogFormVisible" @closed="$emit('update:activated', false)"
-                   width="600px">
+                   width="750px">
             <el-card>
                 <div class="dialogStyle" style="display: flex;flex-direction: column">
                     <el-form  class="search-form search-form-normal" label-width="110px" ref="form"
                               style="flex: 5" :model="form" size="mini" :rules="rules">
-                        <el-form-item label="成品编码" prop="orderCode">
+                        <el-form-item :label="$t('pageTable.OrderInfoOrderCode')" prop="orderCode">
                             <el-input v-model="form.orderCode" class="search-form-item-input" style="width: 160px" size="mini"
                                       clearable></el-input>
                             <template slot="error" slot-scope="scope">
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
-                        <el-form-item label="成品描述" prop="orderCodeDesc">
+                        <el-form-item :label="$t('pageTable.OrderInfoOrderCodeDesc')" prop="orderCodeDesc">
                             <el-input type="textarea" autosize="" v-model="form.orderCodeDesc" class="search-form-item-input" style="width: 160px" size="mini"
                                       clearable></el-input>
                             <template slot="error" slot-scope="scope">
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
-                        <el-form-item label="订单数量" prop="orderAmount">
+                        <el-form-item :label="$t('pageTable.OrderInfoOrderAmount')" prop="orderAmount">
                             <el-input v-model="form.orderAmount" class="search-form-item-input" style="width:160px" size="mini"
                                       clearable></el-input>
                             <template slot="error" slot-scope="scope">
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
-                        <el-form-item label="订单日期" prop="orderDate">
+                        <el-form-item :label="$t('pageTable.OrderInfoOrderDate')" prop="orderDate">
                             <el-date-picker
                               v-model="form.orderDate"
                               type="date"
                               style="width:160px"
-                              value-format="yyyyMMddHHmmss"
-                              placeholder="选择日期">
+                              value-format="yyyyMMddHHmmss">
                             </el-date-picker>
                             <template slot="error" slot-scope="scope">
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
-                        <el-form-item label="订单型号单位" prop="orderUnit">
+                        <el-form-item :label="$t('pageTable.OrderInfoOrderUnit')" prop="orderUnit">
                             <el-select v-model="form.orderUnit" style="width: 160px" size="mini" clearable>
                                 <el-option value=""></el-option>
                                 <el-option
@@ -54,7 +53,7 @@
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
-                        <!--<el-form-item label="计划状态" prop="orderStatus">-->
+                        <!--<el-form-item :label="计划状态" prop="orderStatus">-->
                             <!--<el-select v-model="form.orderStatus" style="width: 160px" size="mini" clearable>-->
                                 <!--<el-option value=""></el-option>-->
                                 <!--<el-option-->
@@ -78,9 +77,9 @@
             </el-card>
             <div class="dialogButton">
                 <el-button type="primary" size="mini" :disabled="form.isLocked==1" @click="submit('form')"><i
-                  class="fa fa-check"></i> 确定
+                  class="fa fa-check"></i> {{$t('searchFrom.confirm')}}
                 </el-button>
-                <el-button size="mini" @click=" cancel">取消</el-button>
+                <el-button size="mini" @click=" cancel">{{$t('searchFrom.cancel')}}</el-button>
             </div>
 
         </el-dialog>
@@ -99,12 +98,9 @@
         },
         computed: {
             title: function () {
-                let entityName = '订单计划'
-                if (this.mode === 'ADD') {
-                    return '新增' + entityName
-                } else if (this.mode === 'EDIT') {
-                    return '编辑' + entityName
-                }
+                let entityName = this.$t('searchFrom.balanceList')
+                if(this.mode === 'ADD'){return this.$t('searchFrom.add')+entityName}
+                else if(this.mode === 'EDIT'){return this.$t('searchFrom.edit')+entityName}
             }
         },
         data() {
@@ -128,27 +124,27 @@
                 /**表单的验证*/
                 rules: {
                     orderCode: [
-                        {required: true, message: '请填写成品编码', trigger: 'blur'},
-                        {max: 20, message: '长度不超过20个字符', trigger: 'blur'},
-                        {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
+                        {required: true, message:  this.$t('Tips.checkMaterialOrderCode'), trigger: 'blur'},
+                        {max: 20, message: this.$t('Tips.lentghGT20'), trigger: 'blur'},
+                        {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: this.$t('Tips.formatNames'),}
                     ],
                     orderCodeDesc: [
-                        {required: true, message: '请填写成品描述', trigger: 'blur'},
-                        {max: 200, message: '长度不超过200个字符', trigger: 'blur'},
-                        {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: '请输入英文数字下划线',}
+                        {required: true, message: this.$t('Tips.checkOrderCodeDesc'), trigger: 'blur'},
+                        {max: 200, message: this.$t('Tips.lentghGT200'), trigger: 'blur'},
+                        {pattern: /^[a-z|A-Z|0-9|_]+$/, trigger: 'blur', message: this.$t('Tips.formatNames'),}
                     ],
                     orderAmount: [
-                        {required: true, message: '请填写订单数量', trigger: 'blur'},
-                        {pattern: /^[0-9]*$/ , trigger: 'blur', message: '请输入数字',}
+                        {required: true, message: this.$t('Tips.checkOrderAmount'), trigger: 'blur'},
+                        {pattern: /^[0-9]*$/ , trigger: 'blur', message: this.$t('Tips.numberCheck'),}
                     ],
                     orderDate:[
-                        {required: true, message: '请填写订单日期', trigger: 'blur'},
+                        {required: true, message: this.$t('Tips.checkOrderDate'), trigger: 'blur'},
                     ],
                     orderUnit: [
-                        {required: true, message: '请选择物料类别', trigger: 'change'}
+                        {required: true, message: this.$t('Tips.modelUnitOfTheOrder'), trigger: 'change'}
                     ],
                     orderStatus: [
-                        {required: true, message: '请选择物料类别', trigger: 'change'}
+                        {required: true, message: this.$t('Tips.planStatus'), trigger: 'change'}
                     ],
                 },
             }

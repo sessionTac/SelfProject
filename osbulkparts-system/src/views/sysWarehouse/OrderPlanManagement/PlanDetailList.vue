@@ -25,7 +25,7 @@
                     size="mini"
                     v-for="item in mattertype"
                     :key="item.value"
-                    ::label="item.name"
+                    :label="item.name"
                     :value="item.value">
             </el-option>
           </el-select>
@@ -58,7 +58,7 @@
                     size="mini"
                     v-for="item in confirmStatus"
                     :key="item.value"
-                    ::label="item.name"
+                    :label="item.name"
                     :value="item.value">
                   </el-option>
                 </el-select>
@@ -70,7 +70,7 @@
                           size="mini"
                           v-for="item in orderDetailType"
                           :key="item.value"
-                          ::label="item.name"
+                          :label="item.name"
                           :value="item.value">
                   </el-option>
                 </el-select>
