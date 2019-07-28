@@ -177,6 +177,8 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 					// 删除字典类型下所有字典数据
 					TDictDataEntity tdictDataEntity = new TDictDataEntity();
 					tdictDataEntity.setDictTypeCode(tdictTypeEntityLst.get(0).getCode());
+					tdictDataEntity.setDeleteFlg(1);
+					tdictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 					tdictDataDao.updateForDeleteLogicByTypeCode(tdictDataEntity);
 					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 					result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.DICT_TYPE.getTypeName()));
