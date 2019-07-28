@@ -77,5 +77,7 @@ public class TDictDataEntity implements Serializable {
      */
     private Integer version;
 
+    private String languageFlag;
+
     private static final long serialVersionUID = 1L;
 }

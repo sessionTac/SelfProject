@@ -130,7 +130,7 @@
             // {required: true, message: '请选择所属上级'}
           ],
           name: [
-            {required: true, message: this.$t('Tips.dictionaryNameCheck')}
+            {required: true, message: this.$t('Tips.dictionaryNameCheck'), trigger: 'blur'}
           ],
           value: [
             {required: true, message: this.$t('Tips.dictionaryValueCheck'), trigger: 'blur'}
@@ -156,7 +156,7 @@
 
           })
         }else {
-          this.form.tdictTypeEntity.name=this.name;
+          this.form.tdictTypeEntity.name=this.name || "";
           this.form.dictTypeCode=this.dictTypeCode
         }
       },

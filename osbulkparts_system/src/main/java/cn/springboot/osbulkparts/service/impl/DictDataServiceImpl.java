@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.util.List;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,11 +41,12 @@ public class DictDataServiceImpl implements DictDataSettingService {
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<TDictDataEntity> getDictDataInfo(String dictTypeCode, int pageNumber,
-															 int pageSize) {
+															 int pageSize, String lang) {
 		CommonResultInfo<TDictDataEntity> result = new CommonResultInfo<TDictDataEntity>();
 		try {
 			PageHelper.startPage(pageNumber, pageSize);
 			TDictDataEntity tdictDataEntityParam = new TDictDataEntity();
+			tdictDataEntityParam.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 			tdictDataEntityParam.setDictTypeCode(dictTypeCode);
 			PageInfo<TDictDataEntity> pageInfo = new PageInfo<>(
 					tdictDataDao.selectByPrimaryKey(tdictDataEntityParam));
@@ -61,12 +63,13 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TDictDataEntity> getDictDataInfoDetail(String id) {
+	public CommonResultInfo<TDictDataEntity> getDictDataInfoDetail(String id,String lang) {
 		CommonResultInfo<TDictDataEntity> result = new CommonResultInfo<TDictDataEntity>();
 		try {
 
 			TDictDataEntity tdictDataEntityParam = new TDictDataEntity();
 			tdictDataEntityParam.setId(id);
+			tdictDataEntityParam.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 			List<TDictDataEntity> resultList = tdictDataDao.selectByPrimaryKey(tdictDataEntityParam);
 			if (resultList.size()>0){
 				result.setResult(resultList.get(0));
@@ -201,6 +204,7 @@ public class DictDataServiceImpl implements DictDataSettingService {
 		TDictDataEntity tdictDataEntityParam = new TDictDataEntity();
 		tdictDataEntityParam.setId(tdictDataEntity.getId());
 		tdictDataEntityParam.setVersion(tdictDataEntity.getVersion());
+		tdictDataEntityParam.setLanguageFlag(tdictDataEntity.getLanguageFlag());
 		List<TDictDataEntity> resultVersionLst=tdictDataDao.selectByPrimaryKey(tdictDataEntityParam);
 		if(resultVersionLst.size()>0 && resultVersionLst.get(0) != null) {
 			return true;

@@ -10,16 +10,16 @@ public interface DictTypeSettingService {
 	
 	CommonResultInfo<TDictTypeEntity> getDictTypeList(TDictTypeEntity tdictTypeEntity,int pageNumber,int pageSize);
 	
-	CommonResultInfo<TDictTypeEntity> getDictTypeInfo(String dictTypeId);
+	CommonResultInfo<TDictTypeEntity> getDictTypeInfo(String dictTypeId,String lang);
 
-	CommonResultInfo<TDictTypeEntity> getDictType();
+	CommonResultInfo<TDictTypeEntity> getDictType(TDictTypeEntity tdictTypeEntity);
 	
 	CommonResultInfo<?> addDictTypeInfo(TDictTypeEntity tdictTypeEntity, Authentication auth);
 	
 	CommonResultInfo<?> updateDictType(TDictTypeEntity tdictTypeEntity, Authentication auth);
 	
 	@Transactional
-	CommonResultInfo<?> deleteDictType(String dictTypeId, Authentication auth);
+	CommonResultInfo<?> deleteDictType(String dictTypeId, Authentication auth,String lang);
 	
 	CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag);
 	

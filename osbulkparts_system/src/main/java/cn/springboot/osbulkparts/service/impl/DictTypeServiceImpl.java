@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.util.List;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -58,10 +59,9 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TDictTypeEntity> getDictType(){
+	public CommonResultInfo<TDictTypeEntity> getDictType(TDictTypeEntity tdictTypeEntity){
 		CommonResultInfo<TDictTypeEntity> result = new CommonResultInfo<TDictTypeEntity>();
 		try {
-			TDictTypeEntity tdictTypeEntity = new TDictTypeEntity();
 			List<TDictTypeEntity> tdictTypeInfoLst = tdictTypeDao.getDictTypeList(tdictTypeEntity);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResultList(tdictTypeInfoLst);
@@ -76,10 +76,11 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TDictTypeEntity> getDictTypeInfo(String dictTypeId) {
+	public CommonResultInfo<TDictTypeEntity> getDictTypeInfo(String dictTypeId,String lang) {
 		CommonResultInfo<TDictTypeEntity> result = new CommonResultInfo<TDictTypeEntity>();
 		TDictTypeEntity dicpTypeEntity = new TDictTypeEntity();
 		dicpTypeEntity.setDictTypeId(dictTypeId);
+		dicpTypeEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 		try {
 			List<TDictTypeEntity> tdictTypeInfoLst = tdictTypeDao.selectByPrimaryKey(dicpTypeEntity);
 			if(tdictTypeInfoLst.size()>0) {dicpTypeEntity = tdictTypeInfoLst.get(0);}else {dicpTypeEntity = new TDictTypeEntity();}
@@ -155,13 +156,14 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 	@SuppressWarnings("finally")
 	@Transactional
 	@Override
-	public CommonResultInfo<?> deleteDictType(String dictTypeId, Authentication auth) {
+	public CommonResultInfo<?> deleteDictType(String dictTypeId, Authentication auth,String lang) {
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
 			TDictTypeEntity dictTypeParam = new TDictTypeEntity();
 			dictTypeParam.setDictTypeId(dictTypeId);
+			dictTypeParam.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 			// 确认删除对象存在
 			List<TDictTypeEntity> tdictTypeEntityLst = tdictTypeDao.selectByPrimaryKey(dictTypeParam);
 			if(tdictTypeEntityLst.size() == 0) {
@@ -199,6 +201,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		TDictTypeEntity tdictTypeEntityCheckName = new TDictTypeEntity();
 		tdictTypeEntityCheckName.setName(tdictTypeEntity.getName());
+		tdictTypeEntityCheckName.setLanguageFlag(tdictTypeEntity.getLanguageFlag());
 		List<TDictTypeEntity> resultLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntityCheckName);
 		if (checkFlag.equals("add")) {
 			if (resultLst.size() == 0) {
@@ -230,6 +233,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		TDictTypeEntity tdictTypeEntityCheckCode = new TDictTypeEntity();
 		tdictTypeEntityCheckCode.setCode(tdictTypeEntity.getCode());
+		tdictTypeEntityCheckCode.setLanguageFlag(tdictTypeEntity.getLanguageFlag());
 		List<TDictTypeEntity> resultLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntityCheckCode);
 		if (checkFlag.equals("add")) {
 			if (resultLst.size() == 0) {
@@ -259,6 +263,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 		TDictTypeEntity tdictTypeEntityParam = new TDictTypeEntity();
 		tdictTypeEntityParam.setDictTypeId(tdictTypeEntity.getDictTypeId());
 		tdictTypeEntityParam.setVersion(tdictTypeEntity.getVersion());
+		tdictTypeEntityParam.setLanguageFlag(tdictTypeEntity.getLanguageFlag());
 		List<TDictTypeEntity> resultVersionLst=tdictTypeDao.selectByPrimaryKey(tdictTypeEntityParam);
 		if(resultVersionLst.size()>0 && resultVersionLst.get(0) != null) {
 			return true;
