@@ -674,7 +674,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 						CommonMethods.changeToBigdecimal(materialVatPrice.trim()):null);
 				TPriceFileEntity priceFileEntity = new TPriceFileEntity();
 				priceFileEntity.setMaterialCode(mmaterialInfoEntity.getMaterialCode());
-				priceFileEntity.setPrice(CommonMethods.changeToBigdecimal(materialVatPrice.trim()));
+				priceFileEntity.setPrice(mmaterialInfoEntity.getMaterialVatPrice());
 				
 				// 不含税单价
 				String materialTaxPrice = (String)mapData.get("不含税单价");
