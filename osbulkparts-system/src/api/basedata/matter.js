@@ -58,13 +58,22 @@ export default {
     putRequest(`~/material/deleteQuotaInfoById` ,{data}),
   //图片部分
   avatarDao: {
-    uploader: (file) => {
+    uploader: (file,entity) => {
       let form = new FormData();
       form.append('file', file);
-      return postRequest('~/material/setEnclosure',{data:form} ).then(({data}) => data);
+      // return postRequest('~/material/setEnclosure',{params:
+      //                                                       {materialCode:entity.materialCode || "",supplierCode:entity.supplierCode || "",price:entity.materialVatPrice || ""},
+      //                                                   data:form} ).then(({data}) => data);
+      return postRequest('~/material/setEnclosure',{params:
+          {materialCode:entity.materialCode || "",supplierCode:entity.supplierCode || "",price:entity.materialVatPrice || ""},
+        data:form} );
     },
     // srcGetter: attachment => `${API_HOME}/passport/avatar/${attachment.file_id}`,
     srcGetter:(attachment)  =>
       getRequest(`~/material/getEnclosure/${attachment.file_id}`),
   },
+
+  // 价格记录 findlist
+  findMaterialPriceAndFile:(params)=>
+    getRequest(`~/material/findMaterialPriceAndFile`,{params}),
 }

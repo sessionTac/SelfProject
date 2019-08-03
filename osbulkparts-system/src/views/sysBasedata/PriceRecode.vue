@@ -20,7 +20,7 @@
           border
           tooltip-effect="dark">
 
-          <el-table-column prop="materialTaxPrice" width="120" :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterUntaxedUnitPrice')"  />
+          <el-table-column prop="price" width="120" :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterUntaxedUnitPrice')"  />
           <el-table-column prop="createUser" align="center" :label="$t('pageTable.createUser')"  />
           <!--            <el-table-column prop="createTime" align="center" label="创建时间"  />-->
           <el-table-column :label="$t('pageTable.createTime')" show-overflow-tooltip>
@@ -76,21 +76,22 @@
       this.exec_search();
     },
     methods:{
+      price(row, column, cellValue, index){
+        if (cellValue) {
+          return cellValue.toFixed(6)
+        }else {
+          return ""
+        }
+      },
       toImg(filePath,fileName) {
 
       },
       exec_search() {
-        // activityService.finddeliverGoodsList({idsStr:this.multipleSelection,dateFlag:this.dateFlag}).then(resp => {
-        //   this.search_result = resp.data.resultList;                //视图展示查询结果
-        //   this.search_result.forEach(item=>{
-        //     item.suggestedAmount=item.materialAmount-item.supperAmountQut.supperAmount
-        //     if (item.suggestedAmount<0) {
-        //       item.suggestedAmount=0
-        //     }
-        //   })
-        // }, err => {
-        //   console.error(err);
-        // })
+        activityService.findMaterialPriceAndFile({materialCode:this.materialCode,supplierCode:this.supplierCode}).then(resp => {
+          this.search_result = resp.data.resultList;                //视图展示查询结果
+        }, err => {
+          console.error(err);
+        })
       },
       cancel() {
         this.dialogFormVisible = false

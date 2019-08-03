@@ -59,6 +59,7 @@
 
     props: {
       accept: {type: String, default: "image/*"},
+      entity:Object,
       value: Object,
       dao: Object,    // 需要包含：uploader, srcGetter, thumbSrcGetter
       friends: Array, //TODO 点击放大镜时，下方缩略列表中出现的图片。用uuid识别当前元素在数组中的位置。
@@ -202,7 +203,7 @@
 
           currentAttachment['mi-editor.upload_state'] = 'UPLOADING';
 
-          let attachment = await this.dao.uploader(currentAttachment['mi-editor.raw']);
+          let attachment = await this.dao.uploader(currentAttachment['mi-editor.raw'],this.entity);
 
           this.$emit('input', attachment);
 

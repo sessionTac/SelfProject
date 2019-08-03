@@ -182,9 +182,11 @@ public class MaterialDataServiceImpl implements MaterialDataService{
             	}
         	}
         } catch (NullPointerException se) {
+        	se.printStackTrace();
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
             result.setMessage(se.getMessage().toString());
         } catch (Exception e) {
+        	e.printStackTrace();
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
             result.setMessage(messageBean.getMessage("common.server.error"));
             result.setException(e.getMessage().toString());
@@ -802,6 +804,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		materialInfoEntity.setMaterialOrderCode(materialOrderCode);
 		materialInfoEntity.setMaterialCode(materialCode);
 		materialInfoEntity.setDataRoleAt(roleAt);
+		materialInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(null));
 		List<MMaterialInfoEntity> resultList = mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity);
 		if(resultList.size()>0) {
 			version = resultList.get(0).getVersion();
@@ -821,6 +824,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		materialQuotaEntity.setMaterialCode(materialCode);
 		materialQuotaEntity.setSupplierCode(supplierNo);
 		materialQuotaEntity.setDataRoleAt(roleAt);
+		materialQuotaEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(null));
 		List<TMaterialQuotaEntity> resultList = tmaterialQuotaDao.selectByPrimaryKey(materialQuotaEntity);
 		if(resultList.size()>0) {
 			quotaVersion = resultList.get(0).getVersion();
@@ -840,6 +844,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		try {
 			dictDataParam.setName(nameValue);
 			dictDataParam.setDictTypeCode(dictType);
+			dictDataParam.setLanguageFlag(OSLanguage.localeToTableSuffix(null));
 			List<TDictDataEntity> dictDataLst = tDictDataDao.selectByPrimaryKey(dictDataParam);
 			if(dictDataLst.size()>0) {
 				return dictDataLst.get(0).getValue();

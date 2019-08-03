@@ -189,12 +189,12 @@
             <el-table-column prop="materialRelation" align="center" :label="$t('pageTable.MatterConversionRelationship')"  />
             <el-table-column prop="dictMaterialRelationUnit.name" align="center" :label="$t('pageTable.MatterConvertedUnit')"  />
             <el-table-column prop="materialMinpackageAmt" align="center" :label="$t('pageTable.MatterMinimumPackingNumber')"  />
-            <el-table-column align="center" :formatter="price" :label="$t('pageTable.MatterUnitPriceWithTax')"  >
+            <el-table-column align="center" :formatter="price" :label="$t('pageTable.MatterUntaxedUnitPrice')"  >
                 <template slot-scope="scope">
                     <a :disabled="subject.hasPermissions('*')" style="text-decoration: underline;" @click="toPriceRecord(scope.row.materialCode,scope.row.supplierCode)">{{scope.row.materialVatPrice}}</a>
                 </template>
             </el-table-column>
-            <el-table-column prop="materialTaxPrice" align="center" :formatter="price" :label="$t('pageTable.MatterUntaxedUnitPrice')"  />
+            <el-table-column prop="materialTaxPrice" align="center" :formatter="price" :label="$t('pageTable.MatterUnitPriceWithTax')"  />
             <el-table-column prop="tax" align="center" :formatter="price" :label="$t('pageTable.MatterTaxRate')"  />
             <el-table-column prop="materialLossRate" align="center" :formatter="price" :label="$t('pageTable.MatterLossRate')"  />
             <el-table-column prop="materialRate" align="center" :label="$t('pageTable.MatterAgencyRate')"  />

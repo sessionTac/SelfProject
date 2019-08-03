@@ -139,14 +139,14 @@
 <!--                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>-->
 <!--              </template>-->
 <!--            </el-form-item>-->
-            <el-form-item :label="$t('pageTable.MatterUntaxedUnitPrice')" prop="materialTaxPrice">
+            <el-form-item :label="$t('pageTable.MatterUnitPriceWithTax')" prop="materialTaxPrice">
               <el-input v-model="form.materialTaxPrice" class="search-form-item-input" style="width: 160px" size="mini"
                         :maxlength="18"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item :label="$t('pageTable.MatterUnitPriceWithTax')" prop="materialVatPrice">
+            <el-form-item :label="$t('pageTable.MatterUntaxedUnitPrice')" prop="materialVatPrice">
               <el-input v-model="form.materialVatPrice" class="search-form-item-input" style="width: 160px"  size="mini"
                         :maxlength="18"   clearable></el-input>
               <template slot="error" slot-scope="scope">
@@ -234,7 +234,7 @@
 
             <el-form-item :label="$t('pageTable.portrait')" prop="avatar_attachment" >
               <mi-avatar-attachment-editor
-              ref="avatarUploader" v-model="form.avatar_attachment" :dao="avatarDao" />
+              ref="avatarUploader" v-model="form.avatar_attachment" :dao="avatarDao" :entity="entity"/>
             </el-form-item>
 <!--            <el-form-item label="分级BOM编码" prop="levelBomCode">-->
 <!--              <el-input v-model="form.levelBomCode" class="search-form-item-input" style="width: 160px" size="mini"-->
@@ -293,11 +293,19 @@
         let entityName = this.$t('searchFrom.matter')
         if(this.mode === 'ADD'){return this.$t('searchFrom.add')+entityName}
         else if(this.mode === 'EDIT'){return this.$t('searchFrom.edit')+entityName}
-      }
+      },
+      entity:function () {
+        return {
+          materialCode:this.form.materialCode,
+          materialVatPrice:this.form.materialVatPrice,
+          supplierCode:this.form.supplierCode,
+        }
+      },
     },
     data() {
       return {
         avatarDao: activityService.avatarDao,
+
         dialogFormVisible: true,
         search_keys: {},
         currencys: [],
@@ -449,9 +457,9 @@
 
       },
       /*确定*/
-      submit(formName) {
-        // this.$refs.avatarUploader.upload();
-        this.$refs[formName].validate((valid) => {
+       submit(formName) {
+
+        this.$refs[formName].validate( (valid) => {
           if (valid) {
             let data = {
               materialInfoId: this.id || undefined,
@@ -487,25 +495,39 @@
               version: this.form.version || undefined,
               dataRoleAt: this.form.dataRoleAt || undefined,
               isLocked: this.form.isLocked,
-            }
+            };
+
             if (this.mode == 'EDIT') {  //编辑
                 // debugger
-              activityService.updateMatter({...data}).then(resp => {
-
+               activityService.updateMatter({...data}).then(resp => {
                 if (resp.data.code == "201") {
                   this.$notify({message: resp.data.message, type: "success"});
-                  this.$emit("success");
-                  this.dialogFormVisible = false
+                  this.$refs.avatarUploader.upload().then(resp=>{
+                    if (resp.data.code == "200"){
+                      this.$notify({message: resp.data.message, type: "success"});
+                      this.$emit("success");
+                      this.dialogFormVisible = false;
+                    }
+                  });
+
                 } else {
                   this.$notify({message: resp.data.message, type: "error"});
                 }
               })
+
             } else {
               activityService.addMatter({...data}).then(resp => {  //添加
                 if (resp.data.code == "201") {
                   this.$notify({message: resp.data.message, type: "success"});
-                  this.$emit("success");
-                  this.dialogFormVisible = false
+                  // this.$emit("success");
+                  // this.dialogFormVisible = false
+                  this.$refs.avatarUploader.upload().then(resp=>{
+                    if (resp.data.code == "200"){
+                      this.$notify({message: resp.data.message, type: "success"});
+                      this.$emit("success");
+                      this.dialogFormVisible = false;
+                    }
+                  });
                 } else {
                   this.$notify({message: resp.data.message, type: "error"});
                 }
