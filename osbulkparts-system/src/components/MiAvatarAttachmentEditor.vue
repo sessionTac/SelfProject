@@ -208,6 +208,7 @@
           this.$emit('input', attachment);
 
           console.log('图片上传完毕');
+          return attachment;
 
         } catch (e) {
           // this.$notify({type:'error', message:'上传文件时出现错误'});
