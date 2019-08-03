@@ -11,6 +11,8 @@ public interface TPriceFileDao {
     int deleteByPrimaryKey(String id);
 
     int insert(TPriceFileEntity record);
+    
+    int insertLst(List<TPriceFileEntity> priceFileLst);
 
     int insertSelective(TPriceFileEntity record);
 

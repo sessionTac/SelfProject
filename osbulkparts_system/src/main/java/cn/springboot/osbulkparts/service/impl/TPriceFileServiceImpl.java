@@ -18,8 +18,6 @@ import cn.springboot.osbulkparts.common.utils.CommonMethods;
 import cn.springboot.osbulkparts.common.utils.CommonSqlUtils;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.basedata.TPriceFileDao;
-import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
-import cn.springboot.osbulkparts.entity.TMaterialQuotaEntity;
 import cn.springboot.osbulkparts.entity.TPriceFileEntity;
 import cn.springboot.osbulkparts.service.TPriceFileService;
 
@@ -51,23 +49,34 @@ public class TPriceFileServiceImpl implements TPriceFileService
             filePath.append("\\");
             boolean rnt = uploadFile(imgFile.getBytes(),filePath.toString(),imgFile.getOriginalFilename()+"_"+nowTime);
             if(rnt) {
-            	//主键
-                fileEntity.setId(CommonSqlUtils.getUUID32());
-//                fileEntity.setMaterialCode(materialCode);
-//                fileEntity.setSupplierCode(supplierCode);
-//                fileEntity.setPrice(price);
-                //操作者
-                fileEntity.setCreateUser(principal.getUserName());
-                // 文件路径
-                fileEntity.setFilePath(filePath.toString());
-                // 文件名
-                fileEntity.setFileName(imgFile.getOriginalFilename()+"_"+nowTime);
-                // 文件类型
-                fileEntity.setFileType(1);
-                fileEntity.setIsDelete(0);
-                fileEntity.setVersion(1);
-                //文件信息存储
-                tfileDao.insert(fileEntity);
+            	List<TPriceFileEntity> priceResult = tfileDao.selectByMaterialCode(fileEntity);
+            	if(priceResult.size()==0) {
+                	//主键
+                    fileEntity.setId(CommonSqlUtils.getUUID32());
+//                    fileEntity.setMaterialCode(materialCode);
+//                    fileEntity.setSupplierCode(supplierCode);
+//                    fileEntity.setPrice(price);
+                    //操作者
+                    fileEntity.setCreateUser(principal.getUserName());
+                    // 文件路径
+                    fileEntity.setFilePath(filePath.toString());
+                    // 文件名
+                    fileEntity.setFileName(imgFile.getOriginalFilename()+"_"+nowTime);
+                    // 文件类型
+                    fileEntity.setFileType(1);
+                    fileEntity.setIsDelete(0);
+                    fileEntity.setVersion(1);
+                    //文件信息存储
+                    tfileDao.insert(fileEntity);
+            	}else {
+                    // 文件路径
+                    fileEntity.setFilePath(filePath.toString());
+                    // 文件名
+                    fileEntity.setFileName(imgFile.getOriginalFilename()+"_"+nowTime);
+                    // 文件类型
+                    fileEntity.setFileType(1);
+                    tfileDao.updateByPrimaryKeySelective(fileEntity);
+            	}
             }
             else {
     			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -96,6 +105,10 @@ public class TPriceFileServiceImpl implements TPriceFileService
 		CommonResultInfo<TPriceFileEntity> result = new CommonResultInfo<TPriceFileEntity>();
 		try {
 			List<TPriceFileEntity> pageInfo = tfileDao.selectByMaterialCode(fileEntity);
+			for(TPriceFileEntity tpriceFile:pageInfo) {
+				String fileWholeName = tpriceFile.getFilePath()+"\\"+tpriceFile.getFileName();
+				tpriceFile.setFileName(fileWholeName);
+			}
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResultList(pageInfo);
 		} catch (Exception e) {

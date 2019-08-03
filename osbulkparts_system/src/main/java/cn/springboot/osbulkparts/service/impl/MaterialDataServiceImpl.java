@@ -2,7 +2,6 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,7 +10,6 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
-import cn.springboot.osbulkparts.common.OSLanguage;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
@@ -39,6 +37,7 @@ import com.github.pagehelper.util.StringUtil;
 import cn.springboot.osbulkparts.common.CommonBusinessException;
 import cn.springboot.osbulkparts.common.CommonConstantEnum;
 import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.OSLanguage;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.common.utils.CommonMethods;
@@ -49,6 +48,7 @@ import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.basedata.MMaterialInfoDao;
 import cn.springboot.osbulkparts.dao.basedata.MSupplierInfoDao;
 import cn.springboot.osbulkparts.dao.basedata.TMaterialQuotaDao;
+import cn.springboot.osbulkparts.dao.basedata.TPriceFileDao;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
@@ -56,6 +56,7 @@ import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.MSupplierInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.entity.TMaterialQuotaEntity;
+import cn.springboot.osbulkparts.entity.TPriceFileEntity;
 import cn.springboot.osbulkparts.service.MaterialDataService;
 
 @Service
@@ -72,6 +73,9 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	
 	@Autowired
 	private MSupplierInfoDao msupplierInfoDao;
+	
+	@Autowired
+	private TPriceFileDao tpriceFileDao;
 	
 	@Autowired
 	private TDictDataDao tDictDataDao;
@@ -144,12 +148,14 @@ public class MaterialDataServiceImpl implements MaterialDataService{
         try {
         	int resultInt = 0;
         	int quotaResultInt = 0;
+        	int priceFileResultInt = 0;
         	Map<String,Object> materialInfoParams = resolvExcelToDb(excleFile,auth);
         	if(materialInfoParams.size() == 0) {
         		result.setMessage(messageBean.getMessage("common.excel.error"));
         	}else {
         		List<MMaterialInfoEntity> paramList = new ArrayList<MMaterialInfoEntity>();
         		List<TMaterialQuotaEntity> quotaParamList = new ArrayList<TMaterialQuotaEntity>();
+        		List<TPriceFileEntity> priceFileParamList = new ArrayList<TPriceFileEntity>();
         		if(materialInfoParams.containsKey("insertList")) {
         			paramList = (List<MMaterialInfoEntity>)materialInfoParams.get("insertList");
         			if(paramList.size()>0) {resultInt = resultInt + mmaterialInfoDao.insertList(paramList);}
@@ -167,6 +173,10 @@ public class MaterialDataServiceImpl implements MaterialDataService{
         			if(quotaParamList.size()>0) {quotaResultInt = quotaResultInt + tmaterialQuotaDao.updateList(quotaParamList);}
         		}
             	if(resultInt >0 && quotaResultInt>0) {
+            		if(materialInfoParams.containsKey("priceFileInsertList")) {
+            			priceFileParamList = (List<TPriceFileEntity>)materialInfoParams.get("priceFileInsertList");
+            			if(priceFileParamList.size()>0) {priceFileResultInt = tpriceFileDao.insertLst(priceFileParamList);}
+            		}
             		result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
             		result.setMessage(messageBean.getMessage("common.excel.success"));
             	}
@@ -585,6 +595,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			List<MMaterialInfoEntity> updateResultLst = new ArrayList<MMaterialInfoEntity>();
 			List<TMaterialQuotaEntity> quotaInsertResultLst = new ArrayList<TMaterialQuotaEntity>();
 			List<TMaterialQuotaEntity> quotaUpdateResultLst = new ArrayList<TMaterialQuotaEntity>();
+			List<TPriceFileEntity> priceFileResultLst = new ArrayList<TPriceFileEntity>();
 			
 			Map<String,Object> returnMap = new HashMap<String,Object>();
 			
@@ -661,6 +672,10 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				String materialVatPrice = (String)mapData.get("含税单价");
 				mmaterialInfoEntity.setMaterialVatPrice(materialVatPrice != null?
 						CommonMethods.changeToBigdecimal(materialVatPrice.trim()):null);
+				TPriceFileEntity priceFileEntity = new TPriceFileEntity();
+				priceFileEntity.setMaterialCode(mmaterialInfoEntity.getMaterialCode());
+				priceFileEntity.setPrice(CommonMethods.changeToBigdecimal(materialVatPrice.trim()));
+				
 				// 不含税单价
 				String materialTaxPrice = (String)mapData.get("不含税单价");
 				mmaterialInfoEntity.setMaterialTaxPrice(materialTaxPrice!=null?
@@ -688,6 +703,11 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				// 供应商编码
 				materialQuotaEntity.setSupplierCode((String)mapData.get("供应商编码"));
 				materialQuotaEntity.setSupplierName(supplierInfo.getSupplierNameCn());
+				priceFileEntity.setSupplierCode(materialQuotaEntity.getSupplierCode());
+				priceFileEntity.setCreateUser(principal.getUserName());
+				priceFileEntity.setIsDelete(0);
+				priceFileEntity.setVersion(1);
+				priceFileEntity.setId(CommonSqlUtils.getUUID32());
 				// 配额
 				String quota = (String)mapData.get("配额");
 				materialQuotaEntity.setMaterialQuota(quota!=null?CommonMethods.changeToBigdecimal(quota.trim()):null);
@@ -747,6 +767,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 					materialQuotaEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 					quotaInsertResultLst.add(materialQuotaEntity);
 				}
+				priceFileResultLst.add(priceFileEntity);
 			}
 			// 去除重复对象
 			quotaInsertResultLst = deleteItear(quotaInsertResultLst);
@@ -755,6 +776,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			returnMap.put("updateList", updateResultLst);
 			returnMap.put("quotaInsertList", quotaInsertResultLst);
 			returnMap.put("quotaUpdateList", quotaUpdateResultLst);
+			returnMap.put("priceFileInsertList", priceFileResultLst);
 			return returnMap;
 		}
 		catch(NullPointerException se) {

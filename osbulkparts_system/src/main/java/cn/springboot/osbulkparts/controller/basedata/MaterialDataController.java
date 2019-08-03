@@ -171,9 +171,8 @@ public class MaterialDataController {
 	@GetMapping("/findMaterialPriceAndFile")
 	public CommonResultInfo<TPriceFileEntity> findPriceAndFile(TPriceFileEntity tpriceFileEntity,
 			HttpServletRequest request, Authentication auth){
-//		CommonResultInfo<TPriceFileEntity> result = tfileService.getMaterialPriceAndFile(tpriceFileEntity, auth);
-//		return result;
-		return null;
+		CommonResultInfo<TPriceFileEntity> result = tfileService.getMaterialPriceAndFile(tpriceFileEntity, auth);
+		return result;
 	}
 	
 	@ApiOperation(value="附件数据设定", notes="附件数据设定")
