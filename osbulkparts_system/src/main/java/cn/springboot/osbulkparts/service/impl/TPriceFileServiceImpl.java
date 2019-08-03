@@ -77,6 +77,7 @@ public class TPriceFileServiceImpl implements TPriceFileService
                     fileEntity.setFileType(1);
                     tfileDao.updateByPrimaryKeySelective(fileEntity);
             	}
+            	result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
             }
             else {
     			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -132,12 +133,12 @@ public class TPriceFileServiceImpl implements TPriceFileService
 	 */
 	public static boolean uploadFile(byte[] file, String filePath, String fileName) throws IOException { 
 		boolean rnt = false;
+		File targetFile = new File(filePath); 
+		if(!targetFile.exists()){ 
+			targetFile.mkdirs(); 
+		} 
 		FileOutputStream out = new FileOutputStream(filePath+fileName);
 		try {
-			File targetFile = new File(filePath); 
-			if(!targetFile.exists()){ 
-				targetFile.mkdirs(); 
-			} 
 			out.write(file);
 			rnt = true;
 		}catch(IOException e) {
