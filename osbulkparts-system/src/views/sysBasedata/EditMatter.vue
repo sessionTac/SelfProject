@@ -507,6 +507,8 @@
                       this.$notify({message: resp.data.message, type: "success"});
                       this.$emit("success");
                       this.dialogFormVisible = false;
+                    }else {
+                      this.$notify({message: resp.data.message, type: "error"});
                     }
                   });
 
@@ -526,6 +528,8 @@
                       this.$notify({message: resp.data.message, type: "success"});
                       this.$emit("success");
                       this.dialogFormVisible = false;
+                    }else {
+                      this.$notify({message: resp.data.message, type: "error"});
                     }
                   });
                 } else {
