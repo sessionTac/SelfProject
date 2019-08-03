@@ -78,6 +78,7 @@ public class TPriceFileServiceImpl implements TPriceFileService
                     tfileDao.updateByPrimaryKeySelective(fileEntity);
             	}
             	result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
+            	result.setMessage(messageBean.getMessage("common.file.upload.success"));
             }
             else {
     			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
