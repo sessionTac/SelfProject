@@ -603,6 +603,7 @@
           this.countryCode=resp.data.result.countryCode
           this.confirmStatus=resp.data.result.orderStatus
           this.orderDetailType= resp.data.result.orderDetailType
+
         },error=>{});
         await activityService.getAllOrderCode({isBalance:0}).then(resp=>{
           this.orderCodeList=resp.data.resultList

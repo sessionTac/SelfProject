@@ -902,34 +902,34 @@
 	    t12.supplier_name_cn as supplierName
     FROM
         t_order_detail_info AS t1
-    LEFT JOIN t_dict_data AS t2 ON t1.order_unit = t2.`value`
+    LEFT JOIN t_dict_data_${languageFlag} AS t2 ON t1.order_unit = t2.`value`
     AND t2.dict_type_code = 'unit'
     AND t2.delete_flg = 0
-    LEFT JOIN t_dict_data AS t3 ON t1.material_unit = t3.`value`
+    LEFT JOIN t_dict_data_${languageFlag} AS t3 ON t1.material_unit = t3.`value`
     AND t3.dict_type_code = 'unit'
     AND t3.delete_flg = 0
-    LEFT JOIN t_dict_data AS t4 ON t1.material_category = t4.`value`
+    LEFT JOIN t_dict_data_${languageFlag} AS t4 ON t1.material_category = t4.`value`
     AND t4.dict_type_code = 'mattertype'
     AND t4.delete_flg = 0
-    LEFT JOIN t_dict_data AS t5 ON t1.material_relation_unit = t5.`value`
+    LEFT JOIN t_dict_data_${languageFlag} AS t5 ON t1.material_relation_unit = t5.`value`
     AND t5.dict_type_code = 'unit'
     AND t5.delete_flg = 0
-    LEFT JOIN t_dict_data AS t6 ON t1.material_minpackage_type = t6.`value`
+    LEFT JOIN t_dict_data_${languageFlag} AS t6 ON t1.material_minpackage_type = t6.`value`
     AND t6.dict_type_code = 'minpackageType'
     AND t6.delete_flg = 0
-    LEFT JOIN t_dict_data AS t7 ON t1.material_currency = t7.`value`
+    LEFT JOIN t_dict_data_${languageFlag} AS t7 ON t1.material_currency = t7.`value`
     AND t7.dict_type_code = 'currency'
     AND t7.delete_flg = 0
-    LEFT JOIN t_dict_data AS t8 ON t1.country_code = t8.`value`
+    LEFT JOIN t_dict_data_${languageFlag} AS t8 ON t1.country_code = t8.`value`
     AND t8.dict_type_code = 'countryCode'
     AND t8.delete_flg = 0
-    LEFT JOIN t_dict_data AS t9 ON t1.confirm_status = t9.`value`
+    LEFT JOIN t_dict_data_${languageFlag} AS t9 ON t1.confirm_status = t9.`value`
     AND t9.dict_type_code = 'orderStatus'
     AND t9.delete_flg = 0
 	LEFT JOIN t_stock_info AS t10 ON t1.material_code = t10.material_code
 	AND t10.data_role_at = t1.data_role_at
 	AND t10.is_delete = 0
-	LEFT JOIN t_dict_data AS t11 ON t1.order_detail_type = t11.`value`
+	LEFT JOIN t_dict_data_${languageFlag} AS t11 ON t1.order_detail_type = t11.`value`
 	AND t11.dict_type_code = 'orderDetailType'
 	AND t11.delete_flg = 0
     LEFT JOIN m_supplier_info AS t12 ON t1.material_supplier_no = t12.supplier_code

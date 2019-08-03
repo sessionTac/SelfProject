@@ -201,7 +201,7 @@
             <el-table-column prop="hsNo" align="center" :label="$t('pageTable.MatterHSCustomsNumber')"  />
             <el-table-column prop="supplierCode" align="center" :label="$t('pageTable.MatterSupplierCode')"  />
             <el-table-column prop="materialQuota.materialQuota" :formatter="price" align="center"  :label="$t('pageTable.MatterQuota')"  />
-<!--	        <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />-->
+<!--	          <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />-->
 <!--            <el-table-column prop="materialPrice" align="center" :formatter="price" label="单价"  />-->
 <!--            <el-table-column prop="factoryCode" align="center" label="代理商"  />-->
             <el-table-column prop="length" align="center" :label="$t('pageTable.MatterLong')"  />

@@ -568,6 +568,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				.body(os.toByteArray());
 			return response;
 		} catch (Exception e) {
+			e.printStackTrace();
 			throw new CommonBusinessException(e.getMessage().toString());
 		}
 	}
