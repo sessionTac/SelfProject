@@ -10,6 +10,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
@@ -79,12 +80,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews() {
+    public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang) {
         CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
         try {
             Map<String,List<TDictDataEntity>> map = new HashMap<>();
             TDictDataEntity tDictDataEntity = new TDictDataEntity();
             tDictDataEntity.setDictTypeCode("unit");
+            tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
             map.put("orderUnits",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
             tDictDataEntity.setDictTypeCode("mattertype");
             map.put("mattertype",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
@@ -114,7 +116,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         CommonResultInfo<TOrderDetailInfoEntity> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
-        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),tOrderDetailInfoEntity.getLanguageFlag());
             tOrderDetailInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
             PageHelper.startPage(pageNumber, pageSize);
             PageInfo<TOrderDetailInfoEntity> pageInfo = new PageInfo<>(
@@ -161,7 +163,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         CommonResultInfo<TOrderInfoEntity> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
-        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
             result.setResultList(tOrderInfoDao.getAllOrderCode(isBalance,roleInfoEntity.getRoleAt()));
         } catch (Exception e) {
@@ -180,7 +182,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         CommonResultInfo<TOrderInfoEntity> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
-        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
             result.setResultList(tOrderInfoDao.getOrderInfoByOrderCode(materialOrderCode,isBalance,roleInfoEntity.getRoleAt()));
         } catch (Exception e) {
@@ -195,14 +197,15 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<MMaterialInfoEntity> getMaterialInfoByMaterialCode(String materialCode, Authentication auth) {
+    public CommonResultInfo<MMaterialInfoEntity> getMaterialInfoByMaterialCode(String materialCode, Authentication auth,String lang) {
         CommonResultInfo<MMaterialInfoEntity> result = new CommonResultInfo<MMaterialInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
-        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+        	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),OSLanguage.localeToTableSuffix(lang));
             MMaterialInfoEntity mMaterialInfoEntity = new MMaterialInfoEntity();
             mMaterialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
             mMaterialInfoEntity.setMaterialCode(materialCode);
+            mMaterialInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
             List<MMaterialInfoEntity> resultList=mMaterialInfoDao.selectByPrimaryKey(mMaterialInfoEntity);
             if(resultList.size()>0) {
@@ -223,7 +226,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
-            MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+            MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
             if (orderCode != null){
                 List<TOrderInfoEntity> list = tOrderInfoDao.checkOrderCodeAndMaterialCode(orderCode,isBalance,roleInfoEntity.getRoleAt());
                 if (list.size()>0){
@@ -291,7 +294,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         try {
 	        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-	        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+	        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),tOrderDetailInfoEntity.getLanguageFlag());
         
             tOrderDetailInfoEntity.setId(CommonSqlUtils.getUUID32());
             tOrderDetailInfoEntity.setCreateUser(principal.getUserName());
@@ -386,13 +389,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth) {
+	public CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth,String lang) {
         CommonResultInfo<?> result = new CommonResultInfo<TDeliverInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         String dateFlag = commonEntity.getDateFlag();
         try {
 	        SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-	        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+	        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),OSLanguage.localeToTableSuffix(lang));
 	        List<TDeliverInfoEntity> tdeliveryInfoListParam = new ArrayList<TDeliverInfoEntity>();
 	        List<TDeliverInfoEntity> deliverInfoList= new ArrayList<TDeliverInfoEntity>();
 	        List<TOrderDetailInfoEntity> orderDetailInfoEntity = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr(),commonEntity.getDateFlag());
@@ -413,6 +416,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	        	orderDetailParam.setDataRoleAt(deliveryInfo.getDataRoleAt());
 	        	orderDetailParam.setDateFlag(dateFlag);
 	        	orderDetailParam.setIsBalance("0");
+                orderDetailParam.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 	        	List<TOrderDetailInfoEntity> orderDetailInfoList = tOrderDetailInfoDao.getOrderDetailInfoList(orderDetailParam);
 	        	if(orderDetailInfoList.size()==0) {
 	        		result.setMessage(messageBean.getMessage("bussiness.order.delivery.del.error",deliveryInfo.getOrderCode()));
@@ -473,12 +477,13 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	}
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit() {
+    public CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit(String lang) {
         CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
         try {
             Map<String,List<TDictDataEntity>> map = new HashMap<>();
             TDictDataEntity tDictDataEntity = new TDictDataEntity();
-            tDictDataEntity.setDictTypeCode("transportation");	
+            tDictDataEntity.setDictTypeCode("transportation");
+            tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
             map.put("transportation",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
             result.setResult(map);
         } catch (Exception e) {

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -63,11 +64,12 @@ public class StockInfoServiceImpl implements StockInfoService {
     
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews() {
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang) {
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
 			TDictDataEntity tDictDataEntity = new TDictDataEntity();
+			tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 			tDictDataEntity.setDictTypeCode("mattertype");
 			map.put("materialCategorys",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			result.setResult(map);
@@ -85,7 +87,7 @@ public class StockInfoServiceImpl implements StockInfoService {
 	public CommonResultInfo<?> getStockInfoList(TStockInfoEntity stockInfoEntity, int pageNumber, int pageSize,Authentication auth) {
 		CommonResultInfo<TStockInfoEntity> result = new CommonResultInfo<TStockInfoEntity>();
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),stockInfoEntity.getLanguageFlag());
 		try {
 			stockInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 			PageHelper.startPage(pageNumber, pageSize);
@@ -133,7 +135,7 @@ public class StockInfoServiceImpl implements StockInfoService {
 		CommonResultInfo<?> result = new CommonResultInfo<TStockInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),stockInfoEntity.getLanguageFlag());
 		try {
 			String dictUUID = CommonSqlUtils.getUUID32();
 			stockInfoEntity.setId(dictUUID);
@@ -347,7 +349,7 @@ public class StockInfoServiceImpl implements StockInfoService {
 	private List<TStockInfoEntity> resolvExcelToDb(MultipartFile excleFile,Authentication auth) throws NullPointerException,Exception{
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
 			List<TStockInfoEntity> insertResultLst = new ArrayList<TStockInfoEntity>();
 			
 			File file = CommonPoiReadUtil.MultipartFileToFile(excleFile);

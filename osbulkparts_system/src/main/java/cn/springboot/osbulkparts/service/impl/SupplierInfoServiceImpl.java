@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -40,11 +41,12 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews() {
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang) {
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
 			TDictDataEntity tDictDataEntity = new TDictDataEntity();
+			tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 			tDictDataEntity.setDictTypeCode("supplierCata");
 			map.put("supplierCatas",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			tDictDataEntity.setDictTypeCode("supplierLevel");

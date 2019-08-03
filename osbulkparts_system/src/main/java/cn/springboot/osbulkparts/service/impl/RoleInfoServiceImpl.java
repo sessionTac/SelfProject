@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,10 +55,11 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<MRoleInfoEntity> getRoleInfoList(MRoleInfoEntity mRoleInfoEntity, int pageNumber, int pageSize) {
+    public CommonResultInfo<MRoleInfoEntity> getRoleInfoList(MRoleInfoEntity mRoleInfoEntity, int pageNumber, int pageSize,String lang) {
         CommonResultInfo<MRoleInfoEntity> result = new CommonResultInfo<MRoleInfoEntity>();
         try {
             PageHelper.startPage(pageNumber, pageSize);
+            mRoleInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
             PageInfo<MRoleInfoEntity> pageInfo = new PageInfo<>(
                     mRoleInfoDao.selectRoleInfoList(mRoleInfoEntity));
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
@@ -74,11 +76,12 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions() {
+    public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions(String lang) {
         CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
         try {
             TDictDataEntity dictDataParam = new TDictDataEntity();
             dictDataParam.setDictTypeCode("roleAt");
+            dictDataParam.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
             Map<String, List<TDictDataEntity>> map = new HashMap<>();
             map.put("roleAt", tDictDataDao.selectByPrimaryKey(dictDataParam));
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
@@ -96,13 +99,13 @@ public class RoleInfoServiceImpl implements RoleInfoService {
      * 查询权限树结构
      */
     @Override
-    public Map<String, Object> getTree() {
+    public Map<String, Object> getTree( String lang) {
         Map<String, Object> ret = new HashMap<>();
 
         Map<Integer, Object> functionMap = new HashMap<>();
         List<MFunctionInfoEntity> roots = new ArrayList<>();//根节点
 
-        List<MFunctionInfoEntity> list = mFunctionInfoDao.selectTree();
+        List<MFunctionInfoEntity> list = mFunctionInfoDao.selectTree(lang);
         list.forEach(f -> functionMap.put(f.getFunctionId(), f));        //映射
         list.forEach(f -> {
             MFunctionInfoEntity parentFunction = (MFunctionInfoEntity) functionMap.get(f.getParentId());//通过父节点id 取对应实体
@@ -168,10 +171,10 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<MRoleInfoEntity> getRoleInfo(String roleId) {
+    public CommonResultInfo<MRoleInfoEntity> getRoleInfo(String roleId,String lang) {
         CommonResultInfo<MRoleInfoEntity> result = new CommonResultInfo<MRoleInfoEntity>();
         try {
-            MRoleInfoEntity userInfo = mRoleInfoDao.selectRoleInfo(roleId);
+            MRoleInfoEntity userInfo = mRoleInfoDao.selectRoleInfo(roleId,OSLanguage.localeToTableSuffix(lang));
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
             result.setResult(userInfo);
         } catch (Exception e) {

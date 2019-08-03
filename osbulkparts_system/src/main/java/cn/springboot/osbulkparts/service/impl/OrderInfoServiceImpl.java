@@ -13,6 +13,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.springboot.osbulkparts.common.*;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -98,12 +99,13 @@ public class OrderInfoServiceImpl implements OrderInfoService{
     
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews() {
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang) {
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
 			TDictDataEntity tDictDataEntity = new TDictDataEntity();
 			tDictDataEntity.setDictTypeCode("unit");
+			tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 			map.put("orderUnits",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			tDictDataEntity.setDictTypeCode("planStatus");
 			map.put("orderStatus",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
@@ -158,7 +160,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			int pageSize, Authentication auth) {
 		CommonResultInfo<TOrderInfoEntity> result = new CommonResultInfo<TOrderInfoEntity>();
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),torderInfoEntity.getLanguageFlag());
 		try {
 			torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 			PageHelper.startPage(pageNumber, pageSize);
@@ -226,7 +228,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 		CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),torderInfoEntity.getLanguageFlag());
 		try {
 			torderInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 			torderInfoEntity.setId(CommonSqlUtils.getUUID32());
@@ -311,7 +313,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	}
 	
 	@Override
-	public CommonResultInfo<?> generateOrderDetailInfo(CommonEntity commonEntity, Authentication auth) {
+	public CommonResultInfo<?> generateOrderDetailInfo(CommonEntity commonEntity, Authentication auth,String lang) {
 		CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		try {
@@ -320,7 +322,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			List<TOrderInfoEntity> orderInfoList = torderInfoDao.selectByIds(commonEntity.getIdsStr());
 			String[] orderCodes = new String[orderInfoList.size()];
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
 			int count = 0;
 			for(TOrderInfoEntity torderInfo:orderInfoList) {
 				orderCodes[count] = torderInfo.getOrderCode();
@@ -330,6 +332,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				// 订单型号+物料号判定详细信息中是否存在
 				mmaterialInfoParam.setMaterialOrderCode(torderInfo.getOrderCode());
 				mmaterialInfoParam.setDataRoleAt(roleInfoEntity.getRoleAt());
+				mmaterialInfoParam.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 				List<MMaterialInfoEntity> materilInfoLst = mmaterialInfoDao.selectByPrimaryKey(mmaterialInfoParam);
 				if(materilInfoLst.size() == 0) {
 					// 不存在：提示【当前订单型号无物料BOM信息，请确认数据。】
@@ -490,6 +493,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 										// 物料剩余数量
 										orderDetailParam.setSurplusAmount(BigDecimal.ZERO);
 										TStockInfoEntity stockParam = new TStockInfoEntity();
+										stockParam.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 										stockParam.setMaterialCode(materialInfo.getMaterialCode());
 										// 库存数量
 										List<TStockInfoEntity> stockAmount = tstockInfoDao.selectByPrimaryKey(stockParam);
@@ -647,6 +651,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 								// 库存数量
 								TStockInfoEntity stockParam = new TStockInfoEntity();
 								stockParam.setMaterialCode(materialInfo.getMaterialCode());
+								stockParam.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 								List<TStockInfoEntity> stockAmount = tstockInfoDao.selectByPrimaryKey(stockParam);
 								if(stockAmount.size() > 0) {
 									orderDetailParam.setStockAmount(stockAmount.get(0).getStockAmount());
@@ -769,7 +774,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	private List<TOrderInfoEntity> resolvExcelToDb(MultipartFile excleFile,Authentication auth,int type,int isBalance) throws ParseException,NullPointerException,Exception{
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
 			List<TOrderInfoEntity> insertResultLst = new ArrayList<TOrderInfoEntity>();
 			
 			File file = CommonPoiReadUtil.MultipartFileToFile(excleFile);

@@ -38,7 +38,7 @@ public class MaterialQuotaServiceImpl implements MaterialQuotaService{
 		CommonResultInfo<TMaterialQuotaEntity> result = new CommonResultInfo<TMaterialQuotaEntity>();
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),materialQuotaEntity.getLanguageFlag());
 			materialQuotaEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 			List<TMaterialQuotaEntity> pageInfo = tmaterialQuotaDao.selectByPrimaryKey(materialQuotaEntity);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
@@ -66,7 +66,7 @@ public class MaterialQuotaServiceImpl implements MaterialQuotaService{
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),materialQuotaEntity.getLanguageFlag());
 			TMaterialQuotaEntity param = new TMaterialQuotaEntity();
 			param.setMaterialCode(materialQuotaEntity.getMaterialCode());
 			param.setSupplierCode(materialQuotaEntity.getSupplierCode());

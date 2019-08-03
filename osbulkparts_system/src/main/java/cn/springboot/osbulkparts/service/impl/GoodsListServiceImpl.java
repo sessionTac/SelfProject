@@ -1,5 +1,6 @@
 package cn.springboot.osbulkparts.service.impl;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import cn.springboot.osbulkparts.dao.system.TDictDataDao;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
 import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
@@ -44,11 +45,12 @@ public class GoodsListServiceImpl implements GoodsListService {
 
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews() {
+    public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang) {
         CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
         try {
             Map<String,List<TDictDataEntity>> map = new HashMap<>();
             TDictDataEntity tDictDataEntity = new TDictDataEntity();
+            tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
             tDictDataEntity.setDictTypeCode("goodsStatus");
             map.put("goodsStatus",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 
@@ -67,7 +69,7 @@ public class GoodsListServiceImpl implements GoodsListService {
     public CommonResultInfo<?> getGoodsList(TDeliverInfoEntity tDeliverInfoEntity, int pageNumber, int pageSize, Authentication auth) {
         CommonResultInfo<TDeliverInfoEntity> result = new CommonResultInfo<TDeliverInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),tDeliverInfoEntity.getLanguageFlag());
         try {
             tDeliverInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
             PageHelper.startPage(pageNumber, pageSize);

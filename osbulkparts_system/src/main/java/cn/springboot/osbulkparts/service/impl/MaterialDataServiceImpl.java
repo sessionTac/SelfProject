@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFCellStyle;
 import org.apache.poi.hssf.usermodel.HSSFDataFormat;
@@ -83,12 +84,13 @@ public class MaterialDataServiceImpl implements MaterialDataService{
     
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(){
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang){
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
 			TDictDataEntity tDictDataEntity = new TDictDataEntity();
 			tDictDataEntity.setDictTypeCode("currency");
+			tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 			map.put("currencys",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			
 			tDictDataEntity.setDictTypeCode("mattertype");
@@ -187,7 +189,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			MMaterialInfoEntity materialInfoEntity, int pageNumber, int pageSize,Authentication auth) {
 		CommonResultInfo<MMaterialInfoEntity> result = new CommonResultInfo<MMaterialInfoEntity>();
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),materialInfoEntity.getLanguageFlag());
 		try {
 			if(principal.getUserType()==4) {
 				materialInfoEntity.setFactoryCode(principal.getUserName());
@@ -239,7 +241,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),materialInfoEntity.getLanguageFlag());
 			if(isExist(materialInfoEntity.getMaterialOrderCode(),materialInfoEntity.getMaterialCode(),roleInfoEntity.getRoleAt())) {
 				materialInfoEntity.setVersion(version +1);
 			}else {
@@ -363,7 +365,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
 			int returnInt = mmaterialInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName());
 			if (returnInt > 0) {
 				for(int i =0;i<commonEntity.getIdsStr().length;i++) {
@@ -577,7 +579,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	private Map<String,Object> resolvExcelToDb(MultipartFile excleFile,Authentication auth) throws NullPointerException,Exception{
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
 			List<MMaterialInfoEntity> insertResultLst = new ArrayList<MMaterialInfoEntity>();
 			List<MMaterialInfoEntity> updateResultLst = new ArrayList<MMaterialInfoEntity>();
 			List<TMaterialQuotaEntity> quotaInsertResultLst = new ArrayList<TMaterialQuotaEntity>();

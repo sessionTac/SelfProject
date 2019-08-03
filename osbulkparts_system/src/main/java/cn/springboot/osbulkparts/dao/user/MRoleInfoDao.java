@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.dao.user;
 
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 

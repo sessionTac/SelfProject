@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.http.HttpStatus;
@@ -79,10 +80,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<MUserInfoEntity> getUserInfo(String userId) {
+	public CommonResultInfo<MUserInfoEntity> getUserInfo(String userId, String lang) {
 		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
 		try {
-			MUserInfoEntity userInfo = muserInfoDao.selectUserInfo(userId);
+			MUserInfoEntity userInfo = muserInfoDao.selectUserInfo(userId,OSLanguage.localeToTableSuffix(lang));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(userInfo);
 		} catch (Exception e) {
@@ -97,12 +98,13 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions() {
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions(String lang) {
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
 			TDictDataEntity tDictDataEntity = new TDictDataEntity();
 			tDictDataEntity.setDictTypeCode("usertype");
+			tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 			map.put("userType",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			tDictDataEntity.setDictTypeCode("userstatus");
 			map.put("userStatus",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
@@ -119,10 +121,10 @@ public class UserInfoServiceImpl implements UserInfoService {
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth){
+	public CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth,String lang){
 		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
 		try {
-			MUserInfoEntity userInfo = muserInfoDao.selectUserWithRoleAndFunc(userName, roleId);
+			MUserInfoEntity userInfo = muserInfoDao.selectUserWithRoleAndFunc(userName, roleId,OSLanguage.localeToTableSuffix(lang));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(userInfo);
 		} catch (Exception e) {

@@ -39,10 +39,7 @@ public class UserInfoController {
 			MUserInfoEntity muserInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="50") int pageSize,@RequestHeader String lang){
-<<<<<<< Updated upstream
-=======
 		muserInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
->>>>>>> Stashed changes
 		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfoList(muserInfoEntity,pageNum,pageSize);
 		return result;
 	}
