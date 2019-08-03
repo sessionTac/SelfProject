@@ -105,10 +105,6 @@ public class TPriceFileServiceImpl implements TPriceFileService
 		CommonResultInfo<TPriceFileEntity> result = new CommonResultInfo<TPriceFileEntity>();
 		try {
 			List<TPriceFileEntity> pageInfo = tfileDao.selectByMaterialCode(fileEntity);
-			for(TPriceFileEntity tpriceFile:pageInfo) {
-				String fileWholeName = tpriceFile.getFilePath()+"\\"+tpriceFile.getFileName();
-				tpriceFile.setFileName(fileWholeName);
-			}
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResultList(pageInfo);
 		} catch (Exception e) {
