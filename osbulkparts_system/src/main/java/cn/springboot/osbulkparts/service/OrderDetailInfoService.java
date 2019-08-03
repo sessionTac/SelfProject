@@ -16,7 +16,7 @@ import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
 
 public interface OrderDetailInfoService {
 
-    CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews();
+    CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang);
 
     CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity, int pageNumber, int pageSize, Authentication auth);
 
@@ -34,7 +34,7 @@ public interface OrderDetailInfoService {
     /**
      * 根据物料号找到物料的所有信息
      */
-    CommonResultInfo<MMaterialInfoEntity> getMaterialInfoByMaterialCode(String materialCode,Authentication auth);
+    CommonResultInfo<MMaterialInfoEntity> getMaterialInfoByMaterialCode(String materialCode,Authentication auth,String lang);
 
     /**
      * 校验订单号和物料号是否存在
@@ -52,9 +52,9 @@ public interface OrderDetailInfoService {
     CommonResultInfo<?> selectDeliveryInfo(CommonEntity commonEntity);
     
     @Transactional
-    CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth);
+    CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth,String lang);
 
-    CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit();
+    CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit(String lang);
     
     ResponseEntity<byte[]> downloadExcel(TOrderDetailInfoEntity tOrderDetailInfoEntity);
 }

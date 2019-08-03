@@ -309,5 +309,7 @@ public class MMaterialInfoEntity implements Serializable {
 	*/
 	private TDictDataEntity dictMaterialSupplyMode;
 
+    private String languageFlag;
+
     private static final long serialVersionUID = 1L;
 }

@@ -3,6 +3,7 @@ package cn.springboot.osbulkparts.controller.basedata;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -25,8 +26,8 @@ public class SupplierInfoController {
 	
 	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
 	@GetMapping("/init")
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(){
-		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = supplierInfoService.initViews();
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(@RequestHeader String lang){
+		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = supplierInfoService.initViews(lang);
 		return result;
 	}
 	
@@ -40,7 +41,8 @@ public class SupplierInfoController {
 	public CommonResultInfo<MSupplierInfoEntity> getSupplierList(
 			MSupplierInfoEntity msupplierInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
-            @RequestParam(defaultValue="50") int pageSize){
+            @RequestParam(defaultValue="50") int pageSize,@RequestHeader String lang){
+		msupplierInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 		CommonResultInfo<MSupplierInfoEntity> result = supplierInfoService.getSupplierInfoList(msupplierInfoEntity, pageNum, pageSize);
 		return result;
 	}
@@ -79,7 +81,7 @@ public class SupplierInfoController {
 	@ApiOperation(value="获取供应商信息", notes="根据查询供应商的列表")
 	@ApiImplicitParam(name = "supplierId", value = "供应商ID", required = true, dataType = "String", paramType = "path")
 	@GetMapping("/getSupplierInfo/{supplierId}")
-	public CommonResultInfo<MSupplierInfoEntity> getSupplierInfo(@PathVariable String supplierId){
+	public CommonResultInfo<MSupplierInfoEntity> getSupplierInfo(@PathVariable String supplierId,@RequestHeader String lang){
 		CommonResultInfo<MSupplierInfoEntity> result = supplierInfoService.getSupplierInfo(supplierId);
 		return result;
 	}

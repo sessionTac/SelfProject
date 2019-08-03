@@ -1,7 +1,7 @@
 <template>
     <div style="display: flex;flex-direction: column;height: 100%">
         <div class="el-header">
-            {{language}}{{$t('route.ceshi') }}
+            <!--{{language}}{{$t('route.ceshi') }}-->
             <el-form :inline="true" class="search-form search-form-normal" size="mini" ref="searchForm" :model="search_keys">
                 <el-form-item :label="$t('searchFrom.userName')">
                     <el-input :placeholder="$t('searchFrom.userName')" v-model="search_keys.userName" class="search-form-item-input"></el-input>
@@ -121,6 +121,7 @@
         watch:{
             language(val,val1){
                 // alert(val+val1)
+                this.exec_search({search_keys:this.search_keys, pageNum:1});
             }
         },
         methods: {

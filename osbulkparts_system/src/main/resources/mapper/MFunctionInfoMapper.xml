@@ -226,7 +226,7 @@
     where function_id = #{functionId,jdbcType=VARCHAR}
   </update>
   <!-- 查询树结构 -->
-  <select  id="selectTree" resultMap="BaseResultMap" >
+  <select  id="selectTree" resultMap="BaseResultMap" parameterType="java.lang.String">
      SELECT
       f.function_id,
       f.parent_id,
@@ -235,7 +235,7 @@
       f.function_desc,
       f.priority,
       f.menu_id
-     FROM m_function_info as f
+     FROM m_function_info_${lang} as f
      WHERE f.is_delete = 0
      order by priority asc
   </select>

@@ -137,7 +137,7 @@
           ],
           stockAmount: [
 
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,3}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
 
 

@@ -189,7 +189,11 @@
             <el-table-column prop="materialRelation" align="center" :label="$t('pageTable.MatterConversionRelationship')"  />
             <el-table-column prop="dictMaterialRelationUnit.name" align="center" :label="$t('pageTable.MatterConvertedUnit')"  />
             <el-table-column prop="materialMinpackageAmt" align="center" :label="$t('pageTable.MatterMinimumPackingNumber')"  />
-            <el-table-column prop="materialVatPrice" align="center" :formatter="price" :label="$t('pageTable.MatterUnitPriceWithTax')"  />
+            <el-table-column align="center" :formatter="price" :label="$t('pageTable.MatterUnitPriceWithTax')"  >
+                <template slot-scope="scope">
+                    <a :disabled="subject.hasPermissions('*')" style="text-decoration: underline;" @click="toPriceRecord(scope.row.materialCode,scope.row.supplierCode)">{{scope.row.materialVatPrice}}</a>
+                </template>
+            </el-table-column>
             <el-table-column prop="materialTaxPrice" align="center" :formatter="price" :label="$t('pageTable.MatterUntaxedUnitPrice')"  />
             <el-table-column prop="tax" align="center" :formatter="price" :label="$t('pageTable.MatterTaxRate')"  />
             <el-table-column prop="materialLossRate" align="center" :formatter="price" :label="$t('pageTable.MatterLossRate')"  />
@@ -197,7 +201,7 @@
             <el-table-column prop="hsNo" align="center" :label="$t('pageTable.MatterHSCustomsNumber')"  />
             <el-table-column prop="supplierCode" align="center" :label="$t('pageTable.MatterSupplierCode')"  />
             <el-table-column prop="materialQuota.materialQuota" :formatter="price" align="center"  :label="$t('pageTable.MatterQuota')"  />
-<!--	          <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />-->
+<!--	        <el-table-column prop="dictMinpackageType.name" align="center" label="最小包装类型"  />-->
 <!--            <el-table-column prop="materialPrice" align="center" :formatter="price" label="单价"  />-->
 <!--            <el-table-column prop="factoryCode" align="center" label="代理商"  />-->
             <el-table-column prop="length" align="center" :label="$t('pageTable.MatterLong')"  />
@@ -231,6 +235,7 @@
         </el-table>
         <edit-matter v-bind.sync="link_modal_state" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state.activated"></edit-matter>
         <edit-matter-quota v-bind.sync="link_modal_state_quota"  v-if="link_modal_state_quota.activated"></edit-matter-quota>
+        <price-recode v-bind.sync="link_modal_state_price_record"  v-if="link_modal_state_price_record.activated"></price-recode>
         <!--分页-->
         <div style="text-align: center">
             <el-pagination @current-change="exec_search({pageNum:$event})"
@@ -253,8 +258,10 @@
     import ui_config from '@/config/ui_config'
     import ImportButton from '@/components/data-import/ImportButton'
     import EditMatterQuota from './EditMatterQuota'
+    import PriceRecode from './PriceRecode'
     import EditMatter from './EditMatter'
     import {downloadBlobResponse} from '@/utils/request_utils'
+    import { mapGetters,mapState } from 'vuex'
 
     export default {
         data() {
@@ -262,6 +269,7 @@
                 PAGE_SIZES : ui_config.PAGE_SIZES,
                 link_modal_state      : {},
                 link_modal_state_quota:{},
+                link_modal_state_price_record:{},
                 //单位下拉框数据
                 is_searching : true,
                 materialCategorys:[],
@@ -294,9 +302,9 @@
                 idsStr:[],
             };
         },
-        components:{ImportButton,EditMatter,EditMatterQuota},
-        mounted() {
-            this.init();
+        components:{ImportButton,EditMatter,EditMatterQuota,PriceRecode},
+        async mounted() {
+            await this.init();
             this.exec_search({search_keys:this.search_keys, pageNum:1});
         },
         computed:{
@@ -309,9 +317,22 @@
                 return (this.multipleSelection.some(item=>{
                     return item.isLocked===0
                 }) || (this.multipleSelection.length===0))
+            },
+            ...mapState({
+                language:state=>state.app.language
+            }),
+        },
+        watch:{
+            async language(val,val1){
+                // alert(val+val1)
+                await this.init();
+                this.exec_search({search_keys:this.search_keys, pageNum:1});
             }
         },
         methods: {
+            toPriceRecord(materialCode,supplierCode){
+                this.link_modal_state_price_record={activated:true,materialCode:materialCode,supplierCode:supplierCode};
+            },
             formatVer: function (row, column) {
                 return "V"+ row.version
             },
@@ -341,7 +362,7 @@
             },
             price(row, column, cellValue, index){
                 if (cellValue) {
-                    return cellValue.toFixed(2)
+                    return cellValue.toFixed(6)
                 }else {
                     return ""
                 }

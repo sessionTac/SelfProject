@@ -327,5 +327,7 @@ public class TOrderDetailInfoEntity implements Serializable {
      */
     private MSupplierInfoEntity mSupplierInfoEntity;
 
+    private String languageFlag;
+
     private static final long serialVersionUID = 1L;
 }

@@ -26,7 +26,7 @@ public interface MRoleInfoDao {
     /**
      * 根据 roleid 来查找一条数据的详细信息
      */
-    MRoleInfoEntity selectRoleInfo(String roleId);
+    MRoleInfoEntity selectRoleInfo(@Param("roleId") String roleId,@Param("lang") String lang);
     /**
      * 校验角色名是否重复
      */

@@ -68,5 +68,7 @@ public class MRoleInfoEntity implements Serializable {
      */
     private TDictDataEntity dictRoleAt;
 
+    private String languageFlag;
+
     private static final long serialVersionUID = 1L;
 }

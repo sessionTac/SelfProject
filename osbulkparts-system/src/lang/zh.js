@@ -161,7 +161,10 @@ export default {
     MatterRemark:"备注",
     MatterVersion:"版本",
     MatterLock:"是否锁定",
-    portrait:"头像",
+    portrait:"上传价格附件",
+    PriceRecord:"价格记录",
+    img:"图片",
+    QuotaMaintenance:"配额维护",
 
     //供应商信息
     SupplierCode:"供应商编码",
@@ -247,7 +250,8 @@ export default {
     lentghGT100:"长度不超过100个字符",
     lentghGT200:"长度不超过200个字符",
     formatNames:"请输入英文数字下划线",
-    floatCheck:"请输入数字且最多保留2位",
+    floatCheck:"请输入数字且最多保留3位",
+    floatPriceCheck:"请输入数字且最多保留6位",
     numberCheck:"请输入数字",
     //用户信息
     password:"请输入密码",

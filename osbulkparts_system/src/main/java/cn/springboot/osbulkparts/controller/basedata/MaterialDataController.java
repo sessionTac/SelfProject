@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -23,11 +24,11 @@ import cn.springboot.osbulkparts.common.CommonResultInfo;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
-import cn.springboot.osbulkparts.entity.TFileEntity;
 import cn.springboot.osbulkparts.entity.TMaterialQuotaEntity;
+import cn.springboot.osbulkparts.entity.TPriceFileEntity;
 import cn.springboot.osbulkparts.service.MaterialDataService;
 import cn.springboot.osbulkparts.service.MaterialQuotaService;
-import cn.springboot.osbulkparts.service.TFileService;
+import cn.springboot.osbulkparts.service.TPriceFileService;
 import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.annotations.ApiOperation;
@@ -43,12 +44,12 @@ public class MaterialDataController {
 	@Autowired
 	private MaterialQuotaService materialQuotaService;
 	@Autowired
-	private TFileService tfileService;
+	private TPriceFileService tfileService;
 	
 	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
 	@GetMapping("/init")
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(){
-		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = materialDataService.initViews();
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(@RequestHeader String lang){
+		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = materialDataService.initViews(lang);
 		return result;
 	}
 	
@@ -63,7 +64,8 @@ public class MaterialDataController {
 			MMaterialInfoEntity mmaterialInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="50") int pageSize,
-			HttpServletRequest request, Authentication auth){
+			HttpServletRequest request, Authentication auth,@RequestHeader String lang){
+		mmaterialInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfoList(mmaterialInfoEntity, pageNum, pageSize,auth);
 		return result;
 	}
@@ -71,7 +73,8 @@ public class MaterialDataController {
 	@ApiOperation(value="获取物料数据信息", notes="根据条件查询物料数据的详细数据")
 	@ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
 	@GetMapping("/getMaterialInfo")
-	public CommonResultInfo<MMaterialInfoEntity> getMaterialInfo(MMaterialInfoEntity mmaterialInfoEntity){
+	public CommonResultInfo<MMaterialInfoEntity> getMaterialInfo(MMaterialInfoEntity mmaterialInfoEntity,@RequestHeader String lang){
+		mmaterialInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfo(mmaterialInfoEntity);
 		return result;
 	}
@@ -128,7 +131,8 @@ public class MaterialDataController {
 	@ApiOperation(value="物料数据导出", notes="物料数据导出")
 	@ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/exportData")
-	public Object downExcel(@RequestBody MMaterialInfoEntity mmaterialInfoEntity) {
+	public Object downExcel(@RequestBody MMaterialInfoEntity mmaterialInfoEntity,@RequestHeader String lang) {
+		mmaterialInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 		ResponseEntity<byte[]> response = materialDataService.downloadExcel(mmaterialInfoEntity);
 		return response;
 	}
@@ -168,14 +172,25 @@ public class MaterialDataController {
 		return result;
 	}
 
+	@ApiOperation(value="物料单价列表查询", notes="根据物料信息查询该物料的所有单价及图片")
+	@ApiImplicitParams({
+			@ApiImplicitParam(name = "tMaterialQuotaEntity", value = "配额实体对象", required = true, dataType = "body", paramType = "body"),
+	})
+	@GetMapping("/findMaterialPriceAndFile")
+	public CommonResultInfo<TPriceFileEntity> findPriceAndFile(TPriceFileEntity tpriceFileEntity,
+			HttpServletRequest request, Authentication auth){
+//		CommonResultInfo<TPriceFileEntity> result = tfileService.getMaterialPriceAndFile(tpriceFileEntity, auth);
+//		return result;
+		return null;
+	}
+	
 	@ApiOperation(value="附件数据设定", notes="附件数据设定")
 	@ApiImplicitParam(name = "imgFile", value = "物料附件文件", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/setEnclosure")
-	public CommonResultInfo<?> setEnclosure(TFileEntity fileEntity,
+	public CommonResultInfo<?> setEnclosure(TPriceFileEntity fileEntity,
 			@RequestParam("file") MultipartFile imgFile,HttpServletRequest request,Authentication auth) {
-		CommonResultInfo<?> result = tfileService.uploadFileToFtp(fileEntity, imgFile, auth);
+		CommonResultInfo<?> result = tfileService.upInsertPrice(fileEntity, imgFile, auth);
 		return result;
-//		return null;
 	}
 
 	@ApiOperation(value="附件数据读取", notes="附件数据读取")

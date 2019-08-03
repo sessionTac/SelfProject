@@ -141,8 +141,15 @@
         is_searching : false,
       }
     },
-    mounted() {
-      this.init();
+    watch:{
+      async language(val,val1){
+        // alert(val+val1)
+        await this.init();
+        this.exec_search({search_keys:this.search_keys, pageNum:1});
+      }
+    },
+    async mounted() {
+      await this.init();
       this.exec_search({search_keys: this.search_keys, pageNum: 1});
     },
     methods: {

@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.controller.warehouse;
 
 import javax.servlet.http.HttpServletRequest;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -34,8 +35,8 @@ public class OrderInfoController {
 
     @ApiOperation(value="页面初始化", notes="获取页面初始化数据")
     @GetMapping("/init")
-    public Object initViews(){
-        return orderInfoService.initViews();
+    public Object initViews(@RequestHeader String lang){
+        return orderInfoService.initViews(lang);
     }
 
     @ApiOperation(value="获取订单计划列表信息", notes="查询所有订单计划的列表")
@@ -49,14 +50,16 @@ public class OrderInfoController {
             TOrderInfoEntity tOrderInfoEntity,
             @RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="50") int pageSize,
-            HttpServletRequest request, Authentication auth){
+            HttpServletRequest request, Authentication auth,@RequestHeader String lang){
+        tOrderInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
         return orderInfoService.selectOrderInfoList(tOrderInfoEntity,pageNum,pageSize,auth);
     }
 
     @ApiOperation(value="获取订单计划信息", notes="根据条件查询订单计划的详细数据")
     @ApiImplicitParam(name = "tOrderInfoEntity", value = "订单计划实体对象", required = true, dataType = "body", paramType = "body")
     @GetMapping("/getOrderInfo")
-    public CommonResultInfo<TOrderInfoEntity> getOrderInfo(TOrderInfoEntity tOrderInfoEntity){
+    public CommonResultInfo<TOrderInfoEntity> getOrderInfo(TOrderInfoEntity tOrderInfoEntity,@RequestHeader String lang){
+        tOrderInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
         return orderInfoService.selectOrderInfo(tOrderInfoEntity);
     }
 
@@ -93,8 +96,8 @@ public class OrderInfoController {
     @ApiOperation(value="生成订单", notes="生成订单")
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/generate")
-    public CommonResultInfo<?> generateInfo(@RequestBody CommonEntity commonEntity, Authentication auth){
-        return orderInfoService.generateOrderDetailInfo(commonEntity,auth);
+    public CommonResultInfo<?> generateInfo(@RequestBody CommonEntity commonEntity, Authentication auth,@RequestHeader String lang){
+        return orderInfoService.generateOrderDetailInfo(commonEntity,auth,lang);
     }
 
     @ApiOperation(value="订单计划数据", notes="删除订单计划")
@@ -107,7 +110,8 @@ public class OrderInfoController {
     @ApiOperation(value="订单计划导出", notes="订单计划导出")
     @ApiImplicitParam(name = "mOrderInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/exportData")
-    public Object downExcel(@RequestBody TOrderInfoEntity tOrderInfoEntity) {
+    public Object downExcel(@RequestBody TOrderInfoEntity tOrderInfoEntity,@RequestHeader String lang) {
+        tOrderInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
         return orderInfoService.downloadExcel(tOrderInfoEntity);
     }
 }

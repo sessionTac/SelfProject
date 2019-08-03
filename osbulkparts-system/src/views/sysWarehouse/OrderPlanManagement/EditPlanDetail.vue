@@ -46,7 +46,7 @@
                   size="mini"
                   v-for="item in orderUnits"
                   :key="item.value"
-                  ::label="item.name"
+                  :label="item.name"
                   :value="item.value">
                 </el-option>
               </el-select>
@@ -113,7 +113,7 @@
                   size="mini"
                   v-for="item in materialUnit"
                   :key="item.value"
-                  ::label="item.name"
+                  :label="item.name"
                   :value="item.value">
                 </el-option>
               </el-select>
@@ -135,7 +135,7 @@
                   size="mini"
                   v-for="item in materialCategory"
                   :key="item.value"
-                  ::label="item.name"
+                  :label="item.name"
                   :value="item.value">
                 </el-option>
               </el-select>
@@ -157,7 +157,7 @@
                   size="mini"
                   v-for="item in materialRelationUnit"
                   :key="item.value"
-                  ::label="item.name"
+                  :label="item.name"
                   :value="item.value">
                 </el-option>
               </el-select>
@@ -179,7 +179,7 @@
 <!--                  size="mini"-->
 <!--                  v-for="item in materialMinpackageType"-->
 <!--                  :key="item.value"-->
-<!--                  ::label="item.name"-->
+<!--                  :label="item.name"-->
 <!--                  :value="item.value">-->
 <!--                </el-option>-->
 <!--              </el-select>-->
@@ -250,7 +250,7 @@
                   size="mini"
                   v-for="item in materialCurrency"
                   :key="item.value"
-                  ::label="item.name"
+                  :label="item.name"
                   :value="item.value">
                 </el-option>
               </el-select>
@@ -265,7 +265,7 @@
                   size="mini"
                   v-for="item in countryCode"
                   :key="item.value"
-                  ::label="item.name"
+                  :label="item.name"
                   :value="item.value">
                 </el-option>
               </el-select>
@@ -280,7 +280,7 @@
                   size="mini"
                   v-for="item in confirmStatus"
                   :key="item.value"
-                  ::label="item.name"
+                  :label="item.name"
                   :value="item.value">
                 </el-option>
               </el-select>
@@ -295,7 +295,7 @@
                         size="mini"
                         v-for="item in orderDetailType"
                         :key="item.value"
-                        ::label="item.name"
+                        :label="item.name"
                         :value="item.value">
                 </el-option>
               </el-select>
@@ -468,7 +468,7 @@
           orderAmount: [
             // {required: true, message: '请填写$t('pageTable.OrderInfoOrderAmount')', trigger: 'blur'},
             // {pattern: /^[0-9]*$/ , trigger: 'blur', message: '请输入数字',}
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,3}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           // orderDate:[
           //   {required: true, message: '请填写$t('pageTable.OrderInfoOrderDate')', trigger: 'blur'},
@@ -503,7 +503,7 @@
           ],
           materialAmount: [
             {required: true, message: this.$t('Tips.checkMaterialAmount'), trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,3}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialCategory: [
             {required: true, message: this.$t('Tips.checkMaterialCategory'), trigger: 'change'}
@@ -515,36 +515,36 @@
 
           ],
           materialRelationQuantity: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatPriceCheck'),}
           ],
           materialMinpackageType: [
 
           ],
           materialMinpackageAmt: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,3}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialMinpackageTotalamt: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,3}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialTaxPrice: [
             {required: true, message: this.$t('Tips.checkMaterialTaxPrice'), trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatPriceCheck'),}
           ],
           materialTaxTotalprice: [
             {required: true, message:  this.$t('Tips.checkMaterialTaxTotalprice'), trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatPriceCheck'),}
           ],
           materialVatPrice: [
             {required: true, message: this.$t('Tips.checkMaterialVatPrice'), trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatPriceCheck'),}
           ],
           materialVatTotalprice: [
             {required: true, message: this.$t('Tips.checkMaterialVatTotalprice'), trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatPriceCheck'),}
           ],
           materialRate: [
             {required: true, message: this.$t('Tips.checkMaterialRate'), trigger: 'blur'},
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatPriceCheck'),}
           ],
           materialCurrency: [
             {required: true, message: this.$t('Tips.checkMaterialCurrency'), trigger: 'change'}
@@ -577,10 +577,10 @@
           //   {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           // ],
           deliveryAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,3}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           surplusAmount: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,3}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
 
 

@@ -127,6 +127,7 @@ public class TDeliverInfoEntity implements Serializable {
      * 版本
      */
     private Integer version;
+    private String languageFlag;
 
     private static final long serialVersionUID = 1L;
 }

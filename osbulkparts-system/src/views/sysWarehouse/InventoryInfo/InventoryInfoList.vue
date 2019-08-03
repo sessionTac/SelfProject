@@ -156,6 +156,7 @@
     import ImportButton from '@/components/data-import/ImportButton'
     import EditInventoryInfo from './EditInventoryInfo'
     import {downloadBlobResponse} from '@/utils/request_utils'
+    import { mapGetters,mapState } from 'vuex'
 
     export default {
         data() {
@@ -187,12 +188,21 @@
             };
         },
         components:{ImportButton,EditInventoryInfo},
-        mounted() {
-            this.init();
+        async mounted() {
+            await this.init();
             this.exec_search({search_keys:this.search_keys, pageNum:1});
         },
         computed:{
-
+            ...mapState({
+                language:state=>state.app.language
+            }),
+        },
+        watch:{
+            async language(val,val1){
+                // alert(val+val1)
+                await this.init();
+                this.exec_search({search_keys:this.search_keys, pageNum:1});
+            }
         },
         methods: {
             reset(){

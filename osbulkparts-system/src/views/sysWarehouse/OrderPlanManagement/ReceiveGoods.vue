@@ -48,7 +48,7 @@
           <el-table-column prop="materialCode" width="120" :show-overflow-tooltip="true" align="center" :label="$t('pageTable.MatterMaterialSpecificNumber')"  />
           <el-table-column prop="materialAmount" :label="$t('pageTable.UnitConsumptionQuantity')" width="100">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.materialAmount"></el-input>
+              <el-input v-model="scope.row.materialAmount" @blur="checkPrice(scope.row.materialAmount)"></el-input>
             </template>
           </el-table-column>
           <el-table-column prop="supperAmountQut.supperAmount" :label="$t('pageTable.supperAmount')" width="120"/>
@@ -125,6 +125,12 @@
           console.error(err);
         })
       },
+        checkPrice(amount){
+          let pattern = /^([0-9]*)+\.{0,1}[0-9]{1,3}$/;
+          if(!pattern.test(amount)){
+              this.$notify({message: this.$t('Tips.floatCheck'), type: "error"});
+          }
+        },
       cancel() {
         this.dialogFormVisible = false
       },

@@ -141,6 +141,7 @@ public class TOrderInfoEntity implements Serializable {
      * 订单类型
      */
     private TDictDataEntity dictOrderType;
+    private String languageFlag;
 
     private static final long serialVersionUID = 1L;
 }

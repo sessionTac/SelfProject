@@ -92,5 +92,7 @@ public class MUserInfoEntity implements Serializable {
      */
 	private List<MRoleInfoEntity> roleList = new ArrayList<MRoleInfoEntity>();
 
+    private String languageFlag;
+
     private static final long serialVersionUID = 1L;
 }

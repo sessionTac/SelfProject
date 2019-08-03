@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -11,10 +12,13 @@ import java.util.stream.Collectors;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -421,6 +425,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);  
 			style.setFillForegroundColor(IndexedColors.RED.getIndex());     
 			CellStyle textStyle = workbook.createCellStyle();
+            HSSFCellStyle numstyle = workbook.createCellStyle();
+            numstyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.000000"));
 			DataFormat format = workbook.createDataFormat();
 			textStyle.setDataFormat(format.getFormat("@"));
 			//设置单元格的值  
@@ -433,8 +439,6 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				row.createCell(1).setCellValue(example.getMaterialOrderCodeDesc());
 				//物料专用号
 				row.createCell(2).setCellValue(example.getMaterialCode());
-//				//物料CKD号
-//				row.createCell(3).setCellValue(example.getMaterialCkdCode());
 				//渠道
 				row.createCell(3).setCellValue(example.getDictMaterialCategory().getName());
 				//物料中文描述
@@ -444,7 +448,13 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				//物料俄文描述
 				row.createCell(6).setCellValue(example.getMaterialDescRn());
 				//单耗
-				row.createCell(7).setCellValue(example.getMaterialAmount()!=null?example.getMaterialAmount().toString():"");
+				if(example.getMaterialAmount()!=null) {
+					row.createCell(7).setCellStyle(numstyle);
+					row.createCell(7).setCellType(CellType.NUMERIC);
+					row.createCell(7).setCellValue(Double.parseDouble(example.getMaterialAmount().toString()));
+				}else {
+					row.createCell(7).setCellValue("");
+				}
 				//单位
 				row.createCell(8).setCellValue(example.getDictMaterialUnit().getName());
 				//币种
@@ -452,39 +462,96 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				//换算关系
 				row.createCell(10).setCellValue(example.getMaterialRelation());
 				//换算后单位
-				row.createCell(11).setCellValue(example.getDictMaterialRelationUnit().getName());
+				if(example.getDictMaterialRelationUnit()!=null) {
+					row.createCell(11).setCellValue(example.getDictMaterialRelationUnit().getName());
+				}else {
+					row.createCell(11).setCellValue("");
+				}
 				//含税单价
-				row.createCell(12).setCellValue(
-						example.getMaterialTaxPrice() != null?example.getMaterialVatPrice().toString():"");
+				if(example.getMaterialTaxPrice()!=null) {
+					row.createCell(12).setCellStyle(numstyle);
+					row.createCell(12).setCellType(CellType.NUMERIC);
+					row.createCell(12).setCellValue(Double.parseDouble(example.getMaterialTaxPrice().toString()));
+				}else {
+					row.createCell(12).setCellValue("");
+				}
 				//不含税单价
-				row.createCell(13).setCellValue(
-						example.getMaterialVatPrice()!=null?example.getMaterialVatPrice().toString():"");
-				//不含税单价
-				row.createCell(14).setCellValue(
-						example.getTax()!=null?example.getTax().toString():"");
+				if(example.getMaterialVatPrice()!=null) {
+					row.createCell(13).setCellStyle(numstyle);
+					row.createCell(13).setCellType(CellType.NUMERIC);
+					row.createCell(13).setCellValue(Double.parseDouble(example.getMaterialVatPrice().toString()));
+				}else {
+					row.createCell(13).setCellValue("");
+				}
+				//税率
+				if(example.getTax()!=null) {
+					row.createCell(14).setCellStyle(numstyle);
+					row.createCell(14).setCellType(CellType.NUMERIC);
+					row.createCell(14).setCellValue(Double.parseDouble(example.getTax().toString()));
+				}else {
+					row.createCell(14).setCellValue("");
+				}
 				//最小包装数量
-				row.createCell(15).setCellValue(
-						example.getMaterialMinpackageAmt() != null?example.getMaterialMinpackageAmt().toString():"");
+				if(example.getMaterialMinpackageAmt() != null) {
+					row.createCell(15).setCellStyle(numstyle);
+					row.createCell(15).setCellType(CellType.NUMERIC);
+					row.createCell(15).setCellValue(Double.parseDouble(example.getMaterialMinpackageAmt().toString()));
+				}else {
+					row.createCell(15).setCellValue("");
+				}
 				//代理费率
-				row.createCell(16).setCellValue(
-						example.getMaterialRate() != null?example.getMaterialRate().toString():"");
+				if(example.getMaterialRate() != null) {
+					row.createCell(16).setCellStyle(numstyle);
+					row.createCell(16).setCellType(CellType.NUMERIC);
+					row.createCell(16).setCellValue(Double.parseDouble(example.getMaterialRate().toString()));
+				}else {
+					row.createCell(16).setCellValue("");
+				}
 				//HS海关编码
 				row.createCell(17).setCellValue(example.getHsNo());
 				//供应商编码
 				row.createCell(18).setCellValue(example.getSupplierCode());
 				//配额
-				row.createCell(19).setCellValue(example.getMaterialQuota().getMaterialQuota()!=null ?example.getMaterialQuota().getMaterialQuota().toString():"");
+				if(example.getMaterialQuota()!=null && example.getMaterialQuota().getMaterialQuota()!=null) {
+					row.createCell(19).setCellStyle(numstyle);
+					row.createCell(19).setCellType(CellType.NUMERIC);
+					row.createCell(19).setCellValue(Double.parseDouble(example.getMaterialQuota().getMaterialQuota().toString()));	
+				}else {
+					row.createCell(19).setCellValue("");
+				}
 				//损耗
-				row.createCell(20).setCellValue(example.getMaterialLossRate()!=null ?example.getMaterialLossRate().toString():"");
+				if(example.getMaterialLossRate()!=null) {
+					row.createCell(20).setCellStyle(numstyle);
+					row.createCell(20).setCellType(CellType.NUMERIC);
+					row.createCell(20).setCellValue(Double.parseDouble(example.getMaterialLossRate().toString()));
+				}else {
+					row.createCell(20).setCellValue("");
+				}
 				//长
-				row.createCell(21).setCellValue(
-						example.getLength()!=null?example.getLength().toString():"");
+				if(example.getLength()!=null) {
+					row.createCell(21).setCellStyle(numstyle);
+					row.createCell(21).setCellType(CellType.NUMERIC);
+					row.createCell(21).setCellValue(Double.parseDouble(example.getLength().toString()));
+				}else {
+					row.createCell(21).setCellValue("");
+				}
 				//宽
-				row.createCell(22).setCellValue(
-						example.getWidth()!=null?example.getWidth().toString():"");
+				if(example.getWidth()!=null) {
+					row.createCell(22).setCellStyle(numstyle);
+					row.createCell(22).setCellType(CellType.NUMERIC);
+					row.createCell(22).setCellValue(Double.parseDouble(example.getWidth().toString()));
+				}else {
+					row.createCell(22).setCellValue("");
+				}
+
 				//高
-				row.createCell(23).setCellValue(
-						example.getHeight()!=null?example.getHeight().toString():"");
+				if(example.getHeight()!=null) {
+					row.createCell(23).setCellStyle(numstyle);
+					row.createCell(23).setCellType(CellType.NUMERIC);
+					row.createCell(23).setCellValue(Double.parseDouble(example.getHeight().toString()));
+				}else {
+					row.createCell(23).setCellValue("");
+				}
 				// 备注
 				row.createCell(24).setCellValue(example.getUserDefined1());
 

@@ -162,6 +162,9 @@ export default {
     MatterVersion:"Version",
     MatterLock:"Lock",
     portrait:"Head portrait",
+    PriceRecord:"Price record",
+    img:"img",
+    QuotaMaintenance:"QuotaMaintenance",
     //供应商信息
     SupplierCode:"SupplierCode",
     SupplierNameCn:"SupplierNameCn",
@@ -239,6 +242,7 @@ export default {
     lentghGT200:"No more than 200 characters in length",
     formatNames:"Please enter English numeric underscores",
     floatCheck:"Please enter a number and reserve at most 2 digits.",
+    floatPriceCheck:"Please enter a number and reserve at most 6 digits.",
     numberCheck:"please enter a number",
     //用户信息
     password:"Please input a password",

@@ -13,6 +13,14 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
+            <el-form-item :label="$t('pageTable.MatterProductDescription')" prop="materialDescCn">
+              <el-input type="textarea" v-model="form.materialOrderCodeDesc" class="search-form-item-input"
+                        style="width: 160px" size="mini"
+                        clearable></el-input>
+              <template slot="error" slot-scope="scope">
+                <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
+              </template>
+            </el-form-item>
             <el-form-item :label="$t('pageTable.MatterMaterialSpecificNumber')" prop="materialCode">
               <el-input v-model="form.materialCode" class="search-form-item-input" style="width: 160px" size="mini"
                          autocomplete="new-password" clearable></el-input>
@@ -216,8 +224,8 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item :label="$t('pageTable.MatterRemark')" prop="user_defined1">
-              <el-input type="textarea" v-model="form.user_defined1" class="search-form-item-input" style="width: 160px" size="mini"
+            <el-form-item :label="$t('pageTable.MatterRemark')" prop="userDefined1">
+              <el-input type="textarea" v-model="form.userDefined1" class="search-form-item-input" style="width: 160px" size="mini"
                         :maxlength="100"  clearable></el-input>
               <template slot="error" slot-scope="scope">
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
@@ -298,6 +306,8 @@
         materialCategorys: [],
         materialSupplyModes: [],
         form: {
+          materialOrderCode:'',
+          materialOrderCodeDesc:'',
           materialCode: '',
           materialCkdCode: '',
           materialCategory: '',
@@ -324,9 +334,9 @@
           length:"",
           width:"",
           height:"",
+          userDefined1:"",
           dataRoleAt: "",
           isLocked:"",
-          user_defined1:"",
         },
         /**表单的验证*/
         rules: {
@@ -352,24 +362,12 @@
             {required: true, message:  this.$t('Tips.checkMaterialDescCn'), trigger: 'blur'},
             {max: 200, message:  this.$t('Tips.lentghGT200'), trigger: 'blur'},
           ],
-          materialDescEn: [
-            {required: true, message: this.$t('Tips.checkMaterialDescEn'), trigger: 'blur'},
-            {max: 200, message:  this.$t('Tips.lentghGT200'), trigger: 'blur'},
-          ],
-          materialDescRn: [
-            {required: true, message: this.$t('Tips.checkMaterialDescRn'), trigger: 'blur'},
-            {max: 200, message:  this.$t('Tips.lentghGT200'), trigger: 'blur'},
-          ],
-          hsNo: [
-            {required: true, message:this.$t('Tips.checkHSNo'), trigger: 'blur'},
-            {max: 100, message: this.$t('Tips.lentghGT100'), trigger: 'blur'},
-          ],
           supplierCode: [
             {required: true, message: this.$t('Tips.checkSupplierCode'), trigger: 'blur'},
             {max: 50, message:  this.$t('Tips.lentghGT50'), trigger: 'blur'},
           ],
           materialAmount: [
-              {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+              {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,3}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialUnit: [
             {required: true, message: this.$t('Tips.checkMaterialUnit'), trigger: 'change'}
@@ -383,22 +381,22 @@
           materialMinpackageAmt: [
           ],
           materialTaxPrice: [
-            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           // materialVatPrice: [
           //   {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           // ],
           tax: [
-            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialLossRate: [
-            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialPrice: [
-            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialRate: [
-            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/, trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,6}$/, trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           materialCurrency: [
             // {required: true, message: '请选择单位', trigger: 'change'}
@@ -407,13 +405,13 @@
             {max: 32, message: this.$t('Tips.lentghGT32'), trigger: 'blur'},
           ],
           length:[
-            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           wide:[
-            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           height:[
-            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+            {pattern: /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
           ],
           levelBomCode: [
             {pattern: /^[0-9]*$/ , trigger: 'blur', message:  this.$t('Tips.numberCheck'),}
@@ -458,6 +456,7 @@
             let data = {
               materialInfoId: this.id || undefined,
               materialOrderCode: this.form.materialOrderCode || undefined,
+              materialOrderCodeDesc: this.form.materialOrderCodeDesc || undefined,
               materialCode: this.form.materialCode || undefined,
               materialCkdCode: this.form.materialCkdCode || undefined,
               materialCategory: this.form.materialCategory || undefined,
@@ -484,6 +483,7 @@
               length:this.form.length || undefined,
               width:this.form.width  || undefined,
               height:this.form.height || undefined,
+              userDefined1:this.form.userDefined1 || undefined,
               version: this.form.version || undefined,
               dataRoleAt: this.form.dataRoleAt || undefined,
               isLocked: this.form.isLocked,

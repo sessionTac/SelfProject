@@ -17,7 +17,7 @@ import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
 
 public interface OrderInfoService {
 
-	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews();
+	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang);
 	
 	@Transactional
 	CommonResultInfo<?> importExcel(MultipartFile excleFile,HttpServletRequest request,Authentication auth,int type,int isBalance);
@@ -37,7 +37,7 @@ public interface OrderInfoService {
 	CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity,Authentication auth);
 	
 	@Transactional
-	CommonResultInfo<?> generateOrderDetailInfo(CommonEntity commonEntity,Authentication auth);
+	CommonResultInfo<?> generateOrderDetailInfo(CommonEntity commonEntity,Authentication auth,String lang);
 	
 	ResponseEntity<byte[]> downloadExcel(TOrderInfoEntity torderInfoEntity);
 }

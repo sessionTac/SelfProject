@@ -3,6 +3,7 @@ package cn.springboot.osbulkparts.controller.user;
 import java.util.List;
 import java.util.Map;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -38,6 +39,10 @@ public class UserInfoController {
 			MUserInfoEntity muserInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="50") int pageSize,@RequestHeader String lang){
+<<<<<<< Updated upstream
+=======
+		muserInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
+>>>>>>> Stashed changes
 		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfoList(muserInfoEntity,pageNum,pageSize);
 		return result;
 	}
@@ -45,16 +50,16 @@ public class UserInfoController {
 	@ApiOperation(value="获取用户详细信息", notes="根据用户Id来获取用户详细信息")
 	@ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "String", paramType = "path")
 	@GetMapping("/getUserInfo/{userId}")
-	public CommonResultInfo<MUserInfoEntity> getUserInfo(@PathVariable String userId){
+	public CommonResultInfo<MUserInfoEntity> getUserInfo(@PathVariable String userId,@RequestHeader String lang){
 		log.info("getUserInfo is started.Paramater is userID["+userId+"]");
-		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfo(userId);
+		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfo(userId,lang);
 		return result;
 	}
 	
 	@ApiOperation(value="获取用户详细信息的下拉选信息", notes="获取下拉选信息")
 	@GetMapping("/getOptions")
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> findOptions(){
-		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = userInfoService.getOptions();
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> findOptions(@RequestHeader String lang){
+		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = userInfoService.getOptions(lang);
 		return  result;
 	}
 
@@ -91,7 +96,8 @@ public class UserInfoController {
 	@ApiOperation(value="获取所有角色列表信息", notes="获取所有角色")
 	@ApiImplicitParam(name = "mRoleInfoEntity", value = "角色实体类", required = true, dataType = "body", paramType = "query")
 	@GetMapping("/findAllRole")
-	public CommonResultInfo<MRoleInfoEntity> findAllRole (MRoleInfoEntity mRoleInfoEntity){
+	public CommonResultInfo<MRoleInfoEntity> findAllRole (MRoleInfoEntity mRoleInfoEntity,@RequestHeader String lang){
+		mRoleInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 		return userInfoService.findAllRole(mRoleInfoEntity);
 	}
 

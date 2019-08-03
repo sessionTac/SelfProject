@@ -399,15 +399,15 @@
 		ddat.`name` AS dictSupplierAt
 	FROM
 		m_supplier_info msupplier
-	LEFT JOIN t_dict_data ddcata ON ddcata.`value` = msupplier.supplier_cata
+	LEFT JOIN t_dict_data_${languageFlag} ddcata ON ddcata.`value` = msupplier.supplier_cata
 	AND ddcata.dict_type_code = 'supplierCata'
 	AND ddcata.is_enable = 1
 	AND ddcata.delete_flg = 0
-	LEFT JOIN t_dict_data ddlevel ON ddlevel.`value` = msupplier.supplier_level
+	LEFT JOIN t_dict_data_${languageFlag} ddlevel ON ddlevel.`value` = msupplier.supplier_level
 	AND ddlevel.dict_type_code = 'supplierLevel'
 	AND ddlevel.is_enable = 1
 	AND ddlevel.delete_flg = 0
-	LEFT JOIN t_dict_data ddat ON ddat.`value` = msupplier.supplier_at
+	LEFT JOIN t_dict_data_${languageFlag} ddat ON ddat.`value` = msupplier.supplier_at
 	AND ddat.dict_type_code = 'roleAt'
 	AND ddat.is_enable = 1
 	AND ddat.delete_flg = 0

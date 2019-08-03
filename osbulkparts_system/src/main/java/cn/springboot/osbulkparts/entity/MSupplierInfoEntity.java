@@ -136,6 +136,7 @@ public class MSupplierInfoEntity implements Serializable {
           * 供应商所属
      */
     private TDictDataEntity dictSupplierAt;
+    private String languageFlag;
 
     private static final long serialVersionUID = 1L;
 }

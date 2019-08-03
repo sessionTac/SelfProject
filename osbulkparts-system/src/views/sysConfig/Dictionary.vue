@@ -126,6 +126,15 @@
             }),
 
         },
+        watch:{
+            async language(val,val1){
+                // alert(val+val1)
+                await this.init();
+                if(this.system_menus.length != 0){
+                    this.screenByMenu(this.system_menus[0].code,this.system_menus[0].name)
+                }
+            }
+        },
         async mounted() {
             await this.init();
             if(this.system_menus.length != 0){

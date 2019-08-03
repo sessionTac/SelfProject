@@ -248,6 +248,8 @@
   import {downloadBlobResponse} from '@/utils/request_utils'
   import ui_config from '@/config/ui_config'
   import receiveGoods from './ReceiveGoods'
+  import { mapGetters,mapState } from 'vuex'
+
   export default {
     name: "PlanDetailList",
     data(){
@@ -287,6 +289,17 @@
     },
     components:{ImportButton,EditPlanDetail,receiveGoods},
 
+    watch:{
+      async language(val,val1){
+        this.search_keys.orderCode=this.$route.query.orderCode;
+        await activityService.initData().then(resp=>{
+          this.confirmStatus=resp.data.result.orderStatus;
+          this.orderDetailType =resp.data.result.orderDetailType;
+          this.mattertype = resp.data.result.mattertype;
+        },error=>{})
+        this.exec_search({search_keys:this.search_keys, pageNum:1});
+      }
+    },
     computed:{
       approvalFlag(){
         return (this.multipleSelection.some(item=>{
@@ -298,11 +311,10 @@
                 return item.confirmStatus==0
             }) || (this.multipleSelection.length===0))
         },
-      // unlockFlag(){
-      //   return (this.multipleSelection.some(item=>{
-      //     return item.isLocked===0
-      //   }) || (this.multipleSelection.length===0))
-      // }
+      ...mapState({
+        language:state=>state.app.language
+      }),
+
     },
     async mounted(){
       this.search_keys.orderCode=this.$route.query.orderCode;
@@ -347,11 +359,11 @@
           orderDateEnd        :   search_keys.orderDateArray  && search_keys.orderDateArray[1]    || "",
           // orderDateEnd        :   search_keys.orderDateArray  && this.$moment(search_keys.orderDateArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
           createTimeStart     :   search_keys.createTimeArray && search_keys.createTimeArray[0],
-          // createTimeEnd       :   search_keys.createTimeArray && this.$moment(search_keys.createTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
-          createTimeEnd       :   search_keys.createTimeArray && search_keys.createTimeArray[1]   || "",
+          createTimeEnd       :   search_keys.createTimeArray && this.$moment(search_keys.createTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
+          // createTimeEnd       :   search_keys.createTimeArray && search_keys.createTimeArray[1]   || "",
           updateTimeStart     :   search_keys.updateTimeArray && search_keys.updateTimeArray[0],
-          // updateTimeEnd       :   search_keys.updateTimeArray && this.$moment(search_keys.updateTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
-          updateTimeEnd       :   search_keys.updateTimeArray && search_keys.updateTimeArray[1]   || "",
+          updateTimeEnd       :   search_keys.updateTimeArray && this.$moment(search_keys.updateTimeArray[1],'YYYYMMDDHHmmss').add(1, 'days').format('YYYYMMDDHHmmss')    || "",
+          // updateTimeEnd       :   search_keys.updateTimeArray && search_keys.updateTimeArray[1]   || "",
         };
         activityService.findOrderDetailInfoList({...data, pageNum, pageSize}).then(resp => {
           this.search_result = resp.data.resultInfo;                //视图展示查询结果

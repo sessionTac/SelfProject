@@ -318,10 +318,13 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			List<TOrderDetailInfoEntity> torderDetailInfoList = new ArrayList<TOrderDetailInfoEntity>();
 			MMaterialInfoEntity mmaterialInfoParam = new MMaterialInfoEntity();
 			List<TOrderInfoEntity> orderInfoList = torderInfoDao.selectByIds(commonEntity.getIdsStr());
-			
+			String[] orderCodes = new String[orderInfoList.size()];
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected());
+			int count = 0;
 			for(TOrderInfoEntity torderInfo:orderInfoList) {
+				orderCodes[count] = torderInfo.getOrderCode();
+				count = count + 1;
 				// 系统自动生成订单号：当前日期+000000
 				String orderNo = commonDao.orderNoGenerater();
 				// 订单型号+物料号判定详细信息中是否存在
@@ -400,13 +403,15 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 										}
 										// 按照供应商配额和损耗计算数量
 										BigDecimal lossAmount = new BigDecimal("0");
-										lossAmount = torderInfo.getOrderAmount().multiply(
-												materialInfo.getMaterialAmount()).multiply(
-														quotaEntityList.get(m).getMaterialQuota()).multiply(
-																materialInfo.getMaterialLossRate()).setScale(2, BigDecimal.ROUND_HALF_UP);
+										if(materialInfo.getMaterialLossRate() != null) {
+											lossAmount = torderInfo.getOrderAmount().multiply(
+													materialInfo.getMaterialAmount()).multiply(
+															quotaEntityList.get(m).getMaterialQuota()).multiply(
+																	materialInfo.getMaterialLossRate()).setScale(3, BigDecimal.ROUND_HALF_UP);
+										}
 										orderMaterAmount = torderInfo.getOrderAmount().multiply(
 												materialInfo.getMaterialAmount()).multiply(
-														quotaEntityList.get(m).getMaterialQuota()).setScale(2, BigDecimal.ROUND_HALF_UP);
+														quotaEntityList.get(m).getMaterialQuota()).setScale(3, BigDecimal.ROUND_HALF_UP);
 										// 订单物料数量(单耗)
 										orderDetailParam.setMaterialAmount(orderMaterAmount.add(lossAmount));
 										// 物料类别
@@ -450,7 +455,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 											BigDecimal taxTotalPrice = new BigDecimal("0");
 											taxTotalPrice = orderMaterAmount.add(lossAmount).multiply(
 													CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation())).multiply(
-															materialInfo.getMaterialTaxPrice()).setScale(2,BigDecimal.ROUND_HALF_UP);
+															materialInfo.getMaterialTaxPrice()).setScale(3,BigDecimal.ROUND_HALF_UP);
 											orderDetailParam.setMaterialTaxTotalprice(taxTotalPrice);
 											// 含税单价
 											// 税额
@@ -462,7 +467,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 											BigDecimal vatTotalPrice = new BigDecimal("0");
 											vatTotalPrice = orderMaterAmount.add(lossAmount).multiply(
 													CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation())).multiply(
-															materialInfo.getMaterialTaxPrice().add(vatPrice)).setScale(2,BigDecimal.ROUND_HALF_UP);
+															materialInfo.getMaterialTaxPrice().add(vatPrice)).setScale(3,BigDecimal.ROUND_HALF_UP);
 											orderDetailParam.setMaterialVatTotalprice(vatTotalPrice);
 										}
 										// 供应商编码
@@ -555,11 +560,13 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 								}
 								// 按照供应商配额和损耗计算数量
 								BigDecimal lossAmount = new BigDecimal("0");
-								lossAmount = torderInfo.getOrderAmount().multiply(
-										materialInfo.getMaterialAmount()).multiply(
-														materialInfo.getMaterialLossRate()).setScale(2, BigDecimal.ROUND_HALF_UP);
+								if(materialInfo.getMaterialLossRate() !=null) {
+									lossAmount = torderInfo.getOrderAmount().multiply(
+											materialInfo.getMaterialAmount()).multiply(
+															materialInfo.getMaterialLossRate()).setScale(3, BigDecimal.ROUND_HALF_UP);
+								}
 								orderMaterAmount = torderInfo.getOrderAmount().multiply(
-										materialInfo.getMaterialAmount()).setScale(2, BigDecimal.ROUND_HALF_UP);
+										materialInfo.getMaterialAmount()).setScale(3, BigDecimal.ROUND_HALF_UP);
 								// 订单物料数量(单耗)
 								orderDetailParam.setMaterialAmount(orderMaterAmount.add(lossAmount));
 								// 物料类别
@@ -603,7 +610,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 									BigDecimal taxTotalPrice = new BigDecimal("0");
 									taxTotalPrice = orderMaterAmount.add(lossAmount).multiply(
 											CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation())).multiply(
-													materialInfo.getMaterialTaxPrice()).setScale(2,BigDecimal.ROUND_HALF_UP);
+													materialInfo.getMaterialTaxPrice()).setScale(3,BigDecimal.ROUND_HALF_UP);
 									orderDetailParam.setMaterialTaxTotalprice(taxTotalPrice);
 									// 含税单价
 									// 税额
@@ -615,7 +622,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 									BigDecimal vatTotalPrice = new BigDecimal("0");
 									vatTotalPrice = orderMaterAmount.add(lossAmount).multiply(
 											CommonMethods.changeToBigdecimal(materialInfo.getMaterialRelation())).multiply(
-													materialInfo.getMaterialTaxPrice().add(vatPrice)).setScale(2,BigDecimal.ROUND_HALF_UP);
+													materialInfo.getMaterialTaxPrice().add(vatPrice)).setScale(3,BigDecimal.ROUND_HALF_UP);
 									orderDetailParam.setMaterialVatTotalprice(vatTotalPrice);
 								}
 								// 供应商编码
@@ -674,6 +681,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				torderInfo.setUpdateUser(principal.getUserName());
 				torderInfoDao.updateByPrimaryKeySelective(torderInfo);
 			}
+			torderDetailInfoDao.deleteByOrderCode(orderCodes);
 			torderDetailInfoDao.insertList(torderDetailInfoList);
 			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("bussiness.order.generate.success"));
@@ -798,7 +806,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				// 按周导入
 				if(type == 1) {
 					// 主键ID
-//					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
+					torderInfoEntity.setId(CommonSqlUtils.getUUID32());
 					torderInfoEntity.setDateFlag("week");
 					// 订单型号，成品型号
 					torderInfoEntity.setOrderCode((String)mapData.get("订单型号"));
@@ -1448,6 +1456,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
     	SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
         Date date = null;
         String dateString = null;
+        if(StringUtil.isEmpty(str)) {return dateString;}
         try {
     		date = dateFormat.parse(str);
             SimpleDateFormat formatter = new SimpleDateFormat(pattern);

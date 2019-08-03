@@ -1,6 +1,7 @@
 package cn.springboot.osbulkparts.controller.warehouse;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.OSLanguage;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.entity.TDeliverInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
@@ -30,8 +31,8 @@ public class GoodsListController {
 
 	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
 	@GetMapping("/init")
-	public Object initViews(){
-		return goodsListService.initViews();
+	public Object initViews(@RequestHeader String lang){
+		return goodsListService.initViews(lang);
 	}
 
 	
@@ -46,7 +47,9 @@ public class GoodsListController {
 			TDeliverInfoEntity tDeliverInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="50") int pageSize,
-			HttpServletRequest request, Authentication auth){
+			HttpServletRequest request, Authentication auth,
+			@RequestHeader String lang){
+		tDeliverInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 		return  goodsListService.getGoodsList( tDeliverInfoEntity,  pageNum,  pageSize,  auth);
 	}
 

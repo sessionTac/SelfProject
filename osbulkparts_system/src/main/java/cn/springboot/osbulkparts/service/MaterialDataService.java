@@ -17,7 +17,7 @@ import cn.springboot.osbulkparts.entity.TDictDataEntity;
 
 public interface MaterialDataService {
 
-	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews();
+	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang);
 	
 	@Transactional
 	CommonResultInfo<?> importExcel(MultipartFile excleFile,HttpServletRequest request,Authentication auth);

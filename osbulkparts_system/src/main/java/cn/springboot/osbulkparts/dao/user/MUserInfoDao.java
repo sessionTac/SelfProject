@@ -34,12 +34,12 @@ public interface MUserInfoDao {
     /**
      * 根据 userid 查找一条用户的详细信息  luka
      */
-    MUserInfoEntity selectUserInfo(String userId);
+    MUserInfoEntity selectUserInfo(@Param("userId") String userId, @Param("lang") String lang);
     
     /**
      * 根据 用户名和角色ID 查找当前用户的权限信息
      */
-    MUserInfoEntity selectUserWithRoleAndFunc(@Param("userName") String userName,@Param("roleId") String roleId);
+    MUserInfoEntity selectUserWithRoleAndFunc(@Param("userName") String userName,@Param("roleId") String roleId,@Param("lang") String lang);
     /**
      * 查重（用户名）和排他字段比较   luka
      */

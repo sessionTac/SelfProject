@@ -187,6 +187,7 @@
     import ImportButton from '@/components/data-import/ImportButton'
     import EditOrderPlan from './EditPlanningBalance'
     import {downloadBlobResponse} from '@/utils/request_utils'
+    import { mapGetters,mapState } from 'vuex'
 
     export default {
         data() {
@@ -223,9 +224,16 @@
             };
         },
         components:{ImportButton,EditOrderPlan},
-        mounted() {
-            this.init();
+        async mounted() {
+            await this.init();
             this.exec_search({search_keys:this.search_keys, pageNum:1});
+        },
+        watch:{
+            async language(val,val1){
+                // alert(val+val1)
+                await this.init();
+                this.exec_search({search_keys:this.search_keys, pageNum:1});
+            }
         },
         computed:{
             lockFlag(){
@@ -242,7 +250,10 @@
                 return (this.multipleSelection.some(item=>{
                     return item.orderStatus==1
                 }) || (this.multipleSelection.length===0))
-            }
+            },
+            ...mapState({
+                language:state=>state.app.language
+            }),
         },
         methods: {
           toPlanDetailList(orderCode){

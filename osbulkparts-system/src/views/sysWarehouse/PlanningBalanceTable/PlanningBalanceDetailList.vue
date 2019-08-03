@@ -218,6 +218,7 @@
   import EditPlanDetail from './EditPlanningBalanceDetail'
   import {downloadBlobResponse} from '@/utils/request_utils'
   import ui_config from '@/config/ui_config'
+  import { mapGetters,mapState } from 'vuex'
   export default {
     name: "PlanDetailList",
     data(){
@@ -253,17 +254,25 @@
     },
     components:{ImportButton,EditPlanDetail},
 
+    watch:{
+      async language(val,val1){
+        this.search_keys.orderCode=this.$route.query.orderCode;
+        await activityService.initData().then(resp=>{
+          this.confirmStatus=resp.data.result.orderStatus
+        },error=>{})
+        this.exec_search({search_keys:this.search_keys, pageNum:1});
+      }
+    },
     computed:{
       approvalFlag(){
         return (this.multipleSelection.some(item=>{
           return item.confirmStatus==1
         }) || (this.multipleSelection.length===0))
       },
-      // unlockFlag(){
-      //   return (this.multipleSelection.some(item=>{
-      //     return item.isLocked===0
-      //   }) || (this.multipleSelection.length===0))
-      // }
+      ...mapState({
+        language:state=>state.app.language
+      }),
+
     },
     async mounted(){
       this.search_keys.orderCode=this.$route.query.orderCode;

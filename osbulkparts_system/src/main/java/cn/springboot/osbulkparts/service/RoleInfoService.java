@@ -11,15 +11,15 @@ import java.util.List;
 import java.util.Map;
 
 public interface RoleInfoService {
-	CommonResultInfo<MRoleInfoEntity> getRoleInfoList(MRoleInfoEntity mRoleInfoEntity, int pageNumber, int pageSize);
+	CommonResultInfo<MRoleInfoEntity> getRoleInfoList(MRoleInfoEntity mRoleInfoEntity, int pageNumber, int pageSize,String lang);
 
-	CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions();
+	CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions(String lang);
 
 	/**
 	 * 查询树结构
 	 * @return
 	 */
-	Object getTree();
+	Object getTree( String lang);
 
 	/**
 	 * 根据角色id查询权限
@@ -38,7 +38,7 @@ public interface RoleInfoService {
     /**
      * 根据角色id获取角色的详细信息
      */
-    CommonResultInfo<MRoleInfoEntity> getRoleInfo(String roleId);
+    CommonResultInfo<MRoleInfoEntity> getRoleInfo(String roleId,String lang);
 	/**
 	 * 校验角色信息
 	 */

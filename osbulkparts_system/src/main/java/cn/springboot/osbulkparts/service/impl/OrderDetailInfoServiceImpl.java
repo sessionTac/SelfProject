@@ -11,10 +11,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -429,16 +432,16 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             	recordParam.setSupperAmount(deliveryInfo.getSendAmount());
             	materialRecordInfoDao.updateByPrimaryKeySelective(recordParam);
             	
-            	// 更新物料表中的单耗
-            	MMaterialInfoEntity materialParam = new MMaterialInfoEntity();
-            	materialParam.setMaterialOrderCode(deliveryInfo.getOrderCode());
-            	materialParam.setMaterialCode(deliveryInfo.getMaterialCode());
-            	List<MMaterialInfoEntity>  materialInfoList = mMaterialInfoDao.selectByPrimaryKey(materialParam);
-            	for(MMaterialInfoEntity materialInfo :materialInfoList) {
-                	materialInfo.setMaterialAmount(materialInfo.getMaterialAmount().subtract(deliveryInfo.getSendAmount()));
-                	materialInfo.setUpdateUser(principal.getUserName());
-            	}
-            	mMaterialInfoDao.updateList(materialInfoList);
+//            	// 更新物料表中的单耗
+//            	MMaterialInfoEntity materialParam = new MMaterialInfoEntity();
+//            	materialParam.setMaterialOrderCode(deliveryInfo.getOrderCode());
+//            	materialParam.setMaterialCode(deliveryInfo.getMaterialCode());
+//            	List<MMaterialInfoEntity>  materialInfoList = mMaterialInfoDao.selectByPrimaryKey(materialParam);
+//            	for(MMaterialInfoEntity materialInfo :materialInfoList) {
+//                	materialInfo.setMaterialAmount(materialInfo.getMaterialAmount().subtract(deliveryInfo.getSendAmount()));
+//                	materialInfo.setUpdateUser(principal.getUserName());
+//            	}
+//            	mMaterialInfoDao.updateList(materialInfoList);
             	
 	        	deliveryInfo.setId(CommonSqlUtils.getUUID32());
 	        	deliveryInfo.setCreateUser(principal.getUserName());
@@ -525,6 +528,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);  
 			style.setFillForegroundColor(IndexedColors.RED.getIndex());     
 			CellStyle textStyle = workbook.createCellStyle();
+            HSSFCellStyle numstyle = workbook.createCellStyle();
+            numstyle.setDataFormat(HSSFDataFormat.getBuiltinFormat("0.000000"));
 			DataFormat format = workbook.createDataFormat();
 			textStyle.setDataFormat(format.getFormat("@"));
 			//设置单元格的值  
@@ -560,7 +565,9 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 				//单位
 				row.createCell(13).setCellValue(example.getDictMaterialUnit()!=null?example.getDictMaterialUnit().getName():"");
 				//计划数量
-				row.createCell(14).setCellValue(example.getMaterialAmount()!=null?example.getMaterialAmount().toString():"");
+				row.createCell(14).setCellStyle(numstyle);
+				row.createCell(14).setCellType(CellType.NUMERIC);
+				row.createCell(14).setCellValue(example.getMaterialAmount()!=null?Double.parseDouble(example.getMaterialAmount().toString()):null);
 				//渠道
 				row.createCell(15).setCellValue(example.getDictMaterialCategory()!=null?example.getDictMaterialCategory().getName():"");
 				//换算关系
@@ -568,32 +575,48 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 				//换算后单位
 				row.createCell(17).setCellValue(example.getDictMaterialUnit()!=null?example.getDictMaterialUnit().getName():"");
 				//换算后数量
-				row.createCell(18).setCellValue(example.getMaterialRelationQuantity()!=null?example.getMaterialRelationQuantity().toString():"");
+				row.createCell(18).setCellStyle(numstyle);
+				row.createCell(18).setCellType(CellType.NUMERIC);
+				row.createCell(18).setCellValue(example.getMaterialRelationQuantity()!=null?Double.parseDouble(example.getMaterialRelationQuantity().toString()):null);
 				//不含税单价
+				row.createCell(19).setCellStyle(numstyle);
+				row.createCell(19).setCellType(CellType.NUMERIC);
 				row.createCell(19).setCellValue(
-						example.getMaterialVatPrice()!=null?example.getMaterialVatPrice().toString():"");
+						example.getMaterialVatPrice()!=null?Double.parseDouble(example.getMaterialVatPrice().toString()):null);
 				// 不含税总价
+				row.createCell(20).setCellStyle(numstyle);
+				row.createCell(20).setCellType(CellType.NUMERIC);
 				row.createCell(20).setCellValue(
-						example.getMaterialVatTotalprice()!=null?example.getMaterialVatTotalprice().toString():"");
+						example.getMaterialVatTotalprice()!=null?Double.parseDouble(example.getMaterialVatTotalprice().toString()):null);
 				//含税总价
+				row.createCell(21).setCellStyle(numstyle);
+				row.createCell(21).setCellType(CellType.NUMERIC);
 				row.createCell(21).setCellValue(
-						example.getMaterialTaxTotalprice() != null?example.getMaterialTaxTotalprice().toString():"");
+						example.getMaterialTaxTotalprice() != null?Double.parseDouble(example.getMaterialTaxTotalprice().toString()):null);
 				//税率
+				row.createCell(22).setCellStyle(numstyle);
+				row.createCell(22).setCellType(CellType.NUMERIC);
 				row.createCell(22).setCellValue(
-						example.getTax()!=null?example.getTax().toString():"");
+						example.getTax()!=null?Double.parseDouble(example.getTax().toString()):null);
 				//代理费率
+				row.createCell(23).setCellStyle(numstyle);
+				row.createCell(23).setCellType(CellType.NUMERIC);
 				row.createCell(23).setCellValue(
-						example.getMaterialRate() != null?example.getMaterialRate().toString():"");
+						example.getMaterialRate() != null?Double.parseDouble(example.getMaterialRate().toString()):null);
 				//币种
 				row.createCell(24).setCellValue(example.getDictMaterialCurrency() != null? example.getDictMaterialCurrency().getName():"");
 				//国家标识
 				row.createCell(25).setCellValue(example.getDictCountryCode()!=null?example.getDictCountryCode().getName():"");
 				// 收货数量
+				row.createCell(26).setCellStyle(numstyle);
+				row.createCell(26).setCellType(CellType.NUMERIC);
 				row.createCell(26).setCellValue(
-						example.getTakeOverAmount() != null?example.getTakeOverAmount().toString():"");
+						example.getTakeOverAmount() != null?Double.parseDouble(example.getTakeOverAmount().toString()):null);
 				// 发货数量
+				row.createCell(27).setCellStyle(numstyle);
+				row.createCell(27).setCellType(CellType.NUMERIC);
 				row.createCell(27).setCellValue(
-						example.getDeliveryAmount() != null?example.getDeliveryAmount().toString():"");
+						example.getDeliveryAmount() != null?Double.parseDouble(example.getDeliveryAmount().toString()):null);
 				// 订单详细类型
 				row.createCell(28).setCellValue(example.getDictOrderDetailType()!=null?example.getDictOrderDetailType().getName():"");
 				// 创建人

@@ -105,15 +105,15 @@
 		orderInfo.version
 	FROM
 		t_order_info orderInfo
-	LEFT JOIN t_dict_data dictUnit ON orderInfo.order_unit = dictUnit.`value`
+	LEFT JOIN t_dict_data_${languageFlag} dictUnit ON orderInfo.order_unit = dictUnit.`value`
 	AND dictUnit.dict_type_code = 'unit'
 	AND dictUnit.is_enable = 1
 	AND dictUnit.delete_flg = 0
-	LEFT JOIN t_dict_data dictPlanStatus ON orderInfo.order_status = dictPlanStatus.`value`
+	LEFT JOIN t_dict_data_${languageFlag} dictPlanStatus ON orderInfo.order_status = dictPlanStatus.`value`
 	AND dictPlanStatus.dict_type_code = 'planStatus'
 	AND dictPlanStatus.is_enable = 1
 	AND dictPlanStatus.delete_flg = 0
-    LEFT JOIN t_dict_data dictOrderType ON orderInfo.order_type = dictOrderType.`value`
+    LEFT JOIN t_dict_data_${languageFlag} dictOrderType ON orderInfo.order_type = dictOrderType.`value`
     AND dictOrderType.dict_type_code = 'orderType'
     AND dictOrderType.is_enable = 1
     AND dictOrderType.delete_flg = 0

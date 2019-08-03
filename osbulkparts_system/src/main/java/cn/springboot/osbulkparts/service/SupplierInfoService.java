@@ -12,7 +12,7 @@ import cn.springboot.osbulkparts.entity.TDictDataEntity;
 
 public interface SupplierInfoService {
 	
-	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews();
+	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang);
 	
 	CommonResultInfo<MSupplierInfoEntity> getSupplierInfoList(MSupplierInfoEntity msupplierInfoEntity, int pageNumber, int pageSize);
 	

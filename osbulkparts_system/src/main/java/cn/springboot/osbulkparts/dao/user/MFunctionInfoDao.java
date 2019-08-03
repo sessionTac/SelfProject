@@ -21,5 +21,5 @@ public interface MFunctionInfoDao {
     int updateByPrimaryKey(MFunctionInfoEntity record);
 
     //查询维护平台权限树结构
-    List<MFunctionInfoEntity> selectTree();
+    List<MFunctionInfoEntity> selectTree(@Param("lang") String lang);
 }

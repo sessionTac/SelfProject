@@ -1,6 +1,7 @@
 package cn.springboot.osbulkparts.controller.warehouse;
 
 import cn.springboot.osbulkparts.common.CommonResultInfo;
+import cn.springboot.osbulkparts.common.OSLanguage;
 import cn.springboot.osbulkparts.common.entity.CommonEntity;
 import cn.springboot.osbulkparts.entity.MMaterialInfoEntity;
 import cn.springboot.osbulkparts.entity.TDictDataEntity;
@@ -31,8 +32,8 @@ public class StockInfoController {
 	
 	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
 	@GetMapping("/init")
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(){
-		return  stockInfoService.initViews();
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(@RequestHeader String lang){
+		return  stockInfoService.initViews(lang);
 	}
 	
 	@ApiOperation(value="获取库存信息列表信息", notes="查询库存信息列表")
@@ -46,14 +47,16 @@ public class StockInfoController {
 			TStockInfoEntity tStockInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="50") int pageSize,
-			HttpServletRequest request, Authentication auth){
+			HttpServletRequest request, Authentication auth,@RequestHeader String lang){
+		tStockInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 		return  stockInfoService.getStockInfoList(tStockInfoEntity,pageNum,pageSize,auth);
 	}
 	
 	@ApiOperation(value="获取库存信息", notes="根据条件查询库存信息的详细数据")
 	@ApiImplicitParam(name = "tStockInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
 	@GetMapping("/getStockInfo")
-	public CommonResultInfo<TStockInfoEntity> getMaterialInfo(TStockInfoEntity tStockInfoEntity){
+	public CommonResultInfo<TStockInfoEntity> getMaterialInfo(TStockInfoEntity tStockInfoEntity,@RequestHeader String lang){
+		tStockInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 		return  stockInfoService.getStockInfoInfo(tStockInfoEntity);
 	}
 	
@@ -92,7 +95,8 @@ public class StockInfoController {
 	@ApiOperation(value="库存数据导出", notes="库存数据导出")
 	@ApiImplicitParam(name = "tStockInfoEntity", value = "库存实体对象", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/exportData")
-	public Object downExcel(@RequestBody TStockInfoEntity tStockInfoEntity) {
+	public Object downExcel(@RequestBody TStockInfoEntity tStockInfoEntity,@RequestHeader String lang) {
+		tStockInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 		return  stockInfoService.downloadExcel(tStockInfoEntity);
 	}
 }

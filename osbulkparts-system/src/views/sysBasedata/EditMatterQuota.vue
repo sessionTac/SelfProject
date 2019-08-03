@@ -16,7 +16,9 @@
             <el-input :placeholder="$t('pageTable.MatterQuota')" v-model="search_keys.materialQuota" class="search-form-item-input"></el-input>
           </el-form-item>
           <el-form-item style="float: right">
-            <el-button type="primary" :disabled="false"  @click="upsertQuotaInfo({search_keys})" icon="el-icon-s-check" >
+            <el-button type="primary"
+                       :disabled="search_keys.materialCode=='' || search_keys.supplierCode == '' ||search_keys.materialQuota == '' "
+                       @click="upsertQuotaInfo({search_keys})" icon="el-icon-s-check" >
               {{$t('searchFrom.updateQuota')}}
             </el-button>
           </el-form-item>
@@ -69,7 +71,7 @@
     data(){
       return{
         dialogFormVisible: true,
-        title:"配额维护",
+        title:this.$t('pageTable.QuotaMaintenance'),
         materialCode:"",
         supplierCode:"",
         supplierName:"",

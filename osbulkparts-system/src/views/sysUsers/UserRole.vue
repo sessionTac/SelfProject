@@ -80,6 +80,7 @@
     import ui_config from '@/config/ui_config'
     import SetAuthority from '@/views/sysUsers/SetAuthority'
     import EditRole from './EditRole'
+    import { mapGetters,mapState } from 'vuex'
 
     export default {
         components: { SetAuthority,EditRole},
@@ -109,6 +110,19 @@
 
             };
         },
+        computed: {
+            ...mapState({
+                language:state=>state.app.language
+            }),
+
+        },
+        watch:{
+            async language(val,val1){
+                // alert(val+val1)
+                await this.init();
+                this.exec_search({search_keys:this.search_keys, pageNum:1});
+            }
+        },
         async mounted() {
             await this.init();
             this.exec_search({search_keys:this.search_keys, pageNum:1});
@@ -116,7 +130,7 @@
         methods: {
             init(){
               return  activityService.findRoleOptions().then(resp=>{
-                  this.options=resp.data.result
+                  this.options=resp.data.result || []
               })
             },
             exec_search({

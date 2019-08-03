@@ -107,7 +107,7 @@
 			enableDeleteByExample="false">
 		</table> -->
 		<!-- 上传文件表  -->
-  		<table tableName="t_file" domainObjectName="TFileEntity" 
+  		<table tableName="t_price_file" domainObjectName="TPriceFileEntity" 
 			enableCountByExample="false" enableSelectByExample="false" enableUpdateByExample="false" 
 			enableDeleteByExample="false">
 		</table>

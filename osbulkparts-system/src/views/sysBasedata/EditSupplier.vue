@@ -234,7 +234,7 @@
                         // {required: true, message: '请选择供应商所属', trigger: 'change'}
                     ],
                     supplierQuo:[
-                        {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,2}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
+                        {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,6}$/ , trigger: 'blur', message: this.$t('Tips.floatPriceCheck'),}
                     ]
 
                 },

@@ -13,7 +13,7 @@ import cn.springboot.osbulkparts.entity.TDictDataEntity;
 
 public interface GoodsListService {
 
-	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews();
+	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang);
 
 	CommonResultInfo<?> getGoodsList(TDeliverInfoEntity stockInfoEntity, int pageNumber, int pageSize, Authentication auth);
 

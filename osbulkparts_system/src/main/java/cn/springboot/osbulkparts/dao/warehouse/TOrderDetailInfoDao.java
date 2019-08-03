@@ -1,11 +1,11 @@
 package cn.springboot.osbulkparts.dao.warehouse;
 
-import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
-import java.math.BigDecimal;
-import java.util.List;
+import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 
 @Mapper
 public interface TOrderDetailInfoDao {
@@ -16,6 +16,8 @@ public interface TOrderDetailInfoDao {
     int insertList(List<TOrderDetailInfoEntity> records);
 
     int insertSelective(TOrderDetailInfoEntity record);
+    
+    int deleteByOrderCode(@Param("orderCodes") String[] orderCode);
 
     TOrderDetailInfoEntity selectByPrimaryKey(String id);
 
@@ -24,6 +26,8 @@ public interface TOrderDetailInfoDao {
     int updateByPrimaryKey(TOrderDetailInfoEntity record);
 
     List<TOrderDetailInfoEntity> getOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity);
+    
+    List<TOrderDetailInfoEntity> getReportOrderDetailInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity);
     
     List<TOrderDetailInfoEntity> selectDeliveryInfo(@Param("ids") String[] ids,@Param("dateFlag") String dateFlag);
 

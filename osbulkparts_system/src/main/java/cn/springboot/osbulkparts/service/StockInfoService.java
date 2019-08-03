@@ -17,7 +17,7 @@ import cn.springboot.osbulkparts.entity.TStockInfoEntity;
 
 public interface StockInfoService {
 	
-	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews();
+	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang);
 
 	CommonResultInfo<?> getStockInfoList(TStockInfoEntity stockInfoEntity, int pageNumber, int pageSize,Authentication auth); 
 	

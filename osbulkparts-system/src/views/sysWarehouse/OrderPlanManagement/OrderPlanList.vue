@@ -8,6 +8,28 @@
                 <el-form-item :label="$t('pageTable.OrderInfoOrderCodeDesc')">
                     <el-input :placeholder="$t('pageTable.OrderInfoOrderCodeDesc')" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
                 </el-form-item>
+                <el-form-item :label="$t('pageTable.OrderInfoOrderDate')">
+                    <el-date-picker
+                            class=""
+                            v-model="search_keys.orderDateArray"
+                            type="daterange"
+                            value-format="yyyyMMddHHmmss"
+                            :start-placeholder="$t('pageTable.startTime')"
+                            :end-placeholder="$t('pageTable.endTime')">
+                    </el-date-picker>
+                </el-form-item>
+                <el-form-item :label="$t('pageTable.OrderInfoOrderStatus')">
+                    <el-select v-model="search_keys.orderStatus"  size="mini" class="search-form-item-input">
+                        <el-option value=""></el-option>
+                        <el-option
+                                size="mini"
+                                v-for="item in orderStatus"
+                                :key="item.value"
+                                :label="item.name"
+                                :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
                 <el-collapse accordion>
                     <el-collapse-item>
                         <template slot="title">
@@ -17,15 +39,7 @@
                             <el-form-item :label="$t('pageTable.OrderInfoOrderAmount')">
                                 <el-input :placeholder="$t('pageTable.OrderInfoOrderAmount')" v-model="search_keys.orderAmount" class="search-form-item-input"></el-input>
                             </el-form-item>
-                            <el-form-item :label="$t('pageTable.OrderInfoOrderDate')">
-                                <el-date-picker
-                                  class=""
-                                  v-model="search_keys.orderDateArray"
-                                  type="daterange"
-                                  value-format="yyyyMMddHHmmss"
-                                  :start-placeholder="$t('pageTable.startTime')"
-                                  :end-placeholder="$t('pageTable.endTime')">
-                                </el-date-picker>                            </el-form-item>
+
                             <el-form-item :label="$t('pageTable.OrderInfoOrderUnit')">
                                 <el-select v-model="search_keys.orderUnit"  size="mini" class="search-form-item-input">
                                     <el-option value=""></el-option>
@@ -38,18 +52,7 @@
                                     </el-option>
                                 </el-select>
                             </el-form-item>
-                            <el-form-item :label="$t('pageTable.OrderInfoOrderStatus')">
-                                <el-select v-model="search_keys.orderStatus"  size="mini" class="search-form-item-input">
-                                    <el-option value=""></el-option>
-                                    <el-option
-                                      size="mini"
-                                      v-for="item in orderStatus"
-                                      :key="item.value"
-                                      :label="item.name"
-                                      :value="item.value">
-                                    </el-option>
-                                </el-select>
-                            </el-form-item>
+
                             <el-form-item :label="$t('pageTable.createUser')">
                                 <el-input :placeholder="$t('pageTable.createUser')" v-model="search_keys.createUser" class="search-form-item-input"></el-input>
                             </el-form-item>
@@ -187,6 +190,8 @@
     import ImportButton from '@/components/data-import/ImportButton'
     import EditOrderPlan from './EditOrderPlan'
     import {downloadBlobResponse} from '@/utils/request_utils'
+    import { mapGetters,mapState } from 'vuex'
+
 
     export default {
         data() {
@@ -223,9 +228,16 @@
             };
         },
         components:{ImportButton,EditOrderPlan},
-        mounted() {
-            this.init();
+        async mounted() {
+            await this.init();
             this.exec_search({search_keys:this.search_keys, pageNum:1});
+        },
+        watch:{
+            async language(val,val1){
+                // alert(val+val1)
+                await this.init();
+                this.exec_search({search_keys:this.search_keys, pageNum:1});
+            }
         },
         computed:{
             lockFlag(){
@@ -242,7 +254,11 @@
                 return (this.multipleSelection.some(item=>{
                     return item.orderStatus==1
                 }) || (this.multipleSelection.length===0))
-            }
+            },
+            ...mapState({
+                language:state=>state.app.language
+            }),
+
         },
         methods: {
           toPlanDetailList(orderCode){

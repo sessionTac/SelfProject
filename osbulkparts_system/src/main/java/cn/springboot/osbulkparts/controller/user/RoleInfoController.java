@@ -30,8 +30,8 @@ public class RoleInfoController {
 
 	@ApiOperation(value="获取角色权限中角色所属的下拉选信息", notes="获取下拉选信息")
 	@GetMapping("/getOptions")
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> findOptions(){
-		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = roleInfoService.getOptions();
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> findOptions(@RequestHeader String lang){
+		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = roleInfoService.getOptions(lang);
 		return  result;
 	}
 
@@ -45,8 +45,8 @@ public class RoleInfoController {
 	public CommonResultInfo<MRoleInfoEntity> getUserInfoList(
 			MRoleInfoEntity mRoleInfoEntity,
 			@RequestParam(defaultValue = "1") int pageNum,
-			@RequestParam(defaultValue="50") int pageSize){
-		CommonResultInfo<MRoleInfoEntity> result = roleInfoService.getRoleInfoList(mRoleInfoEntity,pageNum,pageSize);
+			@RequestParam(defaultValue="50") int pageSize,@RequestHeader String lang){
+		CommonResultInfo<MRoleInfoEntity> result = roleInfoService.getRoleInfoList(mRoleInfoEntity,pageNum,pageSize,lang);
 		return result;
 	}
 	/**
@@ -54,9 +54,9 @@ public class RoleInfoController {
 	 * @return
 	 */
 	@GetMapping("/getTree")
-	public Object getTreeForMaintain() {
+	public Object getTreeForMaintain(@RequestHeader String lang) {
 		Map<String, Object> map = new HashMap<>();
-		map.put("maintainTree", roleInfoService.getTree());//维护平台树结构
+		map.put("maintainTree", roleInfoService.getTree(lang));//维护平台树结构
 		return map;
 	}
 
@@ -80,7 +80,7 @@ public class RoleInfoController {
 	 * 添加权限
 	 */
 	@PostMapping("/insertPower")
-	public Object insertPower(@RequestBody InsertFunctionForm form, HttpServletRequest request, Authentication auth) {
+	public Object insertPower(@RequestBody InsertFunctionForm form, HttpServletRequest request, Authentication auth,@RequestHeader String lang) {
 
 		return roleInfoService.insertPower(form.functionIds, form.roleId,request,auth);
 	}
@@ -88,9 +88,9 @@ public class RoleInfoController {
     @ApiOperation(value="获取角色详细信息", notes="根据角色Id来获取角色详细信息")
     @ApiImplicitParam(name = "roleId", value = "角色ID", required = true, dataType = "String", paramType = "path")
     @GetMapping("/getRoleInfo/{roleId}")
-    public CommonResultInfo<MRoleInfoEntity> getRoleInfo(@PathVariable String roleId){
+    public CommonResultInfo<MRoleInfoEntity> getRoleInfo(@PathVariable String roleId,@RequestHeader String lang){
         log.info("getUserInfo is started.Paramater is userID["+roleId+"]");
-        CommonResultInfo<MRoleInfoEntity> result = roleInfoService.getRoleInfo(roleId);
+        CommonResultInfo<MRoleInfoEntity> result = roleInfoService.getRoleInfo(roleId,lang);
         return result;
     }
 

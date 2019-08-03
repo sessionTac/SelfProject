@@ -314,10 +314,10 @@
         t3. NAME as dictUserStatus
         FROM
         m_user_info AS t1
-        LEFT JOIN t_dict_data AS t2 ON t1.user_type = t2.`value`
+        LEFT JOIN t_dict_data_${languageFlag} AS t2 ON t1.user_type = t2.`value`
         AND t2.dict_type_code = 'usertype'
         AND t2.delete_flg = 0
-        LEFT JOIN t_dict_data AS t3 ON t1.user_status = t3.`value`
+        LEFT JOIN t_dict_data_${languageFlag} AS t3 ON t1.user_status = t3.`value`
         AND t3.dict_type_code = 'userstatus'
         AND t3.delete_flg = 0
         WHERE
@@ -342,10 +342,10 @@
         t3. NAME as dictUserStatus
         FROM
         m_user_info AS t1
-        LEFT JOIN t_dict_data AS t2 ON t1.user_type = t2.`value`
+        LEFT JOIN t_dict_data_${lang} AS t2 ON t1.user_type = t2.`value`
         AND t2.dict_type_code = 'usertype'
         AND t2.delete_flg = 0
-        LEFT JOIN t_dict_data AS t3 ON t1.user_status = t3.`value`
+        LEFT JOIN t_dict_data_${lang} AS t3 ON t1.user_status = t3.`value`
         AND t3.dict_type_code = 'userstatus'
         AND t3.delete_flg = 0
         WHERE
@@ -387,7 +387,7 @@
 		AND ur.role_id = #{roleId}
 		LEFT JOIN m_role_info mrole ON mrole.role_id = ur.role_id
 		LEFT JOIN t_role_function_relation rf ON ur.role_id = rf.role_id
-		LEFT JOIN m_function_info mfunction ON rf.function_id = mfunction.function_id
+		LEFT JOIN m_function_info_${lang} mfunction ON rf.function_id = mfunction.function_id
 		ORDER BY
 			priority ASC
     </select>

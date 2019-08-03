@@ -16,9 +16,9 @@ public interface UserInfoService {
 	
 	CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity, int pageNumber, int pageSize);
 	
-	CommonResultInfo<MUserInfoEntity> getUserInfo(String userId);
+	CommonResultInfo<MUserInfoEntity> getUserInfo(String userId,String lang);
 
-	CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions();
+	CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions(String lang);
 	
 	CommonResultInfo<MUserInfoEntity> getUserCustomerRelationInfo(String userId);
 
@@ -28,7 +28,7 @@ public interface UserInfoService {
 	
 	CommonResultInfo<?> deleteUserInfo(String userId, Authentication auth);
 	
-	CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth);
+	CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth,String lang);
 
 	CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(String userId);
 

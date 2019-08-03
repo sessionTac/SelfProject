@@ -158,7 +158,7 @@
                     ],
                     orderAmount: [
                         {required: true, message: this.$t('Tips.checkOrderAmount'), trigger: 'blur'},
-                        {pattern: /^[0-9]*$/ , trigger: 'blur', message:  this.$t('Tips.numberCheck'),}
+                        {pattern:  /^([0-9]*)+\.{0,1}[0-9]{1,3}$/ , trigger: 'blur', message: this.$t('Tips.floatCheck'),}
                     ],
                     orderDate:[
                         {required: true, message: this.$t('Tips.checkOrderDate'), trigger: 'blur'},

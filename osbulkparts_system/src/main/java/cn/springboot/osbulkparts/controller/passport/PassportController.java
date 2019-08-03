@@ -36,9 +36,9 @@ public class PassportController {
 	@ApiOperation(value="获取用户的权限详细信息", notes="根据Authorization中的用户名和角色ID获取用户的权限详细信息")
 	@ApiImplicitParam(name = "Authorization", value = "登录用户信息", required = true, dataType = "header", paramType = "header")
 	@GetMapping("/userinfo")
-	public Map<String,Object> findUserInfo(@RequestHeader("Authorization") String Authorization, Authentication auth) {
+	public Map<String,Object> findUserInfo(@RequestHeader("Authorization") String Authorization, Authentication auth,@RequestHeader String lang) {
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-		CommonResultInfo<MUserInfoEntity> result = userInfoService.findUserWithRoleAndFunc(principal.getUserName(), principal.getRoleIdSelected(),auth);
+		CommonResultInfo<MUserInfoEntity> result = userInfoService.findUserWithRoleAndFunc(principal.getUserName(), principal.getRoleIdSelected(),auth,lang);
 		MUserInfoEntity userInfo=result.getResult();
 		//获取当前用户的权限列表、地图区域权限、数据权限
 		List<String> functions = new ArrayList<>();

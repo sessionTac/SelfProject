@@ -61,7 +61,7 @@
 		stockInfo.version
 		FROM
 			t_stock_info stockInfo
-		LEFT JOIN t_dict_data dictCate ON stockInfo.material_category = dictCate.`value`
+		LEFT JOIN t_dict_data_${languageFlag} dictCate ON stockInfo.material_category = dictCate.`value`
 		AND dictCate.dict_type_code = 'mattertype'
 		AND dictCate.is_enable = 1
 		AND dictCate.delete_flg = 0
