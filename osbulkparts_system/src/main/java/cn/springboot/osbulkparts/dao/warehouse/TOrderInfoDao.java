@@ -13,6 +13,8 @@ public interface TOrderInfoDao {
     
     int deleteByOrderNo(String orderNo);
     
+    int deleteByOrderNoAndDate(TOrderInfoEntity record);
+    
     int deleteBatchData(@Param("ids") String[] ids,@Param("updateUser") String updateUser,@Param("isDelete") String isDelete);
 
     int insert(TOrderInfoEntity record);
@@ -26,6 +28,8 @@ public interface TOrderInfoDao {
     List<TOrderInfoEntity> selectByIds(@Param("ids") String[] ids);
     
     List<TOrderInfoEntity> selectOrderInfoListByKeys(TOrderInfoEntity torderInfoEntity);
+    
+    TOrderInfoEntity selectInfoByOrderNoAndOrderDate(TOrderInfoEntity torderInfoEntity);
 
     int updateByPrimaryKeySelective(TOrderInfoEntity record);
 

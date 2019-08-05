@@ -1023,6 +1023,13 @@
       #{item}
     </foreach>
   </delete>
+  <delete id="deleteByOrderCodeAndDate" parameterType="cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity">
+  	DELETE
+  	FROM
+  	t_order_detail_info
+    where order_code = #{orderCode,jdbcType=VARCHAR}
+    	AND order_date = #{orderDate,jdbcType=VARCHAR}
+  </delete>
 <!--根据id数组 批量删除数据  逻辑删除-->
   <update id="deleteBatchData">
     update t_order_detail_info

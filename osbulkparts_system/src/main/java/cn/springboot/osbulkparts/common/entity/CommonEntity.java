@@ -20,4 +20,6 @@ public class CommonEntity {
 	private String shipNo;
 	private String transportation;
 	private String billNo;
+	
+	private String isReset;
 }

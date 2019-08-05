@@ -20,7 +20,7 @@ public interface OrderInfoService {
 	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang);
 	
 	@Transactional
-	CommonResultInfo<?> importExcel(MultipartFile excleFile,HttpServletRequest request,Authentication auth,int type,int isBalance);
+	CommonResultInfo<?> importExcel(MultipartFile excleFile,HttpServletRequest request,Authentication auth,int type,int isBalance,String lang);
 	
 	CommonResultInfo<TOrderInfoEntity> selectOrderInfoList(TOrderInfoEntity torderInfoEntity, int pageNumber, int pageSize, Authentication auth);
 	

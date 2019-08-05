@@ -123,12 +123,12 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> importExcel(MultipartFile excleFile, HttpServletRequest request, Authentication auth,int type,int isBalance) {
+	public CommonResultInfo<?> importExcel(MultipartFile excleFile, HttpServletRequest request, Authentication auth,int type,int isBalance,String lang) {
         CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         try {
         	int resultInt = 0;
-        	List<TOrderInfoEntity> orderInfoParams = resolvExcelToDb(excleFile,auth,type,isBalance);
+        	List<TOrderInfoEntity> orderInfoParams = resolvExcelToDb(excleFile,auth,type,isBalance,OSLanguage.localeToTableSuffix(lang));
         	if(orderInfoParams.size() == 0) {
         		result.setMessage(messageBean.getMessage("common.excel.error"));
         	}else {
@@ -686,7 +686,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				torderInfo.setUpdateUser(principal.getUserName());
 				torderInfoDao.updateByPrimaryKeySelective(torderInfo);
 			}
-			torderDetailInfoDao.deleteByOrderCode(orderCodes);
+			// 重新生成时删除已生成的订单详细
+//			if(commonEntity.getIsReset().equals("reset")) {
+//				torderDetailInfoDao.deleteByOrderCode(orderCodes);
+//			}
 			torderDetailInfoDao.insertList(torderDetailInfoList);
 			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("bussiness.order.generate.success"));
@@ -771,7 +774,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	 * Excel文件解析
 	 * @throws Exception 
 	 */
-	private List<TOrderInfoEntity> resolvExcelToDb(MultipartFile excleFile,Authentication auth,int type,int isBalance) throws ParseException,NullPointerException,Exception{
+	private List<TOrderInfoEntity> resolvExcelToDb(MultipartFile excleFile,Authentication auth,int type,int isBalance,String lang) throws ParseException,NullPointerException,Exception{
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
@@ -780,6 +783,8 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			File file = CommonPoiReadUtil.MultipartFileToFile(excleFile);
 			CommonPoiReadUtil poiUtil=new CommonPoiReadUtil(file,true);
 			CommonExcelConfig config=new CommonExcelConfig();
+			
+			BigDecimal zero = new BigDecimal(0);
 			
 			//设置读取参数
 			poiUtil.setReplenishNull(false);
@@ -819,10 +824,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					String ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					String orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -858,10 +863,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					String ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					String orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -882,7 +887,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/**第一周*END**/
 					/**第二周*START**/
 					torderInfoEntity = new TOrderInfoEntity();
@@ -894,10 +901,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -918,7 +925,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/**第二周*END**/
 					/**第三周*START**/
 					torderInfoEntity = new TOrderInfoEntity();
@@ -930,10 +939,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -954,7 +963,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/**第三周*END**/
 					/**第四周*START**/
 					torderInfoEntity = new TOrderInfoEntity();
@@ -966,10 +977,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -990,7 +1001,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/**第四周*END**/
 				}else if(type ==3) {
 					// 按年导入
@@ -1004,10 +1017,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					String ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					String orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1028,8 +1041,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
-					
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***2月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1041,10 +1055,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1065,7 +1079,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***3月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1077,10 +1093,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1101,7 +1117,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***4月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1113,10 +1131,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1137,7 +1155,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***5月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1149,10 +1169,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1173,7 +1193,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***6月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1185,10 +1207,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1209,7 +1231,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***7月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1221,10 +1245,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1245,7 +1269,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***8月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1257,10 +1283,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1281,7 +1307,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***9月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1293,10 +1321,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1317,7 +1345,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***10月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1329,10 +1359,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1353,7 +1383,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***11月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1365,10 +1397,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1389,7 +1421,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && !torderInfoEntity.getOrderAmount().toString().equals("0")) {
+						insertResultLst.add(torderInfoEntity);
+					}
 					/***12月*START**/
 					torderInfoEntity = new TOrderInfoEntity();
 					// 主键ID
@@ -1401,10 +1435,10 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					torderInfoEntity.setOrderCodeDesc((String)mapData.get("型号描述"));
 					// 订单型号单位
 					ordeUnit = getFromDictDataByName(
-							(String)mapData.get("订单型号单位"),"unit","订单型号单位");
+							(String)mapData.get("订单型号单位"),"unit","订单型号单位",lang);
 					torderInfoEntity.setOrderUnit(ordeUnit);
 					orderType = getFromDictDataByName(
-							(String)mapData.get("计划类型"),"orderType","计划类型");
+							(String)mapData.get("计划类型"),"orderType","计划类型",lang);
 					if(orderType == null || orderType.length() ==0||isBalance ==1) {
 						orderType = "1";
 					}
@@ -1425,16 +1459,27 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 					// 版本
 					torderInfoEntity.setVersion(1);
 					torderInfoEntity.setOrderType(orderType);
-					insertResultLst.add(torderInfoEntity);
+					
+					if(StringUtil.isNotEmpty(torderInfoEntity.getOrderDate()) && torderInfoEntity.getOrderAmount()!=zero ) {
+						insertResultLst.add(torderInfoEntity);
+					}
 				}
-				// 成品型号和子件型号组合判定是否存在，存在时更新，不存在时插入
-				int rnt = isExist(torderInfoEntity.getOrderCode(),isBalance);
-				if(rnt == 1) {
-					// 删掉已存在但未生成的订单计划
-					torderInfoDao.deleteByOrderNo(torderInfoEntity.getOrderCode());
-				}
-				else if(rnt == 2) {
-					throw new NullPointerException(messageBean.getMessage("bussiness.order.exist"));
+				for(TOrderInfoEntity torderInfoParam:insertResultLst) {
+					// 成品型号和子件型号组合判定是否存在，存在时更新，不存在时插入
+					int rnt = isExist(torderInfoParam,isBalance,lang);
+					if(rnt == 1) {
+						// 删掉已存在但未生成的订单计划
+						torderInfoDao.deleteByOrderNoAndDate(torderInfoParam);
+					}
+					else if(rnt == 2) {
+						// 删掉已存在但未生成的订单计划
+						torderInfoDao.deleteByOrderNoAndDate(torderInfoParam);
+						// 删除已生成的订单详情
+						TOrderDetailInfoEntity orderDetailInfo = new TOrderDetailInfoEntity();
+						orderDetailInfo.setOrderCode(torderInfoParam.getOrderCode());
+						orderDetailInfo.setOrderDate(torderInfoParam.getOrderDate());
+						torderDetailInfoDao.deleteByOrderCodeAndDate(orderDetailInfo);
+					}
 				}
 			}
 			return insertResultLst;
@@ -1493,13 +1538,15 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	 * @param OrderCode
 	 * @return 1：已存在但未生成；2：已存在且已生成；3：不存在
 	 */
-	private int isExist(String OrderCode,int isBalance) {
+	private int isExist(TOrderInfoEntity orderInfoParam,int isBalance,String lang) {
 		TOrderInfoEntity torderInfoEntity = new TOrderInfoEntity();
-		torderInfoEntity.setOrderCode(OrderCode);
+		torderInfoEntity.setOrderCode(orderInfoParam.getOrderCode());
+		torderInfoEntity.setOrderDate(orderInfoParam.getOrderDate());
 		torderInfoEntity.setIsBalance(String.valueOf(isBalance));
-		List<TOrderInfoEntity> resultList = torderInfoDao.selectOrderInfoListByKeys(torderInfoEntity);
-		if(resultList.size()>0) {
-			if(resultList.get(0).getOrderStatus().equals("0")) {
+		torderInfoEntity.setLanguageFlag(lang);
+		TOrderInfoEntity resultList = torderInfoDao.selectInfoByOrderNoAndOrderDate(torderInfoEntity);
+		if(resultList!=null) {
+			if(resultList.getOrderStatus().equals("0")) {
 				// 已存在但未生成
 				return 1;
 			}else {
@@ -1516,11 +1563,12 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 	 * @param dictType
 	 * @return
 	 */
-	private String getFromDictDataByName(String nameValue,String dictType,String dictTypeCn) {
+	private String getFromDictDataByName(String nameValue,String dictType,String dictTypeCn,String lang) {
 		TDictDataEntity dictDataParam = new TDictDataEntity();
 		try {
 			dictDataParam.setName(nameValue);
 			dictDataParam.setDictTypeCode(dictType);
+			dictDataParam.setLanguageFlag(lang);
 			List<TDictDataEntity> dictDataLst = tDictDataDao.selectByPrimaryKey(dictDataParam);
 			if(dictDataLst.size()>0) {
 				return dictDataLst.get(0).getValue();

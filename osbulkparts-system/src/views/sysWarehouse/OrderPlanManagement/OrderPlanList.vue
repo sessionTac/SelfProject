@@ -251,6 +251,7 @@
                 }) || (this.multipleSelection.length===0))
             },
             generateFlag(){
+
                 return (this.multipleSelection.some(item=>{
                     return item.orderStatus==1
                 }) && this.multipleSelection.some(item=>{

@@ -81,8 +81,8 @@ public class OrderInfoController {
     @PostMapping("/importExcel")
     public CommonResultInfo<?> ImportExcelData(
     		int importType,int isBalance,
-            @RequestParam("file") MultipartFile excleFile, HttpServletRequest request, Authentication auth) {
-        return orderInfoService.importExcel(excleFile,request,auth,importType,isBalance);
+            @RequestParam("file") MultipartFile excleFile, HttpServletRequest request, Authentication auth,@RequestHeader String lang) {
+        return orderInfoService.importExcel(excleFile,request,auth,importType,isBalance,lang);
     }
 
     @ApiOperation(value="生成订单", notes="生成订单")

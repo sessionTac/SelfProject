@@ -81,6 +81,16 @@
         #{item}
     </foreach>
   </select>
+  <select id="selectInfoByOrderNoAndOrderDate" resultMap="BaseResultMap" parameterType="cn.springboot.osbulkparts.entity.TOrderInfoEntity">
+  	SELECT
+  	<include refid="Base_Column_List" />
+	FROM
+		t_order_info
+	WHERE
+		is_delete = 0
+    	AND order_code = #{orderCode,jdbcType=VARCHAR}
+    	AND order_date = #{orderDate,jdbcType=VARCHAR}
+  </select>
   <select id="selectOrderInfoListByKeys" resultMap="BaseResultMap" parameterType="cn.springboot.osbulkparts.entity.TOrderInfoEntity">
 	SELECT
 		orderInfo.id,
@@ -191,7 +201,15 @@
   </delete>
   <delete id="deleteByOrderNo" parameterType="java.lang.String">
     delete from t_order_info
-    where order_code = #{orderNo,jdbcType=VARCHAR}
+    where order_code = #{orderCode,jdbcType=VARCHAR}
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderDate)">
+    	AND order_date = #{orderDate,jdbcType=VARCHAR}
+    </if>
+  </delete>
+   <delete id="deleteByOrderNoAndDate" parameterType="cn.springboot.osbulkparts.entity.TOrderInfoEntity">
+    delete from t_order_info
+    where order_code = #{orderCode,jdbcType=VARCHAR}
+    	AND order_date = #{orderDate,jdbcType=VARCHAR}
   </delete>
   <update id="deleteBatchData">
   	update t_order_info
