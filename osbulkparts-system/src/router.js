@@ -59,7 +59,7 @@ export const constantRoutes = [
                     icon: 'userinfo',
                     noCache: true,
                     breadcrumb: true,
-                    keepAlive: true,
+                    keepAlive: false,
                     requiresPermission: 'maintenance:system:users:info:view', }
             },
             {
@@ -67,7 +67,7 @@ export const constantRoutes = [
                 component: () => import('@/views/sysUsers/UserRole.vue'),
                 name: 'roleFunction',
                 meta: { title: 'rolePermission',
-                  icon: 'rolePermission', noCache: true,breadcrumb: true,keepAlive: true,
+                  icon: 'rolePermission', noCache: true,breadcrumb: true,keepAlive: false,
                     requiresPermission: 'maintenance:system:users:role:view'}
             }
         ]
@@ -84,7 +84,7 @@ export const constantRoutes = [
                 component: () => import('@/views/sysConfig/Dictionary.vue'),
                 name: 'dictionary',
                 meta: { title: 'dictionary',icon: 'dictionary',
-                    noCache: true,breadcrumb: true,keepAlive: true,
+                    noCache: true,breadcrumb: true,keepAlive: false,
                     requiresPermission: 'maintenance:system:dictionary'}
             },
             {
@@ -95,7 +95,7 @@ export const constantRoutes = [
                     title: 'categories',
                     breadcrumbTitle: '字典分类',
                     requiresPermission: 'maintenance:system:dictionary:type',
-                    activeMenuKey: 'BasicsDictionary',keepAlive: true
+                    activeMenuKey: 'BasicsDictionary',keepAlive: false
                 },
             }
         ]
@@ -111,7 +111,7 @@ export const constantRoutes = [
                 path: 'basicsDataMatter',
                 component: () => import('@/views/sysBasedata/MatterList.vue'),
                 name: 'basicsDataMatter',
-                meta: { title: 'basicsDataMatter',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: true,
+                meta: { title: 'basicsDataMatter',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: false,
                     requiresPermission: 'maintenance:basis:matter:info:view'},
 
             },
@@ -119,7 +119,7 @@ export const constantRoutes = [
                 path: 'basicsDataSupplier',
                 component: () => import('@/views/sysBasedata/SupplierList.vue'),
                 name: 'basicsDataSupplier',
-                meta: { title: 'basicsDataSupplier',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: true,
+                meta: { title: 'basicsDataSupplier',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: false,
                 requiresPermission: 'maintenance:basis:supplier:info:view', },
             }
         ]

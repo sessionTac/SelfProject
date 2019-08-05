@@ -96,7 +96,7 @@
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:order:info:delete')" :disabled="generateFlag" @click="deleteMatter" icon="el-icon-delete" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:warehouse:order:info:delete')" :disabled="multipleSelection.length==0" @click="deleteMatter" icon="el-icon-delete" >
                         {{$t('searchFrom.delete')}}
                     </el-button>
                 </el-form-item>
@@ -253,7 +253,9 @@
             generateFlag(){
                 return (this.multipleSelection.some(item=>{
                     return item.orderStatus==1
-                }) || (this.multipleSelection.length===0))
+                }) && this.multipleSelection.some(item=>{
+                    return item.orderStatus==0
+                })) || (this.multipleSelection.length===0)
             },
             ...mapState({
                 language:state=>state.app.language
