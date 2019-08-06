@@ -398,7 +398,16 @@
                       this.multipleSelection.forEach(item=>{
                           this.idsStr.push(item.id)
                       });
-                      activityService.generateById({idsStr:this.idsStr}).then(resp => {
+                      let flag = this.multipleSelection.some(item=>{
+                          return item.orderStatus==1
+                      });
+                      let isReset ;
+                      if (flag){
+                          isReset="reset"
+                      }else {
+                          isReset="none"
+                      }
+                      activityService.generateById({idsStr:this.idsStr,isReset:isReset}).then(resp => {
                           if (resp.data.code=="201"){
                               this.$notify({message: resp.data.message, type: "success"});
                               this.exec_search({search_keys:this.search_keys, pageNum:1})
