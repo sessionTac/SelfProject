@@ -21,7 +21,7 @@
         </el-form-item>
 
         <el-form-item label=" " label-width="40px" style="float: right">
-          <el-button type="primary"  @click="exec_search({search_keys, pageNum:1})" native-type="submit" >
+          <el-button type="primary"  @click="exec_search({search_keys, pageNum:1})"  >
             <i class="fa fa-search" aria-hidden="true"></i> {{$t('searchFrom.search')}}
           </el-button>
         </el-form-item>

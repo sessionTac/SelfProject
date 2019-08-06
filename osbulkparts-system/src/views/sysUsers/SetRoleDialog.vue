@@ -7,7 +7,7 @@
           <el-input :placeholder="$t('searchFrom.roleName')" v-model="search_keys.roleName" size="mini" clearable></el-input>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary" @click=" inquire({search_keys})" native-type="submit">
+          <el-button type="primary" @click=" inquire({search_keys})" >
             <i class="fa fa-search" aria-hidden="true"></i>{{$t('searchFrom.search')}}
           </el-button>
         </el-form-item>
