@@ -687,9 +687,9 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 				torderInfoDao.updateByPrimaryKeySelective(torderInfo);
 			}
 			// 重新生成时删除已生成的订单详细
-//			if(commonEntity.getIsReset().equals("reset")) {
-//				torderDetailInfoDao.deleteByOrderCode(orderCodes);
-//			}
+			if(commonEntity.getIsReset().equals("reset")) {
+				torderDetailInfoDao.deleteByOrderCode(orderCodes);
+			}
 			torderDetailInfoDao.insertList(torderDetailInfoList);
 			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 			result.setMessage(messageBean.getMessage("bussiness.order.generate.success"));

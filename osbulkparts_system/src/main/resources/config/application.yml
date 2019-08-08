@@ -1,8 +1,8 @@
 #======BASE CONFIG AREA START=====#
 server:
   port: 8081
-  url: '127.0.0.1'
-  #url: '118.190.59.142'
+  #url: '127.0.0.1'
+  url: '118.190.59.142'
 spring:
   application:
     name: osbulkparts
@@ -14,8 +14,8 @@ spring:
     driver-class-name: com.mysql.jdbc.Driver
     url: jdbc:mysql://${server.url}/osbulkparts?useUnicode=true&characterEncoding=utf-8&allowMultiQueries=true&useSSL=false
     username: root
-    password: 123456
-    #password: zjgljmz@123
+    #password: 123456
+    password: zjgljmz@123
     # 初始化大小，最小，最大
     initialSize: 1
     minIdle: 3

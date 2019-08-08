@@ -206,7 +206,9 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			if(principal.getUserType()==4) {
 				materialInfoEntity.setFactoryCode(principal.getUserName());
 			}
-			materialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+			if(!principal.getUserType().equals("1")) {
+				materialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+			}
 			PageHelper.startPage(pageNumber, pageSize);
 			PageInfo<MMaterialInfoEntity> pageInfo = new PageInfo<>(
 					mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity));
@@ -525,49 +527,50 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				row.createCell(17).setCellValue(example.getHsNo());
 				//供应商编码
 				row.createCell(18).setCellValue(example.getSupplierCode());
+				row.createCell(19).setCellValue(example.getMSupplierInfoEntity().getSupplierNameCn());
 				//配额
 				if(example.getMaterialQuota()!=null && example.getMaterialQuota().getMaterialQuota()!=null) {
-					row.createCell(19).setCellStyle(numstyle);
-					row.createCell(19).setCellType(CellType.NUMERIC);
-					row.createCell(19).setCellValue(Double.parseDouble(example.getMaterialQuota().getMaterialQuota().toString()));	
-				}else {
-					row.createCell(19).setCellValue("");
-				}
-				//损耗
-				if(example.getMaterialLossRate()!=null) {
 					row.createCell(20).setCellStyle(numstyle);
 					row.createCell(20).setCellType(CellType.NUMERIC);
-					row.createCell(20).setCellValue(Double.parseDouble(example.getMaterialLossRate().toString()));
+					row.createCell(20).setCellValue(Double.parseDouble(example.getMaterialQuota().getMaterialQuota().toString()));	
 				}else {
 					row.createCell(20).setCellValue("");
 				}
-				//长
-				if(example.getLength()!=null) {
+				//损耗
+				if(example.getMaterialLossRate()!=null) {
 					row.createCell(21).setCellStyle(numstyle);
 					row.createCell(21).setCellType(CellType.NUMERIC);
-					row.createCell(21).setCellValue(Double.parseDouble(example.getLength().toString()));
+					row.createCell(21).setCellValue(Double.parseDouble(example.getMaterialLossRate().toString()));
 				}else {
 					row.createCell(21).setCellValue("");
 				}
-				//宽
-				if(example.getWidth()!=null) {
+				//长
+				if(example.getLength()!=null) {
 					row.createCell(22).setCellStyle(numstyle);
 					row.createCell(22).setCellType(CellType.NUMERIC);
-					row.createCell(22).setCellValue(Double.parseDouble(example.getWidth().toString()));
+					row.createCell(22).setCellValue(Double.parseDouble(example.getLength().toString()));
 				}else {
 					row.createCell(22).setCellValue("");
+				}
+				//宽
+				if(example.getWidth()!=null) {
+					row.createCell(23).setCellStyle(numstyle);
+					row.createCell(23).setCellType(CellType.NUMERIC);
+					row.createCell(23).setCellValue(Double.parseDouble(example.getWidth().toString()));
+				}else {
+					row.createCell(23).setCellValue("");
 				}
 
 				//高
 				if(example.getHeight()!=null) {
-					row.createCell(23).setCellStyle(numstyle);
-					row.createCell(23).setCellType(CellType.NUMERIC);
-					row.createCell(23).setCellValue(Double.parseDouble(example.getHeight().toString()));
+					row.createCell(24).setCellStyle(numstyle);
+					row.createCell(24).setCellType(CellType.NUMERIC);
+					row.createCell(24).setCellValue(Double.parseDouble(example.getHeight().toString()));
 				}else {
-					row.createCell(23).setCellValue("");
+					row.createCell(24).setCellValue("");
 				}
 				// 备注
-				row.createCell(24).setCellValue(example.getUserDefined1());
+				row.createCell(25).setCellValue(example.getUserDefined1());
 
 			}
 			workbook.write(os);
