@@ -4,13 +4,13 @@
       <i class="iconfont icon-language svg-icon" />
     </div>
     <el-dropdown-menu slot="dropdown">
-      <el-dropdown-item :disabled="language==='zh'" command="zh">
+      <el-dropdown-item :disabled="language=='zh'" command="zh">
         中文
       </el-dropdown-item>
-      <el-dropdown-item :disabled="language==='en'" command="en">
+      <el-dropdown-item :disabled="language=='en'" command="en">
         English
       </el-dropdown-item>
-      <el-dropdown-item :disabled="language==='ru'" command="ru">
+      <el-dropdown-item :disabled="language=='ru'" command="ru">
         русский язык
       </el-dropdown-item>
     </el-dropdown-menu>
@@ -18,11 +18,17 @@
 </template>
 
 <script>
+
+  import { mapGetters,mapState } from 'vuex'
 export default {
+
   computed: {
-    language() {
-      return this.$store.getters.language
-    }
+    // language() {
+    //   return this.$store.getters.language
+    // },
+    ...mapState({
+      language:state=>state.app.language
+    }),
   },
   methods: {
     handleSetLanguage(lang) {
