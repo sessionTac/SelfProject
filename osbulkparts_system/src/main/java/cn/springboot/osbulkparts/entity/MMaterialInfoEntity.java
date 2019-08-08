@@ -308,6 +308,10 @@ public class MMaterialInfoEntity implements Serializable {
 	 * 物料供货模式分类标识
 	*/
 	private TDictDataEntity dictMaterialSupplyMode;
+    /**
+     * 供应商
+     */
+    private MSupplierInfoEntity mSupplierInfoEntity;
 
     private String languageFlag;
 

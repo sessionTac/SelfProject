@@ -11,6 +11,7 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.CellStyle;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.DataFormat;
 import org.apache.poi.ss.usermodel.FillPatternType;
 import org.apache.poi.ss.usermodel.IndexedColors;
@@ -24,7 +25,8 @@ import com.github.pagehelper.util.StringUtil;
 
 import cn.springboot.osbulkparts.common.CommonBusinessException;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
-import cn.springboot.osbulkparts.dao.warehouse.TOrderDetailInfoDao;
+import cn.springboot.osbulkparts.dao.report.ReportOrderDetailInfoDao;
+import cn.springboot.osbulkparts.entity.ReportOrderDetailInfoEntity;
 import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 import cn.springboot.osbulkparts.service.ReportOrderDetailService;
 
@@ -34,12 +36,12 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
     @Autowired
     private I18nMessageBean messageBean;
     @Autowired
-    private TOrderDetailInfoDao tOrderDetailInfoDao;
+    private ReportOrderDetailInfoDao reportDao;
     
 	@Override
 	public ResponseEntity<byte[]> DownloadReportOrderDetail(TOrderDetailInfoEntity tOrderDetailInfoEntity) {
 		String[] title = messageBean.getMessage("file.title.report.orderDetail").split(",");
-		List<TOrderDetailInfoEntity> resultList = tOrderDetailInfoDao.getReportOrderDetailInfo(tOrderDetailInfoEntity);
+		List<ReportOrderDetailInfoEntity> resultList = reportDao.getReportOrderDetailInfo(tOrderDetailInfoEntity);
 		ResponseEntity<byte[]> result = educeExcel(title,resultList);
 		return result;
 	}
@@ -50,7 +52,7 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
 	 * @param list 向单元格插入数据
 	 * @return
 	 */
-	private ResponseEntity<byte[]> educeExcel(String[] titles,List<TOrderDetailInfoEntity> list){
+	private ResponseEntity<byte[]> educeExcel(String[] titles,List<ReportOrderDetailInfoEntity> list){
 		ResponseEntity<byte[]> response = null;
 		//创建Excel对象
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -69,6 +71,7 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
 				cell = row.createCell(i);//列索引从0开始
 				cell.setCellValue(titles[i]);//列名1
 			};
+			
 			CellStyle  style =  workbook.createCellStyle();
 			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);  
 			style.setFillForegroundColor(IndexedColors.RED.getIndex());     
@@ -78,7 +81,8 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
 			//设置单元格的值  
 			for (int i = 0; i < list.size(); i++) {
 				row = sheet.createRow(i+1);
-				TOrderDetailInfoEntity example = list.get(i);
+				ReportOrderDetailInfoEntity example = list.get(i);
+				String[] dateAnd = example.getOrderDate().split(",");
 				//物料专用号
 				row.createCell(0).setCellValue(example.getMaterialCode());
 				//物料中文描述
@@ -87,20 +91,30 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
 				row.createCell(2).setCellValue(example.getMaterialDescEn());
 				//物料俄文描述
 				row.createCell(3).setCellValue(example.getMaterialDescRn());
+				//单耗
+				row.createCell(4).setCellType(CellType.NUMERIC);
+				row.createCell(4).setCellValue(
+						example.getMaterialAmount() != null?Double.parseDouble(example.getMaterialAmount().toString()):null);
 				//供应商编码
-				row.createCell(4).setCellValue(example.getMaterialSupplierNo());
+//				row.createCell(4).setCellValue(example.getMaterialSupplierNo());
 				//供应商中文名称
 				row.createCell(5).setCellValue(example.getMSupplierInfoEntity().getSupplierNameCn());
+				//最小装箱量
+//				row.createCell(6).setCellType(CellType.NUMERIC);
+//				row.createCell(6).setCellValue(
+//						example.getMaterialMinpackageAmt()!=null?Double.parseDouble(example.getMaterialMinpackageAmt().toString()):null);
 				//订单日期
-				row.createCell(6).setCellValue(changeDate2Display(example.getOrderDate(),"yyyy/MM/dd"));
+				row.createCell(7).setCellValue(changeDate2Display(example.getOrderDate(),"yyyy/MM/dd"));
 				//单位
-				row.createCell(7).setCellValue(example.getDictMaterialUnit()!=null?example.getDictMaterialUnit().getName():"");
+//				row.createCell(7).setCellValue(example.getDictMaterialUnit()!=null?example.getDictMaterialUnit().getName():"");
 				//总计
-				row.createCell(8).setCellValue(example.getMaterialAmount()!=null?example.getMaterialAmount().toString():"");
+				row.createCell(8).setCellType(CellType.NUMERIC);
+				row.createCell(8).setCellValue(
+						example.getAmountTotal()!=null?Double.parseDouble(example.getAmountTotal().toString()):null);
 				//换算后单位
-				row.createCell(9).setCellValue(example.getDictRelationUnit()!=null?example.getDictRelationUnit().getName():"");
+//				row.createCell(9).setCellValue(example.getDictRelationUnit()!=null?example.getDictRelationUnit().getName():"");
 				//换算后数量
-				row.createCell(10).setCellValue(example.getMaterialRelationQuantity()!=null?example.getMaterialRelationQuantity().toString():"");
+//				row.createCell(10).setCellValue(example.getMaterialRelationQuantity()!=null?example.getMaterialRelationQuantity().toString():"");
 			}
 			workbook.write(os);
 			workbook.close();

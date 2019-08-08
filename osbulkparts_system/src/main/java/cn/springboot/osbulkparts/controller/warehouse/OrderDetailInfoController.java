@@ -144,8 +144,8 @@ public class OrderDetailInfoController {
     @PostMapping("/exportData")
     public Object downExcel(@RequestBody TOrderDetailInfoEntity tOrderDetailInfoEntity,@RequestHeader String lang) {
         tOrderDetailInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		ResponseEntity<byte[]> response = orderDetailInfoService.downloadExcel(tOrderDetailInfoEntity);
-//		ResponseEntity<byte[]> response = reportOrderDetailService.DownloadReportOrderDetail(tOrderDetailInfoEntity);
+//		ResponseEntity<byte[]> response = orderDetailInfoService.downloadExcel(tOrderDetailInfoEntity);
+		ResponseEntity<byte[]> response = reportOrderDetailService.DownloadReportOrderDetail(tOrderDetailInfoEntity);
 		return response;
     }
 

@@ -100,6 +100,12 @@
                  javaType="cn.springboot.osbulkparts.entity.TMaterialQuotaEntity">
         <result property="materialQuota" column="material_quota"/>
     </association>
+    <!--供应商-->
+    <association property="mSupplierInfoEntity"
+                 javaType="cn.springboot.osbulkparts.entity.MSupplierInfoEntity">
+      <result property="supplierCode" column="supplier_code"/>
+      <result property="supplierNameCn" column="supplierName"/>
+    </association>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
@@ -136,6 +142,7 @@
 			material.material_desc_rn,
 			material.hs_no,
 			material.supplier_code,
+			t12.supplier_name_cn as supplierName,
 			quota.material_quota as material_quota,
 			material.material_unit,
 			material.material_amount,
@@ -218,6 +225,8 @@
 		AND dictConvertRelation.dict_type_code = 'converRelation'
 		AND dictConvertRelation.is_enable = 1
 		AND dictConvertRelation.delete_flg = 0
+	    LEFT JOIN m_supplier_info AS t12 ON material.supplier_code = t12.supplier_code
+	    AND t12.is_delete = 0
 <!-- 		(SELECT max(t1.version) AS version,t1.material_code FROM m_material_info t1 WHERE t1.is_delete = 0 GROUP BY t1.material_code) maxVersion -->
 		WHERE
 			material.is_delete = 0
