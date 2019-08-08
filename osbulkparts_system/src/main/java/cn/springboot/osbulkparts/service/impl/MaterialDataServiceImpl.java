@@ -206,7 +206,9 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			if(principal.getUserType()==4) {
 				materialInfoEntity.setFactoryCode(principal.getUserName());
 			}
-			materialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+			if(!principal.getUserType().equals("1")) {
+				materialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+			}
 			PageHelper.startPage(pageNumber, pageSize);
 			PageInfo<MMaterialInfoEntity> pageInfo = new PageInfo<>(
 					mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity));
