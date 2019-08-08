@@ -48,6 +48,7 @@
 <script>
   import ui_config from '@/config/ui_config'
   import activityService from '@/api/basedata/matter'
+  import Viewer from 'viewerjs';
   export default {
     name: "ReceiveGoods",
     props:{
@@ -64,6 +65,7 @@
           materialCode:"",
           supplierCode:"",
         },
+        viewer_instance: null,
         search_result         : [],
       }
     },
@@ -75,6 +77,11 @@
       // });
       this.exec_search();
     },
+    destroyed() {
+      if (this.viewer_instance) {
+        this.viewer_instance.destroy();
+      }
+    },
     methods:{
       price(row, column, cellValue, index){
         if (cellValue) {
@@ -84,7 +91,25 @@
         }
       },
       toImg(filePath,fileName) {
+        let options = {
+          hidden: evt => viewer.destroy(),
+        };
+        //取当前最大的z-index
+        let wrappers = Array.from(document.getElementsByClassName('el-dialog__wrapper'));
+        let max_zIndex = wrappers.map(el => el.style.zIndex || 0).reduce(Math.max, 0);
+        let zIndex = max_zIndex ? max_zIndex + 10 : undefined;
 
+        if (zIndex) {
+          options.zIndex = zIndex;
+        }
+
+        let el = document.createElement('img');
+        el.src = `/upload/`+fileName;
+
+
+        const viewer = new Viewer(el, options);
+        viewer.show();
+        this.viewer_instance = viewer;
       },
       exec_search() {
         activityService.findMaterialPriceAndFile({materialCode:this.materialCode,supplierCode:this.supplierCode}).then(resp => {

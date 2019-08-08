@@ -54,5 +54,5 @@
 
 <style scoped>
   .home-layer { position:absolute; left:0; top:0; width:100%; height:100%; }
-  .el-menu-vertical-demo:not(.el-menu--collapse) { min-width:220px; max-width:220px; }
+  .el-menu-vertical-demo:not(.el-menu--collapse) { min-width:240px; max-width:220px; }
 </style>
