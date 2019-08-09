@@ -43,6 +43,7 @@ public enum CommonConstantEnum {
     		return typeLocalName[2];
     	}
 		return typeLocalName[0];
+<<<<<<< Updated upstream
     }
 	public String getTypeName() {
 		String[] typeLocalName = this.typeName.split(",");
@@ -50,6 +51,16 @@ public enum CommonConstantEnum {
 	}
 
 	/**
+=======
+    }  
+    
+    public String getTypeName() {  
+    	String[] typeLocalName = this.typeName.split(",");
+		return typeLocalName[0];
+    }  
+    
+    /** 
+>>>>>>> Stashed changes
      * 根据类型的名称，返回类型的枚举实例。 
      * 
      * @param typeName 类型名称 
