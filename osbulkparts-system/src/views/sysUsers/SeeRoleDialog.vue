@@ -8,6 +8,7 @@
                 ref="table">
         <el-table-column prop="roleId" :label="$t('pageTable.roleNo')" ></el-table-column>
         <el-table-column prop="mroleInfoEntity.roleName" :label="$t('pageTable.roleName')" ></el-table-column>
+        <el-table-column prop="mroleInfoEntity.roleDesc" :label="$t('pageTable.roleExplain')" ></el-table-column>
       </el-table>
     </div>
   </el-dialog>

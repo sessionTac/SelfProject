@@ -74,7 +74,9 @@ public class GoodsListServiceImpl implements GoodsListService {
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),tDeliverInfoEntity.getLanguageFlag());
         try {
-            tDeliverInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+        	if(principal.getUserType()!=1) {
+        		tDeliverInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+        	}
             PageHelper.startPage(pageNumber, pageSize);
             PageInfo<TDeliverInfoEntity> pageInfo = new PageInfo<>(
                     tDeliverInfoDao.selectTDeliverInfoList(tDeliverInfoEntity));

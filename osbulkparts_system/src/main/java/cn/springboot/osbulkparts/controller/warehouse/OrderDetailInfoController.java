@@ -142,10 +142,10 @@ public class OrderDetailInfoController {
     @ApiOperation(value="订单计划导出", notes="订单计划导出")
     @ApiImplicitParam(name = "tOrderDetailInfoEntity", value = "订单详情信息实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/exportData")
-    public Object downExcel(@RequestBody TOrderDetailInfoEntity tOrderDetailInfoEntity,@RequestHeader String lang) {
+    public Object downExcel(@RequestBody TOrderDetailInfoEntity tOrderDetailInfoEntity,@RequestHeader String lang, Authentication auth) {
         tOrderDetailInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 //		ResponseEntity<byte[]> response = orderDetailInfoService.downloadExcel(tOrderDetailInfoEntity);
-		ResponseEntity<byte[]> response = reportOrderDetailService.DownloadReportOrderDetail(tOrderDetailInfoEntity,OSLanguage.localeToVueSuffix(lang));
+		ResponseEntity<byte[]> response = reportOrderDetailService.DownloadReportOrderDetail(tOrderDetailInfoEntity,OSLanguage.localeToVueSuffix(lang), auth);
 		return response;
     }
 

@@ -196,7 +196,7 @@
                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
               </template>
             </el-form-item>
-            <el-form-item :label="$t('pageTable.MatterSupplierCode')" prop="factoryCode">
+            <el-form-item :label="$t('pageTable.MatterFactoryCode')" prop="factoryCode">
               <el-input v-model="form.factoryCode" class="search-form-item-input" style="width: 160px" size="mini"
                          clearable></el-input>
               <template slot="error" slot-scope="scope">
@@ -367,7 +367,7 @@
             {required: true, message: this.$t('Tips.checkMaterialCategory'), trigger: 'change'}
           ],
           materialDescCn: [
-            {required: true, message:  this.$t('Tips.checkMaterialDescCn'), trigger: 'blur'},
+            {required: false, message:  this.$t('Tips.checkMaterialDescCn'), trigger: 'blur'},
             {max: 200, message:  this.$t('Tips.lentghGT200'), trigger: 'blur'},
           ],
           supplierCode: [

@@ -115,7 +115,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
         	MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),tOrderDetailInfoEntity.getLanguageFlag());
-            if(!principal.getUserType().equals("1")) {
+            if(principal.getUserType()!=1) {
             	tOrderDetailInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
             }
             PageHelper.startPage(pageNumber, pageSize);

@@ -19,14 +19,18 @@ import org.apache.poi.ss.usermodel.IndexedColors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriUtils;
 
 import com.github.pagehelper.util.StringUtil;
 
 import cn.springboot.osbulkparts.common.CommonBusinessException;
+import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.report.ReportOrderDetailInfoDao;
+import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
+import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import cn.springboot.osbulkparts.entity.ReportOrderDetailInfoEntity;
 import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 import cn.springboot.osbulkparts.service.ReportOrderDetailService;
@@ -38,10 +42,17 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
     private I18nMessageBean messageBean;
     @Autowired
     private ReportOrderDetailInfoDao reportDao;
+    @Autowired
+    private MRoleInfoDao mroleInfoDao;
     
 	@Override
-	public ResponseEntity<byte[]> DownloadReportOrderDetail(TOrderDetailInfoEntity tOrderDetailInfoEntity, Locale locale) {
+	public ResponseEntity<byte[]> DownloadReportOrderDetail(TOrderDetailInfoEntity tOrderDetailInfoEntity, Locale locale, Authentication auth) {
 		messageBean.setLocale(null,null,locale);
+		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
+		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),tOrderDetailInfoEntity.getLanguageFlag());
+        if(principal.getUserType()!=1) {
+        	tOrderDetailInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+        }
 		String[] title = messageBean.getMessage("file.title.report.orderDetail").split(",");
 		List<ReportOrderDetailInfoEntity> resultList = reportDao.getReportOrderDetailInfo(tOrderDetailInfoEntity);
 		ResponseEntity<byte[]> result = educeExcel(title,resultList,locale);
@@ -110,9 +121,12 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
 				row.createCell(7).setCellValue(changeDate2Display(example.getOrderDate(),"yyyy/MM/dd"));
 				//单位
 //				row.createCell(7).setCellValue(example.getDictMaterialUnit()!=null?example.getDictMaterialUnit().getName():"");
-				//总计
+				//订单数量
 				row.createCell(8).setCellType(CellType.NUMERIC);
-				row.createCell(8).setCellValue(
+				row.createCell(8).setCellValue(example.getOrderAmount()!=null?Double.parseDouble(example.getOrderAmount().toString()):null);
+				//总计
+				row.createCell(9).setCellType(CellType.NUMERIC);
+				row.createCell(9).setCellValue(
 						example.getAmountTotal()!=null?Double.parseDouble(example.getAmountTotal().toString()):null);
 				//换算后单位
 //				row.createCell(9).setCellValue(example.getDictRelationUnit()!=null?example.getDictRelationUnit().getName():"");

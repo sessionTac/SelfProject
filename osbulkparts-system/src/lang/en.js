@@ -154,6 +154,7 @@ export default {
     MatterHSCustomsNumber:"HSCustomsNumber",
     MatterSupplierCode:"SupplierCode",
     MatterSupplierName:"SupplierName",
+    MatterFactoryCode:"AgentCode",
     MatterQuota:"Quota",
     MatterLong:"Long",
     MatterWide:"Wide",

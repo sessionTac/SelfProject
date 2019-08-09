@@ -41,7 +41,9 @@ public class MaterialQuotaServiceImpl implements MaterialQuotaService{
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),materialQuotaEntity.getLanguageFlag());
-			materialQuotaEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+			if(principal.getUserType()!=1) {
+				materialQuotaEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+			}
 			List<TMaterialQuotaEntity> pageInfo = tmaterialQuotaDao.selectByPrimaryKey(materialQuotaEntity);
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResultList(pageInfo);

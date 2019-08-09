@@ -105,7 +105,7 @@ public class RoleInfoServiceImpl implements RoleInfoService {
         Map<Integer, Object> functionMap = new HashMap<>();
         List<MFunctionInfoEntity> roots = new ArrayList<>();//根节点
 
-        List<MFunctionInfoEntity> list = mFunctionInfoDao.selectTree(lang);
+        List<MFunctionInfoEntity> list = mFunctionInfoDao.selectTree(OSLanguage.localeToTableSuffix(lang));
         list.forEach(f -> functionMap.put(f.getFunctionId(), f));        //映射
         list.forEach(f -> {
             MFunctionInfoEntity parentFunction = (MFunctionInfoEntity) functionMap.get(f.getParentId());//通过父节点id 取对应实体

@@ -131,7 +131,7 @@
 		orderInfo.is_delete = 0
 		AND orderInfo.order_amount &lt;&gt; 0
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
-		AND data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
+		AND orderInfo.data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
     </if>
     <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(id)">
 		AND orderInfo.id = #{id,jdbcType=VARCHAR}

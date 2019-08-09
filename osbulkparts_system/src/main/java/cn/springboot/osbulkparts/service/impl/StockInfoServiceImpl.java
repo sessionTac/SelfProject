@@ -88,7 +88,9 @@ public class StockInfoServiceImpl implements StockInfoService {
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),stockInfoEntity.getLanguageFlag());
 		try {
-			stockInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+			if(principal.getUserType()!=1) {
+				stockInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
+			}
 			PageHelper.startPage(pageNumber, pageSize);
 			PageInfo<TStockInfoEntity> pageInfo = new PageInfo<>(
 					tstockInfoDao.selectByPrimaryKey(stockInfoEntity));

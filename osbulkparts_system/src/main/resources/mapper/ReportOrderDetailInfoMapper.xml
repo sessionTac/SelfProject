@@ -154,6 +154,7 @@
 <!-- 			t0.order_date, -->
             detailInfo.material_minpackage_amt,
             detailInfo.order_date,
+            detailInfo.order_amount,
 			t0.amount_total
 		FROM
 			t_order_detail_info detailInfo

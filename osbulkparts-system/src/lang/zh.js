@@ -154,6 +154,7 @@ export default {
     MatterHSCustomsNumber:"HS海关编号",
     MatterSupplierCode:"供应商代码",
     MatterSupplierName:"供应商名称",
+    MatterFactoryCode:"代理商编码",
     MatterQuota:"配额",
     MatterLong:"长",
     MatterWide:"宽",
