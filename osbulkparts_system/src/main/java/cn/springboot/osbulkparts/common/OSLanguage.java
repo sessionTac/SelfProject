@@ -27,8 +27,8 @@ public class OSLanguage {
         switch(lang) {
             case "en":
                 return "EN";
-//            case "ru":
-//                return "RU";
+            case "ru":
+                return "RU";
             case "zh":
             default:
                 return "CN";
