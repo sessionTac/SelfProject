@@ -36,7 +36,7 @@ public class DictSettingController {
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="50") int pageSize,@RequestHeader String lang){
 		tdictTypeEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		CommonResultInfo<TDictTypeEntity> result = dictTypeSettingService.getDictTypeList(tdictTypeEntity,pageNum,pageSize);
+		CommonResultInfo<TDictTypeEntity> result = dictTypeSettingService.getDictTypeList(tdictTypeEntity,pageNum,pageSize,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -45,7 +45,7 @@ public class DictSettingController {
 	public CommonResultInfo<TDictTypeEntity> getDictType(@RequestHeader String lang){
 		TDictTypeEntity tdictTypeEntity=new TDictTypeEntity();
 		tdictTypeEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		CommonResultInfo<TDictTypeEntity> result = dictTypeSettingService.getDictType(tdictTypeEntity);
+		CommonResultInfo<TDictTypeEntity> result = dictTypeSettingService.getDictType(tdictTypeEntity,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -53,7 +53,7 @@ public class DictSettingController {
 	@ApiImplicitParam(name = "dictTypeId", value = "数据字典类型ID", required = true, dataType = "String", paramType = "path")
 	@GetMapping("/getDictTypeInfo/{dictTypeId}")
 	public CommonResultInfo<TDictTypeEntity> getDictTypeInfo(@PathVariable String dictTypeId,@RequestHeader String lang){
-		CommonResultInfo<TDictTypeEntity> result = dictTypeSettingService.getDictTypeInfo(dictTypeId,lang);
+		CommonResultInfo<TDictTypeEntity> result = dictTypeSettingService.getDictTypeInfo(dictTypeId,lang,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -66,7 +66,7 @@ public class DictSettingController {
 	@GetMapping("/getDictDataInfo/{dictTypeCode}")
 	public CommonResultInfo<TDictDataEntity> getDictDataInfoList(@PathVariable String dictTypeCode,@RequestParam(defaultValue = "1") int pageNum,
 															 @RequestParam(defaultValue="50") int pageSize,@RequestHeader String lang){
-		CommonResultInfo<TDictDataEntity> result = dictDataSettingService.getDictDataInfo(dictTypeCode,pageNum,pageSize,lang);
+		CommonResultInfo<TDictDataEntity> result = dictDataSettingService.getDictDataInfo(dictTypeCode,pageNum,pageSize,lang,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -76,7 +76,7 @@ public class DictSettingController {
 	public CommonResultInfo<?> addDictType(@RequestBody TDictTypeEntity tdictTypeEntity, Authentication auth,@RequestHeader String lang){
 
 		tdictTypeEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		CommonResultInfo<?> result = dictTypeSettingService.addDictTypeInfo(tdictTypeEntity, auth);
+		CommonResultInfo<?> result = dictTypeSettingService.addDictTypeInfo(tdictTypeEntity, auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 
@@ -85,7 +85,7 @@ public class DictSettingController {
 	@PutMapping("/updateDictType")
 	public CommonResultInfo<?> updateDictType(@RequestBody TDictTypeEntity tdictTypeEntity,Authentication auth,@RequestHeader String lang){
 		tdictTypeEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		CommonResultInfo<?> result = dictTypeSettingService.updateDictType(tdictTypeEntity, auth);
+		CommonResultInfo<?> result = dictTypeSettingService.updateDictType(tdictTypeEntity, auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -93,7 +93,7 @@ public class DictSettingController {
 	@ApiImplicitParam(name = "dictTypeId", value = "数据字典类型ID", required = true, dataType = "String", paramType = "path")
 	@DeleteMapping("/deleteDictType/{dictTypeId}")
 	public CommonResultInfo<?> deleteDictType(@PathVariable String dictTypeId,Authentication auth,@RequestHeader String lang){
-		CommonResultInfo<?> result = dictTypeSettingService.deleteDictType(dictTypeId, auth,lang);
+		CommonResultInfo<?> result = dictTypeSettingService.deleteDictType(dictTypeId, auth,lang,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -102,7 +102,7 @@ public class DictSettingController {
 	@GetMapping("/checkNameRepeat")
 	public CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag,@RequestHeader String lang){
 		tdictTypeEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		CommonResultInfo<?> result = dictTypeSettingService.checkNameRepeat(tdictTypeEntity,checkFlag);
+		CommonResultInfo<?> result = dictTypeSettingService.checkNameRepeat(tdictTypeEntity,checkFlag,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -111,7 +111,7 @@ public class DictSettingController {
 	@GetMapping("/checkCodeRepeat")
 	public CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag,@RequestHeader String lang){
 		tdictTypeEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		CommonResultInfo<?> result = dictTypeSettingService.checkCodeRepeat(tdictTypeEntity,checkFlag);
+		CommonResultInfo<?> result = dictTypeSettingService.checkCodeRepeat(tdictTypeEntity,checkFlag,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 
@@ -119,7 +119,7 @@ public class DictSettingController {
 	@ApiImplicitParam(name = "id", value = "tdictdata表主键", required = true, dataType = "body", paramType = "body")
 	@GetMapping("/getTDictDataInfo/{id}")
 	public CommonResultInfo<?> getTDictDataInfo(@PathVariable String id,@RequestHeader String lang){
-		return dictDataSettingService.getDictDataInfoDetail(id,lang);
+		return dictDataSettingService.getDictDataInfoDetail(id,lang,OSLanguage.localeToVueSuffix(lang));
 	}
 
 	@ApiOperation(value="添加数据字典", notes="添加数据字典")
@@ -127,7 +127,7 @@ public class DictSettingController {
 	@PostMapping("/addDictData")
 	public CommonResultInfo<?> addDictType(@RequestBody TDictDataEntity tDictDataEntity, Authentication auth,@RequestHeader String lang){
 		tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		return dictDataSettingService.addDictData(tDictDataEntity,auth);
+		return dictDataSettingService.addDictData(tDictDataEntity,auth,OSLanguage.localeToVueSuffix(lang));
 	}
 
 	@ApiOperation(value="编辑数据字典", notes="修改数据字典的信息")
@@ -135,13 +135,13 @@ public class DictSettingController {
 	@PutMapping("/updateDictData")
 	public CommonResultInfo<?> updateDictType(@RequestBody TDictDataEntity tDictDataEntity,Authentication auth,@RequestHeader String lang){
 		tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		return dictDataSettingService.updateDictData(tDictDataEntity,auth);
+		return dictDataSettingService.updateDictData(tDictDataEntity,auth,OSLanguage.localeToVueSuffix(lang));
 	}
 	@ApiOperation(value="校验字典数据value是否重复", notes="校验字典数据value是否重复")
 	@ApiImplicitParam(name = "TDictDataEntity", value = "数据字实体对象", required = true, dataType = "body", paramType = "body")
 	@GetMapping("/checkValue")
 	public CommonResultInfo<?> checkValue( TDictDataEntity tDictDataEntity,Authentication auth,@RequestHeader String lang){
 		tDictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		return dictDataSettingService.checkValue(tDictDataEntity);
+		return dictDataSettingService.checkValue(tDictDataEntity,OSLanguage.localeToVueSuffix(lang));
 	}
 }

@@ -5,6 +5,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -39,10 +40,11 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
     private ReportOrderDetailInfoDao reportDao;
     
 	@Override
-	public ResponseEntity<byte[]> DownloadReportOrderDetail(TOrderDetailInfoEntity tOrderDetailInfoEntity) {
+	public ResponseEntity<byte[]> DownloadReportOrderDetail(TOrderDetailInfoEntity tOrderDetailInfoEntity, Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		String[] title = messageBean.getMessage("file.title.report.orderDetail").split(",");
 		List<ReportOrderDetailInfoEntity> resultList = reportDao.getReportOrderDetailInfo(tOrderDetailInfoEntity);
-		ResponseEntity<byte[]> result = educeExcel(title,resultList);
+		ResponseEntity<byte[]> result = educeExcel(title,resultList,locale);
 		return result;
 	}
 	/****Private Methods****/
@@ -52,7 +54,8 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
 	 * @param list 向单元格插入数据
 	 * @return
 	 */
-	private ResponseEntity<byte[]> educeExcel(String[] titles,List<ReportOrderDetailInfoEntity> list){
+	private ResponseEntity<byte[]> educeExcel(String[] titles,List<ReportOrderDetailInfoEntity> list, Locale locale){
+		messageBean.setLocale(null,null,locale);
 		ResponseEntity<byte[]> response = null;
 		//创建Excel对象
 		ByteArrayOutputStream os = new ByteArrayOutputStream();

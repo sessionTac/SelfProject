@@ -49,53 +49,53 @@ public class UserInfoController {
 	@GetMapping("/getUserInfo/{userId}")
 	public CommonResultInfo<MUserInfoEntity> getUserInfo(@PathVariable String userId,@RequestHeader String lang){
 		log.info("getUserInfo is started.Paramater is userID["+userId+"]");
-		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfo(userId,lang);
+		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfo(userId,lang,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
 	@ApiOperation(value="获取用户详细信息的下拉选信息", notes="获取下拉选信息")
 	@GetMapping("/getOptions")
 	public CommonResultInfo<Map<String, List<TDictDataEntity>>> findOptions(@RequestHeader String lang){
-		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = userInfoService.getOptions(lang);
+		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = userInfoService.getOptions(lang,OSLanguage.localeToVueSuffix(lang));
 		return  result;
 	}
 
 	@ApiOperation(value="添加用户", notes="添加用户")
 	@ApiImplicitParam(name = "muserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/addUser")
-	public CommonResultInfo<?> addUserInfo(@RequestBody MUserInfoEntity muserInfoEntity, Authentication auth){
-		CommonResultInfo<?> result = userInfoService.addUserInfo(muserInfoEntity, auth);
+	public CommonResultInfo<?> addUserInfo(@RequestBody MUserInfoEntity muserInfoEntity, Authentication auth,@RequestHeader String lang){
+		CommonResultInfo<?> result = userInfoService.addUserInfo(muserInfoEntity, auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
 	@ApiOperation(value="更新用户", notes="更新用户信息")
 	@ApiImplicitParam(name = "muserInfoEntity", value = "用户信息实体对象", required = true, dataType = "body", paramType = "body")
 	@PutMapping("/updateUser")
-	public CommonResultInfo<?> updateUserInfo(@RequestBody MUserInfoEntity muserInfoEntity,Authentication auth){
-		CommonResultInfo<?> result = userInfoService.updateUserInfo(muserInfoEntity, auth);
+	public CommonResultInfo<?> updateUserInfo(@RequestBody MUserInfoEntity muserInfoEntity,Authentication auth,@RequestHeader String lang){
+		CommonResultInfo<?> result = userInfoService.updateUserInfo(muserInfoEntity, auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
 	@ApiOperation(value="删除用户", notes="删除用户（逻辑删除）")
 	@ApiImplicitParam(name = "userId", value = "用户Id", required = true, dataType = "String", paramType = "path")
 	@DeleteMapping("/deleteUser/{userId}")
-	public CommonResultInfo<?> deleteUserInfoById(@PathVariable String userId,Authentication auth){
-		CommonResultInfo<?> result = userInfoService.deleteUserInfo(userId, auth);
+	public CommonResultInfo<?> deleteUserInfoById(@PathVariable String userId,Authentication auth,@RequestHeader String lang){
+		CommonResultInfo<?> result = userInfoService.deleteUserInfo(userId, auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 
 	@ApiOperation(value="获取该用户下角色列表信息", notes="根据用户Id来获取该用户下所有角色")
 	@ApiImplicitParam(name = "userId", value = "用户ID", required = true, dataType = "String", paramType = "path")
 	@GetMapping("/findRole/{userId}")
-	public CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(@PathVariable String userId){
-		return userInfoService.findRoleByUserId(userId);
+	public CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(@PathVariable String userId,@RequestHeader String lang){
+		return userInfoService.findRoleByUserId(userId,OSLanguage.localeToVueSuffix(lang));
 	}
 	@ApiOperation(value="获取所有角色列表信息", notes="获取所有角色")
 	@ApiImplicitParam(name = "mRoleInfoEntity", value = "角色实体类", required = true, dataType = "body", paramType = "query")
 	@GetMapping("/findAllRole")
 	public CommonResultInfo<MRoleInfoEntity> findAllRole (MRoleInfoEntity mRoleInfoEntity,@RequestHeader String lang){
 		mRoleInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		return userInfoService.findAllRole(mRoleInfoEntity);
+		return userInfoService.findAllRole(mRoleInfoEntity,OSLanguage.localeToVueSuffix(lang));
 	}
 
 	@Data
@@ -110,8 +110,8 @@ public class UserInfoController {
 	@ApiOperation(value="给用户添加角色", notes="给用户添加权限")
 	@ApiImplicitParam(name = "InsertRoleForm", value = "添加权限内部类（user Id和roleIds集合）", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/insertRole")
-	public Object insertPower(@RequestBody InsertRoleForm form, Authentication auth) {
-		return userInfoService.insertRole(form.roleIds, form.userId,auth);
+	public Object insertPower(@RequestBody InsertRoleForm form, Authentication auth,@RequestHeader String lang) {
+		return userInfoService.insertRole(form.roleIds, form.userId,auth,OSLanguage.localeToVueSuffix(lang));
 	}
 
 	@ApiOperation(value="校验用户名是否重复", notes="校验用户名是否重复")
@@ -120,8 +120,8 @@ public class UserInfoController {
 			@ApiImplicitParam(name = "checkFlag", value = "判断是添加校验还是修改校验的标志", required = true, dataType = "body", paramType = "body"),
 	})
 	@GetMapping("/checkUserInfo")
-	public CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity, String checkFlag){
-		return userInfoService.checkInfo(mUserInfoEntity,checkFlag);
+	public CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity, String checkFlag,@RequestHeader String lang){
+		return userInfoService.checkInfo(mUserInfoEntity,checkFlag,OSLanguage.localeToVueSuffix(lang));
 	}
 
 	/**
@@ -130,8 +130,8 @@ public class UserInfoController {
 	 * @return
 	 */
 	@PutMapping("/resetPass")
-	public Object resetPass(@RequestBody MUserInfoEntity userInfoEntity, Authentication auth) {
-		return userInfoService.resetPassword(userInfoEntity,auth);
+	public Object resetPass(@RequestBody MUserInfoEntity userInfoEntity, Authentication auth,@RequestHeader String lang) {
+		return userInfoService.resetPassword(userInfoEntity,auth,OSLanguage.localeToVueSuffix(lang));
 	}
 	@Data
 	public static class ChangePassForm {
@@ -144,8 +144,8 @@ public class UserInfoController {
 	 * @return
 	 */
 	@PutMapping("/changePass")
-	public CommonResultInfo<?> changePass(@RequestBody ChangePassForm form, Authentication auth) {
-		return userInfoService.changePassword(form.userInfoEntity,form.inputPassword,auth);
+	public CommonResultInfo<?> changePass(@RequestBody ChangePassForm form, Authentication auth,@RequestHeader String lang) {
+		return userInfoService.changePassword(form.userInfoEntity,form.inputPassword,auth,OSLanguage.localeToVueSuffix(lang));
 	}
 
 }

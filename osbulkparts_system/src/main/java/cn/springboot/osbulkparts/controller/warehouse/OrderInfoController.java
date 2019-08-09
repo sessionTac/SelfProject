@@ -28,7 +28,7 @@ public class OrderInfoController {
     @ApiOperation(value="页面初始化", notes="获取页面初始化数据")
     @GetMapping("/init")
     public Object initViews(@RequestHeader String lang){
-        return orderInfoService.initViews(lang);
+        return orderInfoService.initViews(lang,OSLanguage.localeToVueSuffix(lang));
     }
 
     @ApiOperation(value="获取订单计划列表信息", notes="查询所有订单计划的列表")
@@ -44,7 +44,7 @@ public class OrderInfoController {
             @RequestParam(defaultValue="50") int pageSize,
             HttpServletRequest request, Authentication auth,@RequestHeader String lang){
         tOrderInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-        return orderInfoService.selectOrderInfoList(tOrderInfoEntity,pageNum,pageSize,auth);
+        return orderInfoService.selectOrderInfoList(tOrderInfoEntity,pageNum,pageSize,auth,OSLanguage.localeToVueSuffix(lang));
     }
 
     @ApiOperation(value="获取订单计划信息", notes="根据条件查询订单计划的详细数据")
@@ -52,21 +52,21 @@ public class OrderInfoController {
     @GetMapping("/getOrderInfo")
     public CommonResultInfo<TOrderInfoEntity> getOrderInfo(TOrderInfoEntity tOrderInfoEntity,@RequestHeader String lang){
         tOrderInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-        return orderInfoService.selectOrderInfo(tOrderInfoEntity);
+        return orderInfoService.selectOrderInfo(tOrderInfoEntity,OSLanguage.localeToVueSuffix(lang));
     }
 
     @ApiOperation(value="添加订单计划", notes="添加一条新的订单计划")
     @ApiImplicitParam(name = "tOrderInfoEntity", value = "订单计划实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/addOrderInfo")
-    public CommonResultInfo<?> addOrderInfo(@RequestBody TOrderInfoEntity tOrderInfoEntity,Authentication auth){
-        return orderInfoService.insertOrderInfo(tOrderInfoEntity,auth);
+    public CommonResultInfo<?> addOrderInfo(@RequestBody TOrderInfoEntity tOrderInfoEntity,Authentication auth,@RequestHeader String lang){
+        return orderInfoService.insertOrderInfo(tOrderInfoEntity,auth,OSLanguage.localeToVueSuffix(lang));
     }
 
     @ApiOperation(value="更新订单计划", notes="更新一条新的订单计划")
     @ApiImplicitParam(name = "tOrderInfoEntity", value = "订单计划实体对象", required = true, dataType = "body", paramType = "body")
     @PutMapping("/updateOrderInfo")
-    public CommonResultInfo<?> updateOrderInfo(@RequestBody TOrderInfoEntity tOrderInfoEntity,Authentication auth){
-        return orderInfoService.updateOrderInfo(tOrderInfoEntity,auth);
+    public CommonResultInfo<?> updateOrderInfo(@RequestBody TOrderInfoEntity tOrderInfoEntity,Authentication auth,@RequestHeader String lang){
+        return orderInfoService.updateOrderInfo(tOrderInfoEntity,auth,OSLanguage.localeToVueSuffix(lang));
     }
 
     @ApiOperation(value="删除订单计划", notes="删除一条新的订单计划")
@@ -82,21 +82,21 @@ public class OrderInfoController {
     public CommonResultInfo<?> ImportExcelData(
     		int importType,int isBalance,
             @RequestParam("file") MultipartFile excleFile, HttpServletRequest request, Authentication auth,@RequestHeader String lang) {
-        return orderInfoService.importExcel(excleFile,request,auth,importType,isBalance,lang);
+        return orderInfoService.importExcel(excleFile,request,auth,importType,isBalance,lang,OSLanguage.localeToVueSuffix(lang));
     }
 
     @ApiOperation(value="生成订单", notes="生成订单")
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/generate")
     public CommonResultInfo<?> generateInfo(@RequestBody CommonEntity commonEntity, Authentication auth,@RequestHeader String lang){
-        return orderInfoService.generateOrderDetailInfo(commonEntity,auth,lang);
+        return orderInfoService.generateOrderDetailInfo(commonEntity,auth,lang,OSLanguage.localeToVueSuffix(lang));
     }
 
     @ApiOperation(value="订单计划数据", notes="删除订单计划")
     @ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/deleteOrderInfo")
-    public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
-        return orderInfoService.deleteBatchOrderInfo(commonEntity,auth);
+    public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth,@RequestHeader String lang){
+        return orderInfoService.deleteBatchOrderInfo(commonEntity,auth,OSLanguage.localeToVueSuffix(lang));
     }
 
     @ApiOperation(value="订单计划导出", notes="订单计划导出")
@@ -104,6 +104,6 @@ public class OrderInfoController {
     @PostMapping("/exportData")
     public Object downExcel(@RequestBody TOrderInfoEntity tOrderInfoEntity,@RequestHeader String lang) {
         tOrderInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-        return orderInfoService.downloadExcel(tOrderInfoEntity);
+        return orderInfoService.downloadExcel(tOrderInfoEntity,OSLanguage.localeToVueSuffix(lang));
     }
 }

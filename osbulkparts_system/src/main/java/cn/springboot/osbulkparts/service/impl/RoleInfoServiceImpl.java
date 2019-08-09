@@ -1,9 +1,6 @@
 package cn.springboot.osbulkparts.service.impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +52,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<MRoleInfoEntity> getRoleInfoList(MRoleInfoEntity mRoleInfoEntity, int pageNumber, int pageSize,String lang) {
+    public CommonResultInfo<MRoleInfoEntity> getRoleInfoList(MRoleInfoEntity mRoleInfoEntity, int pageNumber, int pageSize,String lang,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<MRoleInfoEntity> result = new CommonResultInfo<MRoleInfoEntity>();
         try {
             PageHelper.startPage(pageNumber, pageSize);
@@ -76,7 +74,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions(String lang) {
+    public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions(String lang,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
         try {
             TDictDataEntity dictDataParam = new TDictDataEntity();
@@ -99,7 +98,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
      * 查询权限树结构
      */
     @Override
-    public Map<String, Object> getTree( String lang) {
+    public Map<String, Object> getTree(String lang, Locale locale) {
+        messageBean.setLocale(null,null,locale);
         Map<String, Object> ret = new HashMap<>();
 
         Map<Integer, Object> functionMap = new HashMap<>();
@@ -134,7 +134,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
      * 根據id查詢权限
      */
     @Override
-    public Object findPowerByRoleId(String roleId) {
+    public Object findPowerByRoleId(String roleId,Locale locale) {
+        messageBean.setLocale(null,null,locale);
 
         return tRoleFunctionRelationDao.selectPowerByRoleId(roleId);
     }
@@ -145,7 +146,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
     @SuppressWarnings("finally")
     @Transactional
     @Override
-    public Object insertPower(List<Integer> functionIds, String roleId, HttpServletRequest request, Authentication auth) {
+    public Object insertPower(List<Integer> functionIds, String roleId, HttpServletRequest request, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity) auth.getPrincipal();
@@ -157,7 +159,7 @@ public class RoleInfoServiceImpl implements RoleInfoService {
             }
             if (r == functionIds.size()) {
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.POWER.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.POWER.getTypeName(locale)));
             }
         } catch (Exception e) {
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -171,7 +173,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<MRoleInfoEntity> getRoleInfo(String roleId,String lang) {
+    public CommonResultInfo<MRoleInfoEntity> getRoleInfo(String roleId,String lang,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<MRoleInfoEntity> result = new CommonResultInfo<MRoleInfoEntity>();
         try {
             MRoleInfoEntity userInfo = mRoleInfoDao.selectRoleInfo(roleId,OSLanguage.localeToTableSuffix(lang));
@@ -188,7 +191,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<?> checkInfo(MRoleInfoEntity mRoleInfoEntity, String checkFlag) {
+    public CommonResultInfo<?> checkInfo(MRoleInfoEntity mRoleInfoEntity, String checkFlag,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         try {
@@ -199,7 +203,7 @@ public class RoleInfoServiceImpl implements RoleInfoService {
                 if (checkList.size() == 0) {
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 } else {
-                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.ROLE_NAME.getTypeName()));
+                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.ROLE_NAME.getTypeName(locale)));
                 }
             } else if (checkFlag.equals("edit")) {
                 if (
@@ -209,7 +213,7 @@ public class RoleInfoServiceImpl implements RoleInfoService {
                 ) {
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 } else {
-                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.ROLE_NAME.getTypeName()));
+                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.ROLE_NAME.getTypeName(locale)));
                 }
             }
         } catch (Exception e) {
@@ -223,7 +227,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<?> updateRoleInfo(MRoleInfoEntity mRoleInfoEntity, Authentication auth) {
+    public CommonResultInfo<?> updateRoleInfo(MRoleInfoEntity mRoleInfoEntity, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<MRoleInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity) auth.getPrincipal();
@@ -236,10 +241,10 @@ public class RoleInfoServiceImpl implements RoleInfoService {
                 int returnInt = mRoleInfoDao.updateByPrimaryKeySelective(mRoleInfoEntity);
                 if (returnInt > 0) {
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.ROLE.getTypeName()));
+                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.ROLE.getTypeName(locale)));
                 }
             } else {
-                result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.ROLE.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.ROLE.getTypeName(locale)));
             }
         } catch (Exception e) {
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -252,7 +257,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<?> deleteRoleInfo(String roleId, Authentication auth) {
+    public CommonResultInfo<?> deleteRoleInfo(String roleId, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<MRoleInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity) auth.getPrincipal();
@@ -268,7 +274,7 @@ public class RoleInfoServiceImpl implements RoleInfoService {
                 //根据roleId把用户与角色关系表中的有关该角色的信息删除 物理删除
                 tUserRoleRelationDao.deleteByRoleId(roleId);
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.ROLE.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.ROLE.getTypeName(locale)));
             }
         } catch (Exception e) {
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -281,7 +287,8 @@ public class RoleInfoServiceImpl implements RoleInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<?> addRoleInfo(MRoleInfoEntity mRoleInfoEntity, Authentication auth) {
+    public CommonResultInfo<?> addRoleInfo(MRoleInfoEntity mRoleInfoEntity, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<MRoleInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity) auth.getPrincipal();
@@ -294,7 +301,7 @@ public class RoleInfoServiceImpl implements RoleInfoService {
             int returnInt = mRoleInfoDao.insertSelective(mRoleInfoEntity);
             if (returnInt > 0) {
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.ROLE.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.ROLE.getTypeName(locale)));
             }
 
         } catch (Exception e) {

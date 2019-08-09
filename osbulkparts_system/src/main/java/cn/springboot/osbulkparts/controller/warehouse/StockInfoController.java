@@ -33,7 +33,7 @@ public class StockInfoController {
 	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
 	@GetMapping("/init")
 	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(@RequestHeader String lang){
-		return  stockInfoService.initViews(lang);
+		return  stockInfoService.initViews(lang,OSLanguage.localeToVueSuffix(lang));
 	}
 	
 	@ApiOperation(value="获取库存信息列表信息", notes="查询库存信息列表")
@@ -49,7 +49,7 @@ public class StockInfoController {
             @RequestParam(defaultValue="50") int pageSize,
 			HttpServletRequest request, Authentication auth,@RequestHeader String lang){
 		tStockInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		return  stockInfoService.getStockInfoList(tStockInfoEntity,pageNum,pageSize,auth);
+		return  stockInfoService.getStockInfoList(tStockInfoEntity,pageNum,pageSize,auth,OSLanguage.localeToVueSuffix(lang));
 	}
 	
 	@ApiOperation(value="获取库存信息", notes="根据条件查询库存信息的详细数据")
@@ -57,21 +57,21 @@ public class StockInfoController {
 	@GetMapping("/getStockInfo")
 	public CommonResultInfo<TStockInfoEntity> getMaterialInfo(TStockInfoEntity tStockInfoEntity,@RequestHeader String lang){
 		tStockInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		return  stockInfoService.getStockInfoInfo(tStockInfoEntity);
+		return  stockInfoService.getStockInfoInfo(tStockInfoEntity,OSLanguage.localeToVueSuffix(lang));
 	}
 	
     @ApiOperation(value="添加库存数据", notes="添加一条新的库存数据")
     @ApiImplicitParam(name = "tStockInfoEntity", value = "库存实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/addStockInfo")
-	public CommonResultInfo<?> addMaterialInfo(@RequestBody TStockInfoEntity tStockInfoEntity,Authentication auth){
-		return  stockInfoService.insertStockInfo(tStockInfoEntity,auth);
+	public CommonResultInfo<?> addMaterialInfo(@RequestBody TStockInfoEntity tStockInfoEntity,Authentication auth,@RequestHeader String lang){
+		return  stockInfoService.insertStockInfo(tStockInfoEntity,auth,OSLanguage.localeToVueSuffix(lang));
 	}
     
     @ApiOperation(value="更新库存数据", notes="更新一条新的库存数据")
     @ApiImplicitParam(name = "tStockInfoEntity", value = "库存实体对象", required = true, dataType = "body", paramType = "body")
     @PutMapping("/updateStockInfo")
-	public CommonResultInfo<?> updateMaterialInfo(@RequestBody TStockInfoEntity tStockInfoEntity,Authentication auth){
-		return  stockInfoService.updateStockInfo(tStockInfoEntity,auth);
+	public CommonResultInfo<?> updateMaterialInfo(@RequestBody TStockInfoEntity tStockInfoEntity,Authentication auth,@RequestHeader String lang){
+		return  stockInfoService.updateStockInfo(tStockInfoEntity,auth,OSLanguage.localeToVueSuffix(lang));
 	}
 
     
@@ -79,8 +79,8 @@ public class StockInfoController {
     @ApiImplicitParam(name = "excleFile", value = "库存数据文件", required = true, dataType = "body", paramType = "body")
     @PostMapping("/importExcel")
     public CommonResultInfo<?> ImportExcelData(
-            @RequestParam("file") MultipartFile excleFile,HttpServletRequest request,Authentication auth) {
-		return  stockInfoService.importExcel(excleFile,request,auth);
+            @RequestParam("file") MultipartFile excleFile,HttpServletRequest request,Authentication auth,@RequestHeader String lang) {
+		return  stockInfoService.importExcel(excleFile,request,auth,OSLanguage.localeToVueSuffix(lang));
     }
     
 
@@ -88,8 +88,8 @@ public class StockInfoController {
 	@ApiOperation(value="删除库存数据", notes="删除库存数据")
 	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
 	@PutMapping("/deleteStock")
-	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
-		return  stockInfoService.deleteBatchByIds(commonEntity,auth);
+	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth,@RequestHeader String lang){
+		return  stockInfoService.deleteBatchByIds(commonEntity,auth,OSLanguage.localeToVueSuffix(lang));
 	}
 
 	@ApiOperation(value="库存数据导出", notes="库存数据导出")
@@ -97,6 +97,6 @@ public class StockInfoController {
 	@PostMapping("/exportData")
 	public Object downExcel(@RequestBody TStockInfoEntity tStockInfoEntity,@RequestHeader String lang) {
 		tStockInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		return  stockInfoService.downloadExcel(tStockInfoEntity);
+		return  stockInfoService.downloadExcel(tStockInfoEntity,OSLanguage.localeToVueSuffix(lang));
 	}
 }

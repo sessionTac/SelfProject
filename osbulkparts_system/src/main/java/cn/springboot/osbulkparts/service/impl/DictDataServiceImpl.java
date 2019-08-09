@@ -1,6 +1,7 @@
 package cn.springboot.osbulkparts.service.impl;
 
 import java.util.List;
+import java.util.Locale;
 
 import cn.springboot.osbulkparts.common.OSLanguage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,7 +34,8 @@ public class DictDataServiceImpl implements DictDataSettingService {
 	
 	@Override
 	public CommonResultInfo<TDictDataEntity> getDictDataList(TDictDataEntity tdictDataEntity, int pageNumber,
-			int pageSize) {
+															 int pageSize, Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -41,7 +43,8 @@ public class DictDataServiceImpl implements DictDataSettingService {
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<TDictDataEntity> getDictDataInfo(String dictTypeCode, int pageNumber,
-															 int pageSize, String lang) {
+															 int pageSize, String lang,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<TDictDataEntity> result = new CommonResultInfo<TDictDataEntity>();
 		try {
 			PageHelper.startPage(pageNumber, pageSize);
@@ -63,7 +66,8 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TDictDataEntity> getDictDataInfoDetail(String id,String lang) {
+	public CommonResultInfo<TDictDataEntity> getDictDataInfoDetail(String id,String lang,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<TDictDataEntity> result = new CommonResultInfo<TDictDataEntity>();
 		try {
 
@@ -89,7 +93,8 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> addDictData(TDictDataEntity tdictDataEntity, Authentication auth) {
+	public CommonResultInfo<?> addDictData(TDictDataEntity tdictDataEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TDictDataEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -102,7 +107,7 @@ public class DictDataServiceImpl implements DictDataSettingService {
 			int returnInt = tdictDataDao.insertSelective(tdictDataEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.DICT_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.DICT_DATA.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -115,7 +120,8 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> updateDictData(TDictDataEntity tdictDataEntity, Authentication auth) {
+	public CommonResultInfo<?> updateDictData(TDictDataEntity tdictDataEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -128,11 +134,11 @@ public class DictDataServiceImpl implements DictDataSettingService {
 				int returnInt = tdictDataDao.updateByPrimaryKeySelective(tdictDataEntity);
 				if (returnInt > 0) {
 					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.DICT_DATA.getTypeName()));
+					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.DICT_DATA.getTypeName(locale)));
 				}
 			}
 			else {
-				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.DICT_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.DICT_DATA.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -145,7 +151,8 @@ public class DictDataServiceImpl implements DictDataSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> deleteDictData(TDictDataEntity tdictDataEntity, Authentication auth) {
+	public CommonResultInfo<?> deleteDictData(TDictDataEntity tdictDataEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TDictDataEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -155,7 +162,7 @@ public class DictDataServiceImpl implements DictDataSettingService {
 			// 确认删除对象存在
 			List<TDictDataEntity> tdictDataEntityLst = tdictDataDao.selectByPrimaryKey(dictDataParam);
 			if(tdictDataEntityLst.size() == 0) {
-				result.setMessage(messageBean.getMessage("common.delete.failed", CommonConstantEnum.DICT_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.failed", CommonConstantEnum.DICT_DATA.getTypeName(locale)));
 			}else {
 				// 删除处理（逻辑）
 				dictDataParam.setUpdateUser(principal.getUserName());
@@ -163,7 +170,7 @@ public class DictDataServiceImpl implements DictDataSettingService {
 				int returnInt = tdictDataDao.updateByPrimaryKeySelective(dictDataParam);
 				if (returnInt > 0) {
 					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.DICT_DATA.getTypeName()));
+					result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.DICT_DATA.getTypeName(locale)));
 				}
 			}
 		} catch (Exception e) {
@@ -176,7 +183,8 @@ public class DictDataServiceImpl implements DictDataSettingService {
 	}
 
 	@Override
-	public CommonResultInfo<?> checkValue(TDictDataEntity tDictDataEntity) {
+	public CommonResultInfo<?> checkValue(TDictDataEntity tDictDataEntity,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TDictDataEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		try {

@@ -27,7 +27,7 @@ public class SupplierInfoController {
 	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
 	@GetMapping("/init")
 	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(@RequestHeader String lang){
-		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = supplierInfoService.initViews(lang);
+		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = supplierInfoService.initViews(lang,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -43,38 +43,38 @@ public class SupplierInfoController {
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="50") int pageSize,@RequestHeader String lang){
 		msupplierInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		CommonResultInfo<MSupplierInfoEntity> result = supplierInfoService.getSupplierInfoList(msupplierInfoEntity, pageNum, pageSize);
+		CommonResultInfo<MSupplierInfoEntity> result = supplierInfoService.getSupplierInfoList(msupplierInfoEntity, pageNum, pageSize,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
     @ApiOperation(value="添加供应商信息", notes="添加一条新的供应商信息")
     @ApiImplicitParam(name = "mSupplierInfoEntity", value = "供应商信息实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/addSupplierInfo")
-	public CommonResultInfo<?> addSupplierInfo(@RequestBody  MSupplierInfoEntity mSupplierInfoEntity, Authentication auth){
-    	CommonResultInfo<?> result = supplierInfoService.insertSupplierInfo(mSupplierInfoEntity, auth);
+	public CommonResultInfo<?> addSupplierInfo(@RequestBody  MSupplierInfoEntity mSupplierInfoEntity, Authentication auth,@RequestHeader String lang){
+    	CommonResultInfo<?> result = supplierInfoService.insertSupplierInfo(mSupplierInfoEntity, auth,OSLanguage.localeToVueSuffix(lang));
     	return result;
 	}
     
     @ApiOperation(value="更新供应商信息", notes="更新一条新的供应商信息")
     @ApiImplicitParam(name = "mSupplierInfoEntity", value = "供应商信息实体对象", required = true, dataType = "body", paramType = "body")
     @PutMapping("/updateSupplierInfo")
-	public CommonResultInfo<?> updateSupplierInfo(@RequestBody MSupplierInfoEntity mSupplierInfoEntity,Authentication auth){
-    	CommonResultInfo<?> result = supplierInfoService.updateSupplierInfo(mSupplierInfoEntity, auth);
+	public CommonResultInfo<?> updateSupplierInfo(@RequestBody MSupplierInfoEntity mSupplierInfoEntity,Authentication auth,@RequestHeader String lang){
+    	CommonResultInfo<?> result = supplierInfoService.updateSupplierInfo(mSupplierInfoEntity, auth,OSLanguage.localeToVueSuffix(lang));
     	return result;
 	}
     
     @ApiOperation(value="删除供应商信息", notes="删除一条新的供应商信息")
     @ApiImplicitParam(name = "mSupplierInfoEntity", value = "供应商信息实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/deleteSupplierInfo/{SupplierId}")
-	public CommonResultInfo<?> deleteSupplierInfo(@PathVariable String SupplierId,Authentication auth){
-    	CommonResultInfo<?> result = supplierInfoService.deleteSupplierInfo(SupplierId, auth);
+	public CommonResultInfo<?> deleteSupplierInfo(@PathVariable String SupplierId,Authentication auth,@RequestHeader String lang){
+    	CommonResultInfo<?> result = supplierInfoService.deleteSupplierInfo(SupplierId, auth,OSLanguage.localeToVueSuffix(lang));
     	return result;
 	}
 	@ApiOperation(value="删除供应商信息", notes="删除新的物料数据")
 	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "Stirng", paramType = "query")
 	@PutMapping("/deleteSupplier")
-	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
-		CommonResultInfo<?> result = supplierInfoService.deleteBatchMaterialInfo(commonEntity,auth);
+	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth,@RequestHeader String lang){
+		CommonResultInfo<?> result = supplierInfoService.deleteBatchMaterialInfo(commonEntity,auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 
@@ -82,7 +82,7 @@ public class SupplierInfoController {
 	@ApiImplicitParam(name = "supplierId", value = "供应商ID", required = true, dataType = "String", paramType = "path")
 	@GetMapping("/getSupplierInfo/{supplierId}")
 	public CommonResultInfo<MSupplierInfoEntity> getSupplierInfo(@PathVariable String supplierId,@RequestHeader String lang){
-		CommonResultInfo<MSupplierInfoEntity> result = supplierInfoService.getSupplierInfo(supplierId);
+		CommonResultInfo<MSupplierInfoEntity> result = supplierInfoService.getSupplierInfo(supplierId,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 }

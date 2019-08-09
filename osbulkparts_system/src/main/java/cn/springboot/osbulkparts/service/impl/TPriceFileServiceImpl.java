@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class TPriceFileServiceImpl implements TPriceFileService
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> upInsertPrice(TPriceFileEntity fileEntity, MultipartFile imgFile, Authentication auth) {
+	public CommonResultInfo<?> upInsertPrice(TPriceFileEntity fileEntity, MultipartFile imgFile, Authentication auth,Locale locale) {
 		CommonResultInfo<TPriceFileEntity> result = new CommonResultInfo<TPriceFileEntity>();
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -103,7 +104,7 @@ public class TPriceFileServiceImpl implements TPriceFileService
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<TPriceFileEntity> getMaterialPriceAndFile(TPriceFileEntity fileEntity,
-			Authentication auth) {
+																	  Authentication auth, Locale locale) {
 		CommonResultInfo<TPriceFileEntity> result = new CommonResultInfo<TPriceFileEntity>();
 		try {
 			List<TPriceFileEntity> pageInfo = tfileDao.selectByMaterialCode(fileEntity);

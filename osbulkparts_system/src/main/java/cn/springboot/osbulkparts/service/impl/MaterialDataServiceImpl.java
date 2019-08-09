@@ -2,10 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.servlet.http.HttpServletRequest;
@@ -88,7 +85,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
     
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang){
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang, Locale locale){
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
@@ -113,7 +111,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			tDictDataEntity.setDictTypeCode("converRelation");
 			map.put("materialConverRelation",tDictDataDao.selectByPrimaryKey(tDictDataEntity));
 			
-			map.put("versions",change2DictData(mmaterialInfoDao.selectAllVersion()));
+			map.put("versions",change2DictData(mmaterialInfoDao.selectAllVersion(),locale));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
 			result.setResult(map);
 		} catch (Exception e) {
@@ -125,7 +123,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		}
     }
 	
-	private List<TDictDataEntity> change2DictData(List<MMaterialInfoEntity>  objectEntity){
+	private List<TDictDataEntity> change2DictData(List<MMaterialInfoEntity>  objectEntity,Locale locale){
 		List<TDictDataEntity> resultList = new ArrayList<TDictDataEntity>();
 		if(objectEntity.size() == 0) {
 			return null;
@@ -142,14 +140,15 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	
 	@SuppressWarnings({ "finally", "unchecked" })
 	@Override
-	public CommonResultInfo<?> importExcel(MultipartFile excleFile, HttpServletRequest request, Authentication auth) {
+	public CommonResultInfo<?> importExcel(MultipartFile excleFile, HttpServletRequest request, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         try {
         	int resultInt = 0;
         	int quotaResultInt = 0;
         	int priceFileResultInt = 0;
-        	Map<String,Object> materialInfoParams = resolvExcelToDb(excleFile,auth);
+        	Map<String,Object> materialInfoParams = resolvExcelToDb(excleFile,auth,locale);
         	if(materialInfoParams.size() == 0) {
         		result.setMessage(messageBean.getMessage("common.excel.error"));
         	}else {
@@ -198,7 +197,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MMaterialInfoEntity> selectMaterialInfoList(
-			MMaterialInfoEntity materialInfoEntity, int pageNumber, int pageSize,Authentication auth) {
+			MMaterialInfoEntity materialInfoEntity, int pageNumber, int pageSize,Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<MMaterialInfoEntity> result = new CommonResultInfo<MMaterialInfoEntity>();
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),materialInfoEntity.getLanguageFlag());
@@ -226,7 +226,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<MMaterialInfoEntity> selectMaterialInfo(MMaterialInfoEntity materialInfoEntity){
+	public CommonResultInfo<MMaterialInfoEntity> selectMaterialInfo(MMaterialInfoEntity materialInfoEntity,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<MMaterialInfoEntity> result = new CommonResultInfo<MMaterialInfoEntity>();
 		try {
 			List<MMaterialInfoEntity> resultList = mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity);
@@ -250,13 +251,14 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> insertMaterialInfo(MMaterialInfoEntity materialInfoEntity,Authentication auth){
+	public CommonResultInfo<?> insertMaterialInfo(MMaterialInfoEntity materialInfoEntity,Authentication auth,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),materialInfoEntity.getLanguageFlag());
-			if(isExist(materialInfoEntity.getMaterialOrderCode(),materialInfoEntity.getMaterialCode(),roleInfoEntity.getRoleAt())) {
+			if(isExist(materialInfoEntity.getMaterialOrderCode(),materialInfoEntity.getMaterialCode(),roleInfoEntity.getRoleAt(),locale)) {
 				materialInfoEntity.setVersion(version +1);
 			}else {
 				materialInfoEntity.setVersion(1);
@@ -270,7 +272,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			int returnInt = mmaterialInfoDao.insertSelective(materialInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.MATERIAL_DATA.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -284,7 +286,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> updateMaterialInfo(MMaterialInfoEntity materialInfoEntity,Authentication auth){
+	public CommonResultInfo<?> updateMaterialInfo(MMaterialInfoEntity materialInfoEntity,Authentication auth,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -301,7 +304,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				int returnInt = mmaterialInfoDao.updateByPrimaryKey(materialInfoEntity);
 				if (returnInt > 0) {
 					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.MATERIAL_DATA.getTypeName(locale)));
 				}
 			}else {
 				result.setMessage(messageBean.getMessage("bussiness.material.version.update"));
@@ -318,7 +321,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> deleteMaterialInfo(String materialId,Authentication auth){
+	public CommonResultInfo<?> deleteMaterialInfo(String materialId,Authentication auth,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -330,7 +334,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			int returnInt = mmaterialInfoDao.updateByPrimaryKey(materialInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.MATERIAL_DATA.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -344,21 +348,22 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> lockMaterialInfo(CommonEntity commonEntity,Authentication auth){
+	public CommonResultInfo<?> lockMaterialInfo(CommonEntity commonEntity,Authentication auth,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
 			if(commonEntity.isToLocked()) {
-				int returnInt = mmaterialInfoDao.lockedData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.LOCK_TRUE.getTypeName());
+				int returnInt = mmaterialInfoDao.lockedData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.LOCK_TRUE.getTypeName(locale));
 				if (returnInt > 0) {
-					result.setMessage(messageBean.getMessage("common.locked.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+					result.setMessage(messageBean.getMessage("common.locked.success", CommonConstantEnum.MATERIAL_DATA.getTypeName(locale)));
 				}
 			}
 			else {
-				int returnInt = mmaterialInfoDao.lockedData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.LOCK_FALSE.getTypeName());
+				int returnInt = mmaterialInfoDao.lockedData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.LOCK_FALSE.getTypeName(locale));
 				if (returnInt > 0) {
-					result.setMessage(messageBean.getMessage("common.unlocked.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+					result.setMessage(messageBean.getMessage("common.unlocked.success", CommonConstantEnum.MATERIAL_DATA.getTypeName(locale)));
 				}
 			}
 			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
@@ -374,13 +379,14 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity,Authentication auth){
+	public CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity,Authentication auth,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
-			int returnInt = mmaterialInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName());
+			int returnInt = mmaterialInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName(locale));
 			if (returnInt > 0) {
 				for(int i =0;i<commonEntity.getIdsStr().length;i++) {
 					TMaterialQuotaEntity param = new TMaterialQuotaEntity();
@@ -390,7 +396,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 					param.setDataRoleAt(roleInfoEntity.getRoleAt());
 					tmaterialQuotaDao.deleteData(param);
 				}
-				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.MATERIAL_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.MATERIAL_DATA.getTypeName(locale)));
 			}
 			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 		} catch (Exception e) {
@@ -404,10 +410,11 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	}
 	
 	@Override
-	public ResponseEntity<byte[]> downloadExcel(MMaterialInfoEntity materialInfoEntity) {
+	public ResponseEntity<byte[]> downloadExcel(MMaterialInfoEntity materialInfoEntity,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		String[] title = messageBean.getMessage("file.title.material").split(",");
 		List<MMaterialInfoEntity> resultList = mmaterialInfoDao.selectByPrimaryKey(materialInfoEntity);
-		ResponseEntity<byte[]> result = educeExcel(title,resultList);
+		ResponseEntity<byte[]> result = educeExcel(title,resultList,locale);
 		return result;
 	}
 	
@@ -418,7 +425,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	 * @param list 向单元格插入数据
 	 * @return
 	 */
-	private ResponseEntity<byte[]> educeExcel(String[] titles,List<MMaterialInfoEntity> list){
+	private ResponseEntity<byte[]> educeExcel(String[] titles,List<MMaterialInfoEntity> list,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		ResponseEntity<byte[]> response = null;
 		//创建Excel对象
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -592,7 +600,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	 * Excel文件解析
 	 * @throws Exception 
 	 */
-	private Map<String,Object> resolvExcelToDb(MultipartFile excleFile,Authentication auth) throws NullPointerException,Exception{
+	private Map<String,Object> resolvExcelToDb(MultipartFile excleFile,Authentication auth,Locale locale) throws NullPointerException,Exception{
+		messageBean.setLocale(null,null,locale);
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
@@ -633,7 +642,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				mmaterialInfoEntity.setMaterialCode((String)mapData.get("物料专用号"));
 				// 物料类别
 				String materCateVle = getFromDictDataByName(
-						(String)mapData.get("渠道"),"mattertype","渠道");
+						(String)mapData.get("渠道"),"mattertype","渠道",locale);
 				mmaterialInfoEntity.setMaterialCategory(materCateVle);
 				// 物料中文描述
 				mmaterialInfoEntity.setMaterialDescCn((String)mapData.get("物料中文描述"));
@@ -648,13 +657,13 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 						CommonMethods.changeToBigdecimal(materialAmount.trim()));
 				// 单位
 				String unitVle = getFromDictDataByName(
-						(String)mapData.get("单位"),"unit","单位");
+						(String)mapData.get("单位"),"unit","单位",locale);
 				mmaterialInfoEntity.setMaterialUnit(unitVle);
 
 				// 币种
 				if(StringUtil.isNotEmpty((String)mapData.get("币种"))) {
 					String currencyVle = getFromDictDataByName(
-							(String)mapData.get("币种"),"currency","币种");
+							(String)mapData.get("币种"),"currency","币种",locale);
 					mmaterialInfoEntity.setMaterialCurrency(currencyVle);
 				}else {
 					mmaterialInfoEntity.setMaterialCurrency(null);
@@ -664,7 +673,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				// 换算后单位
 				if(StringUtil.isNotEmpty((String)mapData.get("换算后单位"))) {
 					String relationUnitVle = getFromDictDataByName(
-							(String)mapData.get("换算后单位"),"unit","换算后单位");
+							(String)mapData.get("换算后单位"),"unit","换算后单位",locale);
 					mmaterialInfoEntity.setMaterialRelationUnit(relationUnitVle);
 				}else {
 					mmaterialInfoEntity.setMaterialRelationUnit(null);
@@ -689,7 +698,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				String tax = (String)mapData.get("税率");
 				mmaterialInfoEntity.setTax(tax!=null?CommonMethods.changeToBigdecimal(tax.trim()):null);
 				if(CommonMethods.changeToBigdecimal(tax).equals(1)) {
-					throw new NullPointerException(messageBean.getMessage("bussiness.material.tax.error", (String)mapData.get("物料专用号"),CommonConstantEnum.RATE.getTypeName()));
+					throw new NullPointerException(messageBean.getMessage("bussiness.material.tax.error", (String)mapData.get("物料专用号"),CommonConstantEnum.RATE.getTypeName(locale)));
 				}
 				// 代理费率
 				String materialRate = (String)mapData.get("代理费率");
@@ -720,7 +729,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				//损耗率
 				String lossRate = (String)mapData.get("损耗率");
 				if(CommonMethods.changeToBigdecimal(lossRate).equals(1)) {
-					throw new NullPointerException(messageBean.getMessage("bussiness.material.tax.error", (String)mapData.get("物料专用号"),CommonConstantEnum.LOSSRATE.getTypeName()));
+					throw new NullPointerException(messageBean.getMessage("bussiness.material.tax.error", (String)mapData.get("物料专用号"),CommonConstantEnum.LOSSRATE.getTypeName(locale)));
 				}
 				mmaterialInfoEntity.setMaterialLossRate(lossRate!=null?CommonMethods.changeToBigdecimal(lossRate.trim()):null);
 				// 长
@@ -740,7 +749,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				// 数据所属
 				mmaterialInfoEntity.setDataRoleAt(roleInfoEntity.getRoleAt());
 				// 成品型号和子件型号组合判定是否存在，存在时更新，不存在时插入
-				if(isExist(mmaterialInfoEntity.getMaterialOrderCode(),mmaterialInfoEntity.getMaterialCode(),roleInfoEntity.getRoleAt())) {
+				if(isExist(mmaterialInfoEntity.getMaterialOrderCode(),mmaterialInfoEntity.getMaterialCode(),roleInfoEntity.getRoleAt(),locale)) {
 					// 更新者
 					mmaterialInfoEntity.setCreateUser(principal.getUserName());
 					mmaterialInfoEntity.setVersion(version+1);
@@ -757,7 +766,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 					insertResultLst.add(mmaterialInfoEntity);
 				}
 				//物料号和供应商编码是否存在，存在是更新，不存在时插入
-				if(isExistQuota(materialQuotaEntity.getMaterialCode(),materialQuotaEntity.getSupplierCode(),roleInfoEntity.getRoleAt())) {
+				if(isExistQuota(materialQuotaEntity.getMaterialCode(),materialQuotaEntity.getSupplierCode(),roleInfoEntity.getRoleAt(),locale)) {
 					// 更新者
 					materialQuotaEntity.setUpdateUser(principal.getUserName());
 					materialQuotaEntity.setVersion(quotaVersion+1);
@@ -775,8 +784,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 				priceFileResultLst.add(priceFileEntity);
 			}
 			// 去除重复对象
-			quotaInsertResultLst = deleteItear(quotaInsertResultLst);
-			quotaUpdateResultLst = deleteItear(quotaUpdateResultLst);
+			quotaInsertResultLst = deleteItear(quotaInsertResultLst,locale);
+			quotaUpdateResultLst = deleteItear(quotaUpdateResultLst,locale);
 			returnMap.put("insertList", insertResultLst);
 			returnMap.put("updateList", updateResultLst);
 			returnMap.put("quotaInsertList", quotaInsertResultLst);
@@ -791,7 +800,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 		}
 	}
 	
-	private List<TMaterialQuotaEntity> deleteItear(List<TMaterialQuotaEntity> quotaInsertResultLst){
+	private List<TMaterialQuotaEntity> deleteItear(List<TMaterialQuotaEntity> quotaInsertResultLst,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		List<TMaterialQuotaEntity> list = quotaInsertResultLst.stream().distinct().collect(Collectors.toList());
 		return list;
 	}
@@ -802,7 +812,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	 * @param materialCode
 	 * @return true/false
 	 */
-	private boolean isExist(String materialOrderCode,String materialCode,String roleAt) {
+	private boolean isExist(String materialOrderCode,String materialCode,String roleAt,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		MMaterialInfoEntity materialInfoEntity = new MMaterialInfoEntity();
 		materialInfoEntity.setMaterialOrderCode(materialOrderCode);
 		materialInfoEntity.setMaterialCode(materialCode);
@@ -822,7 +833,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	 * @param supplierNo
 	 * @return true/false
 	 */
-	private boolean isExistQuota(String materialCode,String supplierNo,String roleAt) {
+	private boolean isExistQuota(String materialCode,String supplierNo,String roleAt,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		TMaterialQuotaEntity materialQuotaEntity = new TMaterialQuotaEntity();
 		materialQuotaEntity.setMaterialCode(materialCode);
 		materialQuotaEntity.setSupplierCode(supplierNo);
@@ -842,7 +854,8 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 	 * @param dictType
 	 * @return
 	 */
-	private String getFromDictDataByName(String nameValue,String dictType,String dictTypeCn) {
+	private String getFromDictDataByName(String nameValue,String dictType,String dictTypeCn,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		TDictDataEntity dictDataParam = new TDictDataEntity();
 		try {
 			dictDataParam.setName(nameValue);

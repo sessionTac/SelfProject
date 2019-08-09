@@ -41,7 +41,7 @@ public class MaterialDataController {
 	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
 	@GetMapping("/init")
 	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(@RequestHeader String lang){
-		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = materialDataService.initViews(lang);
+		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = materialDataService.initViews(lang,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -58,7 +58,7 @@ public class MaterialDataController {
             @RequestParam(defaultValue="50") int pageSize,
 			HttpServletRequest request, Authentication auth,@RequestHeader String lang){
 		mmaterialInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfoList(mmaterialInfoEntity, pageNum, pageSize,auth);
+		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfoList(mmaterialInfoEntity, pageNum, pageSize,auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -67,31 +67,31 @@ public class MaterialDataController {
 	@GetMapping("/getMaterialInfo")
 	public CommonResultInfo<MMaterialInfoEntity> getMaterialInfo(MMaterialInfoEntity mmaterialInfoEntity,@RequestHeader String lang){
 		mmaterialInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfo(mmaterialInfoEntity);
+		CommonResultInfo<MMaterialInfoEntity> result = materialDataService.selectMaterialInfo(mmaterialInfoEntity,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
     @ApiOperation(value="添加物料数据", notes="添加一条新的物料数据")
     @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
     @PostMapping("/addMaterialInfo")
-	public CommonResultInfo<?> addMaterialInfo(@RequestBody MMaterialInfoEntity mmaterialInfoEntity,Authentication auth){
-    	CommonResultInfo<?> result = materialDataService.insertMaterialInfo(mmaterialInfoEntity, auth);
+	public CommonResultInfo<?> addMaterialInfo(@RequestBody MMaterialInfoEntity mmaterialInfoEntity,Authentication auth,@RequestHeader String lang){
+    	CommonResultInfo<?> result = materialDataService.insertMaterialInfo(mmaterialInfoEntity, auth,OSLanguage.localeToVueSuffix(lang));
     	return result;
 	}
     
     @ApiOperation(value="更新物料数据", notes="更新一条新的物料数据")
     @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
     @PutMapping("/updateMaterialInfo")
-	public CommonResultInfo<?> updateMaterialInfo(@RequestBody MMaterialInfoEntity mmaterialInfoEntity,Authentication auth){
-    	CommonResultInfo<?> result = materialDataService.updateMaterialInfo(mmaterialInfoEntity, auth);
+	public CommonResultInfo<?> updateMaterialInfo(@RequestBody MMaterialInfoEntity mmaterialInfoEntity,Authentication auth,@RequestHeader String lang){
+    	CommonResultInfo<?> result = materialDataService.updateMaterialInfo(mmaterialInfoEntity, auth,OSLanguage.localeToVueSuffix(lang));
     	return result;
 	}
     
     @ApiOperation(value="删除物料数据", notes="删除一条新的物料数据")
     @ApiImplicitParam(name = "mmaterialInfoEntity", value = "物料数据实体对象", required = true, dataType = "body", paramType = "body")
     @DeleteMapping("/deleteMaterialInfo/{materialId}")
-	public CommonResultInfo<?> deleteMaterialInfo(@PathVariable String materialId,Authentication auth){
-    	CommonResultInfo<?> result = materialDataService.deleteMaterialInfo(materialId, auth);
+	public CommonResultInfo<?> deleteMaterialInfo(@PathVariable String materialId,Authentication auth,@RequestHeader String lang){
+    	CommonResultInfo<?> result = materialDataService.deleteMaterialInfo(materialId, auth,OSLanguage.localeToVueSuffix(lang));
     	return result;
 	}
     
@@ -99,24 +99,24 @@ public class MaterialDataController {
     @ApiImplicitParam(name = "excleFile", value = "物料数据文件", required = true, dataType = "body", paramType = "body")
     @PostMapping("/importExcel")
     public CommonResultInfo<?> ImportExcelData(
-            @RequestParam("file") MultipartFile excleFile,HttpServletRequest request,Authentication auth) {
-        CommonResultInfo<?> result = materialDataService.importExcel(excleFile, request, auth);
+            @RequestParam("file") MultipartFile excleFile,HttpServletRequest request,Authentication auth,@RequestHeader String lang) {
+        CommonResultInfo<?> result = materialDataService.importExcel(excleFile, request, auth,OSLanguage.localeToVueSuffix(lang));
         return result;
     }
     
     @ApiOperation(value="锁定或解锁物料数据", notes="锁定或解锁一条新的物料数据")
 	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
     @PutMapping("/lockMaterialInfo")
-    public CommonResultInfo<?> lockMaterialInfo(@RequestBody CommonEntity commonEntity, Authentication auth){
-    	CommonResultInfo<?> result = materialDataService.lockMaterialInfo(commonEntity,auth);
+    public CommonResultInfo<?> lockMaterialInfo(@RequestBody CommonEntity commonEntity, Authentication auth,@RequestHeader String lang){
+    	CommonResultInfo<?> result = materialDataService.lockMaterialInfo(commonEntity,auth,OSLanguage.localeToVueSuffix(lang));
     	return result;
     }
     
 	@ApiOperation(value="删除物料数据", notes="删除新的物料数据")
 	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
 	@PutMapping("/deleteMater")
-	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth){
-    	CommonResultInfo<?> result = materialDataService.deleteBatchMaterialInfo(commonEntity,auth);
+	public CommonResultInfo<?> batchDeletion(@RequestBody CommonEntity commonEntity, Authentication auth,@RequestHeader String lang){
+    	CommonResultInfo<?> result = materialDataService.deleteBatchMaterialInfo(commonEntity,auth,OSLanguage.localeToVueSuffix(lang));
     	return result;
 	}
 
@@ -125,7 +125,7 @@ public class MaterialDataController {
 	@PostMapping("/exportData")
 	public Object downExcel(@RequestBody MMaterialInfoEntity mmaterialInfoEntity,@RequestHeader String lang) {
 		mmaterialInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		ResponseEntity<byte[]> response = materialDataService.downloadExcel(mmaterialInfoEntity);
+		ResponseEntity<byte[]> response = materialDataService.downloadExcel(mmaterialInfoEntity,OSLanguage.localeToVueSuffix(lang));
 		return response;
 	}
 
@@ -142,8 +142,8 @@ public class MaterialDataController {
 	})
 	@PutMapping("/upsertQuotaInfo")
 	public CommonResultInfo<?> upsertQuotaInfo(
-			@RequestBody TMaterialQuotaEntity tMaterialQuotaEntity,Authentication auth){
-		CommonResultInfo<?> result = materialQuotaService.insertMaterialQuota(tMaterialQuotaEntity, auth);
+			@RequestBody TMaterialQuotaEntity tMaterialQuotaEntity,Authentication auth,@RequestHeader String lang){
+		CommonResultInfo<?> result = materialQuotaService.insertMaterialQuota(tMaterialQuotaEntity, auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	@ApiOperation(value="配额设置 根据用户输入内容 查找数据", notes="配额设置 根据用户输入内容 查找数据")
@@ -152,15 +152,15 @@ public class MaterialDataController {
 	})
 	@GetMapping("/findQuotaInfoList")
 	public CommonResultInfo<TMaterialQuotaEntity> findQuotaInfoList(TMaterialQuotaEntity tMaterialQuotaEntity,
-			HttpServletRequest request, Authentication auth){
-		CommonResultInfo<TMaterialQuotaEntity> result = materialQuotaService.selectMaterialQuotaList(tMaterialQuotaEntity, auth);
+			HttpServletRequest request, Authentication auth,@RequestHeader String lang){
+		CommonResultInfo<TMaterialQuotaEntity> result = materialQuotaService.selectMaterialQuotaList(tMaterialQuotaEntity, auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	@ApiOperation(value="配额设置 根据主键id 删除一条数据", notes="配额设置 根据主键id 删除一条数据")
 	@ApiImplicitParam(name = "materialCode", value = "物料号", required = true, dataType = "path", paramType = "path")
 	@PutMapping("/deleteQuotaInfoById")
-	public CommonResultInfo<?> deleteQuotaInfoById(@RequestBody TMaterialQuotaEntity tMaterialQuotaEntity, Authentication auth){
-		CommonResultInfo<?> result = materialQuotaService.deleteMaterialQuota(tMaterialQuotaEntity.getMaterialCode(), auth);
+	public CommonResultInfo<?> deleteQuotaInfoById(@RequestBody TMaterialQuotaEntity tMaterialQuotaEntity, Authentication auth,@RequestHeader String lang){
+		CommonResultInfo<?> result = materialQuotaService.deleteMaterialQuota(tMaterialQuotaEntity.getMaterialCode(), auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 
@@ -170,8 +170,8 @@ public class MaterialDataController {
 	})
 	@GetMapping("/findMaterialPriceAndFile")
 	public CommonResultInfo<TPriceFileEntity> findPriceAndFile(TPriceFileEntity tpriceFileEntity,
-			HttpServletRequest request, Authentication auth){
-		CommonResultInfo<TPriceFileEntity> result = tfileService.getMaterialPriceAndFile(tpriceFileEntity, auth);
+			HttpServletRequest request, Authentication auth,@RequestHeader String lang){
+		CommonResultInfo<TPriceFileEntity> result = tfileService.getMaterialPriceAndFile(tpriceFileEntity, auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	
@@ -179,8 +179,8 @@ public class MaterialDataController {
 	@ApiImplicitParam(name = "imgFile", value = "物料附件文件", required = true, dataType = "body", paramType = "body")
 	@PostMapping("/setEnclosure")
 	public CommonResultInfo<?> setEnclosure(TPriceFileEntity fileEntity,
-			@RequestParam("file") MultipartFile imgFile,HttpServletRequest request,Authentication auth) {
-		CommonResultInfo<?> result = tfileService.upInsertPrice(fileEntity, imgFile, auth);
+			@RequestParam("file") MultipartFile imgFile,HttpServletRequest request,Authentication auth,@RequestHeader String lang) {
+		CommonResultInfo<?> result = tfileService.upInsertPrice(fileEntity, imgFile, auth,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 

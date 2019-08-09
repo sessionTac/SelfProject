@@ -1,6 +1,7 @@
 package cn.springboot.osbulkparts.service.impl;
 
 import java.util.List;
+import java.util.Locale;
 
 import cn.springboot.osbulkparts.common.OSLanguage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,7 +41,8 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<TDictTypeEntity> getDictTypeList(TDictTypeEntity tdictTypeEntity, int pageNumber,
-			int pageSize) {
+															 int pageSize, Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<TDictTypeEntity> result = new CommonResultInfo<TDictTypeEntity>();
 		try {
 			PageHelper.startPage(pageNumber, pageSize);
@@ -59,7 +61,8 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TDictTypeEntity> getDictType(TDictTypeEntity tdictTypeEntity){
+	public CommonResultInfo<TDictTypeEntity> getDictType(TDictTypeEntity tdictTypeEntity,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<TDictTypeEntity> result = new CommonResultInfo<TDictTypeEntity>();
 		try {
 			List<TDictTypeEntity> tdictTypeInfoLst = tdictTypeDao.getDictTypeList(tdictTypeEntity);
@@ -76,7 +79,8 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TDictTypeEntity> getDictTypeInfo(String dictTypeId,String lang) {
+	public CommonResultInfo<TDictTypeEntity> getDictTypeInfo(String dictTypeId,String lang,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<TDictTypeEntity> result = new CommonResultInfo<TDictTypeEntity>();
 		TDictTypeEntity dicpTypeEntity = new TDictTypeEntity();
 		dicpTypeEntity.setDictTypeId(dictTypeId);
@@ -97,7 +101,8 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> addDictTypeInfo(TDictTypeEntity tdictTypeEntity, Authentication auth) {
+	public CommonResultInfo<?> addDictTypeInfo(TDictTypeEntity tdictTypeEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -110,7 +115,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 			int returnInt = tdictTypeDao.insertSelective(tdictTypeEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.DICT_TYPE.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.DICT_TYPE.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -124,7 +129,8 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> updateDictType(TDictTypeEntity tdictTypeEntity, Authentication auth) {
+	public CommonResultInfo<?> updateDictType(TDictTypeEntity tdictTypeEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -137,11 +143,11 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 				int returnInt = tdictTypeDao.updateByPrimaryKeySelective(tdictTypeEntity);
 				if (returnInt > 0) {
 					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.DICT_TYPE.getTypeName()));
+					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.DICT_TYPE.getTypeName(locale)));
 				}
 			}
 			else {
-				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.DICT_TYPE.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.DICT_TYPE.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -156,7 +162,8 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 	@SuppressWarnings("finally")
 	@Transactional
 	@Override
-	public CommonResultInfo<?> deleteDictType(String dictTypeId, Authentication auth,String lang) {
+	public CommonResultInfo<?> deleteDictType(String dictTypeId, Authentication auth,String lang,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -167,7 +174,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 			// 确认删除对象存在
 			List<TDictTypeEntity> tdictTypeEntityLst = tdictTypeDao.selectByPrimaryKey(dictTypeParam);
 			if(tdictTypeEntityLst.size() == 0) {
-				result.setMessage(messageBean.getMessage("common.delete.failed", CommonConstantEnum.DICT_TYPE.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.failed", CommonConstantEnum.DICT_TYPE.getTypeName(locale)));
 			}else {
 				// 删除处理（逻辑）
 				dictTypeParam.setUpdateUser(principal.getUserId());
@@ -181,7 +188,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 					tdictDataEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
 					tdictDataDao.updateForDeleteLogicByTypeCode(tdictDataEntity);
 					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.DICT_TYPE.getTypeName()));
+					result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.DICT_TYPE.getTypeName(locale)));
 				}
 			}
 		} catch (Exception e) {
@@ -198,7 +205,8 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 	 * 名称重复验证
 	 */
 	@Override
-	public CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag){
+	public CommonResultInfo<?> checkNameRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		TDictTypeEntity tdictTypeEntityCheckName = new TDictTypeEntity();
@@ -209,7 +217,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 			if (resultLst.size() == 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 			} else {
-				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName(locale)));
 			}
 		} else if (checkFlag.equals("edit")) {
 			if (
@@ -219,7 +227,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 			) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 			} else {
-				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE.getTypeName(locale)));
 			}
 		}
 		return result;
@@ -229,7 +237,8 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 	 * 编码重复验证
 	 */
 	@Override
-	public CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag){
+	public CommonResultInfo<?> checkCodeRepeat(TDictTypeEntity tdictTypeEntity, String checkFlag,Locale locale){
+		messageBean.setLocale(null,null,locale);
 
 		CommonResultInfo<?> result = new CommonResultInfo<TDictTypeEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
@@ -241,7 +250,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 			if (resultLst.size() == 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 			} else {
-				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE_CODE.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE_CODE.getTypeName(locale)));
 			}
 		} else if (checkFlag.equals("edit")) {
 			if (
@@ -251,7 +260,7 @@ public class DictTypeServiceImpl implements DictTypeSettingService {
 			) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 			} else {
-				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE_CODE.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.DICT_TYPE_CODE.getTypeName(locale)));
 			}
 		}
 		return result;

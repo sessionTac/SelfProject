@@ -28,6 +28,7 @@ import cn.springboot.osbulkparts.service.GoodsListService;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 @Service
@@ -45,7 +46,8 @@ public class GoodsListServiceImpl implements GoodsListService {
 
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang) {
+    public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang, Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
         try {
             Map<String,List<TDictDataEntity>> map = new HashMap<>();
@@ -66,7 +68,8 @@ public class GoodsListServiceImpl implements GoodsListService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<?> getGoodsList(TDeliverInfoEntity tDeliverInfoEntity, int pageNumber, int pageSize, Authentication auth) {
+    public CommonResultInfo<?> getGoodsList(TDeliverInfoEntity tDeliverInfoEntity, int pageNumber, int pageSize, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<TDeliverInfoEntity> result = new CommonResultInfo<TDeliverInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),tDeliverInfoEntity.getLanguageFlag());
@@ -89,7 +92,8 @@ public class GoodsListServiceImpl implements GoodsListService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<?> sendGoods(CommonEntity commonEntity, Authentication auth) {
+    public CommonResultInfo<?> sendGoods(CommonEntity commonEntity, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TDeliverInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();

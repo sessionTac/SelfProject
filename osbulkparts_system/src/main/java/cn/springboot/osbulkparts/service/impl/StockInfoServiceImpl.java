@@ -2,10 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -64,7 +61,8 @@ public class StockInfoServiceImpl implements StockInfoService {
     
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang) {
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang, Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
@@ -84,7 +82,8 @@ public class StockInfoServiceImpl implements StockInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> getStockInfoList(TStockInfoEntity stockInfoEntity, int pageNumber, int pageSize,Authentication auth) {
+	public CommonResultInfo<?> getStockInfoList(TStockInfoEntity stockInfoEntity, int pageNumber, int pageSize,Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<TStockInfoEntity> result = new CommonResultInfo<TStockInfoEntity>();
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),stockInfoEntity.getLanguageFlag());
@@ -107,7 +106,8 @@ public class StockInfoServiceImpl implements StockInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TStockInfoEntity> getStockInfoInfo(TStockInfoEntity stockInfoEntity) {
+	public CommonResultInfo<TStockInfoEntity> getStockInfoInfo(TStockInfoEntity stockInfoEntity,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<TStockInfoEntity> result = new CommonResultInfo<TStockInfoEntity>();
 		try {
 			List<TStockInfoEntity> resultList = tstockInfoDao.selectByPrimaryKey(stockInfoEntity);
@@ -131,7 +131,8 @@ public class StockInfoServiceImpl implements StockInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> insertStockInfo(TStockInfoEntity stockInfoEntity, Authentication auth) {
+	public CommonResultInfo<?> insertStockInfo(TStockInfoEntity stockInfoEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TStockInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -146,7 +147,7 @@ public class StockInfoServiceImpl implements StockInfoService {
 			int returnInt = tstockInfoDao.insertSelective(stockInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.STOCK_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.STOCK_DATA.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -160,7 +161,8 @@ public class StockInfoServiceImpl implements StockInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> updateStockInfo(TStockInfoEntity stockInfoEntity, Authentication auth) {
+	public CommonResultInfo<?> updateStockInfo(TStockInfoEntity stockInfoEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TStockInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -177,10 +179,10 @@ public class StockInfoServiceImpl implements StockInfoService {
 				int returnInt = tstockInfoDao.updateByPrimaryKey(stockInfoEntity);
 				if (returnInt > 0) {
 					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.STOCK_DATA.getTypeName()));
+					result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.STOCK_DATA.getTypeName(locale)));
 				}
 			}else {
-				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.STOCK_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.STOCK_DATA.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -194,7 +196,8 @@ public class StockInfoServiceImpl implements StockInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> deleteStockInfo(String stockId, Authentication auth) {
+	public CommonResultInfo<?> deleteStockInfo(String stockId, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TStockInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -206,7 +209,7 @@ public class StockInfoServiceImpl implements StockInfoService {
 			int returnInt = tstockInfoDao.updateByPrimaryKey(stockInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.STOCK_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.STOCK_DATA.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -220,14 +223,15 @@ public class StockInfoServiceImpl implements StockInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> deleteBatchByIds(CommonEntity commonEntity, Authentication auth) {
+	public CommonResultInfo<?> deleteBatchByIds(CommonEntity commonEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TStockInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			int returnInt = tstockInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName());
+			int returnInt = tstockInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName(locale));
 			if (returnInt > 0) {
-				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.STOCK_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.STOCK_DATA.getTypeName(locale)));
 			}
 			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 		} catch (Exception e) {
@@ -242,12 +246,13 @@ public class StockInfoServiceImpl implements StockInfoService {
 
 	@SuppressWarnings({ "finally"})
 	@Override
-	public CommonResultInfo<?> importExcel(MultipartFile excleFile, HttpServletRequest request, Authentication auth) {
+	public CommonResultInfo<?> importExcel(MultipartFile excleFile, HttpServletRequest request, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TStockInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         try {
         	
-        	List<TStockInfoEntity> stockInfoParams = resolvExcelToDb(excleFile,auth);
+        	List<TStockInfoEntity> stockInfoParams = resolvExcelToDb(excleFile,auth,locale);
         	if(stockInfoParams.size() == 0) {
         		result.setMessage(messageBean.getMessage("common.excel.error"));
         	}else {
@@ -272,10 +277,11 @@ public class StockInfoServiceImpl implements StockInfoService {
 	}
 
 	@Override
-	public ResponseEntity<byte[]> downloadExcel(TStockInfoEntity stockInfoEntity) {
+	public ResponseEntity<byte[]> downloadExcel(TStockInfoEntity stockInfoEntity,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		String[] title = messageBean.getMessage("file.title.stock").split(",");
 		List<TStockInfoEntity> resultList = tstockInfoDao.selectByPrimaryKey(stockInfoEntity);
-		ResponseEntity<byte[]> result = educeExcel(title,resultList);
+		ResponseEntity<byte[]> result = educeExcel(title,resultList,locale);
 		return result;
 	}
 
@@ -286,7 +292,8 @@ public class StockInfoServiceImpl implements StockInfoService {
 	 * @param list 向单元格插入数据
 	 * @return
 	 */
-	private ResponseEntity<byte[]> educeExcel(String[] titles,List<TStockInfoEntity> list){
+	private ResponseEntity<byte[]> educeExcel(String[] titles,List<TStockInfoEntity> list,Locale locale){
+		messageBean.setLocale(null,null,locale);
 		ResponseEntity<byte[]> response = null;
 		//创建Excel对象
 		ByteArrayOutputStream os = new ByteArrayOutputStream();
@@ -346,7 +353,8 @@ public class StockInfoServiceImpl implements StockInfoService {
 	 * Excel文件解析
 	 * @throws Exception 
 	 */
-	private List<TStockInfoEntity> resolvExcelToDb(MultipartFile excleFile,Authentication auth) throws NullPointerException,Exception{
+	private List<TStockInfoEntity> resolvExcelToDb(MultipartFile excleFile,Authentication auth,Locale locale) throws NullPointerException,Exception{
+		messageBean.setLocale(null,null,locale);
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 			MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),"");
@@ -376,7 +384,7 @@ public class StockInfoServiceImpl implements StockInfoService {
 				stockInfoEntity.setMaterialCode((String)mapData.get("物料号"));
 				// 物料类别
 				String materCateVle = getFromDictDataByName(
-						(String)mapData.get("物料类别"),"mattertype","物料类别");
+						(String)mapData.get("物料类别"),"mattertype","物料类别",locale);
 				stockInfoEntity.setMaterialCategory(materCateVle);
 				// 物料中文描述
 				stockInfoEntity.setMaterialDescCn((String)mapData.get("物料中文描述"));
@@ -411,7 +419,8 @@ public class StockInfoServiceImpl implements StockInfoService {
 	 * @param dictType
 	 * @return
 	 */
-	private String getFromDictDataByName(String nameValue,String dictType,String dictTypeCn) {
+	private String getFromDictDataByName(String nameValue,String dictType,String dictTypeCn,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		TDictDataEntity dictDataParam = new TDictDataEntity();
 		try {
 			dictDataParam.setName(nameValue);

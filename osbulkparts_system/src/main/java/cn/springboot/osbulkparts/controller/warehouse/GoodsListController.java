@@ -32,7 +32,7 @@ public class GoodsListController {
 	@ApiOperation(value="页面初始化", notes="获取页面初始化数据")
 	@GetMapping("/init")
 	public Object initViews(@RequestHeader String lang){
-		return goodsListService.initViews(lang);
+		return goodsListService.initViews(lang,OSLanguage.localeToVueSuffix(lang));
 	}
 
 	
@@ -50,15 +50,15 @@ public class GoodsListController {
 			HttpServletRequest request, Authentication auth,
 			@RequestHeader String lang){
 		tDeliverInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		return  goodsListService.getGoodsList( tDeliverInfoEntity,  pageNum,  pageSize,  auth);
+		return  goodsListService.getGoodsList( tDeliverInfoEntity,  pageNum,  pageSize,  auth,OSLanguage.localeToVueSuffix(lang));
 	}
 
 	@ApiOperation(value="发货数据", notes="发货数据")
 	@ApiImplicitParam(name = "commonEntity", value = "共同实体类", required = true, dataType = "body", paramType = "body")
 	@PutMapping("/sendGoods")
-	public CommonResultInfo<?> sendGoods(@RequestBody CommonEntity commonEntity, Authentication auth){
+	public CommonResultInfo<?> sendGoods(@RequestBody CommonEntity commonEntity, Authentication auth,@RequestHeader String lang){
 
-		return  goodsListService.sendGoods(commonEntity,auth);
+		return  goodsListService.sendGoods(commonEntity,auth,OSLanguage.localeToVueSuffix(lang));
 	}
 
 	@ApiOperation(value="发货数据导出", notes="发货数据导出")

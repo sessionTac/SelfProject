@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,8 @@ public class MaterialQuotaServiceImpl implements MaterialQuotaService{
     
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TMaterialQuotaEntity> selectMaterialQuotaList(TMaterialQuotaEntity materialQuotaEntity, Authentication auth) {
+	public CommonResultInfo<TMaterialQuotaEntity> selectMaterialQuotaList(TMaterialQuotaEntity materialQuotaEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<TMaterialQuotaEntity> result = new CommonResultInfo<TMaterialQuotaEntity>();
 		try {
 			SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -54,14 +56,16 @@ public class MaterialQuotaServiceImpl implements MaterialQuotaService{
 	}
 
 	@Override
-	public CommonResultInfo<TMaterialQuotaEntity> selectMaterialQuota(TMaterialQuotaEntity MaterialQuotaEntity) {
+	public CommonResultInfo<TMaterialQuotaEntity> selectMaterialQuota(TMaterialQuotaEntity MaterialQuotaEntity,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> insertMaterialQuota(TMaterialQuotaEntity materialQuotaEntity, Authentication auth) {
+	public CommonResultInfo<?> insertMaterialQuota(TMaterialQuotaEntity materialQuotaEntity, Authentication auth, Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TMaterialQuotaEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		try {
@@ -90,7 +94,7 @@ public class MaterialQuotaServiceImpl implements MaterialQuotaService{
 			}
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.MATERIAL_QUOTA_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.MATERIAL_QUOTA_DATA.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -103,14 +107,16 @@ public class MaterialQuotaServiceImpl implements MaterialQuotaService{
 	}
 
 	@Override
-	public CommonResultInfo<?> updateMaterialQuota(TMaterialQuotaEntity MaterialQuotaEntity, Authentication auth) {
+	public CommonResultInfo<?> updateMaterialQuota(TMaterialQuotaEntity MaterialQuotaEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> deleteMaterialQuota(String materialCode, Authentication auth) {
+	public CommonResultInfo<?> deleteMaterialQuota(String materialCode, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<TMaterialQuotaEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		try {
@@ -123,7 +129,7 @@ public class MaterialQuotaServiceImpl implements MaterialQuotaService{
 			int returnInt = tmaterialQuotaDao.deleteBatchData(materialInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.MATERIAL_QUOTA_DATA.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.MATERIAL_QUOTA_DATA.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -136,7 +142,8 @@ public class MaterialQuotaServiceImpl implements MaterialQuotaService{
 	}
 
 	@Override
-	public CommonResultInfo<?> deleteBatchMaterialQuota(CommonEntity commonEntity, Authentication auth) {
+	public CommonResultInfo<?> deleteBatchMaterialQuota(CommonEntity commonEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		// TODO Auto-generated method stub
 		return null;
 	}

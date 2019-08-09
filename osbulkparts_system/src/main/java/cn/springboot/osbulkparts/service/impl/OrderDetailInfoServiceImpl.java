@@ -4,11 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import cn.springboot.osbulkparts.common.OSLanguage;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -80,7 +76,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang) {
+    public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang, Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
         try {
             Map<String,List<TDictDataEntity>> map = new HashMap<>();
@@ -112,7 +109,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity, int pageNumber, int pageSize, Authentication auth) {
+    public CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity, int pageNumber, int pageSize, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<TOrderDetailInfoEntity> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
@@ -137,7 +135,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity) {
+    public CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<TOrderDetailInfoEntity> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         try {
             List<TOrderDetailInfoEntity> resultList = tOrderDetailInfoDao.getOrderDetailInfoList(tOrderDetailInfoEntity);
@@ -161,7 +160,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<TOrderInfoEntity> getAllOrderCode(String isBalance,Authentication auth) {
+    public CommonResultInfo<TOrderInfoEntity> getAllOrderCode(String isBalance,Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<TOrderInfoEntity> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
@@ -180,7 +180,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<TOrderInfoEntity> getOrderInfoByOrderCode(String materialOrderCode,String isBalance,Authentication auth) {
+    public CommonResultInfo<TOrderInfoEntity> getOrderInfoByOrderCode(String materialOrderCode,String isBalance,Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<TOrderInfoEntity> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
@@ -199,7 +200,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<MMaterialInfoEntity> getMaterialInfoByMaterialCode(String materialCode, Authentication auth,String lang) {
+    public CommonResultInfo<MMaterialInfoEntity> getMaterialInfoByMaterialCode(String materialCode, Authentication auth,String lang,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<MMaterialInfoEntity> result = new CommonResultInfo<MMaterialInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
@@ -224,7 +226,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
     }
 
     @Override
-    public CommonResultInfo<?> checkOrderCodeAndMaterialCode(String orderCode, String isBalance, String materialCode,Authentication auth) {
+    public CommonResultInfo<?> checkOrderCodeAndMaterialCode(String orderCode, String isBalance, String materialCode,Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
@@ -261,14 +264,15 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<?> updateOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity, Authentication auth) {
+    public CommonResultInfo<?> updateOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
             TOrderDetailInfoEntity orderInfoList = tOrderDetailInfoDao.selectByPrimaryKey(tOrderDetailInfoEntity.getId());
             if(orderInfoList != null && (orderInfoList.getVersion() != tOrderDetailInfoEntity.getVersion())) {
-                result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName(locale)));
             }else {
                 tOrderDetailInfoEntity.setUpdateUser(principal.getUserName());
                 tOrderDetailInfoEntity.setVersion(tOrderDetailInfoEntity.getVersion()+1);
@@ -276,7 +280,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
                 int returnInt = tOrderDetailInfoDao.updateByPrimaryKey(tOrderDetailInfoEntity);
                 if (returnInt > 0) {
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName()));
+                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName(locale)));
                 }
             }
         } catch (Exception e) {
@@ -291,7 +295,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<?> insertOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity, Authentication auth) {
+    public CommonResultInfo<?> insertOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         try {
@@ -309,7 +314,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             int returnInt = tOrderDetailInfoDao.insertSelective(tOrderDetailInfoEntity);
             if (returnInt > 0) {
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.ORDERINFO_DATA.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.ORDERINFO_DATA.getTypeName(locale)));
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -323,14 +328,15 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity, Authentication auth) {
+    public CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
-            int returnInt = tOrderDetailInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName());
+            int returnInt = tOrderDetailInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName(locale));
             if (returnInt > 0) {
-                result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName(locale)));
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
             }
         } catch (Exception e) {
@@ -345,14 +351,15 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
     @SuppressWarnings("finally")
 	@Override
-    public CommonResultInfo<?> approvalBatchOrderInfo(CommonEntity commonEntity, Authentication auth) {
+    public CommonResultInfo<?> approvalBatchOrderInfo(CommonEntity commonEntity, Authentication auth,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<TOrderInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         try {
-            int returnInt = tOrderDetailInfoDao.approvalBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_APPROVAL.getTypeName());
+            int returnInt = tOrderDetailInfoDao.approvalBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_APPROVAL.getTypeName(locale));
             if (returnInt > 0) {
-                result.setMessage(messageBean.getMessage("common.approval.success", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.approval.success", CommonConstantEnum.ORDERDETAILINFO_DATA.getTypeName(locale)));
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
             }
         } catch (Exception e) {
@@ -367,7 +374,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> selectDeliveryInfo(CommonEntity commonEntity) {
+	public CommonResultInfo<?> selectDeliveryInfo(CommonEntity commonEntity,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<TOrderDetailInfoEntity> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         try {
             List<TOrderDetailInfoEntity> resultList = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr(),commonEntity.getDateFlag());
@@ -391,7 +399,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth,String lang) {
+	public CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth,String lang,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<?> result = new CommonResultInfo<TDeliverInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         String dateFlag = commonEntity.getDateFlag();
@@ -479,7 +488,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	}
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit(String lang) {
+    public CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit(String lang,Locale locale) {
+        messageBean.setLocale(null,null,locale);
         CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
         try {
             Map<String,List<TDictDataEntity>> map = new HashMap<>();
@@ -498,10 +508,11 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
     }
     
 	@Override
-	public ResponseEntity<byte[]> downloadExcel(TOrderDetailInfoEntity tOrderDetailInfoEntity) {
+	public ResponseEntity<byte[]> downloadExcel(TOrderDetailInfoEntity tOrderDetailInfoEntity,Locale locale) {
+        messageBean.setLocale(null,null,locale);
 		String[] title = messageBean.getMessage("file.title.orderDetail").split(",");
 		List<TOrderDetailInfoEntity> resultList = tOrderDetailInfoDao.getOrderDetailInfoList(tOrderDetailInfoEntity);
-		ResponseEntity<byte[]> result = educeExcel(title,resultList);
+		ResponseEntity<byte[]> result = educeExcel(title,resultList,locale);
 		return result;
 	}
 	
@@ -512,7 +523,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	 * @param list 向单元格插入数据
 	 * @return
 	 */
-	private ResponseEntity<byte[]> educeExcel(String[] titles,List<TOrderDetailInfoEntity> list){
+	private ResponseEntity<byte[]> educeExcel(String[] titles,List<TOrderDetailInfoEntity> list,Locale locale){
+        messageBean.setLocale(null,null,locale);
 		ResponseEntity<byte[]> response = null;
 		//创建Excel对象
 		ByteArrayOutputStream os = new ByteArrayOutputStream();

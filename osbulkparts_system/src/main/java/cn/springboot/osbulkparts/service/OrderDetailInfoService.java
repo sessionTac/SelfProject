@@ -1,6 +1,7 @@
 package cn.springboot.osbulkparts.service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
@@ -16,45 +17,45 @@ import cn.springboot.osbulkparts.entity.TOrderInfoEntity;
 
 public interface OrderDetailInfoService {
 
-    CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang);
+    CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang,Locale locale);
 
-    CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity, int pageNumber, int pageSize, Authentication auth);
+    CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfoList(TOrderDetailInfoEntity tOrderDetailInfoEntity, int pageNumber, int pageSize, Authentication auth,Locale locale);
 
-    CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity);
+    CommonResultInfo<TOrderDetailInfoEntity> selectOrderDetailInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Locale locale);
 
     /**
      * 获取全部的订单号
      */
-    CommonResultInfo<TOrderInfoEntity> getAllOrderCode(String isBalance,Authentication auth);
+    CommonResultInfo<TOrderInfoEntity> getAllOrderCode(String isBalance,Authentication auth,Locale locale);
     /**
      * 根据订单号将所有订单信息和所有物料号取出
      */
-    CommonResultInfo<TOrderInfoEntity> getOrderInfoByOrderCode(String materialOrderCode,String isBalance,Authentication auth);
+    CommonResultInfo<TOrderInfoEntity> getOrderInfoByOrderCode(String materialOrderCode, String isBalance, Authentication auth, Locale locale);
 
     /**
      * 根据物料号找到物料的所有信息
      */
-    CommonResultInfo<MMaterialInfoEntity> getMaterialInfoByMaterialCode(String materialCode,Authentication auth,String lang);
+    CommonResultInfo<MMaterialInfoEntity> getMaterialInfoByMaterialCode(String materialCode,Authentication auth,String lang,Locale locale);
 
     /**
      * 校验订单号和物料号是否存在
      */
-    CommonResultInfo<?> checkOrderCodeAndMaterialCode(String orderCode,String isBalance,String materialCode,Authentication auth);
+    CommonResultInfo<?> checkOrderCodeAndMaterialCode(String orderCode,String isBalance,String materialCode,Authentication auth,Locale locale);
 
-    CommonResultInfo<?> updateOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth);
+    CommonResultInfo<?> updateOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth,Locale locale);
 
-    CommonResultInfo<?> insertOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth);
+    CommonResultInfo<?> insertOrderDetailInfoInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity,Authentication auth,Locale locale);
 
-    CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity, Authentication auth);
+    CommonResultInfo<?> deleteBatchOrderInfo(CommonEntity commonEntity, Authentication auth,Locale locale);
 
-    CommonResultInfo<?> approvalBatchOrderInfo(CommonEntity commonEntity, Authentication auth);
+    CommonResultInfo<?> approvalBatchOrderInfo(CommonEntity commonEntity, Authentication auth,Locale locale);
     
-    CommonResultInfo<?> selectDeliveryInfo(CommonEntity commonEntity);
+    CommonResultInfo<?> selectDeliveryInfo(CommonEntity commonEntity,Locale locale);
     
     @Transactional
-    CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth,String lang);
+    CommonResultInfo<?> excuteDeliveryInfo(CommonEntity commonEntity, Authentication auth,String lang,Locale locale);
 
-    CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit(String lang);
+    CommonResultInfo<Map<String, List<TDictDataEntity>>> sendGoodsInit(String lang,Locale locale);
     
-    ResponseEntity<byte[]> downloadExcel(TOrderDetailInfoEntity tOrderDetailInfoEntity);
+    ResponseEntity<byte[]> downloadExcel(TOrderDetailInfoEntity tOrderDetailInfoEntity,Locale locale);
 }

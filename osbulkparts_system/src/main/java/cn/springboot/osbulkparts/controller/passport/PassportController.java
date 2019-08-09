@@ -1,5 +1,6 @@
 package cn.springboot.osbulkparts.controller.passport;
 
+import cn.springboot.osbulkparts.common.OSLanguage;
 import cn.springboot.osbulkparts.entity.MFunctionInfoEntity;
 import cn.springboot.osbulkparts.entity.MRoleInfoEntity;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,7 @@ public class PassportController {
 	@GetMapping("/userinfo")
 	public Map<String,Object> findUserInfo(@RequestHeader("Authorization") String Authorization, Authentication auth,@RequestHeader String lang) {
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
-		CommonResultInfo<MUserInfoEntity> result = userInfoService.findUserWithRoleAndFunc(principal.getUserName(), principal.getRoleIdSelected(),auth,lang);
+		CommonResultInfo<MUserInfoEntity> result = userInfoService.findUserWithRoleAndFunc(principal.getUserName(), principal.getRoleIdSelected(),auth,lang, OSLanguage.localeToVueSuffix(lang));
 		MUserInfoEntity userInfo=result.getResult();
 		//获取当前用户的权限列表、地图区域权限、数据权限
 		List<String> functions = new ArrayList<>();

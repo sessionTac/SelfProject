@@ -2,6 +2,7 @@ package cn.springboot.osbulkparts.service.impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import cn.springboot.osbulkparts.common.OSLanguage;
@@ -41,7 +42,8 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang) {
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang, Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
@@ -67,7 +69,8 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MSupplierInfoEntity> getSupplierInfoList(MSupplierInfoEntity msupplierInfoEntity,
-			int pageNumber, int pageSize) {
+			int pageNumber, int pageSize,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<MSupplierInfoEntity> result = new CommonResultInfo<MSupplierInfoEntity>();
 		try {
 			PageHelper.startPage(pageNumber, pageSize);
@@ -86,7 +89,8 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<MSupplierInfoEntity> getSupplierInfo(String supplierId) {
+	public CommonResultInfo<MSupplierInfoEntity> getSupplierInfo(String supplierId,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<MSupplierInfoEntity> result = new CommonResultInfo<MSupplierInfoEntity>();
 		try {
 			MSupplierInfoEntity supplierInfo = msupplierInfoDao.selectByPrimaryKey(supplierId);
@@ -103,7 +107,8 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> insertSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth) {
+	public CommonResultInfo<?> insertSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<MSupplierInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -111,7 +116,7 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 			MSupplierInfoEntity supplierInfo = msupplierInfoDao.selectByCode(mSupplierInfoEntity.getSupplierCode());
 			if(supplierInfo != null) {
 				result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.SUPPLIER.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.SUPPLIER.getTypeName(locale)));
 			}else {
 				String dictUUID = CommonSqlUtils.getUUID32();
 				mSupplierInfoEntity.setSupplierId(dictUUID);
@@ -121,7 +126,7 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 				int returnInt = msupplierInfoDao.insertSelective(mSupplierInfoEntity);
 				if (returnInt > 0) {
 					result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-					result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.SUPPLIER.getTypeName()));
+					result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.SUPPLIER.getTypeName(locale)));
 				}
 			}
 		} catch (Exception e) {
@@ -136,7 +141,8 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> updateSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth) {
+	public CommonResultInfo<?> updateSupplierInfo(MSupplierInfoEntity mSupplierInfoEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<MSupplierInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -147,7 +153,7 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 			int returnInt = msupplierInfoDao.updateByPrimaryKey(mSupplierInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.SUPPLIER.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.SUPPLIER.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -161,7 +167,8 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> deleteSupplierInfo(String supplierId, Authentication auth) {
+	public CommonResultInfo<?> deleteSupplierInfo(String supplierId, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -173,7 +180,7 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 			int returnInt = msupplierInfoDao.updateByPrimaryKey(mSupplierInfoEntity);
 			if (returnInt > 0) {
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.SUPPLIER.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.SUPPLIER.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -187,14 +194,15 @@ public class SupplierInfoServiceImpl implements SupplierInfoService{
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity, Authentication auth) {
+	public CommonResultInfo<?> deleteBatchMaterialInfo(CommonEntity commonEntity, Authentication auth,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<?> result = new CommonResultInfo<MMaterialInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
 		try {
-			int returnInt = msupplierInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName());
+			int returnInt = msupplierInfoDao.deleteBatchData(commonEntity.getIdsStr(),principal.getUserName(),CommonConstantEnum.TO_DELETE.getTypeName(locale));
 			if (returnInt > 0) {
-				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.SUPPLIER.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.SUPPLIER.getTypeName(locale)));
 			}
 			result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
 		} catch (Exception e) {

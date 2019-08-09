@@ -81,7 +81,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<MUserInfoEntity> getUserInfo(String userId, String lang) {
+	public CommonResultInfo<MUserInfoEntity> getUserInfo(String userId, String lang, Locale locale) {
+        messageBean.setLocale(null,null,locale);
 		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
 		try {
 			MUserInfoEntity userInfo = muserInfoDao.selectUserInfo(userId,OSLanguage.localeToTableSuffix(lang));
@@ -99,7 +100,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions(String lang) {
+	public CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions(String lang,Locale locale) {
 		CommonResultInfo<Map<String, List<TDictDataEntity>>> result = new CommonResultInfo<Map<String, List<TDictDataEntity>>>();
 		try {
 			Map<String,List<TDictDataEntity>> map = new HashMap<>();
@@ -122,7 +123,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth,String lang){
+	public CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth,String lang,Locale locale){
 		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
 		try {
 			MUserInfoEntity userInfo = muserInfoDao.selectUserWithRoleAndFunc(userName, roleId,OSLanguage.localeToTableSuffix(lang));
@@ -138,7 +139,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(String userId) {
+	public CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(String userId,Locale locale) {
 		CommonResultInfo<TUserRoleRelationEntity> result = new CommonResultInfo<TUserRoleRelationEntity>();
 		try {
 			List<TUserRoleRelationEntity> userInfo = tUserRoleRelationDao.findRoleByUserId(userId);
@@ -154,7 +155,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<MRoleInfoEntity> findAllRole(MRoleInfoEntity mRoleInfoEntity) {
+    public CommonResultInfo<MRoleInfoEntity> findAllRole(MRoleInfoEntity mRoleInfoEntity,Locale locale) {
         CommonResultInfo<MRoleInfoEntity> result = new CommonResultInfo<MRoleInfoEntity>();
         try {
             List<MRoleInfoEntity> list = mRoleInfoDao.selectRoleInfoList(mRoleInfoEntity);
@@ -172,7 +173,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     @SuppressWarnings("finally")
     @Transactional
     @Override
-    public Object insertRole(List<String> roleIds, String userId, Authentication auth) {
+    public Object insertRole(List<String> roleIds, String userId, Authentication auth,Locale locale) {
         SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
         CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
@@ -184,7 +185,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             }
             if (r == roleIds.size()) {
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.ROLE.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.ROLE.getTypeName(locale)));
             }
 
         } catch (Exception e) {
@@ -199,7 +200,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
     @SuppressWarnings("finally")
     @Override
-    public CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity, String checkFlag) {
+    public CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity, String checkFlag,Locale locale) {
         CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
         result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
         try {
@@ -210,7 +211,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 if (checkList.size() == 0) {
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 } else {
-                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
+                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName(locale)));
                 }
             } else if (checkFlag.equals("edit")) {
                 if (
@@ -220,7 +221,7 @@ public class UserInfoServiceImpl implements UserInfoService {
                 ) {
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
                 } else {
-                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName()));
+                    result.setMessage(messageBean.getMessage("common.add.repeat", CommonConstantEnum.USER_NAME.getTypeName(locale)));
                 }
             }
         } catch (Exception e) {
@@ -233,7 +234,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> resetPassword(MUserInfoEntity userInfoEntity, Authentication auth) {
+	public CommonResultInfo<?> resetPassword(MUserInfoEntity userInfoEntity, Authentication auth,Locale locale) {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -260,7 +261,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@SuppressWarnings("finally")
 	@Transactional
 	@Override
-	public CommonResultInfo<?> changePassword(MUserInfoEntity userInfoEntity, String oldPassword, Authentication auth) {
+	public CommonResultInfo<?> changePassword(MUserInfoEntity userInfoEntity, String oldPassword, Authentication auth,Locale locale) {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -295,7 +296,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	}
 
 	@Override
-	public CommonResultInfo<MUserInfoEntity> getUserCustomerRelationInfo(String userId) {
+	public CommonResultInfo<MUserInfoEntity> getUserCustomerRelationInfo(String userId,Locale locale) {
 //		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
 //		try {
 //			List<MUserInfoEntity> userInfo = muserInfoEntityMapper.selectUserCustomerRelation(userId);
@@ -313,7 +314,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> updateUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth) {
+	public CommonResultInfo<?> updateUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth,Locale locale) {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -328,10 +329,10 @@ public class UserInfoServiceImpl implements UserInfoService {
                 int returnInt = muserInfoDao.updateByPrimaryKeySelective(mUserInfoEntity);
                 if (returnInt > 0) {
                     result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.USER.getTypeName()));
+                    result.setMessage(messageBean.getMessage("common.update.success", CommonConstantEnum.USER.getTypeName(locale)));
                 }
 			}else {
-				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.USER.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.update.version", CommonConstantEnum.USER.getTypeName(locale)));
 			}
 
 		} catch (Exception e) {
@@ -345,7 +346,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@SuppressWarnings("finally")
 	@Transactional
 	@Override
-	public CommonResultInfo<?> deleteUserInfo(String userId, Authentication auth) {
+	public CommonResultInfo<?> deleteUserInfo(String userId, Authentication auth,Locale locale) {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -358,7 +359,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 			if (returnInt > 0) {
 				tUserRoleRelationDao.deleteById(userId);
 				result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.USER.getTypeName()));
+				result.setMessage(messageBean.getMessage("common.delete.success", CommonConstantEnum.USER.getTypeName(locale)));
 			}
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
@@ -371,7 +372,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
 	@SuppressWarnings("finally")
 	@Override
-	public CommonResultInfo<?> addUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth) {
+	public CommonResultInfo<?> addUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth,Locale locale) {
 		CommonResultInfo<?> result = new CommonResultInfo<MUserInfoEntity>();
 		result.setCode(ResponseEntity.badRequest().build().getStatusCodeValue());
 		SecurityUserInfoEntity principal = (SecurityUserInfoEntity)auth.getPrincipal();
@@ -385,7 +386,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             int returnInt = muserInfoDao.insertSelective(mUserInfoEntity);
             if (returnInt > 0) {
                 result.setCode(ResponseEntity.status(HttpStatus.CREATED).build().getStatusCodeValue());
-                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.USER.getTypeName()));
+                result.setMessage(messageBean.getMessage("common.add.success", CommonConstantEnum.USER.getTypeName(locale)));
             }
 		} catch (Exception e) {
 			result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());

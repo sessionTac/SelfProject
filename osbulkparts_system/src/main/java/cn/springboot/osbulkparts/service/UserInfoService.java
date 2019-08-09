@@ -17,23 +17,23 @@ public interface UserInfoService {
 	
 	CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity, int pageNumber, int pageSize, Locale locale);
 	
-	CommonResultInfo<MUserInfoEntity> getUserInfo(String userId,String lang);
+	CommonResultInfo<MUserInfoEntity> getUserInfo(String userId,String lang, Locale locale);
 
-	CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions(String lang);
+	CommonResultInfo<Map<String, List<TDictDataEntity>>> getOptions(String lang,Locale locale);
 	
-	CommonResultInfo<MUserInfoEntity> getUserCustomerRelationInfo(String userId);
+	CommonResultInfo<MUserInfoEntity> getUserCustomerRelationInfo(String userId,Locale locale);
 
-	CommonResultInfo<?> addUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth);
+	CommonResultInfo<?> addUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth,Locale locale);
 	
-	CommonResultInfo<?> updateUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth);
+	CommonResultInfo<?> updateUserInfo(MUserInfoEntity mUserInfoEntity, Authentication auth,Locale locale);
 	
-	CommonResultInfo<?> deleteUserInfo(String userId, Authentication auth);
+	CommonResultInfo<?> deleteUserInfo(String userId, Authentication auth,Locale locale);
 	
-	CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth,String lang);
+	CommonResultInfo<MUserInfoEntity> findUserWithRoleAndFunc(String userName, String roleId, Authentication auth,String lang,Locale locale);
 
-	CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(String userId);
+	CommonResultInfo<TUserRoleRelationEntity> findRoleByUserId(String userId,Locale locale);
 
-    CommonResultInfo<MRoleInfoEntity> findAllRole(MRoleInfoEntity mRoleInfoEntity);
+    CommonResultInfo<MRoleInfoEntity> findAllRole(MRoleInfoEntity mRoleInfoEntity,Locale locale);
 
     /**
      * 添加角色
@@ -41,22 +41,22 @@ public interface UserInfoService {
      * @param userId
      * @return
      */
-    Object insertRole(List<String> roleIds, String userId,Authentication auth);
+    Object insertRole(List<String> roleIds, String userId,Authentication auth,Locale locale);
 
     /**
      * 校验角色信息
      */
-    CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity,String checkFlag);
+    CommonResultInfo<?> checkInfo(MUserInfoEntity mUserInfoEntity,String checkFlag,Locale locale);
 
 	/**
 	 * 重置密码
 	 * @return
 	 */
-	CommonResultInfo<?> resetPassword(MUserInfoEntity userInfoEntity, Authentication auth);
+	CommonResultInfo<?> resetPassword(MUserInfoEntity userInfoEntity, Authentication auth,Locale locale);
 
 	/**
 	 * 修改密码
 	 * @return
 	 */
-	CommonResultInfo<?> changePassword(MUserInfoEntity userInfoEntity,String oldPassword, Authentication auth);
+	CommonResultInfo<?> changePassword(MUserInfoEntity userInfoEntity,String oldPassword, Authentication auth,Locale locale);
 }

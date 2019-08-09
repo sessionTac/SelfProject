@@ -1,6 +1,7 @@
 package cn.springboot.osbulkparts.service;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,22 +18,22 @@ import cn.springboot.osbulkparts.entity.TStockInfoEntity;
 
 public interface StockInfoService {
 	
-	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang);
+	CommonResultInfo<Map<String, List<TDictDataEntity>>> initViews(String lang, Locale locale);
 
-	CommonResultInfo<?> getStockInfoList(TStockInfoEntity stockInfoEntity, int pageNumber, int pageSize,Authentication auth); 
+	CommonResultInfo<?> getStockInfoList(TStockInfoEntity stockInfoEntity, int pageNumber, int pageSize,Authentication auth,Locale locale);
 	
-	CommonResultInfo<TStockInfoEntity> getStockInfoInfo(TStockInfoEntity stockInfoEntity); 
+	CommonResultInfo<TStockInfoEntity> getStockInfoInfo(TStockInfoEntity stockInfoEntity,Locale locale);
 	
-	CommonResultInfo<?> insertStockInfo(TStockInfoEntity stockInfoEntity, Authentication auth);
+	CommonResultInfo<?> insertStockInfo(TStockInfoEntity stockInfoEntity, Authentication auth,Locale locale);
 	
-	CommonResultInfo<?> updateStockInfo(TStockInfoEntity stockInfoEntity, Authentication auth);
+	CommonResultInfo<?> updateStockInfo(TStockInfoEntity stockInfoEntity, Authentication auth,Locale locale);
 	
-	CommonResultInfo<?> deleteStockInfo(String stock, Authentication auth);
+	CommonResultInfo<?> deleteStockInfo(String stock, Authentication auth,Locale locale);
 
-	CommonResultInfo<?> deleteBatchByIds(CommonEntity commonEntity, Authentication auth);
+	CommonResultInfo<?> deleteBatchByIds(CommonEntity commonEntity, Authentication auth,Locale locale);
 	
 	@Transactional
-	CommonResultInfo<?> importExcel(MultipartFile excleFile,HttpServletRequest request,Authentication auth);
+	CommonResultInfo<?> importExcel(MultipartFile excleFile,HttpServletRequest request,Authentication auth,Locale locale);
 	
-	ResponseEntity<byte[]> downloadExcel(TStockInfoEntity stockInfoEntity);
+	ResponseEntity<byte[]> downloadExcel(TStockInfoEntity stockInfoEntity,Locale locale);
 }
