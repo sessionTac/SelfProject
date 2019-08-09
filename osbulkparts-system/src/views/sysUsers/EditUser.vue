@@ -36,7 +36,7 @@
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
                             </template>
                         </el-form-item>
-                        <el-form-item :label="$t('pageTable.email')" prop="userMail">
+                        <el-form-item :label="$t('searchFrom.email')" prop="userMail">
                             <el-input v-model="form.userMail" class="search-form-item-input"  style="width: 200px" size="mini" :maxlength="30"></el-input>
                             <template slot="error" slot-scope="scope"  >
                                 <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
