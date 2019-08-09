@@ -6,14 +6,14 @@ public enum CommonConstantEnum {
 	LOCK_TRUE("1,1,1"),
 	LOCK_FALSE("0,0,0"),
 	DICT_TYPE("字典分类,Dictionary classification,словарь"),
-	DICT_TYPE_CODE("字典分类编码,Кодировка словаря "),
-	DICT_DATA("字典数据,Словарные данные "),
-    ROLE_NAME("角色名, имя роли "),
-    ROLE("角色,role,роль "),
+	DICT_TYPE_CODE("字典分类编码,DICT TYPE CODE,Кодировка словаря "),
+	DICT_DATA("字典数据,Dict Date,Словарные данные "),
+    ROLE_NAME("角色名, Role Name,имя роли "),
+    ROLE("角色,Role,роль "),
     POWER("权限,Jurisdiction,role,права "),
-    USER("用户,user,пользователь "),
-    LOSSRATE("损耗,loss,износ "),
-    RATE("税率,tax rate,тариф "),
+    USER("用户,User,пользователь "),
+    LOSSRATE("损耗,Loss,износ "),
+    RATE("税率,Tax Rate,тариф "),
 	USER_NAME("用户名,User name,Имя пользователя "),
 	SUPPLIER("供应商,Supplier,поставщик "),
 	TO_DELETE("1,1,1"),
@@ -43,24 +43,14 @@ public enum CommonConstantEnum {
     		return typeLocalName[2];
     	}
 		return typeLocalName[0];
-<<<<<<< Updated upstream
     }
+    
 	public String getTypeName() {
 		String[] typeLocalName = this.typeName.split(",");
 		return typeLocalName[0];
 	}
-
-	/**
-=======
-    }  
-    
-    public String getTypeName() {  
-    	String[] typeLocalName = this.typeName.split(",");
-		return typeLocalName[0];
-    }  
     
     /** 
->>>>>>> Stashed changes
      * 根据类型的名称，返回类型的枚举实例。 
      * 
      * @param typeName 类型名称 

@@ -67,7 +67,6 @@ public class UserInfoServiceImpl implements UserInfoService {
 			PageInfo<MUserInfoEntity> pageInfo = new PageInfo<>(
 					muserInfoDao.selectUserInfoList(muserInfoEntity));
 			result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
-			String a=messageBean.getMessage("common.server.error");
 			result.setResultInfo(pageInfo);
 		} catch (Exception e) {
 			e.printStackTrace();
