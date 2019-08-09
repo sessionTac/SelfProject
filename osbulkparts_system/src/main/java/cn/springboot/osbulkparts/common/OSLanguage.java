@@ -1,5 +1,7 @@
 package cn.springboot.osbulkparts.common;
 
+import java.util.Locale;
+
 public class OSLanguage {
 
 //    /**
@@ -25,10 +27,32 @@ public class OSLanguage {
         switch(lang) {
             case "en":
                 return "EN";
-
+//            case "ru":
+//                return "RU";
             case "zh":
             default:
                 return "CN";
+        }
+    }
+
+    /**
+     * 将前端的lang转为已知的多语言返回，这里是用于后台向前台返回数据用的
+     * @param lang
+     * @return
+     */
+    public static Locale localeToVueSuffix(String lang) {
+
+        if (null == lang)
+            lang = "zh";
+
+        switch(lang) {
+            case "en":
+                return Locale.US;
+            case "ru":
+                return Locale.FRANCE;
+            case "zh":
+            default:
+                return Locale.SIMPLIFIED_CHINESE;
         }
     }
 

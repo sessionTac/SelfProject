@@ -40,7 +40,7 @@ public class UserInfoController {
 			@RequestParam(defaultValue = "1") int pageNum,
             @RequestParam(defaultValue="50") int pageSize,@RequestHeader String lang){
 		muserInfoEntity.setLanguageFlag(OSLanguage.localeToTableSuffix(lang));
-		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfoList(muserInfoEntity,pageNum,pageSize);
+		CommonResultInfo<MUserInfoEntity> result = userInfoService.getUserInfoList(muserInfoEntity,pageNum,pageSize,OSLanguage.localeToVueSuffix(lang));
 		return result;
 	}
 	

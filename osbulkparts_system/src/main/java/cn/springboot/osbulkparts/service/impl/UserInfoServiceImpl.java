@@ -58,7 +58,8 @@ public class UserInfoServiceImpl implements UserInfoService {
 	@SuppressWarnings("finally")
 	@Override
 	public CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity, int pageNumber,
-															 int pageSize) {
+															 int pageSize,Locale locale) {
+		messageBean.setLocale(null,null,locale);
 		CommonResultInfo<MUserInfoEntity> result = new CommonResultInfo<MUserInfoEntity>();
 		try {
 			

@@ -10,11 +10,12 @@ import cn.springboot.osbulkparts.common.CommonResultInfo;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public interface UserInfoService {
 	
-	CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity, int pageNumber, int pageSize);
+	CommonResultInfo<MUserInfoEntity> getUserInfoList(MUserInfoEntity muserInfoEntity, int pageNumber, int pageSize, Locale locale);
 	
 	CommonResultInfo<MUserInfoEntity> getUserInfo(String userId,String lang);
 
