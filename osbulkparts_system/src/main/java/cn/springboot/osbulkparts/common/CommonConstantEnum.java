@@ -3,7 +3,7 @@ package cn.springboot.osbulkparts.common;
 public enum CommonConstantEnum {
 	LOCK_TRUE("1"),
 	LOCK_FALSE("0"),
-	DICT_TYPE("字典分类"),
+	DICT_TYPE("字典分类,dictType"),
 	DICT_TYPE_CODE("字典分类编码"),
 	DICT_DATA("字典数据"),
     ROLE_NAME("角色名"),
@@ -29,8 +29,18 @@ public enum CommonConstantEnum {
         this.typeName = typeName;  
     }  
 
-    public String getTypeName() {  
-        return this.typeName;  
+    public String getTypeName(String lang) {  
+    	String[] typeLocalName = this.typeName.split(",");
+    	if(lang.equals("cn")) {
+    		return typeLocalName[0];
+    	}
+    	else if(lang.equals("en")) {
+    		return typeLocalName[1];
+    	}
+    	else if(lang.equals("fr")) {
+    		return typeLocalName[2];
+    	}
+		return typeLocalName[0];
     }  
     
     /** 

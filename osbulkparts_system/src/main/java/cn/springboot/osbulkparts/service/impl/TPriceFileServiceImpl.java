@@ -44,9 +44,9 @@ public class TPriceFileServiceImpl implements TPriceFileService
             String nowTime = CommonMethods.getNowTimeForString();
             StringBuffer filePath = new StringBuffer();
             filePath.append(FTP_FILE_PATH);
-            filePath.append("\\");
+            filePath.append("//");
             filePath.append(PRIVICE_FILE);
-            filePath.append("\\");
+            filePath.append("//");
             boolean rnt = uploadFile(imgFile.getBytes(),filePath.toString(),imgFile.getOriginalFilename()+"_"+nowTime);
             if(rnt) {
             	List<TPriceFileEntity> priceResult = tfileDao.selectByMaterialCode(fileEntity);
@@ -61,7 +61,7 @@ public class TPriceFileServiceImpl implements TPriceFileService
                     // 文件路径
                     fileEntity.setFilePath(filePath.toString());
                     // 文件名
-                    fileEntity.setFileName(imgFile.getOriginalFilename()+"_"+nowTime);
+                    fileEntity.setFileName(imgFile.getOriginalFilename());
                     // 文件类型
                     fileEntity.setFileType(1);
                     fileEntity.setIsDelete(0);
