@@ -224,6 +224,8 @@ export default {
   },
   Tips:{
     //共同
+    serverError:'The service is busy. Please wait a moment.',
+    accountPasswordError:"Please enter the correct account number and password.",
     allSearchKey:"Expand all query conditions",
     deleteQueries:"Are you sure you want to delete it?",
     exportQueries:"Are you sure you export data?",

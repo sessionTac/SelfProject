@@ -54,11 +54,13 @@ axiosService.interceptors.response.use(resp => {
     } else if (err.response && (err.response.status == 500 || err.response.status == 404)) {
         let resp = err.response;
         let log_message = (resp.data.message!=='No message available' && resp.data.message) || err.message || '无错误信息';
-        Notification.error({ title: '服务繁忙，请稍后'});
+        // Notification.error({ title: '服务繁忙，请稍后'});
+        Notification.error({ title: this.$t('Tips.serverError')});
         console.error('服务器端返回状态码='+resp.status+'，message=', log_message , '，errcode=', resp.data.errcode,'，params=', resp.data.params,'，cause=', resp.data.cause,
         );
     } else if (err.response && err.response.status == 401) {
-        Notification.error({ title: '', message: '请输入正确的账号和密码'});
+        // Notification.error({ title: '', message: '请输入正确的账号和密码'});
+        Notification.error({ title: '', message: this.$t('Tips.accountPasswordError')});
     } else if (err.response && err.response.status == 403) {
         localStorage.console_user_token='';
         try{
@@ -68,7 +70,8 @@ axiosService.interceptors.response.use(resp => {
             console.error('req error',err);
         }
     } else {
-        Notification.error({ title: '服务繁忙，请稍后'});
+        // Notification.error({ title: '服务繁忙，请稍后'});
+        Notification.error({ title:  this.$t('Tips.serverError')});
         console.error(err);
     }
     return Promise.reject(err);

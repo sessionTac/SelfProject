@@ -105,7 +105,7 @@
                     if (err.response && err.response.status === 401){
                         // Notification.error({title:"账号或者密码错误"})
                         this.$notify.error({
-                            title: '账号或者密码错误',
+                            title: this.$t('Tips.accountPasswordError'),
                             customClass:"notifyClass"
                         });
                     }else {
@@ -113,7 +113,7 @@
                         // Notification.error({title:"网络异常"})
 
                         this.$notify.error({
-                            title: '网络异常',
+                            title:  this.$t('Tips.serverError'),
                             customClass:"notifyClass"
                         });
                     }

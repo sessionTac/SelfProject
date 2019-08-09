@@ -233,6 +233,8 @@ export default {
   },
   Tips:{
     //共同
+    serverError:'服务繁忙，请稍后',
+    accountPasswordError:"请输入正确的账号和密码",
     allSearchKey:"展开所有查询条件",
     deleteQueries:"确定删除吗",
     exportQueries:"确定导出数据吗？",
