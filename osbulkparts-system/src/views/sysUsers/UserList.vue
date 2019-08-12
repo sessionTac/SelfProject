@@ -11,18 +11,18 @@
                 </el-form-item>
 
                 <el-form-item style="float: right">
-                    <el-button type="primary" @click="add" size="mini" >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:system:users:info:add')" @click="add" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> {{$t('searchFrom.add') }}
                     </el-button>
                 </el-form-item>
 
                 <el-form-item style="float: right">
-                    <el-button type="primary" @click="exec_search({search_keys, pageNum:1})"  >
+                    <el-button type="primary" v-if="subject.hasPermissions('maintenance:system:users:info:select')" @click="exec_search({search_keys, pageNum:1})"  >
                         <i class="fa fa-search" aria-hidden="true"></i> {{$t('searchFrom.search') }}
                     </el-button>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <import-button @saved="exec_search({search_keys, pageNum:1})" target = "USER_INFO"></import-button>
+                    <import-button @saved="exec_search({search_keys, pageNum:1})" v-if="subject.hasPermissions('maintenance:system:users:info:add')" target = "USER_INFO"></import-button>
                 </el-form-item>
             </el-form>
         </div>
@@ -45,13 +45,13 @@
 
             <el-table-column :label="$t('pageTable.operate')"  >
                 <template slot-scope="scope" >
-                    <el-button  type="primary" size="mini" class="btn-opt smallButton" @click="setRole(scope.row.userId)">
+                    <el-button  type="primary" v-if="subject.hasPermissions('maintenance:system:users:info:roleset')" size="mini" class="btn-opt smallButton" @click="setRole(scope.row.userId)">
                         {{$t('pageTable.roleSet')}}</el-button>
-                    <el-button  size="mini" class="btn-opt smallButton"  @click="viewRole(scope.row.userId)">
+                    <el-button v-if="subject.hasPermissions('maintenance:system:users:info:roleview')" size="mini" class="btn-opt smallButton"  @click="viewRole(scope.row.userId)">
                         {{$t('pageTable.roleSee')}}</el-button>
                     <el-button  v-if="subject.hasPermissions('maintenance:system:users:info:edit')" type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.userId)">
                         <i class="el-icon-news"></i></el-button>
-                    <el-button  type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.userId)">
+                    <el-button  type="danger" v-if="subject.hasPermissions('maintenance:system:users:info:delete')" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.userId)">
                         <i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>

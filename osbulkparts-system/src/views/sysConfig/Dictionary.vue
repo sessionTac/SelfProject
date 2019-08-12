@@ -26,7 +26,7 @@
                 <div style="padding-left: 30px;margin-top: 5px" >
                     <el-form :inline="true" size="mini"  @submit.native.prevent>
                         <el-form-item style="float: right;margin-right: 20px;margin-top: 10px">
-                            <el-button type="primary" @click="add()" :disabled="disableFlag"  size="mini" >
+                            <el-button type="primary" @click="add()" v-if="subject.hasPermissions('maintenance:system:dictionary:info:add')" :disabled="disableFlag"  size="mini" >
                                 <i class="fa fa-plus" aria-hidden="true"></i> {{$t('searchFrom.add')}}
                             </el-button>
                         </el-form-item>
@@ -36,7 +36,7 @@
                 <div style="padding-top: 10px;padding-left: 30px">
                     <el-form :inline="true" size="mini">
                         <el-form-item>
-                            <el-button type="primary" @click="$router.push({name:'SystemDictionaryCategory'})" style="" size="mini">
+                            <el-button type="primary" v-if="subject.hasPermissions('maintenance:system:categoriesinfo')" @click="$router.push({name:'SystemDictionaryCategory'})" style="" size="mini">
                                 {{$t('searchFrom.dictionaryClassification')}}
                             </el-button>
                         </el-form-item>
@@ -65,7 +65,7 @@
                                          :formatter="(row,col,val)=>val && $moment(val,'YYYYMMDDHHmmss').format('YYYY-MM-DD')" :label="$t('pageTable.createTime')"/>
                         <el-table-column :label="$t('pageTable.operate')" >
                             <template slot-scope="scope" >
-                                <el-button  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row)">
+                                <el-button  type="primary" size="mini" class="btn-opt" v-if="subject.hasPermissions('maintenance:system:dictionary:info:add')" plain @click="edit(scope.row)">
                                     <i class="el-icon-edit"></i></el-button>
 <!--                                <el-button title="删除" type="danger" size="mini" class="btn-opt" plain  @click="remove(scope.row)">-->
 <!--                                    <i class="el-icon-delete"></i></el-button>-->

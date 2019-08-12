@@ -63,7 +63,7 @@
           </el-collapse-item>
         </el-collapse>
         <el-form-item style="float: right">
-          <el-button type="primary" :disabled="multipleSelection.length==0"  @click="deleteMatter" icon="el-icon-delete" >
+          <el-button type="primary" :disabled="multipleSelection.length==0" v-if="subject.hasPermissions('maintenance:basis:supplier:info:delete')"  @click="deleteMatter" icon="el-icon-delete" >
            {{$t('searchFrom.delete')}}
           </el-button>
         </el-form-item>
@@ -73,14 +73,14 @@
           </el-button>
         </el-form-item>
         <el-form-item style="float: right">
-          <el-button type="primary"  @click="add()" icon="el-icon-plus" >
+          <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:supplier:info:add')"  @click="add()" icon="el-icon-plus" >
             {{$t('searchFrom.add')}}
           </el-button>
         </el-form-item>
 
 
         <el-form-item style="float: right">
-          <el-button type="primary" @click="exec_search({search_keys, pageNum:1})"  >
+          <el-button type="primary" v-if="subject.hasPermissions('maintenance:basis:supplier:info:select')" @click="exec_search({search_keys, pageNum:1})"  >
             <i class="fa fa-search" aria-hidden="true"></i> {{$t('searchFrom.search')}}
           </el-button>
         </el-form-item>
@@ -130,7 +130,7 @@
       </el-table-column>
       <el-table-column fixed="right" width="120" :label="$t('pageTable.operate')" >
         <template slot-scope="scope" >
-          <el-button  type="primary" size="mini" class="btn-opt smallButton" plain @click="edit(scope.row.supplierId)">
+          <el-button  type="primary" size="mini"  v-if="subject.hasPermissions('maintenance:basis:supplier:info:edit')"  class="btn-opt smallButton" plain @click="edit(scope.row.supplierId)">
             <i class="el-icon-news"></i></el-button>
         </template>
       </el-table-column>

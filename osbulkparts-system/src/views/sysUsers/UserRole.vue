@@ -19,13 +19,13 @@
                     </el-select>
                 </el-form-item>
                 <el-form-item style="float: right">
-                    <el-button type="primary" @click="add" size="mini" >
+                    <el-button v-if="subject.hasPermissions('maintenance:system:users:role:add')" type="primary" @click="add" size="mini" >
                         <i class="fa fa-plus" aria-hidden="true"></i> {{$t('searchFrom.add')}}
                     </el-button>
                 </el-form-item>
 
                 <el-form-item style="float: right">
-                    <el-button type="primary" @click="exec_search({search_keys, pageNum:1})"  >
+                    <el-button v-if="subject.hasPermissions('maintenance:system:users:role:select')" type="primary" @click="exec_search({search_keys, pageNum:1})"  >
                         <i class="fa fa-search" aria-hidden="true"></i> {{$t('searchFrom.search')}}
                     </el-button>
                 </el-form-item>
@@ -47,11 +47,11 @@
 
             <el-table-column label="操作" >
                 <template slot-scope="scope" >
-                    <el-button  type="primary" size="mini" class="btn-opt smallButton" @click="setFunction(scope.row.roleId)">
+                    <el-button  type="primary" v-if="subject.hasPermissions('maintenance:system:users:role:funset')" size="mini" class="btn-opt smallButton" @click="setFunction(scope.row.roleId)">
                         {{$t('pageTable.powerSet')}}</el-button>
-                    <el-button  type="primary" size="mini" class="btn-opt" plain @click="edit(scope.row.roleId)">
+                    <el-button  type="primary" v-if="subject.hasPermissions('maintenance:system:users:role:edit')" size="mini" class="btn-opt" plain @click="edit(scope.row.roleId)">
                         <i class="el-icon-news"></i></el-button>
-                    <el-button  type="danger" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.roleId)">
+                    <el-button  type="danger" v-if="subject.hasPermissions('maintenance:system:users:role:delete')" size="mini" class="btn-opt" plain  @click="deleteUser(scope.row.roleId)">
                         <i class="el-icon-delete"></i></el-button>
                 </template>
             </el-table-column>

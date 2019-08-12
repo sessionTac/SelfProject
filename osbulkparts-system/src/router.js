@@ -85,7 +85,7 @@ export const constantRoutes = [
                 name: 'dictionary',
                 meta: { title: 'dictionary',icon: 'dictionary',
                     noCache: true,breadcrumb: true,keepAlive: false,
-                    requiresPermission: 'maintenance:system:dictionary'}
+                    requiresPermission: 'maintenance:system:dictionaryinfo'}
             },
             {
                 path: 'categories',
@@ -94,7 +94,7 @@ export const constantRoutes = [
                 meta: {
                     title: 'categories',
                     breadcrumbTitle: '字典分类',
-                    requiresPermission: 'maintenance:system:dictionary:type',
+                    requiresPermission: 'maintenance:system:categoriesinfo',
                     activeMenuKey: 'BasicsDictionary',keepAlive: false
                 },
             }
@@ -112,7 +112,7 @@ export const constantRoutes = [
                 component: () => import('@/views/sysBasedata/MatterList.vue'),
                 name: 'basicsDataMatter',
                 meta: { title: 'basicsDataMatter',  icon: 'basicsDataMatter', noCache: true,breadcrumb:true,keepAlive: false,
-                    requiresPermission: 'maintenance:basis:matter:info:view'},
+                    requiresPermission: 'maintenance:system:dictionaryinfo'},
 
             },
             {

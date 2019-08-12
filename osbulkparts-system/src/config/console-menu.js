@@ -13,12 +13,12 @@ export default [
       children: [
           {
               title: 'userinfo',
-              requiresPermission: 'maintenance:system:users:info',
+              requiresPermission: 'maintenance:system:usersinfo',
               index: 'userInfo',
           },
           {
               title: 'rolePermission',
-              requiresPermission: 'maintenance:system:users:role',
+              requiresPermission: 'maintenance:system:usersrole',
               index: 'roleFunction',
           },
       ]
@@ -30,7 +30,7 @@ export default [
     children: [
         {
             title: 'dictionary',
-            requiresPermission: 'maintenance:system:dictionary',
+            requiresPermission: 'maintenance:system:dictionaryinfo',
             index: 'dictionary',
         }
     ]
