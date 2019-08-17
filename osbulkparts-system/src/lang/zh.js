@@ -256,6 +256,15 @@ export default {
     floatCheck:"请输入数字且最多保留3位",
     floatPriceCheck:"请输入数字且最多保留6位",
     numberCheck:"请输入数字",
+    //登陆等页面
+    hello:"您好！",
+    loggingInToTheRole:"正在登入角色",
+    pleaseSelectTheRolesToLogIn:"请选择要登入的角色",
+    currentUserHasNoAvailableRole:"当前用户暂无可用角色",
+    wait:"请稍后",
+    thisPageCantBeFound:"这个页面找不到了",
+    try:"试试",
+    login:"登录",
     //用户信息
     password:"请输入密码",
     passwordAgain:"请再次输入密码",

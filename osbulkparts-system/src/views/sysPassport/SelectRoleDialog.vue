@@ -9,13 +9,13 @@
   >
 
     <template v-slot:title>
-      <span  class="el-dialog__title">您好，<b>{{trueName}}</b></span>
+      <span  class="el-dialog__title">{{$t('Tips.hello')}}，<b>{{trueName}}</b></span>
     </template>
 
-    <div v-loading="loading" :element-loading-text="loading && selectedRoleId && ('正在登入角色: '+roles.find(r=>r.roleId===selectedRoleId).roleName+'，请稍后…')">
+    <div v-loading="loading" :element-loading-text="loading && selectedRoleId && ($t('Tips.loggingInToTheRole')+','+roles.find(r=>r.roleId===selectedRoleId).roleName+','+$t('Tips.wait'))">
       <template v-if="roles.length>=1">
         <div style="font-weight: bold">
-          请选择要登入的角色：
+          {{$t('Tips.pleaseSelectTheRolesToLogIn')}}：
         </div>
 
         <div style="padding: 20px;">
@@ -30,16 +30,16 @@
       </template>
       <template v-else>
         <div style="font-weight: bold">
-          当前用户暂无可用角色
+          {{$t('Tips.currentUserHasNoAvailableRole')}}
         </div>
       </template>
 
     </div>
     <span slot="footer">
       <el-button type="primary" size="mini" @click="submit" :disabled="loading || !selectedRoleId">
-        <i class="fa fa-check"></i> 确定
+        <i class="fa fa-check"></i> {{$t('searchFrom.confirm')}}
       </el-button>
-      <el-button size="mini" @click="cancel" :disabled="loading">取消</el-button>
+      <el-button size="mini" @click="cancel" :disabled="loading">{{$t('searchFrom.cancel')}}</el-button>
     </span>
 
   </el-dialog>

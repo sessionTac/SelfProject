@@ -12,7 +12,7 @@
       <el-dropdown class="avatar-container right-menu-item hover-effect" trigger="click" @command="handleCommand">
         <div class="avatar-wrapper" style="font-size: 15px">
           <!--<img src="https://wpimg.wallstcn.com/577965b9-bb9e-4e02-9f0c-095b41417191" class="user-avatar">-->
-          {{subject.principal.username}},您好！
+          {{subject.principal.username}}, {{$t('Tips.hello')}}！
           <i class="el-icon-s-tools" />
         </div>
         <el-dropdown-menu slot="dropdown">

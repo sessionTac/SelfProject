@@ -247,6 +247,15 @@ export default {
     floatCheck:"Please enter a number and reserve at most 3 digits.",
     floatPriceCheck:"Please enter a number and reserve at most 6 digits.",
     numberCheck:"Please enter a number",
+    //登陆等页面
+    hello:"hello！",
+    loggingInToTheRole:"Logging into the role",
+    pleaseSelectTheRolesToLogIn:"Please select the roles to log in",
+    currentUserHasNoAvailableRole:"Current user has no available role",
+    wait:"Please wait",
+    thisPageCantBeFound:"This page can't be found",
+    try:"try",
+    login:"login",
     //用户信息
     password:"Please input a password",
     passwordAgain:"Please enter your password again.",
