@@ -140,54 +140,13 @@
     take_over_amount, delivery_amount, surplus_amount, date_flag,data_role_at, is_balance, order_detail_type,create_user, create_time,
     update_user, update_time, is_delete, version
   </sql>
-  <select id="getReportOrderDetailInfo" parameterType="cn.springboot.osbulkparts.entity.ReportOrderDetailInfoEntity" resultMap="BaseResultMap">
-		SELECT
-			detailInfo.material_code,
-			detailInfo.material_desc_cn,
-			detailInfo.material_desc_en,
-			detailInfo.material_desc_rn,
-			material.material_amount,
-			material.material_unit,
-			t3.`name` AS dictMaterialUnit,
-			material.supplier_code as material_supplier_no,
-			t12.supplier_name_cn as supplierName,
-<!-- 			t0.order_date, -->
-            detailInfo.material_minpackage_amt,
-            detailInfo.order_date,
-            detailInfo.order_amount,
-			t0.amount_total
-		FROM
-			t_order_detail_info detailInfo
-		LEFT JOIN m_material_info material ON detailInfo.material_code = material.material_code
-		AND detailInfo.order_code = material.material_order_code
-		AND material.is_delete = 0
-		LEFT JOIN t_dict_data_cn AS t3 ON material.material_unit = t3.`value`
-		AND t3.dict_type_code = 'unit'
-		AND t3.delete_flg = 0
-		LEFT JOIN m_supplier_info AS t12 ON detailInfo.material_supplier_no = t12.supplier_code
-		AND t12.is_delete = 0,
-		 (
-			SELECT
-				t1.material_code,
-				GROUP_CONCAT(
-					SUBSTR(t1.order_date FROM 1 FOR 8),
-					'||',
-					t1.order_amount
-				) AS order_date,
-				SUM(t1.order_amount) AS amount_total
-			FROM
-				t_order_detail_info t1
-			WHERE
-				is_delete = 0
-			GROUP BY
-				t1.material_code
-			ORDER BY
-				t1.material_code,
-				t1.order_date
-		) t0
-		WHERE
-			detailInfo.material_code = t0.material_code
-	    and detailInfo.is_delete = 0
+  <select id="getOrderDate" parameterType="cn.springboot.osbulkparts.entity.ReportOrderDetailInfoEntity" resultMap="BaseResultMap">
+	SELECT
+	SUBSTR(detailInfo.order_date FROM 1 FOR 8) AS order_date
+	FROM
+	t_order_detail_info detailInfo
+	WHERE
+			detailInfo.is_delete = 0
 	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCode)">
 	      <bind name="orderCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(orderCode)"/>
 	      AND detailInfo.order_code LIKE #{orderCode_like,jdbcType=VARCHAR}
@@ -263,7 +222,116 @@
 	    <if test="id != null">
 	      AND detailInfo.id = #{id,jdbcType=VARCHAR}
 	    </if>
-        GROUP BY detailInfo.material_code
-	    order by detailInfo.order_date,detailInfo.material_supplier_no
+	GROUP BY
+	detailInfo.order_date
+	ORDER BY
+	detailInfo.order_date
+  </select>
+  <select id="getReportOrderDetailInfo" parameterType="cn.springboot.osbulkparts.entity.ReportOrderDetailInfoEntity" resultMap="BaseResultMap">
+		SELECT
+			detailInfo.material_code,
+			detailInfo.material_desc_cn,
+			detailInfo.material_desc_en,
+			detailInfo.material_desc_rn,
+			material.material_amount,
+			material.material_unit,
+			t3.`name` AS dictMaterialUnit,
+			material.supplier_code AS material_supplier_no,
+			t12.supplier_name_cn AS supplierName,
+			detailInfo.material_minpackage_amt,
+		    SUBSTR(detailInfo.order_date FROM 1 FOR 8) AS order_date,
+			sum(detailInfo.order_amount) AS amount_total
+		FROM
+			t_order_detail_info detailInfo
+			LEFT JOIN m_material_info material ON detailInfo.material_code = material.material_code
+			AND detailInfo.order_code = material.material_order_code
+			AND material.is_delete = 0
+			LEFT JOIN t_dict_data_cn AS t3 ON material.material_unit = t3.`value`
+			AND t3.dict_type_code = 'unit'
+			AND t3.delete_flg = 0
+			LEFT JOIN m_supplier_info AS t12 ON detailInfo.material_supplier_no = t12.supplier_code
+			AND t12.is_delete = 0
+		WHERE
+			detailInfo.is_delete = 0
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCode)">
+	      <bind name="orderCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(orderCode)"/>
+	      AND detailInfo.order_code LIKE #{orderCode_like,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderDateStart)">
+	      AND detailInfo.order_date &gt;= #{orderDateStart,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderDateEnd)">
+	      AND detailInfo.order_date &lt;= #{orderDateEnd,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCode)">
+	      <bind name="materialCode_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialCode)"/>
+	      AND detailInfo.material_code LIKE #{materialCode_like,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(confirmStatus)">
+	      AND detailInfo.confirm_status = #{confirmStatus,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCategory)">
+	      AND detailInfo.material_category = #{materialCategory,jdbcType=VARCHAR}
+	    </if>
+	    <if test="isBalance != null">
+	      AND detailInfo.is_balance = #{isBalance,jdbcType=INTEGER}
+	    </if>
+	    <if test="dateFlag != null">
+	      AND detailInfo.date_flag = #{dateFlag,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
+	      AND detailInfo.data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderDetailType)">
+	      AND detailInfo.order_detail_type = #{orderDetailType,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderCodeDesc)">
+	      <bind name="orderCodeDesc_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(orderCodeDesc)"/>
+	      AND detailInfo.order_code_desc LIKE #{orderCodeDesc_like,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(orderId)">
+	      <bind name="orderId_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(orderId)"/>
+	      AND detailInfo.order_id LIKE #{orderId_like,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialDescCn)">
+	      <bind name="materialDescCn_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialDescCn)"/>
+	      AND detailInfo.material_desc_cn LIKE #{materialDescCn_like,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialDescEn)">
+	      <bind name="materialDescEn_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialDescEn)"/>
+	      AND detailInfo.material_desc_en LIKE #{materialDescEn_like,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialDescRn)">
+	      <bind name="materialDescRn_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(materialDescRn)"/>
+	      AND detailInfo.material_desc_rn LIKE #{materialDescRn_like,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createUser)">
+	      <bind name="createUser_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(createUser)"/>
+	      AND detailInfo.create_user LIKE #{createUser_like,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createTimeStart)">
+	      AND detailInfo.create_time &gt;= #{createTimeStart,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(createTimeEnd)">
+	      AND detailInfo.create_time &lt;= #{createTimeEnd,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateUser)">
+	      <bind name="updateUser_like" value="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@toLike(updateUser)"/>
+	      AND detailInfo.update_user LIKE #{updateUser_like,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateTimeStart)">
+	      AND detailInfo.update_time &gt;= #{updateTimeStart,jdbcType=VARCHAR}
+	    </if>
+	    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(updateTimeEnd)">
+	      AND detailInfo.update_time &lt;= #{updateTimeEnd,jdbcType=VARCHAR}
+	    </if>
+	    <if test="id != null">
+	      AND detailInfo.id = #{id,jdbcType=VARCHAR}
+	    </if>
+		GROUP BY
+			detailInfo.material_code,
+		    detailInfo.order_date
+		ORDER BY
+			detailInfo.material_code
   </select>
 </mapper>

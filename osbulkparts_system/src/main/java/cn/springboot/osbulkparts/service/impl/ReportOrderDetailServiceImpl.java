@@ -1,6 +1,7 @@
 package cn.springboot.osbulkparts.service.impl;
 
 import java.io.ByteArrayOutputStream;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -27,6 +28,7 @@ import com.github.pagehelper.util.StringUtil;
 
 import cn.springboot.osbulkparts.common.CommonBusinessException;
 import cn.springboot.osbulkparts.common.security.entity.SecurityUserInfoEntity;
+import cn.springboot.osbulkparts.common.utils.CommonMethods;
 import cn.springboot.osbulkparts.config.i18n.I18nMessageBean;
 import cn.springboot.osbulkparts.dao.report.ReportOrderDetailInfoDao;
 import cn.springboot.osbulkparts.dao.user.MRoleInfoDao;
@@ -55,7 +57,9 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
         }
 		String[] title = messageBean.getMessage("file.title.report.orderDetail").split(",");
 		List<ReportOrderDetailInfoEntity> resultList = reportDao.getReportOrderDetailInfo(tOrderDetailInfoEntity);
-		ResponseEntity<byte[]> result = educeExcel(title,resultList,locale);
+		List<ReportOrderDetailInfoEntity> resultDateList = reportDao.getOrderDate(tOrderDetailInfoEntity);
+//		ResponseEntity<byte[]> result = educeExcel(title,resultList,locale);
+		ResponseEntity<byte[]> result = educeExcel(title,resultList,resultDateList,locale);
 		return result;
 	}
 	/****Private Methods****/
@@ -128,6 +132,124 @@ public class ReportOrderDetailServiceImpl implements ReportOrderDetailService{
 				row.createCell(9).setCellType(CellType.NUMERIC);
 				row.createCell(9).setCellValue(
 						example.getAmountTotal()!=null?Double.parseDouble(example.getAmountTotal().toString()):null);
+				//换算后单位
+//				row.createCell(9).setCellValue(example.getDictRelationUnit()!=null?example.getDictRelationUnit().getName():"");
+				//换算后数量
+//				row.createCell(10).setCellValue(example.getMaterialRelationQuantity()!=null?example.getMaterialRelationQuantity().toString():"");
+			}
+			workbook.write(os);
+			workbook.close();
+			String filename_enc = UriUtils.encode(messageBean.getMessage("file.name.orderDetail"), "UTF-8");
+			response = ResponseEntity.ok()
+				.contentType(MediaType.parseMediaType("application/octet-stream"))
+				.header("Access-Control-Expose-Headers","Content-Disposition")
+				.header("Content-Disposition","attachment; filename*=UTF-8''" + filename_enc+".xlsx")
+				.body(os.toByteArray());
+			return response;
+		} catch (Exception e) {
+			throw new CommonBusinessException(e.getMessage().toString());
+		}
+	}
+	
+	/**
+	 * 订单详情报表导出
+	 * @param titles 第一列名
+	 * @param list 向单元格插入数据
+	 * @return
+	 */
+	private ResponseEntity<byte[]> educeExcel(String[] titles,List<ReportOrderDetailInfoEntity> list, List<ReportOrderDetailInfoEntity> dateList,Locale locale){
+		messageBean.setLocale(null,null,locale);
+		ResponseEntity<byte[]> response = null;
+		//创建Excel对象
+		ByteArrayOutputStream os = new ByteArrayOutputStream();
+		HSSFWorkbook workbook = new HSSFWorkbook();
+		//输出Excel文件  
+		try {
+			//创建工作表单
+			HSSFSheet sheet = workbook.createSheet(messageBean.getMessage("file.name.orderDetail"));  
+			//创建HSSFRow对象 （行）第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short
+			HSSFRow row = sheet.createRow(0); 	
+			row.setHeightInPoints(20);// 设备标题的高度
+			//创建HSSFCell对象  （单元格）
+			HSSFCell cell=null; 
+			//设置第一列单元格的列
+			int m = 0;
+			for(int i = 0; i < titles.length; i++){
+				if(i==6) {
+					for(int j=1;j<=dateList.size();j++) {
+						cell = row.createCell(m);//列索引从0开始
+						String orderDateStr = dateList.get(j-1).getOrderDate().substring(0,4)+"年"+
+						dateList.get(j-1).getOrderDate().substring(4,6)+"月"+
+								dateList.get(j-1).getOrderDate().substring(6,8)+"日";
+						cell.setCellValue(orderDateStr);//列名1
+						m = m+1;
+					}
+				}else {
+					cell = row.createCell(m);//列索引从0开始
+					cell.setCellValue(titles[i]);//列名1
+					m = m+1;
+				}
+			};
+			
+			CellStyle  style =  workbook.createCellStyle();
+			style.setFillPattern(FillPatternType.SOLID_FOREGROUND);  
+			style.setFillForegroundColor(IndexedColors.RED.getIndex());     
+			CellStyle textStyle = workbook.createCellStyle();
+			DataFormat format = workbook.createDataFormat();
+			textStyle.setDataFormat(format.getFormat("@"));
+			int n = 0;
+			BigDecimal amountTotal = new BigDecimal("0");
+			//设置单元格的值  
+			for (int i = 0; i < list.size(); i++) {
+				
+				ReportOrderDetailInfoEntity example = list.get(i);
+				if(i>0) {
+					if(!example.getMaterialCode().equals(list.get(i-1).getMaterialCode())) {
+						n = n+1;
+						amountTotal = new BigDecimal("0");
+						row = sheet.createRow(n+1);
+					}
+				}else {
+					row = sheet.createRow(n+1);
+				}
+				//物料专用号
+				row.createCell(0).setCellValue(example.getMaterialCode());
+				//物料中文描述
+				row.createCell(1).setCellValue(example.getMaterialDescCn());
+				//物料英文描述
+				row.createCell(2).setCellValue(example.getMaterialDescEn());
+				//物料俄文描述
+				row.createCell(3).setCellValue(example.getMaterialDescRn());
+				//供应商中文名称
+				row.createCell(4).setCellValue(example.getMSupplierInfoEntity().getSupplierNameCn());
+				//最小装箱量
+				row.createCell(5).setCellType(CellType.NUMERIC);
+				if(example.getMaterialMinpackageAmt()!=null) {
+					row.createCell(5).setCellValue(Double.parseDouble(example.getMaterialMinpackageAmt().toString()));
+				}
+				
+				//订单日期
+				String orderDate = example.getOrderDate();
+				//订单数量
+				int nextI = 0;
+				for(int j=0;j<dateList.size();j++) {
+					if(orderDate.equals(dateList.get(j).getOrderDate())) {
+						row.createCell(j+6).setCellType(CellType.NUMERIC);
+						row.createCell(j+6).setCellValue(example.getAmountTotal()!=null?Double.parseDouble(example.getAmountTotal().toString()):null);
+						nextI = j+6;
+						if(example.getAmountTotal() != null) {
+							amountTotal = amountTotal.add(CommonMethods.changeToBigdecimal(example.getAmountTotal().toString()));
+						}else {
+							amountTotal = amountTotal.add(BigDecimal.ZERO);
+						}
+					}
+				}
+				if(example.getMaterialCode().equals("0060112513R")) {
+					System.out.print(true);
+				}
+				//总计
+				row.createCell(dateList.size()+6).setCellType(CellType.NUMERIC);
+				row.createCell(dateList.size()+6).setCellValue(Double.parseDouble(amountTotal.toString()));
 				//换算后单位
 //				row.createCell(9).setCellValue(example.getDictRelationUnit()!=null?example.getDictRelationUnit().getName():"");
 				//换算后数量

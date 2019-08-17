@@ -622,7 +622,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			poiUtil.setPrintLog(false);
 			
 			// 必须项[成品型号,子件型号]
-			config.setNotNullColumn(new int[]{1,2,3,4,5,8,9,19,20});
+			config.setNotNullColumn(new int[]{1,3,4,5,8,9,19,20});
 			// 不需要快读
 			config.setBriefRead(false);
 			//默认第一行为实例

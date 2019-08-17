@@ -22,6 +22,7 @@ import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -352,10 +353,13 @@ public class CommonPoiReadUtil {
 		}
 		InputStream is = fis;
 		try {
+			
 			if (".xls".equals(extString)) {
-				wb = new HSSFWorkbook(is);
+//				wb = new HSSFWorkbook(is);
+				wb = WorkbookFactory.create(is);
 			} else if (".xlsx".equals(extString)) {
-				wb = new XSSFWorkbook(is);
+//				wb = new XSSFWorkbook(is);
+				wb = WorkbookFactory.create(is);
 			} else {
 				is.close();
 				printLog("【初始化失败】：文件后缀异常！需要为.xls或者.xlsx");
@@ -384,7 +388,7 @@ public class CommonPoiReadUtil {
 					cellValue = df.format(cellValue);
 				} else {
 					// 解决数据变成科学计数法值
-					DecimalFormat df = new DecimalFormat("0");
+					DecimalFormat df = new DecimalFormat("#.######");
 					cellValue = df.format(cell.getNumericCellValue());
 				}
 

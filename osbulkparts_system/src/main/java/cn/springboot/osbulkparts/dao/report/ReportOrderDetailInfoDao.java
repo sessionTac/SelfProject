@@ -11,5 +11,7 @@ import cn.springboot.osbulkparts.entity.TOrderDetailInfoEntity;
 public interface ReportOrderDetailInfoDao {
 	
 	List<ReportOrderDetailInfoEntity> getReportOrderDetailInfo(TOrderDetailInfoEntity orderDetailRecord);
+	
+	List<ReportOrderDetailInfoEntity> getOrderDate(TOrderDetailInfoEntity orderDetailRecord);
 
 }
