@@ -260,6 +260,7 @@
         multipleSelection:[],
         mattertype:[],
         idsStr:[],
+        idsStrT:[],
         search_keys:{
           orderCode:"",
           orderDateArray:'',
@@ -431,10 +432,12 @@
       //发货
       deliverGoods(){
           this.idsStr=[];
+        this.idsStrT=[];
           this.multipleSelection.forEach(item=>{
-              this.idsStr.push(item.orderCode)
+              this.idsStr.push(item.orderCode);
+              this.idsStrT.push(item.materialCode)
           });
-          this.link_modal_state1={activated:true,multipleSelection:this.idsStr,dateFlag:this.$route.meta.flag};
+          this.link_modal_state1={activated:true,multipleSelection:this.idsStr,multipleSelectionT:this.idsStrT,dateFlag:this.$route.meta.flag};
       },
       //审批
       approval(){

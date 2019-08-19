@@ -29,7 +29,7 @@ public interface TOrderDetailInfoDao {
     
     List<TOrderDetailInfoEntity> getReportOrderDetailInfo(TOrderDetailInfoEntity tOrderDetailInfoEntity);
     
-    List<TOrderDetailInfoEntity> selectDeliveryInfo(@Param("ids") String[] ids,@Param("dateFlag") String dateFlag);
+    List<TOrderDetailInfoEntity> selectDeliveryInfo(@Param("ids") String[] ids,@Param("idsT") String[] idsT,@Param("dateFlag") String dateFlag);
     
     int deleteByOrderCodeAndDate(TOrderDetailInfoEntity record);
 

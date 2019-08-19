@@ -378,7 +378,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
         messageBean.setLocale(null,null,locale);
         CommonResultInfo<TOrderDetailInfoEntity> result = new CommonResultInfo<TOrderDetailInfoEntity>();
         try {
-            List<TOrderDetailInfoEntity> resultList = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr(),commonEntity.getDateFlag());
+            List<TOrderDetailInfoEntity> resultList = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr(),commonEntity.getIdsStrT(),commonEntity.getDateFlag());
             result.setCode(ResponseEntity.ok().build().getStatusCodeValue());
             if(resultList.size()>0) {
                 result.setResultList(resultList);
@@ -409,7 +409,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	        MRoleInfoEntity roleInfoEntity = mroleInfoDao.selectRoleInfo(principal.getRoleIdSelected(),OSLanguage.localeToTableSuffix(lang));
 	        List<TDeliverInfoEntity> tdeliveryInfoListParam = new ArrayList<TDeliverInfoEntity>();
 	        List<TDeliverInfoEntity> deliverInfoList= new ArrayList<TDeliverInfoEntity>();
-	        List<TOrderDetailInfoEntity> orderDetailInfoEntity = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr(),commonEntity.getDateFlag());
+	        List<TOrderDetailInfoEntity> orderDetailInfoEntity = tOrderDetailInfoDao.selectDeliveryInfo(commonEntity.getIdsStr(),commonEntity.getIdsStrT(),commonEntity.getDateFlag());
 	        for(int i=0;i<orderDetailInfoEntity.size();i++) {
 	        	BigDecimal sendAmountDec = new BigDecimal(commonEntity.getAmouts()[i]);
 	        	TDeliverInfoEntity deliveryInfo = new TDeliverInfoEntity();

@@ -80,6 +80,7 @@
     name: "ReceiveGoods",
     props:{
       multipleSelection: {},
+      multipleSelectionT:{},
       dateFlag:{},
     },
     data(){
@@ -113,7 +114,7 @@
     },
     methods:{
       exec_search() {
-        activityService.finddeliverGoodsList({idsStr:this.multipleSelection,dateFlag:this.dateFlag}).then(resp => {
+        activityService.finddeliverGoodsList({idsStr:this.multipleSelection,idsStrT:this.multipleSelectionT,dateFlag:this.dateFlag}).then(resp => {
           this.search_result = resp.data.resultList;                //视图展示查询结果
           this.search_result.forEach(item=>{
             item.suggestedAmount=item.materialAmount-item.supperAmountQut.supperAmount
@@ -146,9 +147,10 @@
           this.search_result.forEach(item=>{
             amouts.push(item.materialAmount);
           })
-          activityService.excuteDeliver({idsStr:this.multipleSelection,billNo:this.billNo,transportation:this.transportation,shipNo:this.shipNo,containerNo:this.containerNo,contractNo:this.contractNo,amouts:amouts,dateFlag:this.dateFlag}).then(resp=>{
+          activityService.excuteDeliver({idsStr:this.multipleSelection,idsStrT:this.multipleSelectionT,billNo:this.billNo,transportation:this.transportation,shipNo:this.shipNo,containerNo:this.containerNo,contractNo:this.contractNo,amouts:amouts,dateFlag:this.dateFlag}).then(resp=>{
             if (resp.data.code=="201"){
               this.$notify({message: resp.data.message, type: "success"});
+              this.$emit("success");
               this.dialogFormVisible = false
             } else {
               this.$notify({message: resp.data.message, type: "error"});

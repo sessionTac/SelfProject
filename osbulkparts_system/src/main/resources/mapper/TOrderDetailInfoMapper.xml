@@ -976,5 +976,9 @@
     <foreach item="item" index="index" collection="ids" open="(" separator="," close=")">
       #{item}
     </foreach>
+    AND t1.material_code IN
+    <foreach item="item" index="index" collection="idsT" open="(" separator="," close=")">
+      #{item}
+    </foreach>
   </select>
 </mapper>
