@@ -62,6 +62,10 @@
     <if test="price!=null">
     	AND price = #{price,jdbcType=DECIMAL}
     </if>
+    GROUP BY
+	material_code,
+	supplier_code,
+	price
     order by create_time DESC
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.String">

@@ -21,9 +21,9 @@
                         <i class="fa fa-search" aria-hidden="true"></i> {{$t('searchFrom.search') }}
                     </el-button>
                 </el-form-item>
-                <el-form-item style="float: right">
-                    <import-button @saved="exec_search({search_keys, pageNum:1})" v-if="subject.hasPermissions('maintenance:system:users:info:add')" target = "USER_INFO"></import-button>
-                </el-form-item>
+<!--                <el-form-item style="float: right">-->
+<!--                    <import-button @saved="exec_search({search_keys, pageNum:1})" v-if="subject.hasPermissions('maintenance:system:users:info:add')" target = "USER_INFO"></import-button>-->
+<!--                </el-form-item>-->
             </el-form>
         </div>
         <EditUserDialog v-bind.sync="link_modal_state" @success="exec_search({search_keys, pageNum:1})" v-if="link_modal_state.activated"></EditUserDialog>

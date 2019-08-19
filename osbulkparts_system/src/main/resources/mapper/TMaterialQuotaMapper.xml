@@ -54,7 +54,7 @@
     <if test="materialQuota != null">
     	AND quota.material_quota = #{materialQuota,jdbcType=DECIMAL}
     </if>
-    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(materialCode)">
+    <if test="@cn.springboot.osbulkparts.common.utils.CommonSqlUtils@isNotBlank(dataRoleAt)">
     	AND quota.data_role_at = #{dataRoleAt,jdbcType=VARCHAR}
     </if>
     Order by quota.material_code,quota.supplier_code

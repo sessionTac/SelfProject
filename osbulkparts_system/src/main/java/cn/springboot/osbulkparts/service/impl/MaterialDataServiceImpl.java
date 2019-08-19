@@ -161,7 +161,17 @@ public class MaterialDataServiceImpl implements MaterialDataService{
         		}
         		if(materialInfoParams.containsKey("updateList")) {
         			paramList = (List<MMaterialInfoEntity>)materialInfoParams.get("updateList");
-        			if(paramList.size()>0) {resultInt = resultInt + mmaterialInfoDao.insertList(paramList);}
+        			if(paramList.size()>0) {
+        				for(int m = 0;m<paramList.size();m++) {
+        					paramList.get(m).setIsDelete(1);
+        					paramList.get(m).setUpdateUser(paramList.get(0).getCreateUser());
+        				}
+        				int rent = mmaterialInfoDao.updateList(paramList);
+        				for(int m = 0;m<paramList.size();m++) {
+        					paramList.get(m).setIsDelete(0);
+        				}
+        				resultInt = resultInt + mmaterialInfoDao.insertList(paramList);
+        			}
         		}
         		if(materialInfoParams.containsKey("quotaInsertList")) {
         			quotaParamList = (List<TMaterialQuotaEntity>)materialInfoParams.get("quotaInsertList");
@@ -622,7 +632,7 @@ public class MaterialDataServiceImpl implements MaterialDataService{
 			poiUtil.setPrintLog(false);
 			
 			// 必须项[成品型号,子件型号]
-			config.setNotNullColumn(new int[]{1,3,4,5,8,9,19,20});
+			config.setNotNullColumn(new int[]{1,3,4,5,8,9,19,20,21});
 			// 不需要快读
 			config.setBriefRead(false);
 			//默认第一行为实例

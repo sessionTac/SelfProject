@@ -987,6 +987,9 @@
       <if test="item.version != null">
         version = #{item.version,jdbcType=INTEGER},
       </if>
+      <if test="item.isDelete != null">
+      	is_delete = #{item.isDelete,jdbcType=INTEGER},
+       </if>
       update_time = DATE_FORMAT(now(),'%Y%m%d%H%m%S')
     </set>
     where material_order_code = #{item.materialOrderCode,jdbcType=VARCHAR}

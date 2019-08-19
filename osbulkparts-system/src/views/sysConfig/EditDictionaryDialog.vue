@@ -28,7 +28,7 @@
           </el-form-item>
 
           <el-form-item :label="$t('pageTable.dictionaryValue')" prop="value">
-            <el-input  class="search-form-item-input" style="width: 200px" v-model="form.value" size="mini" :maxlength="30"></el-input>
+            <el-input  :disabled="mode=='EDIT'" class="search-form-item-input" style="width: 200px" v-model="form.value" size="mini" :maxlength="30" ></el-input>
             <template slot="error" slot-scope="scope"  >
               <div style="float: right;margin-right: 100px;font-size: 10px;color: red">{{scope.error}}</div>
             </template>
