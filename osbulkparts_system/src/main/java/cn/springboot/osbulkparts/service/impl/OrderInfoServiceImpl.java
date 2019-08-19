@@ -137,6 +137,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
             	}
         	}
         } catch(ParseException pe) {
+			pe.printStackTrace();
             result.setCode(ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build().getStatusCodeValue());
             result.setMessage(pe.getMessage().toString());
         } 
@@ -443,7 +444,7 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 										// 最小包装数量
 										orderDetailParam.setMaterialMinpackageAmt(materialInfo.getMaterialMinpackageAmt());
 										// 最小包装总量
-										if(materialInfo.getMaterialMinpackageAmt() == null || materialInfo.getMaterialMinpackageAmt().equals(BigDecimal.ZERO)) {
+										if(materialInfo.getMaterialMinpackageAmt() == null || materialInfo.getMaterialMinpackageAmt().compareTo(BigDecimal.ZERO)  == 0) {
 											orderDetailParam.setMaterialMinpackageTotalamt(BigDecimal.ZERO);
 										}else {
 											orderDetailParam.setMaterialMinpackageTotalamt(orderMaterAmount.add(lossAmount).divide(materialInfo.getMaterialMinpackageAmt(), 2, BigDecimal.ROUND_HALF_UP));
@@ -1495,11 +1496,14 @@ public class OrderInfoServiceImpl implements OrderInfoService{
 			return insertResultLst;
 		}
 		catch(ParseException pe) {
+			pe.printStackTrace();
 			throw pe;
 		}
 		catch(NullPointerException se) {
+			se.printStackTrace();
 			throw se;
 		}catch(Exception e) {
+			e.printStackTrace();
 			throw e;
 		}
 	}

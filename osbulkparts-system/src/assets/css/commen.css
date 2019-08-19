@@ -12,7 +12,7 @@
 .search-form.search-form-normal .el-range-input{  font-size: 10px }
 .search-form.search-form-normal .el-range-editor--mini{ height: 24px;width:200px; }
 .search-form.search-form-normal .el-range-separator{    line-height: 17px;font-size: 8px;padding: 0}
-
+.search-form.search-form-normal .el-form-item{margin-bottom: 5px}
 body .el-table th.gutter{
     display: table-cell!important;
 }
