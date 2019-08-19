@@ -435,6 +435,7 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
 	        	}else {
 	        		for(TOrderDetailInfoEntity orderInfo:orderDetailInfoList) {
 	        			orderInfo.setDeliveryAmount(deliveryInfo.getSendAmount());
+	        			orderInfo.setConfirmStatus("2");
 	        			orderInfo.setUpdateUser(principal.getUserName());
 	        			orderInfo.setVersion(orderInfo.getVersion()+1);
 	        			tOrderDetailInfoDao.updateByPrimaryKeySelective(orderInfo);
@@ -445,7 +446,8 @@ public class OrderDetailInfoServiceImpl implements OrderDetailInfoService {
             	recordParam.setMaterialCode(deliveryInfo.getMaterialCode());
             	recordParam.setDataRoleAt(deliveryInfo.getDataRoleAt());
             	recordParam.setSupperAmount(deliveryInfo.getSendAmount());
-            	materialRecordInfoDao.updateByPrimaryKeySelective(recordParam);
+            	recordParam.setFactoryCode(null);
+            	materialRecordInfoDao.upsert(recordParam);
             	
 //            	// 更新物料表中的单耗
 //            	MMaterialInfoEntity materialParam = new MMaterialInfoEntity();

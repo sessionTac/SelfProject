@@ -14,6 +14,8 @@ public interface TMaterialRecordInfoDao {
     TMaterialRecordInfoEntity selectByPrimaryKey(String id);
 
     int updateByPrimaryKeySelective(TMaterialRecordInfoEntity record);
+    
+    int upsert(TMaterialRecordInfoEntity record);
 
     int updateByPrimaryKey(TMaterialRecordInfoEntity record);
 }

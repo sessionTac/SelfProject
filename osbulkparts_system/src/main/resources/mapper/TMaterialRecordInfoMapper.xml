@@ -94,6 +94,24 @@
       </if>
     </trim>
   </insert>
+  <insert id="upsert" parameterType="cn.springboot.osbulkparts.entity.TMaterialRecordInfoEntity">
+  	INSERT INTO t_material_record_info (
+	material_code,
+	supper_amount,
+	data_role_at,
+	factory_code
+	)
+	VALUES(
+	#{materialCode,jdbcType=VARCHAR}, 
+	#{supperAmount,jdbcType=DECIMAL}, 
+	#{dataRoleAt,jdbcType=VARCHAR}, 
+	#{factoryCode,jdbcType=VARCHAR})
+	on duplicate key update
+      material_code = #{materialCode,jdbcType=VARCHAR},
+      supper_amount = #{supperAmount,jdbcType=DECIMAL},
+      data_role_at = #{dataRoleAt,jdbcType=VARCHAR},
+      factory_code = #{factoryCode,jdbcType=VARCHAR}
+  </insert>
   <update id="updateByPrimaryKeySelective" parameterType="cn.springboot.osbulkparts.entity.TMaterialRecordInfoEntity">
     <!--
       WARNING - @mbg.generated
