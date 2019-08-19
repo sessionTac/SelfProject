@@ -8,7 +8,7 @@
                 <el-form-item :label="$t('pageTable.OrderInfoOrderCodeDesc')">
                     <el-input :placeholder="$t('pageTable.OrderInfoOrderCodeDesc')" v-model="search_keys.orderCodeDesc" class="search-form-item-input"></el-input>
                 </el-form-item>
-                <el-collapse accordion>
+                <el-collapse accordion >
                     <el-collapse-item>
                         <template slot="title">
                             <i class="header-icon el-icon-s-operation">{{$t('Tips.allSearchKey')}}</i>
