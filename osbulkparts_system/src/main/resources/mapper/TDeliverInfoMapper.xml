@@ -137,7 +137,7 @@
     -->
     insert into t_deliver_info (id, order_code, material_code, 
       send_amount, ship_no, container_no, 
-      contract_no, data_role_at, state,create_user, 
+      contract_no,transportation,bill_no,data_role_at,state,create_user,
       create_time, update_user, update_time, 
       is_delete, version)
     values 
@@ -148,9 +148,11 @@
 	    #{item.sendAmount,jdbcType=DECIMAL},
 	    #{item.shipNo,jdbcType=VARCHAR}, 
 	    #{item.containerNo,jdbcType=VARCHAR}, 
-	    #{item.contractNo,jdbcType=VARCHAR}, 
-	    #{item.state,jdbcType=VARCHAR}, 
-	    #{item.dataRoleAt,jdbcType=VARCHAR}, 
+	    #{item.contractNo,jdbcType=VARCHAR},
+	    #{item.transportation,jdbcType=VARCHAR},
+	    #{item.billNo,jdbcType=VARCHAR},
+	    #{item.dataRoleAt,jdbcType=VARCHAR},
+        #{item.state,jdbcType=VARCHAR},
 	    #{item.createUser,jdbcType=VARCHAR}, 
 	    DATE_FORMAT(now(),'%Y%m%d%H%m%S'),
 	    #{item.updateUser,jdbcType=VARCHAR}, 
